@@ -105,13 +105,6 @@ void() input_key_impulse_hud_chase_toggle={
   //INPUT - HUD - set chase_active
   if( HUD_EXTERNAL_CAM_ACTIVE == TRUE ){
     HUD_EXTERNAL_CAM_ACTIVE = FALSE;
-    localcmd("chase_active 0\n");
-    if(HUD_MODEL_STRUTS != world ){
-      HUD_MODEL_STRUTS.drawmask = MASK_ENGINE;
-    }
-    if(HUD_MODEL_CONSOLE != world ){
-      HUD_MODEL_CONSOLE.drawmask = MASK_ENGINE;
-    }
     ui_data_load_hud( MECH_DATA_ID );
   }
   else{
@@ -119,15 +112,7 @@ void() input_key_impulse_hud_chase_toggle={
       return;
     }
     ui_data_load_hud( 0 );
-    
     HUD_EXTERNAL_CAM_ACTIVE = TRUE;
-    localcmd("chase_active 1\n");
-    if(HUD_MODEL_STRUTS != world ){
-      HUD_MODEL_STRUTS.drawmask = 0;
-    }
-    if(HUD_MODEL_CONSOLE != world ){
-      HUD_MODEL_CONSOLE.drawmask = 0;
-    }
   }
 };
 

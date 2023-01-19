@@ -12,7 +12,7 @@ Overview: data file for building
 void() shield_gen_die_vfx={
   local vector margin;
   
-  particleDraw = vlen(client_vis_org - self.origin);      
+  particleDraw = vlen(CLIENT_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));  
     te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
@@ -275,7 +275,7 @@ void() shield_gen_active={
     return;
   }
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
     vfx = randompos(self.compOffset, self.compAltOffset);
     vfx2= randompos(self.compOffset, self.compAltOffset);

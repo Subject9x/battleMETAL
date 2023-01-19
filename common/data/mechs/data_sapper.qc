@@ -92,9 +92,9 @@ void() data_ini_sapper_={
   
   //camera location
   #ifdef CSQC
-    self.cameraOffset = '0 13 10';
+    self.cameraOffset = '0 15 9';
   #else
-    self.cameraOffset = '0 13 2';
+    self.cameraOffset = '0 15 2';
   #endif
   
 //=====================================
@@ -117,7 +117,7 @@ void() data_ini_sapper_={
     precache_model("models/mechs/sapper/sapper_hud.obj");
     self.weaponmodel = "models/mechs/sapper/sapper_view.obj";
     self.hud_model = "models/mechs/sapper/sapper_hud.obj";
-    self.hud_StrutsOffset = '0 -2 -0.75';
+    self.hud_StrutsOffset = '0 -2.2 -0.75';
     self.pitchMax = 40;
     self.pitchMin = -40;
     self.hud_rollangle = 3.25;

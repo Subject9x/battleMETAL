@@ -140,10 +140,10 @@ void() receive_ent_bindData={
         CLIENT_stat_trg_face = 0;
         return;
       }
-      CLIENT_stat_trg_ent_id = CLIENT_target_ent.entId;
+      CLIENT_stat_trg_ent_id = CLIENT_target_ent.entnum;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       
-      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.origin, pmove_org, input_angles) );
+      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.origin, CLIENT_server_ent.origin, input_angles) );
       
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;
@@ -155,7 +155,7 @@ void() receive_ent_bindData={
         CLIENT_target_shield = 0;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
-      CLIENT_target_dist = vlen(CLIENT_target_ent.origin - pmove_org);
+      CLIENT_target_dist = vlen(CLIENT_target_ent.origin - CLIENT_server_ent.origin);
       CLIENT_target_size = CLIENT_target_ent.maxs;
     }
     else{

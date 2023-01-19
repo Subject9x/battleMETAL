@@ -12,6 +12,165 @@ Overview:
       other code bases.
 */
 
+void() player_think_normal;
+
+/*
+  SendEntity - Client
+    
+*/
+float( float isNew, float changeFlags ) send_client={
+  local entity player;
+  local float prevType;
+  
+  //Write Headers
+  WriteByte( MSG_ENTITY, SENDTYPE_CLIENT );
+  WriteLong( MSG_ENTITY, changeFlags );
+  //=============================================
+  
+  //Always send, cost saving just send this here.
+  WriteByte( MSG_ENTITY, self.data_type );       //always send type, always.
+  
+  /*EVENT - Client is new to receiver */
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    //WriteByte( MSG_ENTITY, num_for_edict(self) ); //Game capped at 16 max players, client will always be 0-15
+  }
+  
+  /* EVENT - Send client.flags total value*/
+  if( (changeFlags & SENDFLAG_EFLAGS) ){
+    WriteLong( MSG_ENTITY, self.flags );
+  }
+  
+  /* EVENT - Client .faction has changed. */
+  if( (changeFlags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.faction);
+  }
+  
+  /* EVENT - Client .deadflag changed value.*/
+  if( (changeFlags & SENDFLAG_DEAD) ){
+    WriteByte( MSG_ENTITY, self.deadflag );
+    //WriteByte( MSG_ENTITY, ENT_SERVER_INFO.missionStatus );
+  }
+  
+  /*EVENT - per-frame updates*/
+  if( (changeFlags & SENDFLAG_MOVE) ){
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    
+    WriteByte( MSG_ENTITY, self.moveState );
+    WriteAngle( MSG_ENTITY, self.legs_angl_y);
+    WriteFloat( MSG_ENTITY, self.legDir);
+  }
+  
+  if( (changeFlags & SENDFLAG_VELOCITY) ){
+    WriteFloat( MSG_ENTITY, self.velocity_x);
+    WriteFloat( MSG_ENTITY, self.velocity_y);
+    WriteFloat( MSG_ENTITY, self.velocity_z);
+  }
+  
+  if( (changeFlags & SENDFLAG_TURRET) ){
+    WriteAngle( MSG_ENTITY, self.v_angle_x);
+    WriteAngle( MSG_ENTITY, self.v_angle_y);
+  }
+  
+  /* EVENT - Client sends extra data "EXDATA"*/
+  if( (changeFlags & SENDFLAG_EXDATA) ){
+    WriteByte( MSG_ENTITY, self.nextVecChoice );
+  }
+  
+  /* EVENT - Client has spawned into a vehicle */
+  if( (changeFlags & SENDFLAG_NEWUNIT) ){
+    WriteFloat( MSG_ENTITY, self.data_speed_forward);
+    WriteFloat( MSG_ENTITY, self.data_speed_strafe);
+    WriteFloat( MSG_ENTITY, self.data_speed_backward);
+    WriteFloat( MSG_ENTITY, self.data_speed_accel);
+    
+    if( self.data_type != DATA_POBS ){
+      WriteByte( MSG_ENTITY, self.data_idx );
+      WriteByte( MSG_ENTITY, self.next_wepn1);
+      WriteByte( MSG_ENTITY, self.next_wepn2);
+      WriteByte( MSG_ENTITY, self.next_wepn3);
+      WriteByte( MSG_ENTITY, self.next_wepn4);
+      WriteByte( MSG_ENTITY, self.next_wepn5);
+      WriteByte( MSG_ENTITY, self.next_wepn6);
+      WriteByte( MSG_ENTITY, self.next_wepn7);
+      WriteByte( MSG_ENTITY, self.next_wepn8);
+      WriteByte( MSG_ENTITY, self.next_wepn9);
+    }
+  }
+  
+  /* EVENT - Client has changed their unit color settings.*/
+  if( (changeFlags & SENDFLAG_COLORS) ){
+    WriteByte( MSG_ENTITY, self.unitColorCT );
+    WriteByte( MSG_ENTITY, self.unitColorLT );
+    WriteByte( MSG_ENTITY, self.unitColorRT );
+    WriteByte( MSG_ENTITY, self.unitColorLA );
+    WriteByte( MSG_ENTITY, self.unitColorRA );
+    WriteByte( MSG_ENTITY, self.unitColorLG );
+  }
+  
+  //WARN! - this is why we send .data_type on EVERY packet!
+  if( self.data_type != DATA_POBS ){
+    /* EVENT - Client switch Camera mode or headlights. */
+    if( (changeFlags & SENDFLAG_CAMERA) ){
+      WriteByte( MSG_ENTITY, self.chaseActive);
+      WriteByte( MSG_ENTITY, self.headlight);
+    }
+    
+    /* EVENT - Client toggled radar. */
+    if( (changeFlags & SENDFLAG_RADAR) ){
+      WriteByte( MSG_ENTITY, self.stat_rdr_mode );
+    }
+    
+    /* EVENT - Client .shields has changed value */
+    if( (changeFlags & SENDFLAG_SHIELD) ){
+      WriteByte( MSG_ENTITY, self.stat_client_shield );
+    }
+    
+    /* EVENT - Client .energy has changed value */
+    if( (changeFlags & SENDFLAG_ENERGY) ){
+      WriteByte( MSG_ENTITY, self.stat_client_energy );
+    }
+    
+    /* EVENT - Client has made an attack, input reached server.*/
+    if( (changeFlags & SENDFLAG_ATTACK) ){
+      WriteLong( MSG_ENTITY, self.attackFlag);
+    }
+    
+    /* EVENT - Client has taken ranged hits. */
+    if( (changeFlags & SENDFLAG_IMPACT) ){
+      WriteByte( MSG_ENTITY, self.shieldHitFlag); 
+    }
+    
+    /* EVENT - pieces of player mech is blown off */
+    if( (changeFlags & SENDFLAG_CRIT) ){
+      //placed here for just-in-time calculation
+      // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
+      WriteLong( MSG_ENTITY, self.critBits );
+      if( (self.critBits & M_REPAIR) ){
+        self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
+      }
+      else{
+        self.criticalHits = self.criticalHits | self.critBits;
+      }
+      self.critBits = 0;
+    }
+    
+    /* EVENT - pieces of player mech are low on health and burning */
+    if( (changeFlags & SENDFLAG_BURN) ){
+      WriteLong( MSG_ENTITY, self.burnBits );
+    }
+    
+    /* EVENT - Client has acquired a new target. */
+    if( (changeFlags & SENDFLAG_TARGET) ){
+      WriteLong( MSG_ENTITY, self.targetEntId );
+    }
+  }
+  
+  self.shieldHitFlag = 0;
+  return TRUE;
+};
+
 /*
   very important; parse every client call starting with 'cmd'
 */
@@ -233,7 +392,7 @@ void() ClientConnect = {
   self.clientcolors = FACTION_PSC;  //faction tracker for network.
   
   self.attackFlag = 0;
-  client_data();
+  //client_data();
   
   //if coop, assign coop-number.
   if( GAMETYPE == GAMEMODE_COOP ){
@@ -274,6 +433,10 @@ void() ClientConnect = {
     ExitIntermission();
   }
   self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
+  
+  self.SendEntity = send_client;
+  self.think = player_think_normal;
+  
 };
 
 /*
@@ -287,6 +450,9 @@ note: This is also called after a player respawns too...
 ============
 */
 void() PutClientInServer = {
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.nextthink = time + 0.01;
   
   self.flags = FL_CLIENT;
   self.velocity = '0 0 0';	// 1998-07-21 Player moves after respawn fix by Xian
@@ -367,7 +533,7 @@ void() ClientKill = {
     self.frags = 0;
   }
   
-  self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS ;
+  self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS ;
   self.health = 0;
   self.th_die();
 };
@@ -429,7 +595,6 @@ void() ClientDisconnect = {
     }
     client = client.chain;
   }
-  remove(self.clientData);
 };
 
 //better to split these out for clarity
@@ -476,9 +641,7 @@ void() PutClientInServer_Campaign={
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
-    if(self.clientData != world ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
-    }
+    self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
   }
   
   if( world.iniConfig ){
@@ -523,9 +686,7 @@ void() PutClientInServer_Coop={
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     client = findchainflags(flags, FL_CLIENT);
     for( itr = 0; itr < 4; itr = itr + 1){
-      if( client.clientData ){
-        client.clientData.SendFlags = client.clientData.SendFlags | SENDFLAG_EXDATA;
-      }
+      client.SendFlags = client.SendFlags | SENDFLAG_EXDATA;
       client = client.chain;
     }
   }
@@ -539,9 +700,7 @@ void() PutClientInServer_Coop={
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
-    if(self.clientData != world ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
-    }
+    self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
   }
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
@@ -570,8 +729,8 @@ void() PutClientInServer_Deathmatch={
     self.clientcolors = FACTION_ALL;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
-  self.th_die = PlayerDieNetwork;  
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_MOVE | SENDFLAG_EFLAGS);
+  self.th_die = PlayerDieNetwork; 
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_EFLAGS);
   
   //if( cvar("developer") ){
   // self.playerState = PLAYER_ACTIVE;
@@ -661,6 +820,7 @@ void() sv_client_spawnpoint_select={
   }
   
   //remote deploy point functionality
+  self.last_origin = self.origin;
   if( spot.classname == "map_deploy_point_remote" ){
     self.origin = self.oldorigin = spot.view_ofs + '0 0 12';
   }
@@ -669,6 +829,7 @@ void() sv_client_spawnpoint_select={
   }
   
   self.angles = spot.angles;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
   
   //haha, cache angles for powerup sequence.
   self.wind_x = 0;
@@ -710,14 +871,16 @@ void() client_data={
   data.stat_rdr_mode = self.stat_rdr_mode;
   data.stat_client_shield = self.stat_client_shield;
   data.shieldHitFlag = self.shieldHitFlag;
-  data.SendEntity = send_client_data;
-  data.SendFlags = data.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
+  //data.SendEntity = send_client_data;
+  //data.SendFlags = data.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_FACTION);
   data.vec_size = self.vec_size;
-  data.think = client_data_th;
-  data.nextthink = time + 0.01;
-  self.clientData = data;
+  //data.think = client_data_th;
+  //data.nextthink = time + 0.01;
+  //self.clientData = data;
 };
 
+
+// TODO - DEPRECATE
 /*
   Send ClientData SendEnt()
   cliet/network/receive_player.qc

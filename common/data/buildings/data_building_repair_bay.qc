@@ -29,11 +29,10 @@ void() building_repair_touch;
   util to correctly set player FL_NOSHOOT state
 */
 void(float toggleGuns) building_repair_allowGuns={
-  local entity player, data;
+  local entity player;
   player = self.ladder_entity;
   
   if( (player.flags & FL_CLIENT) ){
-    data = player.clientData;
     if(toggleGuns){
       player.flags = player.flags - (player.flags & FL_NOSHOOT);
     }
@@ -45,7 +44,7 @@ void(float toggleGuns) building_repair_allowGuns={
     player.flags = player.flags | FL_DISARMED;
   }
 
-  data.SendFlags = data.SendFlags | SENDFLAG_EFLAGS;
+  player.SendFlags = player.SendFlags | SENDFLAG_EFLAGS;
 };
 
 void() building_repair_touch;
@@ -280,7 +279,7 @@ void() building_repair_fixing={
       self.attack_state = FALSE;
       player.critBits = player.critBits | (M_REPAIR | self.critBits);
       if( (player.flags & FL_CLIENT) ){
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
+        player.SendFlags = player.SendFlags | SENDFLAG_CRIT;
       }
       else{
         player.SendFlags = player.SendFlags | SENDFLAG_CRIT;
@@ -323,12 +322,7 @@ void() building_repair_fixing={
   if(end_repair){
   
     player.burnBits = player.burnBits - (player.burnBits & self.critBits);
-    if( (player.flags & FL_CLIENT) ){
-      player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
-    }
-    else{
-      player.SendFlags = player.SendFlags | SENDFLAG_BURN;
-    }
+    player.SendFlags = player.SendFlags | SENDFLAG_BURN;
     self.ai_state_next = REPAIR_STATE_START;
   }
 };
@@ -481,7 +475,7 @@ void() repair_bay_dlights={
     }
     //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF){  
-      particleDraw = vlen(client_vis_org - self.origin);      
+      particleDraw = vlen(CLIENT_vis_org - self.origin);      
       if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){  
         adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
       }
@@ -492,7 +486,7 @@ void() sendevent_repair_beam={
   local vector partOfs;
   local vector beamEnd;
   
-  particleDraw = vlen(client_vis_org - self.origin);      
+  particleDraw = vlen(CLIENT_vis_org - self.origin);      
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2 ){  
   
     switch(self.critBits){
@@ -546,7 +540,6 @@ void() repair_bay_idle={
 };
 #endif
 
-
 void() building_repair_bay={
   
   self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
@@ -565,8 +558,10 @@ void() building_repair_bay={
   self.skin = self.faction - 1;
   self.model = "models/buildings/repair_bay/repairbay.md3";
   precache_model("models/buildings/repair_bay/repairbay.md3");
+  
   setmodel(self, "models/buildings/repair_bay/repairbay.md3");
   setsize(self, self.mins, self.maxs);
+  
   self.th_die = hrepair_die;
     
   if( !self.health ){

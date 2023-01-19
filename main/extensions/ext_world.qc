@@ -493,7 +493,7 @@ void() sv_endServer={
         continue;
       }
       if( player.data_type == DATA_MECH ){
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
+        player.SendFlags = player.SendFlags | SENDFLAG_EFLAGS;
       }
       if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN || ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         client_send_campaign_end_data( player );

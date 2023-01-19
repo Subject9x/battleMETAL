@@ -48,9 +48,7 @@ void() map_noshoot_use={
         e.flags = e.flags | self.partTypeId;
       }
       if( (e.flags & FL_CLIENT) ){
-        if(e.clientData != world ){
-          e.clientData.SendFlags = e.clientData.SendFlags | SENDFLAG_EFLAGS;
-        }
+        e.SendFlags = e.SendFlags | SENDFLAG_EFLAGS;
       }
       e = e.chain;
     }

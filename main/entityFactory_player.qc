@@ -22,7 +22,7 @@ void() player_makeObserver={
   self.data_speed_strafe = 1000;
   self.data_speed_backward = 1000;
   self.data_speed_accel = 2;
-  self.clientData.SendFlags =  self.clientData.SendFlags | SENDFLAG_NEWUNIT;
+  self.SendFlags =  self.SendFlags | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS;
   self.canTarget = FALSE;
 };
 
@@ -31,6 +31,7 @@ void() player_unmakeObserver={
     self.flags = self.flags - (self.flags & FL_FLY);
   }
   self.movetype = MOVETYPE_WALK;
+  self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
 };
 
 void() player_makeVec={
@@ -109,8 +110,8 @@ void() player_makeMech={
   
   droptofloor();
   
-  self.clientData.effects = self.clientData.effects | EF_NODEPTHTEST;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_NEWUNIT | SENDFLAG_TURRET | SENDFLAG_MOVE | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_TARGET | SENDFLAG_FACTION | SENDFLAG_RADAR);
+  self.effects = self.effects | EF_NODEPTHTEST;
+  self.SendFlags = self.SendFlags |  (SENDFLAG_VELOCITY | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR);
 };
 
 void() player_unmakeMech={

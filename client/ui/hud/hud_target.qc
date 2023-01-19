@@ -213,7 +213,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, lockColor, boxAlpha, 0);
   }
   
-  drawdist = vlen(pmove_org - CLIENT_target_ent.origin); 
+  drawdist = vlen(CLIENT_vis_org - CLIENT_target_ent.origin); 
   if(drawdist < CLIENT_radar_range * 0.1){
     adj = 25;
     drawSize = '10 10 0';
@@ -284,7 +284,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
     factionColor = CLR_DEF_IFF_ENEMY_BLD;
   }
 
-  dist = vlen(pmove_org - CLIENT_target_ent.origin);
+  dist = vlen(CLIENT_vis_org - CLIENT_target_ent.origin);
   if(dist < CLIENT_radar_range * 0.1){
     adj = 25;
   }
@@ -467,6 +467,12 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   
   panelOrg = gui_calcAlign(vorg, algn);
   
+  local float debug;
+  debug = TRUE;
+  if(debug){
+    return; //DEBUG!
+  }
+  
   if(isTarget){
     ct = CLIENT_stat_trg_ct_hp;
     lt = CLIENT_stat_trg_lt_hp;
@@ -485,8 +491,8 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
     la = CLIENT_health_arm_left;
     ra = CLIENT_health_arm_right;
     lg = CLIENT_health_legs;
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = CLIENT_mech_self.mins;
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = CLIENT_mech_self.maxs;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = CLIENT_server_ent.mins;
+    HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = CLIENT_server_ent.maxs;
     modelEntity = HUD_MODEL_ARMOR_GRAPH_PLAYER;
   }
   
@@ -494,7 +500,7 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
     viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
   }
   else{
-    viewOrg = pmove_org;
+    viewOrg = CLIENT_vis_org;
   }
   clearscene();
     modelEntity.maxs_z = max(modelEntity.maxs_z, 24); //test
@@ -522,21 +528,23 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
     setproperty(VF_FOG_START, 0.0);
     setproperty(VF_FOG_HEIGHT, 0.0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
+    setproperty(VF_MAINVIEW, FALSE);
     
     if( isTarget ){
-      hud_armor_model_target_frame(viewOrg, ct, lt, rt, la, ra, lg);
+      //disabled for debug
+      //hud_armor_model_target_frame(viewOrg, ct, lt, rt, la, ra, lg);
     }
     else{
-      hud_armor_model_player_frame(viewOrg, ct, lt, rt, la, ra, lg);
+      //disabled for debug
+      //hud_armor_model_player_frame(viewOrg, ct, lt, rt, la, ra, lg);
     }
   renderscene();
-  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
-  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, TRUE);
+  setproperty(VF_DRAWWORLD, TRUE);*/
   HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
   HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;
 }; 
@@ -596,7 +604,7 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
   }
   else{
-    viewOrg = pmove_org;
+    viewOrg = CLIENT_vis_org;
   }
   
   clearscene();
@@ -627,8 +635,9 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     setproperty(VF_FOG_START, 0.0);
     setproperty(VF_FOG_HEIGHT, 0.0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
+    setproperty(VF_MAINVIEW, FALSE);
     
-    tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
+    tAngles = vectoangles(CLIENT_target_ent.origin - CLIENT_vis_org);
   
     //Building is a turret
     if( (CLIENT_target_ent.flags & FL_TURRET) ){
@@ -663,13 +672,12 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
       
     }
   renderscene();
-  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
-  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, TRUE);
+  setproperty(VF_DRAWWORLD, TRUE);*/
   
   //meter = siz;
   //meter_x = meter_x / 2;
@@ -737,7 +745,7 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
   }
   else{
-    viewOrg = pmove_org;
+    viewOrg = CLIENT_vis_org;
   }
   clearscene();
     HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z = max(HUD_MODEL_ARMOR_GRAPH_TARGET.maxs_z, 24); //test
@@ -754,9 +762,8 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     setproperty(VF_SIZE, vtodpp([siz_x, siz_y, 0]) );
     //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
     setproperty(VF_FOV, [zTotal, atan(siz_y/(siz_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
-
-
-
+    
+    
     setproperty(VF_DRAWENGINESBAR, FALSE);
     setproperty(VF_DRAWWORLD, FALSE);
     setproperty(VF_DRAWCROSSHAIR, FALSE);
@@ -767,10 +774,11 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     setproperty(VF_FOG_START, 0.0);
     setproperty(VF_FOG_HEIGHT, 0.0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
+    setproperty(VF_MAINVIEW, FALSE);
   
     HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
     
-    tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
+    tAngles = vectoangles(CLIENT_target_ent.origin - CLIENT_vis_org);
   
     setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, CLIENT_target_ent.legs_mdl);
     HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);
@@ -798,13 +806,12 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
       HUD_MODEL_ARMOR_GRAPH_TARGET.origin = viewOrg;
     }
   renderscene();
-  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
-  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, TRUE);
+  setproperty(VF_DRAWWORLD, TRUE);*/
   //drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
   HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
   HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;
@@ -998,7 +1005,7 @@ void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, 
   
   HUD_MODEL_ARMOR_GRAPH_TARGET.origin = vueOrg;
   
-  tAngles = vectoangles(CLIENT_target_ent.origin - pmove_org);
+  tAngles = vectoangles(CLIENT_target_ent.origin - CLIENT_vis_org);
   
   prevAngl = HUD_MODEL_ARMOR_GRAPH_TARGET.angles = [CLIENT_target_ent.angles_x, anglemod(CLIENT_target_ent.angles_y - tAngles_y), 0];
   

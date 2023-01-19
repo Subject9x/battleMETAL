@@ -57,8 +57,8 @@ void() data_ini_warden_={
   self.ramCooldown = 8;
 #ifdef CSQC
   //animation playback sync to player move speed.
-  self.legMoveRate = 12;
-  self.legRunRate = 14;
+  self.legMoveRate = 0.1;
+  self.legRunRate = 0.1;
 #endif
 #ifdef SSQC
   //AI-only Server values.
@@ -94,9 +94,9 @@ void() data_ini_warden_={
   
   //camera location
 #ifdef CSQC
-  self.cameraOffset = '0 8 14';
+  self.cameraOffset = '0 7 10';
 #else
-  self.cameraOffset = '0 8 7';
+  self.cameraOffset = '0 7 7';
 #endif
 //=====================================
  
@@ -116,7 +116,7 @@ void() data_ini_warden_={
     precache_model("models/mechs/balaket/balaket_hud.obj");
     self.weaponmodel = "models/mechs/warden/warden_view.obj";
     self.hud_model = "models/mechs/balaket/balaket_hud.obj";
-    self.hud_StrutsOffset = '0 -1.5 -1';
+    self.hud_StrutsOffset = '0 -1.0 -0.75';
     self.pitchMax = 25; //pitch down limit
     self.pitchMin = -28;//pitch up limit
     self.hud_rollangle = 4;

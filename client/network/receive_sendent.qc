@@ -64,8 +64,8 @@ void() interpolate_origin={
     self.angle2 = self.angle1;
     self.angle1 = self.angles_y;
   }
-  newLerp = (time - self.frame2time) /(self.frame1time - self.frame2time);
-  newLerp = 1 - bound(0, newLerp, 1);
+  newLerp = (time - self.frame2time) /(self.frame2time - self.frame1time);
+  newLerp = bound(0, newLerp, 10);
   self.lerpfrac = newLerp;
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
 };
@@ -134,10 +134,10 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
 
 void() predraw_building_msc={
   
-  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
+  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
   
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
     self.cl_lod_unit = FALSE;
   }
   
@@ -226,7 +226,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
 void() sendent_missile_think={
 
   if( self.deadflag == DEAD_NO ){
-    if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
+    if( vlen(self.origin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
       if( self.traileffectnum ){
         trailparticles(world, self.traileffectnum, self.origin, self.origin1 );
       }
@@ -247,7 +247,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
-    ownerId = ReadLong();
+    ownerId = ReadShort();
     self.owner = findfloat(world, entnum, ownerId);
   }
   
@@ -258,9 +258,9 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
-    self.velocity_x = ReadLong();
-    self.velocity_y = ReadLong();
-    self.velocity_z = ReadLong();
+    self.velocity_x = ReadFloat();
+    self.velocity_y = ReadFloat();
+    self.velocity_z = ReadFloat();
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){
@@ -292,9 +292,10 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     else{
       data_sync_new_projectile(self.data_idx);
     }
-    self.predraw = predraw_missile;
     setmodel(self, self.model);
+    self.predraw = predraw_missile;
     setsize(self, '0 0 0', '0 0 0');
+    setorigin(self, self.origin);
   }
   else{
     self.data_postinit = TRUE;
@@ -317,16 +318,18 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
 */
 void( float isNew, float changeFlags ) sendent_handle_item={
   local float prevIdx;
-  
+  local float ownerEntId;
   
   prevIdx = self.data_idx;
   
+  ownerEntId =  fabs(rint(ReadLong()));
+  
+  self.owner = findfloat(world, entnum, ownerEntId);
   if( (changeFlags & SENDFLAG_MOVE) ){
-    self.owner = findfloat(world, entnum, ReadLong());
+  
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.owner = findfloat(world, entnum, ReadLong());
     self.w_group = rint(ReadLong());
     self.partParentId = rint(ReadLong());
     self.compOffset_x = ReadAngle();
@@ -335,7 +338,6 @@ void( float isNew, float changeFlags ) sendent_handle_item={
   }
   
   if( (changeFlags & SENDFLAG_NEWUNIT) ){
-    self.owner = findfloat(world, entnum, ReadLong());
     self.data_idx = ReadByte();
   }
   if( (changeFlags & SENDFLAG_DEAD) ){
@@ -383,6 +385,7 @@ void( float isNew, float changeFlags ) sendent_handle_item={
     if( (self.owner.flags & FL_CLIENT) && self.owner.clientServerNum == player_localentnum ){
       CLIENT_weapon_state = CLIENT_weapon_state |  self.w_group;
     }
+    self.drawmask = MASK_ENGINE;
   }
 };
 
@@ -409,7 +412,7 @@ void() sendevent_handle_weaponfire={
   local entity equip;
   local float wepId;
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   
   wepId = 0;
   
@@ -442,17 +445,19 @@ void() sendent_ini_interpolate={
     self.frame2time = 1;
     self.frame1time = 2;
   }
-  self.lerpfrac = (time - self.frame2time) /(self.frame1time-self.frame2time);
+  self.lerpfrac = (time - self.frame2time) /(self.frame2time-self.frame1time);
   self.lerpfrac = 1-bound(0, self.lerpfrac, 1);
 };
 
 vector( vector partOffset) predraw_unit_part={
   local vector offset;
   
- offset = self.origin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+ offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
   
-  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
-    offset = offset - (v_forward * self.cameraOffset_z);
+  if( self.clientServerNum == player_localentnum ){
+    if( self.chaseActive  == FALSE ){
+      offset = offset - (v_forward * self.cameraOffset_z);
+    }
   }
   
   return offset;
@@ -461,13 +466,15 @@ vector( vector partOffset) predraw_unit_part={
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
   local vector offset;
   
- offset = self.origin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+ offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
   
-  if(self.clientServerNum == player_localentnum && cvar("chase_active") == FALSE){
-    offset = offset - (v_forward * self.cameraOffset_z);
+  if( self.clientServerNum == player_localentnum ){
+    if( self.chaseActive  == FALSE ){
+      offset = offset - (v_forward * self.cameraOffset_z);
+    }
   }
   
-  self.partAngles_y = self.angles_y;
+  self.partAngles_y = self.rootAngle_y;
   self.partAngles_x = 0;
   return offset;
 };
@@ -493,6 +500,9 @@ void(entity item) predraw_unit_weapon={
     return;
   }
   if( (self.criticalHits & item.partParentId) ){
+    return;
+  }
+  if( self.owner.deadflag != DEAD_NO){
     return;
   }
   
@@ -538,6 +548,48 @@ entity(float weaponId) sendent_get_weapon={
       return world;
   }
   return world;
+};
+
+
+/*
+  HANDLE EVENT - player mech parts destroyed
+*/
+void( float criticalBits ) sendevent_player_critical={
+
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalBits & M_TOR_LEFT) ){
+    te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+  }
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && (criticalBits & M_TOR_RIGHT) ){
+    te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && (criticalBits & M_ARM_LEFT) ){
+    te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && (criticalBits & M_ARM_RIGHT) ){
+    te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+  }
+  if( (criticalBits & M_LEGS) ){
+    te_missile_explode( self.legs_org, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
+  }
+  if(self.clientServerNum != player_localentnum){
+    return;
+  }
+};
+
+/*
+  HANDLE EVENT - Player Critical notifying everyone
+*/
+void( float playerEntId, float playerCritFlags ) client_handle_crit={
+  local entity playerMech;
+  local entity nonSelf;
+  
+  playerMech = findfloat(world, clientServerNum, playerEntId);
+  if( playerMech ){
+    nonSelf = self;
+    self = playerMech;
+      sendevent_player_critical(playerCritFlags);
+    self = nonSelf;
+  }
 };
 
 /*

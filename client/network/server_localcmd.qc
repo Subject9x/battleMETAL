@@ -411,11 +411,11 @@ void() cl_get_new_fog={
 // the player specfically spawns into their mech.
 void() cl_set_chase={
   local string cmd;
-  if(cvar("chase_active") == TRUE ){
+  if(CLIENT_server_ent.chaseActive == TRUE ){
     cmd = "impulse 30\n";
     localcmd(cmd);
   }
-  HUD_EXTERNAL_CAM_ACTIVE = cvar("chase_active");
+  HUD_EXTERNAL_CAM_ACTIVE = CLIENT_server_ent.chaseActive ;
 };
 
 /*

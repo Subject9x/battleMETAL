@@ -90,9 +90,7 @@ void() turbo_charger_remove_={
   self.owner.evasionDrain = self.evasionDrain;
   self.owner.data_speed_accel = self.data_speed_accel;
   self.owner.data_speed_forward = self.data_speed_forward;
-  if(self.clientData != world ){
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
-  }
+  self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_EFLAGS;
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;

@@ -9,11 +9,36 @@ Overview:
 
 float dbg_time; //used for filtering debug to once every few seconds.
 
+//DEBUG GLOBALS
+
+vector DEBUG_PREDRAW_ORIGIN;
+vector DEBUG_PREDRAW_ROOTORG;
+
 //SendEntity
+.vector rootOrigin; //used in predraws
+.vector rootAngle;
 .vector origin2;
 .vector origin1;
+
 .float angle2;
 .float angle1;
+
+.vector angles1;
+.vector angles2;
+
+.vector velocity2;
+.vector velocity1;
+
+.vector originNext;
+.vector anglesNext;
+.vector velocityNext;
+
+.vector viewAngle2;
+.vector viewAngle1;
+.vector viewAngle;
+
+.float moveFlags;
+
 //.vector last_angle;
 //.float lastupdate;
 //.float prevupdate;
@@ -24,6 +49,18 @@ float dbg_time; //used for filtering debug to once every few seconds.
 //.float deaths;
 
 .float shieldExplodeCool;
+
+
+//Unit per-frame deltas.
+.float prevburnBits;
+.float prevShield;
+.float prevkills;
+.float prevFaction;
+.float prevDeadFlag;
+.float prevAttackFlag;
+.float prevMoveState;
+.float prevDataType;
+//--------------------------
 
 void() predraw_missile;
 void() predraw_tank;
@@ -63,11 +100,12 @@ void( float isNew, float changeFlags) sendent_handle_gev;
 void( float isNew, float changeFlags) sendent_handle_turret;
 void( float isNew, float changeFlags) sendent_handle_building;
 void( float isNew, float changeFlags) sendent_handle_missile;
-void( float isNew, float changeFlags) sendent_handle_player;
 void( float isNew, float changeFlags ) sendent_handle_terrain;
 void( float isNew, float changeFlags ) sendent_handle_misc_bld;
 void( float isNew, float changeFlags ) sendent_handle_item;
+void( float isNew, float changeFlags ) sendent_handle_client;
 //void( float isNew, float changeFlags ) sendent_handle_misc;
+
 
 entity(float weaponId) sendent_get_weapon;
 
@@ -78,13 +116,9 @@ void() sendevent_handle_weaponfire;
 
 void() sendevent_building_die;
 
-void() player_think;
 void() sendent_ai_think;
-void( entity aWeapon ) player_weapon_reload;
 void( float playerEntId, float playerCritFlags ) client_handle_crit;
-
-float() remove_client;
-void( float hasMoved ) sendevent_player_accuracy;
+void( float criticalBits ) sendevent_player_critical;
 
 vector( vector partOffset) predraw_unit_part;
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle;

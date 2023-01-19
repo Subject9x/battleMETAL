@@ -142,12 +142,14 @@ Overview:
 .float reloadMaxCache;    //only for mods
 .float energyRegenTimer;  //replaces .count4 in AI units
 
+.vector last_velocity;
 .vector last_angle;
 .vector last_origin; //mostly AI move tracker
 .float last_energy;
 .float last_shield;
 .float last_crit;
 .float last_burn;
+.float last_flags;
 
 .float cache_speed_fwd;
 .float cache_speed_sid;
@@ -218,8 +220,7 @@ Overview:
 
 .vector cockpitOffset;
 
-.float targetEntId;
-.float entId; 
+.float targetEntId; 
 .vector uiOffset; //menu-specific hardpoint draw locations.
   //prevents hardpoint overlap in MENU_HANGAR but still allowing hardpoints to be close to the actual
   //weapon locations.

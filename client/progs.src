@@ -198,7 +198,7 @@ ui/hud/crosshair/hud_crosshair4.qc
   network/receive_sendent_mech_ai.qc
   network/receive_sendent_turret.qc
   network/receive_sendent_building.qc
-  network/receive_sendent_player.qc
+  network/receive_sendent_client.qc
 //========================
 
 //MENU SYSTEM============
@@ -226,6 +226,7 @@ ui/hud/crosshair/hud_crosshair4.qc
   model/mech_ai.qc
 //=======================
 
+
 input_events.qc
 util/input_api.qc
 ../common/data/defs/defs_world.qc     //world server / rules entity
@@ -238,4 +239,5 @@ util/input_api.qc
   main/client_update_view.qc
   main/client_shutdown.qc
   main/client_entity.qc
+  main/client_playermovement.qc
 //===========================

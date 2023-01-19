@@ -86,7 +86,7 @@ void() data_vehicle_wreck={
 
 
 void() data_vehicle_wreck_th={
-  if( self.pcl_effectnum > 0 && servertime < self.health && vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE / 2 ){
+  if( self.pcl_effectnum > 0 && servertime < self.health && vlen(self.origin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE / 2 ){
     makevectors(self.angles);
     pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
   }

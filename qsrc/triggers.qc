@@ -857,9 +857,7 @@ void() toggleweapons_touch={
       //DISABLE_ONLY
       if( !(other.flags & FL_NOSHOOT) ){
         other.flags = other.flags | FL_NOSHOOT;
-        if( other.clientData != world ){
-          other.clientData.SendFlags = other.clientData.SendFlags | SENDFLAG_EFLAGS;
-        }
+        other.SendFlags = other.SendFlags | SENDFLAG_EFLAGS;
       }
       return;
     }
@@ -867,9 +865,7 @@ void() toggleweapons_touch={
       //ENABLY_ONLY
       if( (other.flags & FL_NOSHOOT) ){
         other.flags = other.flags - (other.flags & FL_NOSHOOT);
-        if( other.clientData != world ){
-          other.clientData.SendFlags = other.clientData.SendFlags | SENDFLAG_EFLAGS;
-        }
+        other.SendFlags = other.SendFlags | SENDFLAG_EFLAGS;
       }
       return;
     }
@@ -886,9 +882,7 @@ void() toggleweapons_touch={
       else{
         other.flags = other.flags | FL_NOSHOOT;
       }
-      if( other.clientData != world ){
-        other.clientData.SendFlags = other.clientData.SendFlags | SENDFLAG_EFLAGS;
-      }
+      other.SendFlags = other.SendFlags | SENDFLAG_EFLAGS;
       if( (self.spawnflags & 8) ){
         self.think = SUB_Remove;
         self.nextthink = time + 0.01;

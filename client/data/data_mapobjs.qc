@@ -323,7 +323,7 @@ void() hazard_rad_think={
   partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
   partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE){
     if( random() > 0.9 && MENU_PROG_OFF){
       te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
@@ -335,7 +335,7 @@ void() hazard_rad_think={
     }
   }
   if( self.isActive ){
-    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 3) ){
+    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 3) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 2;
     }
@@ -361,7 +361,7 @@ void() hazard_crs_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE){
     if( random() > 0.9 && MENU_PROG_OFF){
       te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
@@ -371,7 +371,7 @@ void() hazard_crs_think={
   //te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 244, FALSE, 15); 
    
   if( self.isActive ){
-    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 1;
     }
@@ -398,7 +398,7 @@ void() hazard_quant_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE){
     if( random() > 0.9 && MENU_PROG_OFF){
       te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
@@ -408,7 +408,7 @@ void() hazard_quant_think={
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
   
   if( self.isActive ){
-    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 4;
     }

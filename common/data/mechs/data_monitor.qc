@@ -89,9 +89,11 @@ void() data_ini_monitor_={
   
   //camera location
 #ifdef CSQC
-  self.cameraOffset = '0 18 18';
+  //X - unused, Y - height offset from mech ORIGIN! Z - moves the player mech BACK this many units
+  self.cameraOffset = '0 17 9';
 #else
-  self.cameraOffset = '0 18 8';
+  //X - unused, Y - height offset from mech ORIGIN! Z - moves player camera FORWARD this many units
+  self.cameraOffset = '0 17 8';
 #endif
 //=====================================
  
@@ -115,7 +117,7 @@ void() data_ini_monitor_={
     precache_model("models/mechs/monitor/monitor_hud.obj");
     self.weaponmodel = "models/mechs/monitor/monitor_view.obj";
     self.hud_model = "models/mechs/monitor/monitor_hud.obj";
-    self.hud_StrutsOffset = '0 -1.05 0.33';
+    self.hud_StrutsOffset = '0 -1.25 0.33';
     self.pitchMax = 43;
     self.pitchMin = -25;
     self.hud_rollangle = 2.75;

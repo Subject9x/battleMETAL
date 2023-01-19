@@ -218,9 +218,7 @@ void(string cmdString) client_parse_clientInfoString={
   if( (changeFlags & INFO_FLAG_MECH) ){
     self.nextVecChoice = rint(stof(infoget(dataString, KEY_MECH)));
     if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
-      if( self.clientData ){
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EXDATA;
-      }
+      self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     }
   }
   //DEPLOY ID UPDATE
@@ -237,6 +235,7 @@ void(string cmdString) client_parse_clientInfoString={
     self.unitColorRA = rint(stof(infoget(dataString, KEY_COLOR5)));
     self.unitColorLG = rint(stof(infoget(dataString, KEY_COLOR6)));
     self.new_color = TRUE;
+    self.SendFlags = self.SendFlags | SENDFLAG_COLORS;
   }
   //WEAPON GROUPS UPDATE
   if( (changeFlags & INFO_FLAG_GROUPS) ){

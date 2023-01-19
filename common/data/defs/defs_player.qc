@@ -58,10 +58,17 @@ float input_sequence;
 .float w_group4;
 
 .float chaseActive; //tracks player chase cam status on the server.
-
+.vector ramAngle;
+.float ramCharge;
+.float ramCool;
+.vector ramPower;
+.vector ramVelocity;
+.float ramUp;
 .float ramUpMax;
 .float ramCooldown;
+
 .float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
+
 .vector laser_sight_org;
 .float nextVecChoice;
 .float subType;   //used by AI to delineate unit variant - Zap , gun, brawl, sniper etc
@@ -114,10 +121,4 @@ float input_sequence;
 
 .float laser_sight_timer;
 
-.vector ramAngle;
-.float ramCharge;
-.float ramCool;
-.vector ramPower;
-.vector ramVelocity;
-.float ramUp;
 #endif

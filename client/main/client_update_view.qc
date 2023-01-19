@@ -20,10 +20,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   local entity e;
   local vector porg, pang, torg;
   
-  local float clientItr;
-  local float frameItr;
   local entity oldSelf;
-  local entity eClient;
   
   local string newText;
   
@@ -34,33 +31,11 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     CHAT_INP_SEND = FALSE;
   }
   MENU_PROG_OFF = menuView;
+  CLIENT_server_ent = findfloat(world, entnum, player_localentnum);
 
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");
-  }
-  
-  //run prediction...?
-  eClient = findfloat(world, entnum, clientItr);
-  while( eClient != world ){
-    for (frameItr = eClient.sequence + 1; frameItr <= servercommandframe; frameItr = frameItr + 1) {
-        if (!getinputstate(frameItr)){
-            break;  //erk?... too old?
-        }
-        input_sequence = frameItr;
-        oldSelf = self;
-        self = eClient;
-          runstandardplayerphysics(self);
-          self.clientData.origin = self.origin;
-        self = oldSelf;
-      }
-    clientItr = clientItr + 1;
-    if( clientItr < 17){
-      eClient = findfloat(eClient, entnum, clientItr);
-    }
-    else{
-      eClient = world;
-    }
   }
   
 	/*
@@ -77,15 +52,36 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	chasecam = cvar("chase_active") != 0;
   */
 
-	// do any manipulation we want on fov here (weapon zoom, respawn zoom, etc)
-	// nothing right now
-
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
   //=====================================================
-	VIEW_VF_ORG = getpropertyvec(VF_ORIGIN);
+  
+  //apparently this should always be called before any setproperty()!?
+  oldSelf = self;
+  self = world;
+  while( (self = nextent(self)) ){
+    if( self.drawmask == MASK_NORMAL ){
+      if( self.data_type && self.deadflag == DEAD_NO ){
+        if( self.interpolate_entity ){
+          self.interpolate_entity();
+        }
+      }
+      if(self.render_dlights){
+        self.render_dlights();
+      }
+    }
+  }
+  self = oldSelf;
+  addentities( MASK_ENGINE | MASK_ENGINEVIEWMODELS | MASK_NORMAL );
+  
+  
+	// do any manipulation we want on fov here (weapon zoom, respawn zoom, etc)
+	// nothing right now
+  
+  setproperty(VF_MAINVIEW, TRUE);
   
   VIEW_FOV = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
+  
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
   
@@ -96,16 +92,37 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
   
-  //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
-  
   //overide so player cannot look around while powering up, 
   //solves a lame visual issue with player mech shadows and player input during power up.
+  
+  VIEW_ORG = '0 0';
+  VIEW_SCALE = 0.35;
+  
+  if(CLIENT_data_type == DATA_MECH){
+    if( CLIENT_server_ent.chaseActive ){
+      makevectors(input_angles);
+      traceline( CLIENT_server_ent.rootOrigin,  CLIENT_server_ent.rootOrigin + (v_forward * cvar("chase_back") * -0.9) + (v_up * cvar("chase_up")), TRUE, CLIENT_server_ent);
+      CLIENT_vis_org = trace_endpos + (v_forward * 2);
+    }
+    else{
+      makevectors([0, CLIENT_server_ent.angles_y, 0]);
+      //predraw takes care of mech geom in FPS cam
+      CLIENT_vis_org =  CLIENT_server_ent.rootOrigin + (v_up * CLIENT_server_ent.cameraOffset_y);
+    }
+  }
+  else{
+    CLIENT_vis_org = CLIENT_server_ent.rootOrigin;
+  }
+  setproperty(VF_ORIGIN, CLIENT_vis_org);
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
-    if( cvar("chase_active") == FALSE ){
+    if( CLIENT_server_ent.chaseActive == FALSE ){
       setproperty(VF_ANGLES, HUD_FIXED_ANGLE); 
     }
   }
   else{
+    setproperty(VF_ANGLES, input_angles);
+  }
+  /*else{
     //note: demonstrates the basics for player-observer mode where you follow another player
     if( VIEW_OBS_ID == 2 ){
       e = entitybyindex(stof(getplayerkeyvalue(VIEW_OBS_ID+1, "viewentity")));
@@ -113,11 +130,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       setproperty(VF_ANGLES, e.angles);
     }
     else{
-      //setproperty(VF_ORIGIN, pmove_org);
+      setproperty(VF_ORIGIN, pmove_org);
       setproperty(VF_ANGLES, input_angles);
-      //setproperty(VF_CL_VIEWANGLES, input_angles);
     }
-  }
+  }*/
   
   setproperty(VF_FOV, VIEW_FOV);
   if( MENU_ACTIVE && CLIENT_MENU_menu_choice != MENU_REBIND_ACTIVE ){
@@ -128,23 +144,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   setproperty(VF_DRAWCROSSHAIR, 0);
   setproperty(VF_DRAWENGINESBAR, 0);  
-  
-  VIEW_ORG = '0 0';
-  VIEW_SCALE = 0.35;
-  
-  
-  // CSQC VIEW CULLING - has to be calculated here first, before pre-draws are called.
-  client_vis_org = pmove_org;
-  if(CLIENT_data_type == DATA_MECH){
-    makevectors(getpropertyvec(VF_CL_VIEWANGLES));
-    if(cvar("chase_active")){
-      traceline(pmove_org, pmove_org + (v_forward * cvar("chase_back") * -0.9) + (v_up * cvar("chase_up")), TRUE, CLIENT_mech_self);
-      client_vis_org = trace_endpos;
-    }
-    else{
-      client_vis_org = pmove_org + (v_forward * CLIENT_mech_self.cameraOffset_z * 1.25) + (v_up * CLIENT_mech_self.maxs_y);
-    }
-  }
   //=================================================
   
   if( [cvar("vid_conwidth"),cvar("vid_conheight")] != VIEW_MAX){
@@ -152,7 +151,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     gui_set_screen_size(VIEW_ACT_x, VIEW_ACT_y);
   }
   // add any polygons we want here
-  makevectors(input_angles);
   //=================================================
   
   // draw the main view
@@ -170,24 +168,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     // add engine networked entities (MASK_ENGINE)
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
     
-    oldSelf = self;
-    self = world;
-    while( (self = nextent(self)) ){
-      if( self.drawmask == MASK_NORMAL ){
-        if( self.data_type && self.deadflag == DEAD_NO ){
-          if( self.interpolate_entity ){
-            self.interpolate_entity();
-          }
-        }
-        if(self.render_dlights){
-          self.render_dlights();
-        }
-      }
-    }
-    self = oldSelf;
-    addentities( MASK_ENGINE | MASK_ENGINEVIEWMODELS | MASK_NORMAL );
-    renderscene();
   }
+  renderscene();
   
   //DATA - Update local Client data vars from Server
   //note - make sure this is called AFTER addentities(), hehe
@@ -241,6 +223,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   if( cvar("developer") ){
+    
+  
     pang = '0 0 0'; //sh, compiler.
     torg = '0 0 0';
     porg = '0 0 0';
@@ -251,27 +235,29 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     gui_drawversion();
     drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos([w,h])), '8 8', '0.85 0.85 0.85', 1, 0);
-  
+    drawstring(VIEW_ORG + '0 40', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 48', sprintf("VF_ORIGIN       = %s", vtos(getpropertyvec(VF_ORIGIN))), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 56', sprintf("VF_ANGLES       = %s", vtos(getpropertyvec(VF_ANGLES))), '8 8', '0.85 0.85 0.85', 1, 0);
     
-    drawstring(VIEW_ORG + '0 40', sprintf("VIEW_VF_ORG  = %s", vtos(VIEW_VF_ORG)), '8 8', '0.85 0.85 0.85', 1, 0);
-    
-    drawstring(VIEW_ORG + '0 48', sprintf("VF_ORIGIN  = %s", vtos(getpropertyvec(VF_ORIGIN))), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 56', sprintf("PMOVE_ORG  = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    
-    if(HUD_MODEL_STRUTS){
-      drawstring(VIEW_ORG + '0 64', sprintf("HUD_MODEL_STRUTS  = %s", vtos(HUD_MODEL_STRUTS.origin)), '8 8', '0.85 0.85 0.85', 1, 0);
-    }
-  
     local vector mpos;
     mpos = getmousepos();
     if(MENU_ACTIVE){
-      drawstring(VIEW_ORG + '0 40', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+      drawstring(VIEW_ORG + '0 64', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
     }
     else{
-      drawstring(VIEW_ORG + '0 72', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+      drawstring(VIEW_ORG + '0 64', sprintf("Hud offset    = %s", vtos(CLIENT_server_ent.hud_StrutsOffset)), '8 8', '0.85 0.85 0.85', 1, 0);
     }
     
-    drawstring(VIEW_ORG + '0 80', sprintf("CLIENT_VIS_ORG  = %s", vtos(client_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 72', sprintf("DBG_PREDRAW_ORG = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 80', sprintf("MECH ORG        = %s", vtos(CLIENT_server_ent.origin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 92',  sprintf("torso org      = %s", vtos(CLIENT_server_ent.torC_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 100', sprintf("left torso org = %s", vtos(CLIENT_server_ent.torL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 108', sprintf("right torso org= %s", vtos(CLIENT_server_ent.torR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 116', sprintf("left arm org   = %s", vtos(CLIENT_server_ent.armL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 124', sprintf("right arm org  = %s", vtos(CLIENT_server_ent.armR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 132', sprintf("legs org       = %s", vtos(CLIENT_server_ent.legs_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 140', sprintf("HUD_MODEL_STRUTS = %s", vtos(HUD_MODEL_STRUTS_origin)), '8 8', '0.85 0.85 0.85', 1, 0);
   }
-  
 };

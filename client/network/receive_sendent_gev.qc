@@ -121,7 +121,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      particleDraw = vlen(client_vis_org - self.origin); 
+      particleDraw = vlen(CLIENT_vis_org - self.origin); 
       if( particleDraw < PARTICLE_HAZ_DISTANCE ){
         makevectors(self.angles);
         pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);

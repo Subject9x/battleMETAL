@@ -159,7 +159,7 @@ void(float timeVal) anm_new_frame={
   ANM_FRAME_CUR_FADE_RATE = rint(0);
   
   if(ANM_FRAME_SND[ANM_FRAME_CUR] != "" && strlen(ANM_FRAME_SND[ANM_FRAME_CUR]) > 0){
-    pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
+    pointsound(CLIENT_vis_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
   }
   
   //fade is pre-baked amount of 2 seconds on fade-in and fade-out, 

@@ -48,7 +48,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
                             //------------> Damage Buffer system
                             if( (dmgTrg.flags & FL_CLIENT) ){
                               if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
-                                dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
+                                dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
                               }
                             }
                             //-----------------------
@@ -80,7 +80,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
       attacker.enemy = dmgTrg;
       attacker.targetEntId = num_for_edict(dmgTrg);
       //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
-      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
+      attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
     }
     attacker.w_proj = time + 0.2;
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
@@ -265,12 +265,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  if( (dmgTrg.flags & FL_CLIENT) ){
-    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
-  }
-  else{
-    dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
-  }
+  dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
   
   dmgTrg.dmg_inflictor = inflictor;
   if(dmgTrg.was_hit < time){
@@ -286,7 +281,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
       attacker.enemy = dmgTrg;
       attacker.targetEntId = num_for_edict(dmgTrg);
       //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
-      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
+      attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
     }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;

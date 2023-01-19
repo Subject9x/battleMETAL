@@ -426,7 +426,7 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
     viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
   }
   else{
-    viewOrg = pmove_org;
+    viewOrg = CLIENT_vis_org;
   }
   clearscene();
     setproperty(VF_ORIGIN, viewOrg + '-115 0 0');	//look towards it.
@@ -446,6 +446,7 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
     setproperty(VF_FOG_END, 0);
     setproperty(VF_FOG_HEIGHT, 0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
+    setproperty(VF_MAINVIEW, FALSE);
     
     if(SELECT_MECH > FALSE){ 
       makevectors(getpropertyvec(VF_ANGLES));
@@ -505,12 +506,11 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
       addentity(UI_HANGAR_DATA_mech);
     }
   renderscene();
-  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
-  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, 0);
+  setproperty(VF_DRAWWORLD, TRUE);*/
 ///==========
 };

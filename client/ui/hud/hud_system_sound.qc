@@ -22,14 +22,14 @@ void() snd_hud_vfx_frame={
   if( cvar("bgmvolume") <= 0 ){
     if( time > SFX_REACT_TIME ){
       SFX_REACT_TIME = time + 30;
-      pointsound(pmove_org, SND_MCH_SFX_REACT, 1, ATTN_NONE);
+      pointsound(CLIENT_vis_org, SND_MCH_SFX_REACT, 1, ATTN_NONE);
     }
   }
   
   if(time > STIME_NEXT){
     if(SOUNDQUEUE[0] != "null"){
       sfx_len = soundlength(SOUNDQUEUE[0]);
-      pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NONE);
+      pointsound(CLIENT_vis_org, SOUNDQUEUE[0], 1, ATTN_NONE);
       STIME_NEXT = time + sfx_len;
       //TODO - possibly pause AI voice playback until message is done?
     }
@@ -55,7 +55,7 @@ void() snd_hud_vfx_frame={
       if( SOUNDQUEUE[0] != NULL_STRING ){
         vol = 0.65; //dim volume for hud voice
       }
-      pointsound(pmove_org, TRANSMISSIONQUEUE[0], vol, ATTN_NONE);
+      pointsound(CLIENT_vis_org, TRANSMISSIONQUEUE[0], vol, ATTN_NONE);
       TR_TIME_NEXT = time + sfx_len + 0.25;
       TRANSMISSIONQUEUE[0] = NULL_STRING;
       TRANSMISSIONQUEUE_ENT[0] = -1;

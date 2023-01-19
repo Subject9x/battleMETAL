@@ -245,7 +245,7 @@ void() radar_post_dlights={
   if( self.deadflag == DEAD_NO ){
     //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF == FALSE){
-      particleDraw = vlen(client_vis_org - self.origin);      
+      particleDraw = vlen(CLIENT_vis_org - self.origin);      
       if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
         adddynamiclight( self.compOffset, 128, self.compAltOffsetCache); 
       }

@@ -107,7 +107,7 @@ void() hud_render_tactical_map={
     }
     //PLAYER TAC MAP INFO
     if( player.clientServerNum == player_localentnum ){
-      drawpic(gui_mapCoordToImgCoord(mapMins, map_size, pmove_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
+      drawpic(gui_mapCoordToImgCoord(mapMins, map_size, CLIENT_vis_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
       if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
       if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
       if(player.enemy == world){continue;}
@@ -153,7 +153,7 @@ void() hud_render_tactical_map={
   //arrow = gui_angleToArrow(input_angles_y - 90);
   arrowAng = anglemod( 90 - input_angles_y);
   makevectors(input_angles);
-  playerMapOrg = gui_mapCoordToImgCoord(mapMins, map_size, pmove_org, mapOrg, mapImgSize);
+  playerMapOrg = gui_mapCoordToImgCoord(mapMins, map_size, CLIENT_vis_org, mapOrg, mapImgSize);
   drawrotpic(playerMapOrg, "gfx/hud/map_up.png", '12 12', '6 6', arrowAng, '0.25 1 2', 1, 0);
 };
 

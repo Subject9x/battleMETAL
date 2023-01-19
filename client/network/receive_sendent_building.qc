@@ -277,10 +277,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
 void() predraw_building={
   local vector cacheOrg;
   
-  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
+  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
   
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
     self.cl_lod_unit = FALSE;
   }
   
@@ -288,7 +288,7 @@ void() predraw_building={
     self.skin = self.faction - 1;
     setmodel(self, self.model);
     if(self.render_dlights){
-      if( vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE){
+      if( vlen(self.origin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
         self.render_dlights();
       }
     }

@@ -11,9 +11,11 @@ Overview:
 void() predraw_legs={
   local float runMode;
   local vector prevAngle;
+  local float prevLerpFrac;
   
   self.legs_org = predraw_unit_part(self.legs_compOffset);
-  self.legs_angl_y = self.legDir;
+  self.legs_angl = [0, self.legDir, 0];
+  //self.legs_angl_y = self.legDir;
   if( self.moveState != 0 ){
     if( self.moveState == MOVE_NORM ){
       runMode = self.legMoveRate;
@@ -37,10 +39,10 @@ void() predraw_legs={
       
       if( (self.flags & FL_ONGROUND) ){
         if( rint(self.legs_frame) == LEG_WALK_STEP_LEFT ){
-          te_foot_stomp( self.origin, self.legs_angl, self.vec_size, self.mins, TRUE);
+          te_foot_stomp( self.rootOrigin, self.legs_angl, self.vec_size, self.mins, TRUE);
         }
         if( rint(self.legs_frame) == LEG_WALK_STEP_RIGHT ){
-          te_foot_stomp( self.origin, self.legs_angl, self.vec_size, self.mins, FALSE);
+          te_foot_stomp( self.rootOrigin, self.legs_angl, self.vec_size, self.mins, FALSE);
         }
       }
         
@@ -51,13 +53,12 @@ void() predraw_legs={
     self.legs_frame = 0;
   }
   
-  self.angles = self.legs_angl;
-  self.frame = self.legs_frame;
   setmodel(self, self.legs_mdl);
   if( (self.flags & FL_CLIENT) ){
-    self.colormod = CLR_PLAYER_LIST[self.unitColorLG];    
+    self.colormod = CLR_PLAYER_LIST[self.unitColorLG];
   }
-
+  self.angles = self.legs_angl;
+  self.frame = self.legs_frame;
   self.origin = self.legs_org;
   addentity(self);
 };

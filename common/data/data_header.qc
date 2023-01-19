@@ -277,8 +277,14 @@ void(float part, entity unit) util_getPartFromName={
         T_PART_HP = unit.torC_hp;
       }
       else{
+        #ifdef CSQC
+        T_PART_PARENT_ORG = unit.rootOrigin;
+        T_PART_PARENT_ANGL = unit.rootAngle;
+        #endif
+        #ifdef SSQC
         T_PART_PARENT_ORG = unit.origin;
         T_PART_PARENT_ANGL = unit.angles;
+        #endif
         T_PART_PARENT_OFFSET = '0 0 0';
         T_PART_HP = unit.health;
       }
@@ -299,8 +305,14 @@ void(float part, entity unit) util_getPartFromName={
       vOrg = unit.legs_compOffset;
       if( (unit.data_type == DATA_VEHC) ){
         //edge case for hull-mounted weapons on a turreted object
+        #ifdef CSQC
+        T_PART_PARENT_ORG = unit.rootOrigin;
+        T_PART_PARENT_ANGL = unit.rootAngle;
+        #endif
+        #ifdef SSQC
         T_PART_PARENT_ORG = unit.origin;
         T_PART_PARENT_ANGL = unit.angles;
+        #endif
         T_PART_PARENT_OFFSET = '0 0 0';
         T_PART_HP = unit.health;
       }
@@ -324,8 +336,14 @@ void(float part, entity unit) util_getPartFromName={
       T_PART_HP = unit.armR_hp;
       break;
     default:
+      #ifdef CSQC
+      T_PART_PARENT_ORG = unit.rootOrigin;
+      T_PART_PARENT_ANGL = unit.rootAngle;
+      #endif
+      #ifdef SSQC
       T_PART_PARENT_ORG = unit.origin;
       T_PART_PARENT_ANGL = unit.angles;
+      #endif
       T_PART_PARENT_OFFSET = '0 0 0';
       T_PART_HP = unit.health;
       break;
