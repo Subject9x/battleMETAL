@@ -16,6 +16,15 @@ void() client_event_handle_moveChange;
 void() client_event_handle_faction;
 
 
+float() remove_client={
+  if( self.unit_legs && !wasfreed(self.unit_legs) ){
+    remove(self.unit_legs);
+  }
+  remove(self);
+  return TRUE;
+};
+
+
 void() client_entity_think={
   local vector boostLeft, boostRight, backLeft, backRight;
   local string te;
@@ -167,6 +176,26 @@ void() client_predraw={
     
     self.unit_light_org1 = self.unit_light_org2;
     self.unit_light_org2 = self.unit_light_org;
+    
+    if( self.entnum == player_localentnum ){
+      if( self.data_type == DATA_MECH ){
+        CLIENT_mech_torC_org2 = CLIENT_mech_torC_org1;
+        CLIENT_mech_torC_org1 = self.torC_org;
+        
+        CLIENT_mech_torL_org2 = CLIENT_mech_torL_org1;
+        CLIENT_mech_torL_org1 = self.torL_org;
+        
+        CLIENT_mech_torR_org2 = CLIENT_mech_torR_org1;
+        CLIENT_mech_torR_org1 = self.torR_org;
+        
+        CLIENT_mech_armL_org2 = CLIENT_mech_armL_org1;
+        CLIENT_mech_armL_org1 = self.armL_org;
+        
+        CLIENT_mech_armR_org2 = CLIENT_mech_armR_org1;
+        CLIENT_mech_armR_org1 = self.armR_org;
+      }
+    }
+    
   }
   newLerp = (time - self.frame2time) / (self.frame2time - self.frame1time);
   newLerp = bound(0, newLerp, 1);
@@ -209,7 +238,7 @@ void() client_predraw={
       
       if( !(self.criticalHits & M_TOR_CENTER) ){
         self.torC_angl = self.rootAngle;
-        self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl);
+        self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl) + (CLIENT_mech_torC_org2 - CLIENT_mech_torC_org1) * self.lerpfrac;
         self.torC_angl = [0, self.rootAngle_y, 0];
         if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
           self.torC_angl_x = self.rootAngle_x * -1;
@@ -219,13 +248,14 @@ void() client_predraw={
         self.scale = 1.0;
         self.angles = self.torC_angl;
         self.origin = self.torC_org;
-        self.renderflags = 0;
+        self.colormod = CLR_DEF_WHITE;
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+        //self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl) + (CLIENT_mech_torL_org2 - CLIENT_mech_torL_org1) * self.lerpfrac; 
         self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
         if( !(self.criticalHits & M_TOR_LEFT) ){
           self.torL_angl = [0, self.rootAngle_y, 0];
@@ -238,7 +268,6 @@ void() client_predraw={
           self.scale = 1.0;
           self.angles = self.torL_angl;
           self.origin = self.torL_org;
-          self.renderflags = 0;
           addentity(self);
           self.origin = self.rootOrigin;
           self.angles = self.rootAngle;
@@ -246,7 +275,7 @@ void() client_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-        self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl); 
+        self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl) + (CLIENT_mech_torR_org2 - CLIENT_mech_torR_org1) * self.lerpfrac; 
         if( !(self.criticalHits & M_TOR_RIGHT) ){
           self.torR_angl = [0, self.rootAngle_y, 0];
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
@@ -258,7 +287,6 @@ void() client_predraw={
           self.scale = 1.0;
           self.angles = self.torR_angl;
           self.origin = self.torR_org;
-          self.renderflags = 0;
           addentity(self);
           self.origin = self.rootOrigin;
           self.angles = self.rootAngle;
@@ -266,7 +294,7 @@ void() client_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
-        self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl); 
+        self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl) + (CLIENT_mech_armL_org2 - CLIENT_mech_armL_org1) * self.lerpfrac; 
         if( !(self.criticalHits & M_ARM_LEFT) ){
           self.armL_angl = [0, self.rootAngle_y, 0];
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
@@ -278,7 +306,6 @@ void() client_predraw={
           self.scale = 1.0;
           self.angles = self.armL_angl;
           self.origin = self.armL_org;
-          self.renderflags = 0;
           addentity(self);
           self.origin = self.rootOrigin;
           self.angles = self.rootAngle;
@@ -286,7 +313,7 @@ void() client_predraw={
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-        self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl); 
+        self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl) + (CLIENT_mech_armR_org2 - CLIENT_mech_armR_org1) * self.lerpfrac; 
         if( !(self.criticalHits & M_ARM_RIGHT) ){
           self.armR_angl = [0, self.rootAngle_y, 0];
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
@@ -298,59 +325,62 @@ void() client_predraw={
           self.scale = 1.0;
           self.angles = self.armR_angl;
           self.origin = self.armR_org;
-          self.renderflags = 0;
           addentity(self);
+          self.origin = self.rootOrigin;
+          self.angles = self.rootAngle;
         }
       }
-      if(self.cl_lod_weapon){
-        if(self.weaponEnt1.data_idx){
-          predraw_unit_weapon(self.weaponEnt1);
-        }
-        if(self.weaponEnt2.data_idx){
-          predraw_unit_weapon(self.weaponEnt2);
-        }
-        if(self.weaponEnt3.data_idx){
-          predraw_unit_weapon(self.weaponEnt3);
-        }
-        if(self.weaponEnt4.data_idx){
-          predraw_unit_weapon(self.weaponEnt4);
-        }
-        if(self.weaponEnt5.data_idx){
-          predraw_unit_weapon(self.weaponEnt5);
-        }
-        if(self.weaponEnt6.data_idx){
-          predraw_unit_weapon(self.weaponEnt6);
-        }
-        if(self.weaponEnt7.data_idx){
-          predraw_unit_weapon(self.weaponEnt7);
-        }
-        if(self.weaponEnt8.data_idx){
-          predraw_unit_weapon(self.weaponEnt8);
-        }
-        if(self.weaponEnt9.data_idx){
-          predraw_unit_weapon(self.weaponEnt9);
-        }
-      }
-    }
-    hud_model_cockpit_draw_frame(); //debug
-    if(self.entnum == player_localentnum){
-      if( self.deadflag == DEAD_NO ){
-        //apparently when menu running, these just get STACCCCCCKED and murder framerate.
-        if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
-          self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
-          particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
-          if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-            adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
+      if(self.deadflag == DEAD_NO){
+        if(self.cl_lod_weapon){
+          if(self.weaponEnt1.data_idx){
+            predraw_unit_weapon(self.weaponEnt1);
+          }
+          if(self.weaponEnt2.data_idx){
+            predraw_unit_weapon(self.weaponEnt2);
+          }
+          if(self.weaponEnt3.data_idx){
+            predraw_unit_weapon(self.weaponEnt3);
+          }
+          if(self.weaponEnt4.data_idx){
+            predraw_unit_weapon(self.weaponEnt4);
+          }
+          if(self.weaponEnt5.data_idx){
+            predraw_unit_weapon(self.weaponEnt5);
+          }
+          if(self.weaponEnt6.data_idx){
+            predraw_unit_weapon(self.weaponEnt6);
+          }
+          if(self.weaponEnt7.data_idx){
+            predraw_unit_weapon(self.weaponEnt7);
+          }
+          if(self.weaponEnt8.data_idx){
+            predraw_unit_weapon(self.weaponEnt8);
+          }
+          if(self.weaponEnt9.data_idx){
+            predraw_unit_weapon(self.weaponEnt9);
           }
         }
-      }
-    }
-    else{
-      if(self.headlight && MENU_PROG_OFF && self.deadflag == DEAD_NO){
-        self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
-        particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
-        if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-          adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
+        if(self.entnum == player_localentnum){
+          hud_model_cockpit_draw_frame(); //debug
+          if( self.deadflag == DEAD_NO ){
+            //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+            if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
+              self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+              particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
+              if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+                adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
+              }
+            }
+          }
+        }
+        else{
+          if(self.headlight && MENU_PROG_OFF && self.deadflag == DEAD_NO){
+            self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+            particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
+            if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+              adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
+            }
+          }
         }
       }
     }
@@ -393,7 +423,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     self.clientServerNum = self.entnum;
     self.clientLocalNum = fabs(self.clientServerNum - 1);
     //cons_logAFloat("CS - RECEIVE - player.entnum/clientServerNum", self.clientServerNum); //debug
-    //cons_logAFloat("CS - RECEIVE - player.clientData.entnum", self.entnum); //debug
     //cons_logAFloat("CS - LOCAL - player_localentnum", player_localentnum); //debug
   }
   
@@ -566,6 +595,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     self.frame2time = time;
     self.predraw = client_predraw;
     self.drawmask = MASK_ENGINE;
+    self.t_remove = remove_client;
   }
   
   //update [PlayerKey] values.
@@ -654,6 +684,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       self.enemy = findfloat(world, entnum, self.targetEntId);
       if( self.enemy != world ){
         CLIENT_target_ent = self.enemy;
+        CLIENT_stat_trg_ent_id = self.targetEntId;
         client_event_target_new();
       }
     }
@@ -723,6 +754,9 @@ void( float unit_id ) client_event_mech_spawn={
   self.predraw = client_predraw;
   self.canTarget = TRUE;
 
+  self.unit_legs = spawn();
+  self.unit_legs.skin = self.skin;
+  
 };
 
 

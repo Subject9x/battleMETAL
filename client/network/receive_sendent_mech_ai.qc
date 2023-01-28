@@ -30,6 +30,9 @@ void() mech_corpse_remove={
     if(self.effect1 != world ){
       remove(self.effect1);
     }
+    if( self.unit_legs && !wasfreed(self.unit_legs) ){
+      remove(self.unit_legs);
+    }
     remove(self);
   }
 };
@@ -209,22 +212,21 @@ void() sendevent_mech_ai_die={
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 );
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
   
+  self.colormod = '0.45 0.45 0.45';
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  self.effect1 = te_building_fire_start( self );
+  self.effect1.origin = self.origin;
+  self.effect1.origin_z = self.effect1.origin_z + self.maxs_z;
+  self.legs_angl_y = self.legDir;
+  self.legs_frame = self.unit_legs.frame;
+  
   if( self.moveState == FALSE ){
-    self.solid = SOLID_NOT;
-    self.movetype = MOVETYPE_NONE;
-    
     self.compOffset = self.origin;
     self.angles = self.torC_angl;
     self.angles_x = anglemod(self.angles_x + (crandom() * 20));
     self.angles_y = anglemod(self.angles_y + (crandom() * 10));
-    self.colormod = '0.45 0.45 0.45';
     self.predraw = predraw_mech_corpse;
-    self.legs_angl_y = self.legDir;
-   
-    
-    self.effect1 = te_building_fire_start( self );
-    self.effect1.origin = self.origin;
-    self.effect1.origin_z = self.effect1.origin_z + self.maxs_z;
     
     self.think = mech_ai_die_stand1;
     self.nextthink = time + 0.1;
@@ -232,11 +234,11 @@ void() sendevent_mech_ai_die={
   else{
     self.predraw = predraw_mech_corpse_legs;
     self.classname = "wreck_mech";
-    self.frame = self.legs_frame;
-    self.solid = SOLID_NOT;
-    self.colormod = '0.45 0.45 0.45';
     self.think = te_mech_dead_legs_burn;
     self.nextthink = servertime + frametime*0.5;
+  }
+  if( self.unit_legs && !wasfreed(self.unit_legs) ){
+    remove(self.unit_legs);
   }
 };
 
@@ -354,15 +356,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
   
-  if( isNew ){
-    if( self.deadflag == DEAD_NO ){
-      cacheGlobalString(self.netname, newName )
-      self.think = mech_ai_think;
-      self.nextthink = time + 0.01;
-      data_sync_new_mech_ai( self.data_idx );
-    }
-  }
-  
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
   }
@@ -414,26 +407,43 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
   
-  //HANDLE EVENT - Shield explode
-  if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
-    if( time > self.shieldExplodeCool ){
-      te_shield_explode( self.origin, self.vec_size);
-      self.shieldExplodeCool = time + self.vec_size;
+  if( isNew ){
+    if( self.deadflag == DEAD_NO ){
+      cacheGlobalString(self.netname, newName )
+      self.think = mech_ai_think;
+      self.nextthink = time + 0.01;
+      data_sync_new_mech_ai( self.data_idx );
     }
-  }
-  else{
-    //HANDLE EVENT - Shield hit
-    if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
-      if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
-        self.shieldEffectTime = time + 0.5;
-        te_shield_hit();
-      }
+    if(!self.unit_legs){
+      self.unit_legs = spawn();
+      self.unit_legs.skin = self.skin;
     }
   }
   
   if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
     sendevent_mech_ai_die();
   }
+  
+  if( self.deadflag == DEAD_NO ){
+    //HANDLE EVENT - Shield explode
+    if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){
+      if( time > self.shieldExplodeCool ){
+        te_shield_explode( self.origin, self.vec_size);
+        self.shieldExplodeCool = time + self.vec_size;
+      }
+    }
+    else{
+      //HANDLE EVENT - Shield hit
+      if( self.shieldHitFlag != 0 && time > self.shieldEffectTime){
+        if( (self.shieldHitFlag < SHIELD_HIT_EXP) && (self.shield > 0 && self.shield < 100.01) ){
+          self.shieldEffectTime = time + 0.5;
+          te_shield_hit();
+        }
+      }
+    }
+    
+  }
+  
 };
 
 void() interpolate_mech_ai={
@@ -456,11 +466,12 @@ void() interpolate_mech_ai={
   
   if(self.cl_lod_unit){
     self.cl_lod_weapon = TRUE;
-    if( vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+    if( vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE / 2 ){
       self.cl_lod_weapon = FALSE;
     }
     self.alpha = 1.0;
     self.scale = 1.0;
+    self.renderflags = 0;
     
     makevectors(self.rootAngle);
     

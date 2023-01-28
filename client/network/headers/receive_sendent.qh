@@ -14,6 +14,21 @@ float dbg_time; //used for filtering debug to once every few seconds.
 vector DEBUG_PREDRAW_ORIGIN;
 vector DEBUG_PREDRAW_ROOTORG;
 
+vector CLIENT_mech_torC_org1;
+vector CLIENT_mech_torC_org2;
+
+vector CLIENT_mech_torL_org1;
+vector CLIENT_mech_torL_org2;
+
+vector CLIENT_mech_torR_org1;
+vector CLIENT_mech_torR_org2;
+
+vector CLIENT_mech_armL_org1;
+vector CLIENT_mech_armL_org2;
+
+vector CLIENT_mech_armR_org1;
+vector CLIENT_mech_armR_org2;
+
 //SendEntity
 .vector rootOrigin; //used in predraws
 .vector rootAngle;
