@@ -385,7 +385,7 @@ void( float isNew, float changeFlags ) sendent_handle_item={
     if( (self.owner.flags & FL_CLIENT) && self.owner.clientServerNum == player_localentnum ){
       CLIENT_weapon_state = CLIENT_weapon_state |  self.w_group;
     }
-    self.drawmask = MASK_ENGINE;
+    //self.drawmask = MASK_ENGINE;
   }
 };
 
@@ -452,10 +452,12 @@ void() sendent_ini_interpolate={
 vector( vector partOffset) predraw_unit_part={
   local vector offset;
   
- offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+  offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
   
+  self.renderflags = 0;
   if( self.clientServerNum == player_localentnum ){
     if( self.chaseActive  == FALSE ){
+      self.renderflags = 0 | RF_EXTERNALMODEL;
       offset = offset - (v_forward * self.cameraOffset_z);
     }
   }
@@ -466,16 +468,19 @@ vector( vector partOffset) predraw_unit_part={
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
   local vector offset;
   
- offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
+  offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
   
+  self.renderflags = 0;
   if( self.clientServerNum == player_localentnum ){
-    if( self.chaseActive  == FALSE ){
-      offset = offset - (v_forward * self.cameraOffset_z);
+    if( !self.chaseActive){
+      self.renderflags = 0 | RF_EXTERNALMODEL;
+      //offset = offset - (v_forward * self.cameraOffset_z);
     }
   }
   
   self.partAngles_y = self.rootAngle_y;
   self.partAngles_x = 0;
+  
   return offset;
 };
 
@@ -493,17 +498,19 @@ void(entity item) predraw_unit_weapon={
   local vector offset;
   local vector adjPartOffset;
   
-  if(self.deadflag == DEAD_DEAD ){
-    return;
-  }
-  if( item.model == "" ){
+  if( self.owner.deadflag != DEAD_NO){
     return;
   }
   if( (self.criticalHits & item.partParentId) ){
     return;
   }
-  if( self.owner.deadflag != DEAD_NO){
+  if( item.model == "" ){
     return;
+  }
+  
+  item.renderflags = 0;
+  if( (self.owner.flags & FL_CLIENT) && !self.chaseActive ){
+    item.renderflags = 0 | RF_EXTERNALMODEL;
   }
   
   util_getPartFromName( item.partParentId, self);
@@ -521,7 +528,9 @@ void(entity item) predraw_unit_weapon={
   setmodel(item, item.model);
   item.origin = offset;
   item.angles = T_PART_PARENT_ANGL;
+  item.drawmask = MASK_ENGINE;
   addentity(item);
+  item.drawmask = 0;
 };
 
 entity(float weaponId) sendent_get_weapon={

@@ -129,21 +129,25 @@ void() receive_ent_bindData={
     CLIENT_repair_value = getstati(STAT_PLR_REP);
     //Client targeting data
     CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
-    if( CLIENT_target_ent != world ){
-      CLIENT_stat_trg_ent_id = num_for_edict(CLIENT_target_ent);
+    if( CLIENT_stat_trg_ent_id == 0){
+      CLIENT_stat_trg_dataidx = 0;
+      CLIENT_target_origin = '0 0 0';
+      CLIENT_target_faction = 0;
+      CLIENT_target_shield = 0;
+      CLIENT_target_vecsize = 0;
+    }
+    else{
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
       CLIENT_stat_trg_ddflg = CLIENT_target_ent.deadflag;
-      if(CLIENT_stat_trg_ddflg > DEAD_NO ){
+      if(CLIENT_stat_trg_ddflg != DEAD_NO ){
         CLIENT_target_ent = world;
-        CLIENT_stat_trg_ent_id = 0;
         CLIENT_stat_trg_dataidx = 0;
         CLIENT_stat_trg_face = 0;
         return;
       }
-      CLIENT_stat_trg_ent_id = CLIENT_target_ent.entnum;
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       
-      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.origin, CLIENT_server_ent.origin, input_angles) );
+      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.rootOrigin, CLIENT_server_ent.rootOrigin, input_angles) );
       
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;
@@ -155,16 +159,8 @@ void() receive_ent_bindData={
         CLIENT_target_shield = 0;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
-      CLIENT_target_dist = vlen(CLIENT_target_ent.origin - CLIENT_server_ent.origin);
+      CLIENT_target_dist = vlen(CLIENT_target_ent.rootOrigin - CLIENT_server_ent.rootOrigin);
       CLIENT_target_size = CLIENT_target_ent.maxs;
-    }
-    else{
-      CLIENT_stat_trg_ent_id = 0;
-      CLIENT_stat_trg_dataidx = 0;
-      CLIENT_target_origin = '0 0 0';
-      CLIENT_target_faction = 0;
-      CLIENT_target_shield = 0;
-      CLIENT_target_vecsize = 0;
     }
     
   }

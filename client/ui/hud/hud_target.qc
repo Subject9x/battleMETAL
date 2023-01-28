@@ -467,12 +467,6 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   
   panelOrg = gui_calcAlign(vorg, algn);
   
-  local float debug;
-  debug = TRUE;
-  if(debug){
-    return; //DEBUG!
-  }
-  
   if(isTarget){
     ct = CLIENT_stat_trg_ct_hp;
     lt = CLIENT_stat_trg_lt_hp;
@@ -531,12 +525,10 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
     setproperty(VF_MAINVIEW, FALSE);
     
     if( isTarget ){
-      //disabled for debug
-      //hud_armor_model_target_frame(viewOrg, ct, lt, rt, la, ra, lg);
+      hud_armor_model_target_frame(viewOrg, ct, lt, rt, la, ra, lg);
     }
     else{
-      //disabled for debug
-      //hud_armor_model_player_frame(viewOrg, ct, lt, rt, la, ra, lg);
+      hud_armor_model_player_frame(viewOrg, ct, lt, rt, la, ra, lg);
     }
   renderscene();
   /*setproperty(VF_ORIGIN, CLIENT_vis_org);

@@ -57,8 +57,8 @@ void() data_ini_warden_={
   self.ramCooldown = 8;
 #ifdef CSQC
   //animation playback sync to player move speed.
-  self.legMoveRate = 0.1;
-  self.legRunRate = 0.1;
+  self.legMoveRate = 12;
+  self.legRunRate = 14;
 #endif
 #ifdef SSQC
   //AI-only Server values.
@@ -94,7 +94,7 @@ void() data_ini_warden_={
   
   //camera location
 #ifdef CSQC
-  self.cameraOffset = '0 7 10';
+  self.cameraOffset = '0 7 12';
 #else
   self.cameraOffset = '0 7 7';
 #endif

@@ -277,7 +277,7 @@ void() hud_model_cockpit_draw_frame={
   cacheEffects = 0 | self.renderflags;
   
   if( self.chaseActive ){
-    //return; //debug
+    return;
   }
 
   hudAngle = [0, self.angles_y, 0];
@@ -312,6 +312,8 @@ void() hud_model_cockpit_draw_frame={
   addentity(self);
   self.origin = self.rootOrigin;
   self.angles = self.rootAngle;
+  
+  self.renderflags = 0;
 };
 
 /*

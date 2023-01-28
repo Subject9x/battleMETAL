@@ -554,7 +554,6 @@ void( float isNew, float changeFlags) sendent_handle_player={
     self.clientServerNum = fabs(ReadByte());
     self.clientLocalNum = fabs(self.clientServerNum - 1);
     //cons_logAFloat("CS - RECEIVE - player.entnum/clientServerNum", self.clientServerNum); //debug
-    //cons_logAFloat("CS - RECEIVE - player.clientData.entnum", self.entnum); //debug
     //cons_logAFloat("CS - LOCAL - player_localentnum", player_localentnum); //debug
   }
   

@@ -143,6 +143,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( isNew ){
+    self.rootAngle = self.angles;
     self.predraw = predraw_turret;
     data_sync_new_turret(self.data_idx);
     if( self.deadflag == DEAD_NO){
@@ -226,6 +227,7 @@ void() interpolate_turret={
     setmodel(self, self.legs_mdl);
     setsize(self, self.cache_mins, self.cache_maxs);
     self.skin = 0;
+    self.angles = self.rootAngle;
     addentity(self);
     
     makevectors(self.angles);
@@ -237,7 +239,7 @@ void() interpolate_turret={
     addentity(self);
     
     
-    if(self.cl_lod_weapon){
+    if(self.cl_lod_weapon && self.deadflag == DEAD_NO){
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon(self.weaponEnt1);
       }
