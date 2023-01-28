@@ -76,15 +76,18 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.playerDMdamage = attacker.playerDMdamage + dmgAmt;
-    if( !attacker.enemy && dmgTrg.canTarget ){
-      attacker.enemy = dmgTrg;
-      attacker.targetEntId = num_for_edict(dmgTrg);
-      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
-      attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
-    }
-    attacker.w_proj = time + 0.2;
-    if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
-      attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
+    if( attacker != dmgTrg ){
+      //make sure can't target self.
+      if( !attacker.enemy && dmgTrg.canTarget ){
+        attacker.enemy = dmgTrg;
+        attacker.targetEntId = num_for_edict(dmgTrg);
+        attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
+        //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
+      }
+      attacker.w_proj = time + 0.2;
+      if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
+        attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
+      }
     }
   }
                         
@@ -277,11 +280,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.w_proj = time + 0.2;
-    if( !attacker.enemy && dmgTrg.canTarget ){
-      attacker.enemy = dmgTrg;
-      attacker.targetEntId = num_for_edict(dmgTrg);
-      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
-      attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
+    if( attacker != dmgTrg ){
+      if( !attacker.enemy && dmgTrg.canTarget ){
+        attacker.enemy = dmgTrg;
+        attacker.targetEntId = num_for_edict(dmgTrg);
+        //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
+        attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
+      }
     }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;

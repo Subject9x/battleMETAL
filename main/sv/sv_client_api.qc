@@ -876,7 +876,6 @@ void() client_data={
   data.vec_size = self.vec_size;
   //data.think = client_data_th;
   //data.nextthink = time + 0.01;
-  //self.clientData = data;
 };
 
 

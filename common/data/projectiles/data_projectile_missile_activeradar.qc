@@ -191,7 +191,7 @@ void() data_projectile_missile_activeradar_touch={
       else{
         damage = damage * 0.25;
       }
-      t_damage_shield(other, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
+      t_damage_shield(other, self, self.owner, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{

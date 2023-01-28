@@ -138,7 +138,7 @@ void() data_projectile_plasma_touch={
       else{
         damage = damage * 0.45;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, proc);
+      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, proc);
       self.impactType = IMPACT_SHIELD;
     }
     else{

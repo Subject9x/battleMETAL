@@ -96,7 +96,7 @@ void() data_projectile_snub_artillery_touch_={
       else{
         damage = damage * 0.67;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
+      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
@@ -110,7 +110,10 @@ void() data_projectile_snub_artillery_touch_={
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 2, 1 );
       self.impactType = IMPACT_ARMOR;
     }
-    self.targetEntId = num_for_edict(other);
+    if( other != self.owner ){
+      self.owner.targetEntId = num_for_edict(other);
+    }
+    
     debris = 0;
   }
   else{
