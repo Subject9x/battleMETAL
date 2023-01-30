@@ -124,6 +124,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   targSizeY = CLIENT_target_size_y; 
   targSizeZ = CLIENT_target_size_z;
   
+  
   if( targSizeZ < 1 ){
     targZbottom = 0;
   }
@@ -180,7 +181,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   tr = org + (v_right * targSizeX) + (v_up * targSizeZ);
   br = org + (v_right * targSizeX) + (v_up * (targZbottom * -1));
   bl = org + (v_right * (targSizeX * -1)) + (v_up * (targZbottom * -1));
- 
+  
   c_tl = cs_project(tl);
   if (c_tl_z >= 0) {
     c_tl_x = c_tl_x - (imgSize_x / 2);
@@ -206,7 +207,8 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   }
   
   c_bl = cs_project(bl);
-  if (c_tl_z >= 0) {
+  
+  if (c_bl_z >= 0) {
     c_bl_x = c_bl_x - (imgSize_x / 2);
     c_bl_y = c_bl_y - (imgSize_y / 2);
     c_bl_z = 0;
@@ -531,12 +533,12 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
       hud_armor_model_player_frame(viewOrg, ct, lt, rt, la, ra, lg);
     }
   renderscene();
-  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
+  setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, TRUE);*/
+  setproperty(VF_DRAWWORLD, TRUE);
   HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
   HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;
 }; 
@@ -664,12 +666,12 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
       
     }
   renderscene();
-  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
+  setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, TRUE);*/
+  setproperty(VF_DRAWWORLD, TRUE);
   
   //meter = siz;
   //meter_x = meter_x / 2;
@@ -798,12 +800,12 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
       HUD_MODEL_ARMOR_GRAPH_TARGET.origin = viewOrg;
     }
   renderscene();
-  /*setproperty(VF_ORIGIN, CLIENT_vis_org);
+  setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, TRUE);*/
+  setproperty(VF_DRAWWORLD, TRUE);
   //drawpic(meter, HUD_VEC_TRG, siz, tColor, HUD_ALPHA, 0);
   HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.mins;
   HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.maxs;

@@ -824,12 +824,12 @@ void() data_hud_frame={
   }
   menu_chat_render_frame( [UI_MAX_x - 250, UI_ORG_y],'262 144',10);
   
-  if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
-    hud_renderTargetOverlay(CLIENT_target_origin, CLIENT_vis_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
+  if( CLIENT_target_ent.data_idx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
+    hud_renderTargetOverlay(CLIENT_target_ent.rootOrigin, CLIENT_vis_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     
     //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
     if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.0){
-      hud_renderShieldOverlay(CLIENT_target_origin, CLIENT_vis_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
+      hud_renderShieldOverlay(CLIENT_target_ent.origin, CLIENT_vis_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
     }
   }
 

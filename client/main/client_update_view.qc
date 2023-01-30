@@ -251,13 +251,12 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 72', sprintf("DBG_PREDRAW_ORG = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 80', sprintf("MECH ORG        = %s", vtos(CLIENT_server_ent.origin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 80', sprintf("pmove_org        = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 92',  sprintf("torso org      = %s", vtos(CLIENT_server_ent.torC_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 100', sprintf("left torso org = %s", vtos(CLIENT_server_ent.torL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 108', sprintf("right torso org= %s", vtos(CLIENT_server_ent.torR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 116', sprintf("left arm org   = %s", vtos(CLIENT_server_ent.armL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 124', sprintf("right arm org  = %s", vtos(CLIENT_server_ent.armR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 132', sprintf("legs org       = %s", vtos(CLIENT_server_ent.legs_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 140', sprintf("HUD_MODEL_STRUTS = %s", vtos(HUD_MODEL_STRUTS_origin)), '8 8', '0.85 0.85 0.85', 1, 0);
   }
 };
