@@ -290,7 +290,7 @@ void() building_repair_fixing={
     if( (player.criticalHits & self.critBits) && self.attack_state){
       self.attack_state = FALSE;
       player.critBits = player.critBits | (M_REPAIR | self.critBits);
-      player.SendFlags = player.SendFlags | SENDFLAG_CRIT;
+      player.SendFlags = player.SendFlags | SENDFLAG_CRIT | SENDFLAG_IMPACT;
       part = player.w_slot;
       while( part != world ){
         if( part.partParentId == self.critBits && part.deadflag != DEAD_NO ){

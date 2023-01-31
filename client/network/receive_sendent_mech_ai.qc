@@ -86,6 +86,7 @@ void() predraw_mech_corpse={
     setmodel(self, self.legs_mdl);
     self.angles = self.legs_angl;
     self.origin = self.legs_org;
+    self.colormod = CLR_DEF_WHITE * (self.legs_hp / self.legs_hpMax);
     addentity(self);
     self.origin = self.rootOrigin;
     self.angles = self.rootAngle;
@@ -100,6 +101,9 @@ void() predraw_mech_corpse={
         setmodel(self, self.torC_mdl);
         self.origin = self.torC_org;
         self.angles = self.torC_angl;
+        
+        self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
+        
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -117,6 +121,7 @@ void() predraw_mech_corpse={
         setmodel(self, self.torL_mdl);
         self.angles = self.torL_angl;
         self.origin = self.torL_org;
+        self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -134,6 +139,7 @@ void() predraw_mech_corpse={
         setmodel(self, self.torR_mdl);
         self.angles = self.torR_angl;
         self.origin = self.torR_org;
+        self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -151,6 +157,7 @@ void() predraw_mech_corpse={
         setmodel(self, self.armL_mdl);
         self.angles = self.armL_angl;
         self.origin = self.armL_org;
+        self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -168,6 +175,7 @@ void() predraw_mech_corpse={
         setmodel(self, self.armR_mdl);
         self.angles = self.armR_angl;
         self.origin = self.armR_org;
+        self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -175,7 +183,7 @@ void() predraw_mech_corpse={
     }
   }
   setsize(self, self.cache_mins, self.cache_maxs);
-  addentity(self);
+  self.colormod = CLR_DEF_WHITE;
 };
 
 void() mech_ai_die_stand1;
@@ -356,11 +364,32 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
   
+  if( isNew ){
+    if( self.deadflag == DEAD_NO ){
+      cacheGlobalString(self.netname, newName )
+      self.think = mech_ai_think;
+      self.nextthink = time + 0.01;
+      data_sync_new_mech_ai( self.data_idx );
+    }
+    if(!self.unit_legs){
+      self.unit_legs = spawn();
+      self.unit_legs.skin = self.skin;
+    }
+  }
+  
   if( (changeFlags & SENDFLAG_SHIELD) ){
     self.shield = ReadByte();
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
+    if( self.shieldHitFlag == 0 ){
+      self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
+      self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
+      self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
+      self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
+      self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
+      self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
+    }
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
@@ -404,19 +433,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     if( !(changeFlags & SENDFLAG_NEWENT) ){
       voiceId = ReadByte();
       snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
-    }
-  }
-  
-  if( isNew ){
-    if( self.deadflag == DEAD_NO ){
-      cacheGlobalString(self.netname, newName )
-      self.think = mech_ai_think;
-      self.nextthink = time + 0.01;
-      data_sync_new_mech_ai( self.data_idx );
-    }
-    if(!self.unit_legs){
-      self.unit_legs = spawn();
-      self.unit_legs.skin = self.skin;
     }
   }
   

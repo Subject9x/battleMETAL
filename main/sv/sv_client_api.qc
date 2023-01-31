@@ -140,6 +140,14 @@ float( float isNew, float changeFlags ) send_client={
     /* EVENT - Client has taken ranged hits. */
     if( (changeFlags & SENDFLAG_IMPACT) ){
       WriteByte( MSG_ENTITY, self.shieldHitFlag); 
+      if( self.shieldHitFlag == 0 ){
+        WriteByte( MSG_ENTITY, (self.torC_hp / self.torC_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+      }
     }
     
     /* EVENT - pieces of player mech is blown off */
@@ -846,11 +854,14 @@ void() sv_client_spawnpoint_select={
 };
 
 
+// TODO - DEPRECATE
 void() client_data_th={
   self.think = client_data_th;
   self.nextthink = time + 0.01;
 };
 
+
+// TODO - DEPRECATE
 /*
   Send Ent Fun
 */

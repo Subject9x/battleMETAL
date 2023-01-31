@@ -14,6 +14,8 @@ void(float unitId) client_event_mech_spawn;
 void() client_event_target_new;
 void() client_event_handle_moveChange;
 void() client_event_handle_faction;
+void() sendevent_client_burn;
+void(float repairValue) sendevent_client_repair;
 
 
 float() remove_client={
@@ -48,9 +50,6 @@ void() client_entity_think={
   
   particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
-    if( self.burnBits != 0 ){
-      //sendevent_player_burn();
-    }
     if( self.moveState > MOVE_SPRINT ){
       if( vlen(self.origin2 - self.origin1) > 16 ){
         makevectors(self.legs_angl);
@@ -206,10 +205,10 @@ void() client_predraw={
   
   self.rootOrigin = self.origin;
   self.rootAngle = self.angles;
-  self.alpha = 1.0;
-  self.scale = 1.0;
   
   if( self.data_type == DATA_MECH ){
+    self.effects = self.effects - (self.effects & (EF_FULLBRIGHT | EF_NOSHADOW) );  //just in case they creeped in?
+    
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2 - self.laser_sight_org1 ) * self.lerpfrac;
     
     if(self.entnum == player_localentnum ){
@@ -244,28 +243,24 @@ void() client_predraw={
           self.torC_angl_x = self.rootAngle_x * -1;
         }
         setmodel(self, self.torC_mdl);
-        self.alpha = 1.0;
-        self.scale = 1.0;
         self.angles = self.torC_angl;
         self.origin = self.torC_org;
-        self.colormod = CLR_DEF_WHITE;
+        self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-        //self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl) + (CLIENT_mech_torL_org2 - CLIENT_mech_torL_org1) * self.lerpfrac; 
+        self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl) + (CLIENT_mech_torL_org2 - CLIENT_mech_torL_org1) * self.lerpfrac; 
         self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
         if( !(self.criticalHits & M_TOR_LEFT) ){
           self.torL_angl = [0, self.rootAngle_y, 0];
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
              self.torL_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorLT];
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / self.armL_hpMax);
           setmodel(self, self.torL_mdl);
-          self.alpha = 1.0;
-          self.scale = 1.0;
           self.angles = self.torL_angl;
           self.origin = self.torL_org;
           addentity(self);
@@ -281,10 +276,8 @@ void() client_predraw={
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
              self.torR_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorRT];
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / self.torR_hpMax);
           setmodel(self, self.torR_mdl);
-          self.alpha = 1.0;
-          self.scale = 1.0;
           self.angles = self.torR_angl;
           self.origin = self.torR_org;
           addentity(self);
@@ -300,10 +293,8 @@ void() client_predraw={
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
             self.armL_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorLA];
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / self.armL_hpMax);
           setmodel(self, self.armL_mdl);
-          self.alpha = 1.0;
-          self.scale = 1.0;
           self.angles = self.armL_angl;
           self.origin = self.armL_org;
           addentity(self);
@@ -319,10 +310,8 @@ void() client_predraw={
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
             self.armR_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorRA];
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / self.armR_hpMax);
           setmodel(self, self.armR_mdl);
-          self.alpha = 1.0;
-          self.scale = 1.0;
           self.angles = self.armR_angl;
           self.origin = self.armR_org;
           addentity(self);
@@ -332,6 +321,8 @@ void() client_predraw={
       }
       if(self.deadflag == DEAD_NO){
         if(self.cl_lod_weapon){
+          sendevent_client_burn();  //placing this here because weapon-LoD is a fairly tight radius.
+        
           if(self.weaponEnt1.data_idx){
             predraw_unit_weapon(self.weaponEnt1);
           }
@@ -390,9 +381,6 @@ void() client_predraw={
   self.origin = self.rootOrigin;
   setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
-  self.colormod = CLR_DEF_WHITE;
-  self.alpha = 0.0;
-  self.scale = 0.1;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_client={
@@ -550,6 +538,14 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     /* EVENT - Client has taken ranged hits. */
     if( (changeFlags & SENDFLAG_IMPACT) ){
       self.shieldHitFlag = ReadByte();
+      if( self.shieldHitFlag == 0 ){
+        self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
+        self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
+        self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
+        self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
+        self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
+        self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
+      }
     }
     
     /* EVENT - pieces of player mech is blown off */
@@ -813,6 +809,59 @@ void() client_event_handle_faction={
   else if( self.faction == FACTION_MILITAR ){
     TEAM_MILITAR_TOTAL = TEAM_MILITAR_TOTAL + 1;
   }
+};
+
+
+/*
+  HANDLE EVENT - player mech pieces are dying
+*/
+void() sendevent_client_burn={
+  
+  if( (self.burnBits & M_TOR_LEFT) ){
+    te_mech_crit( self.torL_org , '0 0 10');
+  }
+  if( (self.burnBits & M_TOR_RIGHT) ){
+    te_mech_crit( self.torR_org , '0 0 10');
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_L) &&(self.burnBits & M_ARM_LEFT) ){
+    if( !(self.criticalHits & M_TOR_LEFT) ){
+      te_mech_crit( self.armL_org , '0 0 10');
+    }
+  }
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && (self.burnBits & M_ARM_RIGHT) ){
+    if( !(self.criticalHits & M_TOR_RIGHT) ){
+      te_mech_crit( self.armR_org , '0 0 10');
+    }
+  }
+  if( (self.burnBits & M_LEGS) ){
+    te_mech_crit( self.legs_org , '0 0 10');
+  }
+};
+
+/*
+  HANDLE EVENT - player mech pieces are being repair
+*/
+void(float repairValue) sendevent_client_repair={
+  if( (repairValue & M_TOR_CENTER) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
+  }
+  if(  (self.unitModFlags & MOD_HAS_TOR_L) && (repairValue & M_TOR_LEFT) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
+  }
+  if(  (self.unitModFlags & MOD_HAS_TOR_R) && (repairValue & M_TOR_RIGHT) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
+  }
+  if(  (self.unitModFlags & MOD_HAS_ARM_L) && (repairValue & M_ARM_LEFT) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
+  }
+  if(  (self.unitModFlags & MOD_HAS_ARM_R) && (repairValue & M_ARM_RIGHT) ){
+    self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
+  }
+  
+  if(self.clientServerNum != player_localentnum){
+    return;
+  }
+  //FIX ME - weapons being repaired.
 };
 
 /*

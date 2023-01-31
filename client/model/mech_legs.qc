@@ -62,6 +62,10 @@ void() predraw_legs={
   if( (self.flags & FL_CLIENT) ){
     self.unit_legs.colormod = CLR_PLAYER_LIST[self.unitColorLG];
   }
+  else{
+    self.unit_legs.colormod = '1.0 1.0 1.0';
+  }
+  self.unit_legs.colormod =  self.unit_legs.colormod * (self.legs_hp / self.legs_hpMax);
   self.unit_legs.angles = self.legs_angl;
   self.unit_legs.origin = self.legs_org;
   self.legs_frame = self.unit_legs.frame;

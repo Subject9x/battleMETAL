@@ -537,6 +537,14 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    if( self.shieldHitFlag == 0 ){
+      WriteByte( MSG_ENTITY, (self.torC_hp / self.torC_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+    }
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){

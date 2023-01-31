@@ -135,6 +135,7 @@ void() receive_ent_bindData={
       CLIENT_target_faction = 0;
       CLIENT_target_shield = 0;
       CLIENT_target_vecsize = 0;
+      CLIENT_target_size = '0 0 0';
     }
     else{
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
@@ -143,6 +144,7 @@ void() receive_ent_bindData={
         CLIENT_target_ent = world;
         CLIENT_stat_trg_dataidx = 0;
         CLIENT_stat_trg_face = 0;
+        CLIENT_target_size = '0 0 0';
         return;
       }
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
