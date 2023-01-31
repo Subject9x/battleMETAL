@@ -171,7 +171,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.critBits = fabs(rint(ReadLong()));
       if(self.critBits != FALSE ){
         self.targetEntId = ReadLong();
-        self.enemy = findfloat( world, clientServerNum, self.targetEntId );
+        self.enemy = findfloat( world, entnum, self.targetEntId );
       }
       else{
         self.enemy = world;
@@ -194,6 +194,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   }
   
   if( isNew ){
+    self.rootOrigin = self.origin;
     self.data_type = DATA_BLD;
     self.predraw = predraw_building;
     data_sync_new_building(self.data_idx); 
@@ -276,6 +277,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
 
 void() predraw_building={
   local vector cacheOrg;
+  
+  self.rootOrigin = self.origin;
   
   traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
   
