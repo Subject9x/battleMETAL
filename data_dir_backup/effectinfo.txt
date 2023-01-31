@@ -2130,12 +2130,12 @@
   blend alpha
   color 0x1C1C1C 0x585858
   tex 0 7
-  size 1 2
-  sizeincrease 0.075
+  size 2 3
+  sizeincrease 0.2
   alpha 180 220 64
   originjitter 2 2 2
-  velocityjitter 1 1 1
-  gravity -0.0050
+  velocityjitter 2 2 2
+  gravity -0.0070
 
   //TE_MECHPIECE_DAMAGE_HOT - RED SPARKS
   effect TE_MECHPIECE_DAMAGE_HOT
