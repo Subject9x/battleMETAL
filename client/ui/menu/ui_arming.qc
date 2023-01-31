@@ -1219,6 +1219,7 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
     makevectors(UI_HANGAR_DATA_mech.angles);
     
     UI_HANGAR_DATA_mech.scale = 0.9;
+    UI_HANGAR_DATA_mech.effects = UI_HANGAR_DATA_mech.effects | EF_FULLBRIGHT | EF_NOSHADOW;
     
     mOffset = UI_HANGAR_DATA_mech.torC_compOffset * UI_HANGAR_DATA_mech.scale;
     UI_HANGAR_DATA_mech.torC_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
@@ -1274,10 +1275,10 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
       }
       else{
         if( weaponEnt == UI_ARMING_hardpoint ){
-          weaponEnt.colormod = '2 2 2';
+          weaponEnt.colormod = '2.15 2.15 2.15';
         }
         else{
-          weaponEnt.colormod = '0.85 0.85 0.85';
+          weaponEnt.colormod = CLR_DEF_WHITE;
         }
         weaponEnt.alpha = 1.0;
         weaponEnt.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
