@@ -645,7 +645,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   
   //CLIENT -> Local Player Ent
   if( self.clientServerNum == player_localentnum ){
-    //V_CalcRefdef(self, self.moveFlags);
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;
@@ -752,6 +751,8 @@ void( float unit_id ) client_event_mech_spawn={
 
   self.unit_legs = spawn();
   self.unit_legs.skin = self.skin;
+  
+  self.fixAngle = self.angles;
   
 };
 

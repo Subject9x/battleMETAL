@@ -81,11 +81,6 @@ void() PlayerPreThink = {
 	//if (self.waterlevel == 2)
 		//CheckWaterJump ();
 
-  //Player powering up their mech, prevent movement
-  if(time < self.power_timer){
-    PlayerPreThink_powerup();
-    return;
-  }
 
 	//if (self.button2){
 		//PlayerJump();
@@ -96,6 +91,12 @@ void() PlayerPreThink = {
 // teleporters can force a non-moving pause time	
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
+  
+  //Player powering up their mech, prevent movement
+  if(time < self.power_timer){
+    PlayerPreThink_powerup();
+    return;
+  }
   
   if( (self.unitModFlags & MOD_HAS_RAMSHOCKS)){
     if( !self.button8 ){
@@ -314,7 +315,7 @@ void() PlayerPostThink = {
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
   self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
   self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
-    self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
+  self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
   
   if( self.last_color != self.new_color ){
     self.SendFlags = self.SendFlags | SENDFLAG_COLORS;
@@ -399,7 +400,23 @@ void() PlayerPostThink_powerup={
     }
     ctrl_weapon_think(wep_chain);
   }
-
+  
+  if (!(self.flags & FL_ONGROUND)){
+    self.jump_flag = self.velocity_z;
+  }
+  
+  //network SendFlags 
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+  self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
+  
+  if( self.last_color != self.new_color ){
+    self.SendFlags = self.SendFlags | SENDFLAG_COLORS;
+    self.new_color = FALSE;
+    self.last_color = self.new_color;
+  }
+  
   //DEBUG / DEV ONLY!
   if( cvar("developer") ){
     if(self.button0){

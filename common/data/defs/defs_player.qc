@@ -34,6 +34,9 @@ float input_sequence;
 .vector unit_light_org2;
 .vector unit_light_org;
 .entity unit_legs;      //
+
+.vector fixAngle;   //used for new spawn;
+
 #endif
 
 .float getTarget;   //switch for sendEnt

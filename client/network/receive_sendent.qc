@@ -498,7 +498,7 @@ void(entity item) predraw_unit_weapon={
   local vector offset;
   local vector adjPartOffset;
   
-  if( self.owner.deadflag != DEAD_NO){
+  if( self.deadflag != DEAD_NO){
     return;
   }
   if( (self.criticalHits & item.partParentId) ){
@@ -509,7 +509,7 @@ void(entity item) predraw_unit_weapon={
   }
   
   item.renderflags = 0;
-  if( (self.owner.flags & FL_CLIENT) && !self.chaseActive ){
+  if( (self.flags & FL_CLIENT) && !self.chaseActive ){
     item.renderflags = 0 | RF_EXTERNALMODEL;
   }
   
@@ -518,7 +518,14 @@ void(entity item) predraw_unit_weapon={
   adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
   
   offset = T_PART_PARENT_ORG;
-  drawAng = T_PART_PARENT_ANGL;
+  
+  if(self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+    drawAng = item.owner.fixAngle;
+  }
+  else{
+    drawAng = T_PART_PARENT_ANGL;
+  }
+  
   drawAng_x = drawAng_x *-1;
   makevectors( drawAng);
   offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
@@ -527,7 +534,15 @@ void(entity item) predraw_unit_weapon={
   
   setmodel(item, item.model);
   item.origin = offset;
-  item.angles = T_PART_PARENT_ANGL;
+  //item.angles = T_PART_PARENT_ANGL;
+  
+  if( self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+    item.angles = item.owner.fixAngle;
+  }
+  else{
+    item.angles = T_PART_PARENT_ANGL;
+  }
+  
   item.drawmask = MASK_ENGINE;
   addentity(item);
   item.drawmask = 0;

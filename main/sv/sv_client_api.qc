@@ -645,7 +645,7 @@ void() PutClientInServer_Campaign={
     savefile_load( world.itemOverride );
   }
   
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_WALK;
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
@@ -704,7 +704,7 @@ void() PutClientInServer_Coop={
   self.th_die = PlayerDieNetwork;
   mapfile_coop_load();
   
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_PUSH;
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;

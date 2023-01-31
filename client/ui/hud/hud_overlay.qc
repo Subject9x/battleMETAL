@@ -280,7 +280,14 @@ void() hud_model_cockpit_draw_frame={
     return;
   }
 
-  hudAngle = [0, self.angles_y, 0];
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+    hudAngle = [0, self.fixAngle_y, 0];
+  }
+  else{
+    hudAngle = [0, self.angles_y, 0];
+  }
+
+  
   makevectors(hudAngle);
   
   HUD_MODEL_STRUTS_origin = self.rootOrigin;
@@ -296,7 +303,14 @@ void() hud_model_cockpit_draw_frame={
   
   setmodel(self, self.weaponmodel);
   self.origin = HUD_MODEL_STRUTS_origin;
-  self.angles = self.torC_angl;
+  
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+    self.angles = self.fixAngle;
+  }
+  else{
+    self.angles = self.torC_angl;
+  }
+  
   addentity(self);
   self.origin = self.rootOrigin;
   self.angles = self.rootAngle;
