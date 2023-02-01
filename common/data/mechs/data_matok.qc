@@ -118,9 +118,11 @@ void() data_ini_matok_={
     self.pitchMax = 55;
     self.pitchMin = -45;
     self.hud_rollangle = 3.25;
-    self.hud_bob = 0.035;
+    
+    self.hud_bob = 3.0;
+    self.hud_bob_up = 5.0;
+    
     self.hud_bob_cycle = 0.5;
-    self.hud_bob_up = 0.4;
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.35;
     self.hud_bob_speed = 6.55;

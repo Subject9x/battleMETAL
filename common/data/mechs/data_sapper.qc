@@ -121,9 +121,11 @@ void() data_ini_sapper_={
     self.pitchMax = 40;
     self.pitchMin = -40;
     self.hud_rollangle = 3.25;
-    self.hud_bob = 0.035;
+    
+    self.hud_bob = 2.0;
+    self.hud_bob_up = 4.0;
+    
     self.hud_bob_cycle = 0.5;
-    self.hud_bob_up = 0.4;
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.35;
     self.hud_bob_speed = 6.55;

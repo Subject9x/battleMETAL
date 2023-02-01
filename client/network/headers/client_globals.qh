@@ -17,6 +17,8 @@ entity CLIENT_server_ent; //this is the player sent from the server.
 
 vector CLIENT_render_origin;
 
+float MAP_OBJECTS[4096];  //entnums for any IS_MAPKEY entities coming from server.
+
 //float CLIENT_currentWeaponGroup;
 
 //float CLIENT_mission_status;

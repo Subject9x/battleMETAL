@@ -120,9 +120,11 @@ void() data_ini_warden_={
     self.pitchMax = 25; //pitch down limit
     self.pitchMin = -28;//pitch up limit
     self.hud_rollangle = 4;
-    self.hud_bob = 0.03;
+    
+    self.hud_bob = 3.0;
+    self.hud_bob_up = 5.0;
+    
     self.hud_bob_cycle = 0.5;
-    self.hud_bob_up = 0.20; //0.15
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.09;
     self.hud_bob_speed = 6;

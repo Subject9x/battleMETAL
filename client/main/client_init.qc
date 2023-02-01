@@ -22,7 +22,7 @@ void() CSQC_Init =
   //registercvar("cl_color_psc", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   //registercvar("cl_color_mil", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
   registercvar("cl_color_srv", "0 0 0 0 0 0", CF_CLIENT | CF_ARCHIVE);
-  registercvar("chase_active",  "0", CF_CLIENT | CF_ARCHIVE);
+  //registercvar("chase_active",  "0", CF_CLIENT | CF_ARCHIVE); //5.0.0 - disabled, engine-builtin futzes with sendent_client positioning/angle.
   
   registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
@@ -213,7 +213,6 @@ void() CSQC_Init =
   
   cl_set_faction_colors();
   cl_send_infostring( INFO_FLAG_COLOR );
-    
   
   ui_data_hud_ini_tags();
   

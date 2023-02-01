@@ -34,9 +34,9 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   CLIENT_server_ent = findfloat(world, entnum, player_localentnum);
 
   //oh this is an ugly hack
-  if( !cvar("r_shadow_realtime_world") ){
-    cvar_set("r_shadow_realtime_world", "1");
-  }
+  //if( !cvar("r_shadow_realtime_world") ){
+  //  cvar_set("r_shadow_realtime_world", "1");
+  //}
   
 	/*
   local vector vf_size;
@@ -105,9 +105,16 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       CLIENT_vis_org = trace_endpos + (v_forward * 2);
     }
     else{
+    
       makevectors([0, CLIENT_server_ent.angles_y, 0]);
       //predraw takes care of mech geom in FPS cam
       CLIENT_vis_org =  CLIENT_server_ent.rootOrigin + (v_up * CLIENT_server_ent.cameraOffset_y);
+      
+      //viewbob
+      if( CLIENT_server_ent.moveState > 0 ){
+        CLIENT_vis_org = CLIENT_vis_org + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
+      }
+      
     }
   }
   else{
@@ -247,9 +254,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     else{
       drawstring(VIEW_ORG + '0 64', sprintf("Hud offset    = %s", vtos(CLIENT_server_ent.hud_StrutsOffset)), '8 8', '0.85 0.85 0.85', 1, 0);
     }
-    
-    //drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    //drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 72', sprintf("DBG_PREDRAW_ORG = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 80', sprintf("pmove_org        = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 92',  sprintf("torso org      = %s", vtos(CLIENT_server_ent.torC_org)), '8 8', '0.85 0.85 0.85', 1, 0);

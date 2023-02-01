@@ -336,14 +336,19 @@ void( entity mech, float turboMod ) cl_set_hud_vars={
   cvar_set("cl_sidespeed", ftos(mech.data_speed_strafe));
   cvar_set("cl_backspeed", ftos(mech.data_speed_backward));
   cvar_set("cl_movespeedkey", ftos(mech.data_speed_accel + turboMod));
+  
   cvar_set("cl_rollangle",  ftos(mech.hud_rollangle));
-  cvar_set("cl_bob", ftos(mech.hud_bob));
+  
+  //cvar_set("cl_bob", ftos(mech.hud_bob));
   cvar_set("cl_bobcycle", ftos(mech.hud_bob_cycle));
-  cvar_set("cl_bobup", ftos(mech.hud_bob_up));
-  cvar_set("cl_bobmodel", ftos(mech.hud_bob_model));
+  //cvar_set("cl_bobup", ftos(mech.hud_bob_up));
+  
+  //cvar_set("cl_bobmodel", ftos(mech.hud_bob_model)); 
+  
   cvar_set("cl_bobmodel_side", ftos(mech.hud_bob_side));
   cvar_set("cl_bobmodel_speed", ftos(mech.hud_bob_speed));
   cvar_set("cl_bobmodel_up", ftos(mech.hud_bob_model_up));
+  
   cvar_set("in_pitch_max", ftos(mech.pitchMax));
   cvar_set("in_pitch_min", ftos(mech.pitchMin));
   

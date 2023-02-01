@@ -121,9 +121,11 @@ void() data_ini_monitor_={
     self.pitchMax = 43;
     self.pitchMin = -25;
     self.hud_rollangle = 2.75;
-    self.hud_bob = 0.05;
+    
+    self.hud_bob = 1.5;
+    self.hud_bob_up = 7.0;
+    
     self.hud_bob_cycle = 0.65;
-    self.hud_bob_up = 0.35;
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.4;
     self.hud_bob_speed = 3.85;

@@ -36,6 +36,7 @@ float input_sequence;
 .entity unit_legs;      //
 
 .vector fixAngle;   //used for new spawn;
+.float hud_roll_val;
 
 #endif
 

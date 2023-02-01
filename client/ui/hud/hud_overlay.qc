@@ -269,16 +269,17 @@ void() hud_model_cockpit_ini={
 */
 void() hud_model_cockpit_draw_frame={
   local vector hudAngle;
+  local float hudRoll;
   
   local float cacheEffects;
   local float cacheRenderFlags;
   
-  cacheEffects = 0 | self.effects;
-  cacheEffects = 0 | self.renderflags;
-  
   if( self.chaseActive ){
     return;
   }
+
+  cacheEffects = 0 | self.effects;
+  cacheEffects = 0 | self.renderflags;
 
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     hudAngle = [0, self.fixAngle_y, 0];
@@ -286,7 +287,6 @@ void() hud_model_cockpit_draw_frame={
   else{
     hudAngle = [0, self.angles_y, 0];
   }
-
   
   makevectors(hudAngle);
   
@@ -294,6 +294,32 @@ void() hud_model_cockpit_draw_frame={
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_right * self.hud_StrutsOffset_x);
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_forward *  (self.hud_StrutsOffset_z));
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up *  (self.hud_StrutsOffset_y + self.cameraOffset_y));
+  
+  if( self.moveState > 0 && self.velocity != '0 0 0' ){
+    HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
+    
+    local vector vel;
+    local float aimdir;
+    
+    vel = vectoangles(self.velocity);
+    aimdir = anglemod(input_angles_y - vel_y );
+    
+    if( aimdir > 15 && aimdir <= 105){
+      self.hud_roll_val = min(self.hud_roll_val + (frametime * 4), 2);
+    }
+    else if( aimdir < 345 && aimdir >= 255){
+      self.hud_roll_val = max(self.hud_roll_val - (frametime * 4), -2);
+    }
+    else{
+      if(  self.hud_roll_val < 0 ){
+        self.hud_roll_val = min(self.hud_roll_val + (frametime * 4), 0);
+      }
+      else  if(  self.hud_roll_val > 0 ){
+        self.hud_roll_val = max(self.hud_roll_val - (frametime * 4), 0);
+      }
+    }
+    
+  }
   
   self.alpha = 1.0;
   self.scale = 1.0;
@@ -310,6 +336,7 @@ void() hud_model_cockpit_draw_frame={
   else{
     self.angles = self.torC_angl;
   }
+  self.angles_z = self.hud_roll_val;
   
   addentity(self);
   self.origin = self.rootOrigin;
