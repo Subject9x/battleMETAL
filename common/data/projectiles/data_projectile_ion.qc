@@ -119,7 +119,7 @@ void() data_projectile_ion_touch={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      t_damage(other, self, self.owner, self.damageValue * 0.15, FIRE_ENDPOINT, TRUE);
+      t_damage(other, self, self.owner, self.damageValue * 0.15, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_ARMOR;
     }
     self.targetEntId = num_for_edict(other);

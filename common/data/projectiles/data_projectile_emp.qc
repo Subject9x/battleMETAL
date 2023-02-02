@@ -178,7 +178,7 @@ void() data_prj_emp_touch={
         self.impactType = IMPACT_SHIELD;
       }
       else{
-        t_damage(other, self, self.owner, self.damageValue * 0.1, FIRE_ENDPOINT, TRUE);
+        t_damage(other, self, self.owner, self.damageValue * 0.1, FIRE_ENDPOINT, '0 0 0');
         self.impactType = IMPACT_ARMOR;
       }
       self.targetEntId = num_for_edict(other);
