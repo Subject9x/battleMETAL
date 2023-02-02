@@ -97,13 +97,10 @@ void() predraw_mech_corpse={
         if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
           self.torC_angl_x = self.torC_angl_x * -1;
         }
-        precache_model(self.torC_mdl);
+        self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
         setmodel(self, self.torC_mdl);
         self.origin = self.torC_org;
         self.angles = self.torC_angl;
-        
-        self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
-        
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -117,11 +114,10 @@ void() predraw_mech_corpse={
         if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
            self.torL_angl_x = self.torL_angl_x * -1;
         }
-        precache_model(self.torL_mdl);
+        self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
         setmodel(self, self.torL_mdl);
         self.angles = self.torL_angl;
         self.origin = self.torL_org;
-        self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -135,11 +131,10 @@ void() predraw_mech_corpse={
         if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
            self.torR_angl_x = self.torR_angl_x * -1;
         }
-        precache_model(self.torR_mdl);
+        self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
         setmodel(self, self.torR_mdl);
         self.angles = self.torR_angl;
         self.origin = self.torR_org;
-        self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -153,11 +148,10 @@ void() predraw_mech_corpse={
         if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
           self.armL_angl_x = self.armL_angl_x * -1;
         }
-        precache_model(self.armL_mdl);
+        self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
         setmodel(self, self.armL_mdl);
         self.angles = self.armL_angl;
         self.origin = self.armL_org;
-        self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -171,11 +165,10 @@ void() predraw_mech_corpse={
         if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
           self.armR_angl_x = self.armR_angl_x * -1;
         }
-        precache_model(self.armR_mdl);
+        self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
         setmodel(self, self.armR_mdl);
         self.angles = self.armR_angl;
         self.origin = self.armR_org;
-        self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
         addentity(self);
         self.origin = self.rootOrigin;
         self.angles = self.rootAngle;
@@ -281,26 +274,26 @@ void( float critical ) sendevent_mech_ai_crit={
   sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
 };
 
-void(float criticalHits) sendevent_mech_burn={  
+void() sendevent_mech_burn={  
   local vector offset;
   
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalHits & M_TOR_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
     te_mech_crit( self.torL_org, '0 0 10');
   }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && (criticalHits & M_TOR_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.burnBits & M_TOR_RIGHT) ){
     te_mech_crit( self.torR_org, '0 0 10');
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && (criticalHits & M_ARM_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && (self.burnBits & M_ARM_LEFT) ){
     if( !(self.critBits & M_TOR_LEFT) ){
       te_mech_crit( self.armL_org, '0 0 10');
     }
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && (criticalHits & M_ARM_RIGHT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_R) && (self.burnBits & M_ARM_RIGHT) ){
     if( !(self.critBits & M_TOR_RIGHT) ){
       te_mech_crit( self.armR_org, '0 0 10');
     }
   }
-  if( (criticalHits & M_LEGS) ){
+  if( (self.burnBits & M_LEGS) ){
     te_mech_crit( self.legs_org + '0 0 -10', '0 0 10');
   }
 };
@@ -550,9 +543,8 @@ void() interpolate_mech_ai={
       }
     }
     if(self.cl_lod_weapon){
-      if( self.burnBits > 0 ){
-        sendevent_mech_burn( self.burnBits );
-      }
+      sendevent_mech_burn( );
+      
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon(self.weaponEnt1);
       }

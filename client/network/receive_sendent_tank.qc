@@ -216,6 +216,10 @@ void() interpolate_tank={
     }
 
     if(self.cl_lod_weapon){
+      if( self.health <= self.max_health * 0.67 ){
+         te_mech_crit( self.rootOrigin , '0 0 10');
+      }
+    
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon(self.weaponEnt1);
       }
