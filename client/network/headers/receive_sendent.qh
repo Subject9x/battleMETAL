@@ -133,7 +133,6 @@ void() sendevent_building_die;
 
 void() sendent_ai_think;
 void( float playerEntId, float playerCritFlags ) client_handle_crit;
-void( float criticalBits ) sendevent_player_critical;
 
 vector( vector partOffset) predraw_unit_part;
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle;

@@ -287,7 +287,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     self.data_postinit = FALSE;
     sendent_ini_interpolate();
     if( self.data_idx == UID_ITEM_debris ){
-      data_sync_new_debris( self );
+      data_sync_new_debris();
     }
     else{
       data_sync_new_projectile(self.data_idx);
@@ -542,10 +542,7 @@ void(entity item) predraw_unit_weapon={
   else{
     item.angles = T_PART_PARENT_ANGL;
   }
-  
-  item.drawmask = MASK_ENGINE;
   addentity(item);
-  item.drawmask = 0;
 };
 
 entity(float weaponId) sendent_get_weapon={
