@@ -14,8 +14,10 @@ void(float unitId) client_event_mech_spawn;
 void() client_event_target_new;
 void() client_event_handle_moveChange;
 void() client_event_handle_faction;
-void() sendevent_client_burn;
-void(float repairValue) sendevent_client_repair;
+void() client_event_burn;
+void() client_event_critical;
+
+void(float repairValue) client_event_repair;
 
 
 float() remove_client={
@@ -321,7 +323,7 @@ void() client_predraw={
       }
       if(self.deadflag == DEAD_NO){
         if(self.cl_lod_weapon){
-          sendevent_client_burn();  //placing this here because weapon-LoD is a fairly tight radius.
+          client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
         
           if(self.weaponEnt1.data_idx){
             predraw_unit_weapon(self.weaponEnt1);
@@ -400,9 +402,11 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   self.prevAttackFlag = self.attackFlag;
   self.prevMoveState = self.moveState;
   self.prevDataType = self.data_type;
+  self.critBits = 0;
   
   //Receive from server
   self.data_type = ReadByte();  //Always received, important switch value.
+  
   
   /*EVENT - Client is new to receiver */
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -640,6 +644,19 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       sendevent_handle_weaponfire();
       self.attackFlag = 0;
     }
+    
+    if( self.critBits != 0 ){
+      if( (self.critBits & M_REPAIR) ){
+        client_event_repair();
+        self.critBits = self.critBits - (self.critBits & M_REPAIR);
+        self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
+      }
+      else{
+        client_event_critical();
+        self.criticalHits = self.criticalHits | self.critBits;
+      }
+      self.critBits = 0;
+    }
   }
   
   
@@ -683,7 +700,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
         client_event_target_new();
       }
     }
-    
   }
 };
 
@@ -816,15 +832,15 @@ void() client_event_handle_faction={
 /*
   HANDLE EVENT - player mech pieces are dying
 */
-void() sendevent_client_burn={
+void() client_event_burn={
   
-  if( (self.burnBits & M_TOR_LEFT) ){
+  if( (self.burnBits & M_TOR_LEFT) && !(self.criticalHits & M_TOR_LEFT) ){
     te_mech_crit( self.torL_org , '0 0 10');
   }
-  if( (self.burnBits & M_TOR_RIGHT) ){
+  if( (self.burnBits & M_TOR_RIGHT) && !(self.criticalHits & M_TOR_RIGHT) ){
     te_mech_crit( self.torR_org , '0 0 10');
   }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) &&(self.burnBits & M_ARM_LEFT) ){
+  if( (self.unitModFlags & MOD_HAS_ARM_L) && (self.burnBits & M_ARM_LEFT) ){
     if( !(self.criticalHits & M_TOR_LEFT) ){
       te_mech_crit( self.armL_org , '0 0 10');
     }
@@ -842,7 +858,7 @@ void() sendevent_client_burn={
 /*
   HANDLE EVENT - player mech pieces are being repair
 */
-void(float repairValue) sendevent_client_repair={
+void(float repairValue) client_event_repair={
   if( (repairValue & M_TOR_CENTER) ){
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
   }
@@ -863,6 +879,36 @@ void(float repairValue) sendevent_client_repair={
     return;
   }
   //FIX ME - weapons being repaired.
+};
+
+/*
+  EVENT - CRITICAL =====================================
+*/
+void() client_event_critical={  
+  if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
+    
+    traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
+    
+    if( trace_ent != world || trace_fraction == 1.0){
+      if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
+        te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      }
+      if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (self.critBits & M_TOR_RIGHT) ){
+        te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      }
+      if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (self.critBits & M_ARM_LEFT) ){
+        te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      }
+      if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
+        te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      }
+      if( (self.critBits & M_LEGS) ){
+        te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+      }
+    }
+  }
+  
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
 };
 
 /*
