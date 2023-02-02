@@ -56,9 +56,17 @@ void() ctrl_update_mechplayer={
     }
     
     ctrl_mech_critical_hits();
-    self.critBits = self.critBits | self.critBuffer;
-    self.critBuffer = 0;
+    self.critBits = 0 | self.critBuffer;
     self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+    
+    if( (self.critBits & M_REPAIR) ){
+      self.criticalHits = self.criticalHits - (self.criticalHits & self.critBuffer);
+    }
+    else{
+      self.criticalHits = self.criticalHits | self.critBits;
+    }
+    
+    self.critBuffer = 0;
   }
   
   ctrl_mech_burn_frame();
@@ -124,7 +132,7 @@ void() ai_ctrl_update_mechplayer={
     }
     
     ctrl_mech_critical_hits();
-    self.critBits = self.critBits | self.critBuffer;
+    self.critBits = 0 | self.critBuffer;
     self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
     self.critBuffer = 0;
   }

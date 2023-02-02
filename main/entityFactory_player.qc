@@ -38,17 +38,6 @@ void() player_makeVec={
   //<chuckle> oh we'll get here soon
 };
 
-float() customize_part_for_client={
-  local vector chunkOfs;
-  if( self.owner != other ){
-    return FALSE;
-  }
-  makevectors(other.angles);
-  chunkOfs = other.origin + (v_right * self.compOffset_x) + (v_up * self.compOffset_y) + (v_forward * (self.compOffset_z - fabs(other.cameraOffset_z * 2.5)));
-  setorigin(self, chunkOfs);
-  
-  return TRUE;
-};
 
 void() player_makeMech={
   local entity hudWepStart;
@@ -110,8 +99,9 @@ void() player_makeMech={
   
   droptofloor();
   
+  self.new_color = TRUE;
   self.effects = self.effects | EF_NODEPTHTEST;
-  self.SendFlags = self.SendFlags |  (SENDFLAG_VELOCITY | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR);
+  self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR);
 };
 
 void() player_unmakeMech={

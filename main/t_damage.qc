@@ -141,6 +141,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             dmgTrg.torL_hp = max(0, dmgTrg.torL_hp - dmgAmt);
             if(dmgTrg.torL_hp <= 0){
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_LEFT;
+              dmgTrg.torL_hp = 0;
               if( (dmgTrg.unitModFlags & MOD_HAS_ARM_L) && !(dmgTrg.criticalHits & M_ARM_LEFT) ){
                 dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
                 dmgTrg.armL_hp = 0;
@@ -151,6 +152,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             dmgTrg.torR_hp = max(0, dmgTrg.torR_hp - dmgAmt);
             if(dmgTrg.torR_hp <= 0){
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_RIGHT;
+              dmgTrg.torR_hp = 0;
               if( (dmgTrg.unitModFlags & MOD_HAS_ARM_R) && !(dmgTrg.criticalHits & M_ARM_RIGHT) ){
                 dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
                 dmgTrg.armR_hp = 0;
@@ -161,17 +163,20 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             dmgTrg.armR_hp = max(0, dmgTrg.armR_hp - dmgAmt);
             if(dmgTrg.armR_hp <= 0){
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
+              dmgTrg.armR_hp = 0;
             }
             break;
           case M_ARM_LEFT:
             dmgTrg.armL_hp = max(0, dmgTrg.armL_hp - dmgAmt);
             if(dmgTrg.armL_hp <= 0){
+              dmgTrg.armL_hp = 0;
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
             }
             break;
           case M_LEGS:
             dmgTrg.legs_hp = max(0, dmgTrg.legs_hp - dmgAmt);
             if(dmgTrg.legs_hp <= 0){
+              dmgTrg.legs_hp = 0;
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_LEGS;
             }
             break;

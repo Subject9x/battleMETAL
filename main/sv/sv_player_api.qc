@@ -334,14 +334,6 @@ void() PlayerPostThink = {
       self.last_shield = self.stat_client_shield;
     }
     
-    if( self.last_crit != self.critBits ){
-      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      if( !(self.critBits & M_REPAIR) ){
-        client_send_critical_hit( num_for_edict(self), self.critBits );
-      }
-      self.last_crit = self.critBits;
-      
-    }
     if( self.last_burn != self.burnBits ){
       self.SendFlags = self.SendFlags | SENDFLAG_BURN;
       self.last_burn = self.burnBits;

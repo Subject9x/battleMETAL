@@ -94,12 +94,14 @@ void() building_repair_select={
     //fresh repair event
     if( self.reloadValue <= 0 ){
       //cut over to cooldown state;
-      self.ai_state_next = REPAIR_STATE_COOLDOWN;return;
+      self.ai_state_next = REPAIR_STATE_COOLDOWN;
+      return;
     }
     
     //player dead or exited repair bay
     if(self.goalentity == world || self.goalentity.deadflag != DEAD_NO){
-      self.ai_state_next = REPAIR_STATE_COOLDOWN;return;
+      self.ai_state_next = REPAIR_STATE_COOLDOWN;
+      return;
     }
     else{
       player = self.goalentity;
@@ -111,7 +113,7 @@ void() building_repair_select={
     }
     else{
       lowHP = 99.99;
-      if( player.criticalHits != 0 ){
+      if( player.criticalHits > 0 ){
         //prioritize blown off sections first
         if( (player.criticalHits & M_LEGS) ){
           typeId = M_LEGS;
@@ -237,10 +239,11 @@ void() building_repair_fixing={
   //fix 'client' / aka CT
   if( self.critBits == M_TOR_CENTER ){
     //part is not critical'd, repair as normal.
-    player.health = min(player.health + self.reloadRate, player.max_health);
+    player.health = player.health + self.reloadRate;
     self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
     if( player.health >= player.max_health ){
       end_repair = TRUE;
+      player.health = player.max_health;
     }
   }
   else{
@@ -287,10 +290,12 @@ void() building_repair_fixing={
         }
         break;
     }
+    //repairing up from a critically hit component
     if( (player.criticalHits & self.critBits) && self.attack_state){
       self.attack_state = FALSE;
       player.critBits = player.critBits | (M_REPAIR | self.critBits);
       player.SendFlags = player.SendFlags | SENDFLAG_CRIT | SENDFLAG_IMPACT;
+      player.criticalHits = player.criticalHits - (player.criticalHits & self.critBits);
       part = player.w_slot;
       while( part != world ){
         if( part.partParentId == self.critBits && part.deadflag != DEAD_NO ){

@@ -284,10 +284,6 @@ void( float critical ) sendevent_mech_ai_crit={
 void(float criticalHits) sendevent_mech_burn={  
   local vector offset;
   
-  if( vlen(self.origin - CLIENT_vis_org) >= PARTICLE_HAZ_DISTANCE){
-    return;
-  }
-  
   if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalHits & M_TOR_LEFT) ){
     te_mech_crit( self.torL_org, '0 0 10');
   }
@@ -420,12 +416,6 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( (changeFlags & SENDFLAG_BURN) ){
     self.burnBits = fabs(rint(ReadLong()));
-    if( self.burnBits > 0 ){
-      particleDraw = vlen(CLIENT_vis_org - self.origin);
-      if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-        sendevent_mech_burn( self.burnBits );
-      }
-    }
   }
   
   //EVENT - voice chatter
@@ -457,9 +447,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
         }
       }
     }
-    
   }
-  
 };
 
 void() interpolate_mech_ai={
@@ -562,6 +550,9 @@ void() interpolate_mech_ai={
       }
     }
     if(self.cl_lod_weapon){
+      if( self.burnBits > 0 ){
+        sendevent_mech_burn( self.burnBits );
+      }
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon(self.weaponEnt1);
       }

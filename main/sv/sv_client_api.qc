@@ -155,12 +155,6 @@ float( float isNew, float changeFlags ) send_client={
       //placed here for just-in-time calculation
       // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
       WriteLong( MSG_ENTITY, self.critBits );
-      if( (self.critBits & M_REPAIR) ){
-        self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
-      }
-      else{
-        self.criticalHits = self.criticalHits | self.critBits;
-      }
       self.critBits = 0;
     }
     
