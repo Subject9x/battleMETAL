@@ -255,7 +255,9 @@ void() ButtonCommands={
       if( self.energy > 0 && !(self.legs_flags & FL_DISARMED)){
         if( self.playerState == PLAYER_ACTIVE ){
           self.ramAngle_y = self.v_angle_y;
-          self.moveState = MOVE_SPRINT;
+          if( self.movement_x || self.movement_y){
+            self.moveState = MOVE_SPRINT;
+          }
           //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
         }
       }
