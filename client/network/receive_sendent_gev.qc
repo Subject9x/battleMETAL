@@ -39,7 +39,6 @@ void() sendevent_gev_die={
 */
 void( float isNew, float changeFlags) sendent_handle_gev={
   local float prevShield;
-  local float pclEffect;
   local vector turretAng;
   local string newName;
   local float prevDeadFlag;
@@ -110,10 +109,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){
-    pclEffect = ReadByte();
-    if( pclEffect > 0 ){
-      self.pcl_effectnum = pclEffect;
-    }
+    self.pcl_effectnum = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){

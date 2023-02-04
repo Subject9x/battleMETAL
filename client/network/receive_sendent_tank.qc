@@ -26,7 +26,6 @@ void() sendevent_tank_die={
 */
 void( float isNew, float changeFlags ) sendent_handle_tank={
   local float prevShield;
-  local float pclEffect;
   local vector turretAng;
   local string newName;
   local float prevDeadFlag;
@@ -99,10 +98,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    pclEffect = ReadByte();
-    if( pclEffect > 0 ){
-      self.pcl_effectnum = pclEffect;
-    }
+    self.pcl_effectnum = ReadByte();
   }
   //EVENT - DEAD AND BURNING
   if( (changeFlags & SENDFLAG_BURN) ){
@@ -110,11 +106,12 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      particleDraw = vlen(CLIENT_vis_org - self.origin); 
-      if( particleDraw < PARTICLE_HAZ_DISTANCE ){
-        makevectors(self.angles);
-        pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
-      }
+      //todo - move me, this shouldnt be here
+      //particleDraw = vlen(CLIENT_vis_org - self.origin); 
+      //if( particleDraw < PARTICLE_HAZ_DISTANCE ){
+      //  makevectors(self.angles);
+      //  pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      //}
     }
   }
   
@@ -216,36 +213,36 @@ void() interpolate_tank={
     }
 
     if(self.cl_lod_weapon){
-      if( self.health <= self.max_health * 0.67 ){
-         te_mech_crit( self.rootOrigin , '0 0 10');
+      if( self.pcl_effectnum != 0 ){
+         pointparticles( self.pcl_effectnum, self.cacheGroundPos, normalize( (self.cacheGroundPos + [0, 0, self.maxs_z]) - self.cacheGroundPos) * (10/2), 0.5);
       }
     
       if(self.weaponEnt1.data_idx){
-        predraw_unit_weapon(self.weaponEnt1);
+        predraw_unit_weapon_tank(self.weaponEnt1);
       }
       if(self.weaponEnt2.data_idx){
-        predraw_unit_weapon(self.weaponEnt2);
+        predraw_unit_weapon_tank(self.weaponEnt2);
       }
       if(self.weaponEnt3.data_idx){
-        predraw_unit_weapon(self.weaponEnt3);
+        predraw_unit_weapon_tank(self.weaponEnt3);
       }
       if(self.weaponEnt4.data_idx){
-        predraw_unit_weapon(self.weaponEnt4);
+        predraw_unit_weapon_tank(self.weaponEnt4);
       }
       if(self.weaponEnt5.data_idx){
-        predraw_unit_weapon(self.weaponEnt5);
+        predraw_unit_weapon_tank(self.weaponEnt5);
       }
       if(self.weaponEnt6.data_idx){
-        predraw_unit_weapon(self.weaponEnt6);
+        predraw_unit_weapon_tank(self.weaponEnt6);
       }
       if(self.weaponEnt7.data_idx){
-        predraw_unit_weapon(self.weaponEnt7);
+        predraw_unit_weapon_tank(self.weaponEnt7);
       }
       if(self.weaponEnt8.data_idx){
-        predraw_unit_weapon(self.weaponEnt8);
+        predraw_unit_weapon_tank(self.weaponEnt8);
       }
       if(self.weaponEnt9.data_idx){
-        predraw_unit_weapon(self.weaponEnt9);
+        predraw_unit_weapon_tank(self.weaponEnt9);
       }
     }
   }

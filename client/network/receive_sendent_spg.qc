@@ -26,7 +26,6 @@ void() sendevent_spg_die={  local entity weps;
 */
 void( float isNew, float changeFlags) sendent_handle_spg={
   local float prevShield;
-  local float pclEffect;
   local string newName;
   local float prevDeadFlag;
   local float voiceId;
@@ -89,10 +88,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){
-    pclEffect = ReadByte();
-    if( pclEffect > 0 ){
-      self.pcl_effectnum = pclEffect;
-    }
+    self.pcl_effectnum = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_BURN) ){
@@ -100,11 +96,11 @@ void( float isNew, float changeFlags) sendent_handle_spg={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      particleDraw = vlen(CLIENT_vis_org - self.origin); 
-      if( particleDraw < PARTICLE_HAZ_DISTANCE ){
-        makevectors(self.angles);
-        pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
-      }
+      //particleDraw = vlen(CLIENT_vis_org - self.origin); 
+      //if( particleDraw < PARTICLE_HAZ_DISTANCE ){
+      //  makevectors(self.angles);
+      //  pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      //}
     }
   }
   

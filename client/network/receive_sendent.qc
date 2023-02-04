@@ -526,7 +526,9 @@ void(entity item) predraw_unit_weapon={
     drawAng = T_PART_PARENT_ANGL;
   }
   
+  
   drawAng_x = drawAng_x *-1;
+  
   makevectors( drawAng);
   offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
   
@@ -534,7 +536,6 @@ void(entity item) predraw_unit_weapon={
   
   setmodel(item, item.model);
   item.origin = offset;
-  //item.angles = T_PART_PARENT_ANGL;
   
   if( self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     item.angles = item.owner.fixAngle;
@@ -544,6 +545,52 @@ void(entity item) predraw_unit_weapon={
   }
   addentity(item);
 };
+
+void(entity item) predraw_unit_weapon_tank={
+  local vector pOfs;
+  local vector drawAng;
+  local vector offset;
+  local vector adjPartOffset;
+  
+  if( self.deadflag != DEAD_NO){
+    return;
+  }
+  if( (self.criticalHits & item.partParentId) ){
+    return;
+  }
+  if( item.model == "" ){
+    return;
+  }
+  
+  item.renderflags = 0;
+  
+  util_getPartFromName( item.partParentId, self);
+  
+  adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
+  
+  if( item.partParentId == M_UNIT || item.partParentId == M_LEGS){
+    offset = self.cacheGroundPos;
+    drawAng = self.cacheGroundAngle;
+    item.angles = self.cacheGroundAngle;
+  }
+  else{
+    offset = T_PART_PARENT_ORG;
+    drawAng = T_PART_PARENT_ANGL;
+    drawAng_x = drawAng_x *-1;
+    item.angles = T_PART_PARENT_ANGL;
+  }
+  
+  makevectors( drawAng);
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
+  
+  setmodel(item, item.model);
+  item.origin = offset;
+  
+  addentity(item);
+};
+
 
 entity(float weaponId) sendent_get_weapon={
   switch(weaponId){
