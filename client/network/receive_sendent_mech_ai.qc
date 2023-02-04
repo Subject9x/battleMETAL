@@ -359,10 +359,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       self.think = mech_ai_think;
       self.nextthink = time + 0.01;
       data_sync_new_mech_ai( self.data_idx );
-    }
-    if(!self.unit_legs){
-      self.unit_legs = spawn();
-      self.unit_legs.skin = self.skin;
+      if(!self.unit_legs){
+        self.unit_legs = spawn();
+        self.unit_legs.skin = self.skin;
+      }
     }
   }
   
@@ -480,6 +480,7 @@ void() interpolate_mech_ai={
       if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
         self.torC_angl_x = self.torC_angl_x * -1;
       }
+      self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
       setmodel(self, self.torC_mdl);
       self.angles = self.torC_angl;
       self.origin = self.torC_org;
@@ -493,6 +494,7 @@ void() interpolate_mech_ai={
         if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
            self.torL_angl_x = self.torL_angl_x * -1;
         }
+        self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
         setmodel(self, self.torL_mdl);
         self.angles = self.torL_angl;
         self.origin = self.torL_org;
@@ -507,6 +509,7 @@ void() interpolate_mech_ai={
         if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
            self.torR_angl_x = self.torR_angl_x * -1;
         }
+        self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
         setmodel(self, self.torR_mdl);
         self.angles = self.torR_angl;
         self.origin = self.torR_org;
@@ -521,6 +524,7 @@ void() interpolate_mech_ai={
         if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
           self.armL_angl_x = self.armL_angl_x * -1;
         }
+        self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
         setmodel(self, self.armL_mdl);
         self.angles = self.armL_angl;
         self.origin = self.armL_org;
@@ -535,15 +539,15 @@ void() interpolate_mech_ai={
         if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
           self.armR_angl_x = self.armR_angl_x * -1;
         }
+        self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
+        setmodel(self, self.armR_mdl);
         self.angles = self.armR_angl;
         self.origin = self.armR_org;
-        setmodel(self, self.armR_mdl);
-        
         addentity(self);
       }
     }
     if(self.cl_lod_weapon){
-      sendevent_mech_burn( );
+      sendevent_mech_burn();
       
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon(self.weaponEnt1);
@@ -579,10 +583,10 @@ void() interpolate_mech_ai={
   self.angles = self.rootAngle;
   setsize(self, self.cache_mins, self.cache_maxs);
   setorigin(self, self.origin);
-  self.renderflags = 0 | RF_EXTERNALMODEL;
-  self.alpha = 0.0;
-  self.scale = 0.1;
-  addentity(self);
+  //self.renderflags = 0 | RF_EXTERNALMODEL;
+  //self.alpha = 0.0;
+  //self.scale = 0.1;
+  //addentity(self);
   self.renderflags = 0;
   self.alpha = 1.0;
   self.scale = 1.0;
