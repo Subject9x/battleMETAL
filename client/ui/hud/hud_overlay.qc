@@ -295,7 +295,7 @@ void() hud_model_cockpit_draw_frame={
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_forward *  (self.hud_StrutsOffset_z));
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up *  (self.hud_StrutsOffset_y + self.cameraOffset_y));
   
-  if( self.moveState > 0 && self.velocity != '0 0 0' ){
+  if( self.moveState > MOVE_STAND ){
     HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
     
     local vector vel;
@@ -305,17 +305,17 @@ void() hud_model_cockpit_draw_frame={
     aimdir = anglemod(input_angles_y - vel_y );
     
     if( aimdir > 15 && aimdir <= 105){
-      self.hud_roll_val = min(self.hud_roll_val + (frametime * 4), 2);
+      self.hud_roll_val = min(self.hud_roll_val + (frametime * 4), 3);
     }
     else if( aimdir < 345 && aimdir >= 255){
-      self.hud_roll_val = max(self.hud_roll_val - (frametime * 4), -2);
+      self.hud_roll_val = max(self.hud_roll_val - (frametime * 4), -3);
     }
     else{
       if(  self.hud_roll_val < 0 ){
-        self.hud_roll_val = min(self.hud_roll_val + (frametime * 4), 0);
+        self.hud_roll_val = min(self.hud_roll_val + (frametime * 6), 0);
       }
       else  if(  self.hud_roll_val > 0 ){
-        self.hud_roll_val = max(self.hud_roll_val - (frametime * 4), 0);
+        self.hud_roll_val = max(self.hud_roll_val - (frametime * 6), 0);
       }
     }
     
