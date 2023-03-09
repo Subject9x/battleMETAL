@@ -68,6 +68,8 @@ void() m_init={
   RESO_CHANGE = FALSE;
   gui_set_screen_size(cvar("vid_width"), cvar("vid_height"));
   
+  //call here so save-files can access it
+  campaign_loadfiles();
 };
 
 /*

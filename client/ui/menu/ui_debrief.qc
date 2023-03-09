@@ -20,11 +20,10 @@ void() menu_debriefListener_onClick={
         if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
           if( strlen(SV_NEXTMAP) > 0 ){
             if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
-              if( MAP_NAME == "o3m2" ){
+              if( MAP_NAME == "o3m5" ){
                 //yay 11th hour hard codes.
                 cvar_set("cl_newgameplus", "1");
               }
-              cl_savefile_save();
             }
           }
         }
@@ -494,10 +493,11 @@ void(vector panelOffset) menu_debrief_unlocks={
   tokenItr = 0;
   widthWrapCheck = 0;
   widthWrap = (mechStartOrg_x + panelImageSize_x) - 24;
+  
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){
-      tokenValue = stof(token);
+      tokenValue = rint(stof(token));
       if( tokenValue != 0 ){
         ui_data_load_mech_info( tokenValue, UI_HANGAR_DATA_mech );
         mechOrg = mechStartOrg;
@@ -511,7 +511,10 @@ void(vector panelOffset) menu_debrief_unlocks={
         }
         
         mechOrg_y = mechOrg_y + ( mechY * 64 );
-        drawpic( mechOrg, MECH_DATA_ICON, '60 64', '1 1 1', 1, 0);
+        
+        if( UI_HANGAR_DATA_mech.icon != "" && strlen(UI_HANGAR_DATA_mech.icon) > 0 ){
+          drawpic( mechOrg, UI_HANGAR_DATA_mech.icon, '60 64', '1 1 1', 1, 0);
+        }
         tokenItr = tokenItr + 1;
       }
     }
@@ -532,7 +535,7 @@ void() menu_debrief_sort_unlocks={
   tokenItr = 0;
   itemCounter = 0;
   //mech list is blank
-  if( MENU_DEBRIEF_unlocks_mechs != "" ){
+  if( MENU_DEBRIEF_unlocks_mechs != "" && strlen(MENU_DEBRIEF_unlocks_mechs) > 0){
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
     while( tokenItr < tokens ){
       item = strzone(argv(tokenItr));
@@ -545,7 +548,7 @@ void() menu_debrief_sort_unlocks={
 
   tokenItr = 0;
   itemCounter = 1;
-  if( MENU_DEBRIEF_unlocks_equip != "" ){
+  if( MENU_DEBRIEF_unlocks_equip != "" && strlen(MENU_DEBRIEF_unlocks_equip) > 0){
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
     while( tokenItr < tokens ){
       item = strzone(argv(tokenItr));

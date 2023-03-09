@@ -291,6 +291,7 @@ void() client_state_events={
       SV_ENDTIME = servertime;
       if( ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN ){
         msn_unlock_stuff();
+        cl_savefile_save(); //fixes save issue?
         menu_debrief_sort_unlocks();
       }
       return;

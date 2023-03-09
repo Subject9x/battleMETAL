@@ -121,6 +121,7 @@ void() hud_render_tactical_map={
       else if( CLIENT_target_datatype == DATA_BLD ){
         pipType = HUD_RAD_PIP_BLD;
       }
+      if( !pipType || strlen(pipType) == 0){continue;}
       drawpic(target_org - '5 5', pipType, '10 10', CLR_DEF_IFF_ENEMY, 1, 0);
     }
     else{
@@ -135,6 +136,7 @@ void() hud_render_tactical_map={
         drawfont = FONT_NUM_ROBOT_REGULAR;
         
         playerName = getplayerkeyvalue(player.clientLocalNum, "name");
+        if( (!playerName || playerName == "") || strlen(playerName) == 0){continue;}
         nameLen = stringwidth( playerName, 0, '10 10 0');
         nameOrg_x = nameOrg_x - ( nameLen / 2 );
         drawstring( nameOrg, playerName, '10 10 0', CLR_DEF_IIF_FRIEND_BLD, 1, 0);

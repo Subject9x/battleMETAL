@@ -249,6 +249,7 @@ void() msn_unlock_stuff={
   }
   cacheGlobalString(MENU_DEBRIEF_unlocks_mechs, unlockMechs )
   cacheGlobalString(MENU_DEBRIEF_unlocks_equip, unlockItems )
+  
   cl_savefile_append();
 };
 

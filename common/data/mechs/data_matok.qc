@@ -134,7 +134,8 @@ void() data_ini_matok_={
     self.config_default_missile = matok_config_default_missile;
     self.config_default_brawl = matok_config_default_brawl;
     self.description = "The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its offense. Its speed is also a problem against more agile targets.";
-    
+    self.icon = "gfx/ui/mech_icons/icon_matok.png";
+     
     //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
     local entity hardpnt;
     hardpnt = self.w_slot;

@@ -20,28 +20,20 @@ void( string fileName ) cl_load_savefile={
     contents = fgets(flannel);
     line = fgets(flannel);
     while( (line != "") ){
-      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-        line_tag = tokenizebyseparator(line, "'","'",": ",",");
-        if( argv(1) == SAVE_FILE_MECH_LIST ){
-          cacheGlobalString( UNLOCKED_MECHS_DATA, argv(3))
+      if( substring(line,0, 2) != "//" ){
+        line_tag = tokenizebyseparator(line, "=");
+        if( argv(0) == SAVE_FILE_MECH_LIST ){
+          cacheGlobalString( UNLOCKED_MECHS_DATA, argv(1))
         }
-        if( argv(1) == SAVE_FILE_ITEMS ){
-          cacheGlobalString( UNLOCKED_ITEMS_DATA, argv(3))
+        if( argv(0) == SAVE_FILE_ITEMS ){
+          cacheGlobalString( UNLOCKED_ITEMS_DATA, argv(1))
         }
-        if( argv(1) == CAMP_SAVE_TAG ){
-          //4.0.0 - WARN : campaign file system upgraded, this patches older save files.
-          if( strcmp( argv(3), "Main Campaign") ){
-            SAVEFILE_CAMPAIGN = "aa1.dat";
-          }
-          else if( strcmp( argv(3), "Extended Main Campaign") ){
-            SAVEFILE_CAMPAIGN = "aa2.dat";
-          }
-          else{
-            cacheGlobalString( SAVEFILE_CAMPAIGN, argv(3))
-          }
+        if( argv(0) == CAMP_SAVE_TAG ){
+          //5.0.0 - permanent save file format change
+          cacheGlobalString( SAVEFILE_CAMPAIGN, argv(1))
         }
-        if( argv(1) == SAVE_TAG_MISSION ){
-          cacheGlobalString( SAVEFILE_CACHE_MAP, argv(3))
+        if( argv(0) == SAVE_TAG_MISSION ){
+          cacheGlobalString( SAVEFILE_CACHE_MAP, argv(1))
         }
       }
       line = fgets(flannel);
@@ -154,7 +146,7 @@ void() cl_load_mechs_all={
   local float mechId;
   local float total;
   
-  tokens = tokenizebyseparator(UNLOCKED_MECHS_DATA, " ",",");
+  tokens = tokenizebyseparator(UNLOCKED_MECHS_DATA,",");
   itrTokens = 0;
   total = 1;
   //TODO - possible duplication error
@@ -177,7 +169,7 @@ void() cl_load_items_all={
   local float itemId;
   local float total;
 
-  tokens = tokenizebyseparator(UNLOCKED_ITEMS_DATA, " ",",");
+  tokens = tokenizebyseparator(UNLOCKED_ITEMS_DATA,",");
   itrTokens = 0;
   total = 1;
   while(itrTokens < tokens + 1){
@@ -226,7 +218,7 @@ void() cl_get_mechs_sort={
 void() cl_savefile_append={
   local string s;
   
-  if(MENU_DEBRIEF_unlocks_mechs != ""){
+  if(MENU_DEBRIEF_unlocks_mechs != "" && strlen(MENU_DEBRIEF_unlocks_mechs) > 0){
     if(UNLOCKED_MECHS_DATA != ""){
       s = cl_savefile_insert(MENU_DEBRIEF_unlocks_mechs, UNLOCKED_MECHS_DATA);
       cacheGlobalString( UNLOCKED_MECHS_DATA, s )
@@ -236,7 +228,7 @@ void() cl_savefile_append={
     }
   }
   
-  if(MENU_DEBRIEF_unlocks_equip != ""){
+  if(MENU_DEBRIEF_unlocks_equip != "" && strlen(MENU_DEBRIEF_unlocks_equip) > 0){
     if(UNLOCKED_ITEMS_DATA != ""){
       s = cl_savefile_insert(MENU_DEBRIEF_unlocks_equip, UNLOCKED_ITEMS_DATA);
       cacheGlobalString( UNLOCKED_ITEMS_DATA, s )
@@ -278,7 +270,7 @@ string(string newItems, string source) cl_savefile_insert={
   
   //copy inv items to the array.
   invItr = 0;
-  invTotal = tokenizebyseparator(source, " ");
+  invTotal = tokenizebyseparator(source, ",");
   while( invItr < invTotal ){
     SAVE_COMPARE[invItr] = rint(stof(argv(invItr)));
     invItr = invItr + 1;
@@ -307,7 +299,7 @@ string(string newItems, string source) cl_savefile_insert={
         append = newToken;
       }
       else{
-        append = strcat(append, " ", newToken);
+        append = strcat(append, ",", newToken);
       }
     }
     newItemItr = newItemItr + 1;
@@ -317,7 +309,7 @@ string(string newItems, string source) cl_savefile_insert={
     return strcat(source);
   }
   else{
-    return strcat(append, " ", source);
+    return strcat(append, ",", source);
   }
 };
 
@@ -327,16 +319,15 @@ void() cl_savefile_save={
   
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-  fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'save' : ", ftos(cvar("saveslot")), ",\n"));
-  fputs(flannel, strcat("  'mission' : ", cvar_string("sv_worldbasename"), ",\n"));
-  fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
-  fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
-  fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
-  fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
-  fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
-  fputs(flannel, strcat("  'newgame+' : ", ftos(cvar("cl_newgameplus")), ",\n"));
-  fputs(flannel, "}");
+  fputs(flannel, "// save file v2.0 for 5.0+ release\n");
+  fputs(flannel, strcat("save=", ftos(cvar("saveslot")), "\n"));
+  fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+  fputs(flannel, strcat("points=", ftos(1), "\n"));
+  fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
+  fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
+  fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
+  fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
+  fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
   fclose(flannel);
 }; 
 
@@ -353,16 +344,15 @@ void() cl_savefile_save_mission={
   
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-  fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-  fputs(flannel, strcat("  'mission' : ", cvar_string("sv_worldbasename"), ",\n"));
-  fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
-  fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
-  fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
-  fputs(flannel, strcat("  'mechs' : ", UNLOCKED_MECHS_DATA, ",\n"));
-  fputs(flannel, strcat("  'items' : ", UNLOCKED_ITEMS_DATA, ",\n"));
-  fputs(flannel, strcat("  'newgame+' : ", ftos(cvar("cl_newgameplus")), ",\n"));
-  fputs(flannel, "}");
+  fputs(flannel, "// save file v2.0 for 5.0+ release\n");
+  fputs(flannel, strcat("save=", cvar_string("saveslot"), "\n"));
+  fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+  fputs(flannel, strcat("points=", ftos(1), "\n"));
+  fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
+  fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
+  fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
+  fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
+  fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
   fclose(flannel);
 }; 
 
@@ -377,22 +367,21 @@ void() cl_savefile_default={
   
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-  fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-  fputs(flannel, "  'mission' : o1m1,\n");
+  fputs(flannel, "// save file v2.0 for 5.0+ release\n");
+  fputs(flannel, strcat("save=", cvar_string("saveslot"), "\n"));
+  fputs(flannel, "mission=o1m1\n");
   if( cvar("developer") ){
-    fputs(flannel, "  'mechs' : 1 2 3,\n");
-    fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
+    fputs(flannel, "mechs=1,2,3,4,5,\n");
+    fputs(flannel, "items=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21\n");
   }
   else{
-    fputs(flannel, "  'mechs' : 1,\n");
-    fputs(flannel, "  'items' : 1 3 4 8 12 16 18 21,\n");
+    fputs(flannel, "mechs=1,\n");
+    fputs(flannel, "items=1,3,4,8,12,16,18,21\n");
   }
   
-  fputs(flannel, "  'points' : ,\n");
-  fputs(flannel, strcat("  'skill' : ", ftos(cvar("skill")), ",\n"));
-  fputs(flannel, "  'newgame': 1,\n");
-  fputs(flannel, strcat("  'campaign' : ", SAVEFILE_CAMPAIGN, ",\n"));
-  fputs(flannel, "}");
+  fputs(flannel, "points=0\n");
+  fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
+  fputs(flannel, "newgame': 1\n");
+  fputs(flannel, strcat("campaign' : ", SAVEFILE_CAMPAIGN, "\n"));
   fclose(flannel);
 };

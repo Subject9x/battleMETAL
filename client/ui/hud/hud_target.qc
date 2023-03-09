@@ -633,15 +633,14 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
     
     tAngles = vectoangles(CLIENT_target_ent.origin - CLIENT_vis_org);
   
+    HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
+    setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, CLIENT_target_ent.model);
+    HUD_MODEL_ARMOR_GRAPH_TARGET.origin = viewOrg;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);
+    addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
     //Building is a turret
     if( (CLIENT_target_ent.flags & FL_TURRET) ){
-      HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
-      setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, CLIENT_target_ent.legs_mdl);
-      HUD_MODEL_ARMOR_GRAPH_TARGET.origin = viewOrg;
-      HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
-      HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);
-      addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
-    
       turAngl = [0, CLIENT_target_ent.angles_y, CLIENT_target_ent.angles_z];
       makevectors(turAngl);
       setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, CLIENT_target_ent.torC_mdl);
@@ -655,15 +654,6 @@ void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, v
       HUD_MODEL_ARMOR_GRAPH_TARGET.angles = HUD_MODEL_ARMOR_GRAPH_TARGET.torC_angl;
       HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
       addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
-    }
-    else{
-      HUD_MODEL_ARMOR_GRAPH_TARGET.colormod = tColor * 2;
-      setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, CLIENT_target_ent.model);
-      HUD_MODEL_ARMOR_GRAPH_TARGET.origin = viewOrg;
-      HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
-      HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);
-      addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
-      
     }
   renderscene();
   setproperty(VF_ORIGIN, CLIENT_vis_org);
