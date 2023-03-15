@@ -73,6 +73,7 @@ vector(vector org, entity filter, float len, float useHeight) util_find_random_f
 vector() util_trace_norm_angle;
 
 float( vector last, vector now, float len ) util_movedelta;
+void(entity enEntity) GetAlignedSurfaceAngles;
 
 #define macro_set_model(mdlName,skinNum,EFlags) local string path;self.effects = self.effects | EFlags;self.skin = skinNum;path = precache_model2( mdlName );setmodel(self, path);
 #define macro_set_collider(dmgMode,solidType,moveType) self.takedamage=dmgMode;self.solid=solidType;self.movetype=moveType;

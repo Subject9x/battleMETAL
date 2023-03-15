@@ -92,12 +92,11 @@ void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
     self.legs_hp = self.legs_hpMax = healthMax;
   #endif
   
-  #ifdef CSQC
-    self.legs_hpMax = healthMax;
-    self.legs_mdl = pathToModel;
-    precache_model(pathToModel);
-  #endif
-  
+  //compatability for server-side corpse ents.
+  self.legs_hpMax = healthMax;
+  self.legs_mdl = pathToModel;
+  precache_model(pathToModel);
+
   self.legs_parentId = M_TOR_CENTER;
   self.legs_compOffset = offsetOrigin;
 };

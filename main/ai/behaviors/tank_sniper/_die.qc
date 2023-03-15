@@ -44,7 +44,9 @@ void() ai_vec_dest_die={
   
   ai_nodegraph_clear_locks();
   
+  ai_wreck_vec();
+  
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
   self.think = SUB_Remove;
-  self.nextthink = time + 600;
+  self.nextthink = time + 0.1;
 };

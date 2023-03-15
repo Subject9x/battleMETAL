@@ -138,6 +138,8 @@ float PTC_HIT_EXPL_SML;
 float PTC_HIT_EXPL_MED;
 float PTC_HIT_EXPL_LRG;
 
+float PTC_WRECK_SMOKE;
+
 //Particle data
 .entity effect1, effect2, effect3;
 

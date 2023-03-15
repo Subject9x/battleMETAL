@@ -279,6 +279,13 @@ void() ai_nodegraph_combat_brawler_frame;
 .float ai_last_pathWait;  //further stipples pathfinding by making AI wait a bit before trying to path to a spot again.
 .float ai_reverse;        //used when node angle is in the rear 90d of facing, potentially reducing move time.
 
+//death/wrecks
+// we can't really 'remove' SendEntity function from entity, so instead we swap entity out for NON-NETWORKED version, because wrecks are static.
+//void() ai_wreck_th;
+void() ai_wreck_smoke;
+void() ai_wreck_gev;
+void() ai_wreck_vec;
+
 //DEBUG function
 //when you need the var-name for a global var value.
 string(float tether) dbg_tether={

@@ -33,6 +33,8 @@ void() particle_sys_ini_globals={
   PTC_HIT_EXPL_SML = particleeffectnum("TE_HIT_EXPL_SML");
   PTC_HIT_EXPL_MED = particleeffectnum("TE_HIT_EXPL_MED");
   PTC_HIT_EXPL_LRG = particleeffectnum("TE_HIT_EXPL_LRG");
+  
+  PTC_WRECK_SMOKE = particleeffectnum("TE_WRECK_SMOKE");
 };
 
 /*
