@@ -11,8 +11,6 @@ vector vPlayerOrigin;
 vector vPlayerOriginOld; // We definitely need this later
 vector vPlayerVelocity;
 
-entity CLIENT_MENU_deploy;
-
 entity CLIENT_server_ent; //this is the player sent from the server.
 
 vector CLIENT_render_origin;

@@ -262,29 +262,29 @@ void( float isNew, float entFlags ) data_deploy={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.isActive = ReadByte();
+    self.faction = ReadByte();
   }
   if( isNew ){
+    if( self.faction == CLIENT_faction ){
+      DEPLOY_LIST[self.data_idx] = num_for_edict(self);
+    }
+    
     if( cvar("developer") ){
       self.alpha = 0.9;
       self.scale = 1;
     }
     else{
-      self.alpha = 0.01;
-      self.scale = 0.01;
+      self.alpha = 0.0;
+      self.scale = 0.1;
     }
-    
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
     setmodel(self, "models/testball.md3");
     setorigin(self, self.origin);
-    if( DEPLOY_POINTS.data_idx ){
-      DEPLOY_POINTS.partNext = self;
-      self.partPrev = DEPLOY_POINTS;
-      DEPLOY_POINTS = self;
-    }
-    else{
-      //first deploy point received.
-      DEPLOY_POINTS = self;
-      DEPLOYPOINT = self; //first
-    }
   }
 };
 

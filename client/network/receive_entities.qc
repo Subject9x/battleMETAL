@@ -52,19 +52,7 @@ void() receive_ent_bindData={
     menu_update_colors( CLIENT_faction );
     cl_set_faction( CLIENT_faction );
     //rebuild nav points
-    for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
-      if( deploy.faction == CLIENT_faction || deploy.faction == FACTION_ALL ){
-        if( !previous.data_idx ){
-          FACTION_DEPLOY = deploy; // first point
-          previous = deploy;
-        }
-        else{
-          previous.nextPoint = deploy;
-          deploy.prevPoint = previous;
-          previous = deploy;
-        }
-      }
-    }
+    //TODO
   }
   
   if( CLIENT_data_type == DATA_MECH ){
@@ -300,7 +288,7 @@ void() client_state_events={
     
     //EVENT - CLIENT NET RESPAWN
     if( (CLIENT_player_state_prev == PLAYER_DEAD) && (CLIENT_player_state == PLAYER_REDEPLOY) ){
-      CLIENT_MENU_deploy = world;
+      CLIENT_MENU_nav_pnt = 0;
       menu_enter( MENU_CONNECT_ACTIVE );
       menu_chat_config(FALSE);
       MENU_button_delay = servertime + 1;

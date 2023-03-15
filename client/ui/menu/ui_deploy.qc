@@ -104,33 +104,66 @@ void() navListSelectListener={
   local entity deploy;
   local entity found;
   local float check;
+  local float deployId;
+  local float prevId;
+  
   check = FALSE;
+  found = world;
+  prevId = CLIENT_MENU_nav_pnt;
+  
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_NEXT_ORG, '20 44', TRUE) ){
-    for( deploy = CLIENT_MENU_deploy.nextPoint; deploy != world; deploy = deploy.nextPoint ){
-      if( found.data_idx ){
-        continue;
-      }
-      if( deploy.isActive ){
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_nav_pnt + 1;
+    if( CLIENT_MENU_nav_pnt > 31 ){
+      CLIENT_MENU_nav_pnt = 0;
+    }
+    
+    
+    for( deployId = CLIENT_MENU_nav_pnt; deployId < 32; deployId = deployId + 1){
+      if( DEPLOY_LIST[deployId] == 0 ){continue;}
+      if( found ){break;}
+      deploy = entitybyindex( DEPLOY_LIST[deployId] );
+      found = deploy;
+    }
+    if( found == world){
+      for( deployId = 0; deployId <= CLIENT_MENU_nav_pnt; deployId = deployId + 1){
+        if( DEPLOY_LIST[deployId] == 0 ){continue;}
+        if( found ){break;}
+        deploy = entitybyindex( DEPLOY_LIST[deployId] );
         found = deploy;
       }
     }
     if( found ){
-      CLIENT_MENU_deploy = found;
-      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+      CLIENT_MENU_nav_pnt = found.data_idx;
+    }
+    else{
+      CLIENT_MENU_nav_pnt = prevId;
     }
   }
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_BUTTON_NAV_PREV_ORG, '20 44', TRUE) ){
-    for( deploy = CLIENT_MENU_deploy.prevPoint; deploy != world; deploy = deploy.prevPoint ){
-      if( found.data_idx ){
-        continue;
-      }
-      if( deploy.isActive ){
+    CLIENT_MENU_nav_pnt = CLIENT_MENU_nav_pnt - 1;
+    if( CLIENT_MENU_nav_pnt < 0 ){
+      CLIENT_MENU_nav_pnt = 32;
+    }
+    
+    for( deployId = 0; deployId <= CLIENT_MENU_nav_pnt; deployId = deployId + 1){
+      if( DEPLOY_LIST[deployId] == 0 ){continue;}
+      if( found ){break;}
+      deploy = entitybyindex( DEPLOY_LIST[deployId] );
+      found = deploy;
+    }
+    if( found == world ){
+      for( deployId = CLIENT_MENU_nav_pnt; deployId < 32; deployId = deployId + 1){
+        if( DEPLOY_LIST[deployId] == 0 ){continue;}
+        if( found ){break;}
+        deploy = entitybyindex( DEPLOY_LIST[deployId] );
         found = deploy;
       }
     }
     if( found ){
-      CLIENT_MENU_deploy = found;
-      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
+      CLIENT_MENU_nav_pnt = found.data_idx;
+    }
+    else{
+      CLIENT_MENU_nav_pnt = prevId;
     }
   }
   //click filter to register clicks in the above 2 buttons only.
@@ -346,6 +379,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector nofs, tofs;
   local entity nav;
   local float nlen;
+  local float deployId;
   local entity deploy;
   local vector lineOrg;
   local vector helpOrg;
@@ -420,26 +454,17 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   }
   
   //Render Deploy points
-  if( !CLIENT_MENU_deploy  ){
-    CLIENT_MENU_deploy = DEPLOYPOINT;
-    CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
-  }
-  for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
-    if( deploy.faction != FACTION_ALL ){
-      if( deploy.faction != CLIENT_faction ){
-        continue;
-      }
-    }
-    if( deploy.isActive == FALSE ){
-      continue;
-    }
+  for( deployId = 0; deployId < 32; deployId = deployId + 1){
+    deploy = entitybyindex( DEPLOY_LIST[deployId] );
+    if( !deploy ){continue;}
+    
     tofs = nofs = gui_mapCoordToImgCoord(mapMins, map_size, deploy.origin, iofs, panelSize);
     
     if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
       drawpic(nofs, UI_DEF_DEPLOYPOINT, '16 16', CLR_DEF_ARM_HALF, 1, 0) ;
     }
     else{
-      if( CLIENT_MENU_deploy.data_idx == deploy.data_idx ){
+      if( CLIENT_MENU_nav_pnt == deploy.data_idx ){
         gui_renderTintImage(TRUE, nofs - '6 6', UI_DEF_REC_64, '28 28', CLR_DEF_GREEN, 0.85, 0);
         CLIENT_MENU_nav_ui_org = tofs;
         ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
@@ -449,10 +474,10 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       }
     }
     lineOrg = mpos + '5 110';
-    drawline(1, lineOrg + '0 1', CLIENT_MENU_nav_ui_org + '0 1', '0.85 0.85 0', 0.75, 0);
-    drawline(1, lineOrg + '0 2', CLIENT_MENU_nav_ui_org + '0 2', '0.85 0.85 0', 0.75, 0);
-    drawline(1, lineOrg + '0 3', CLIENT_MENU_nav_ui_org + '0 3', '0.85 0.85 0', 0.75, 0);
-    drawline(1, lineOrg + '0 4', CLIENT_MENU_nav_ui_org + '0 4', '0.85 0.85 0', 0.75, 0);
+    //drawline(6, lineOrg + '0 1', CLIENT_MENU_nav_ui_org + '0 1', '0.85 0.85 0', 0.75, 0);
+    //drawline(1, lineOrg + '0 2', CLIENT_MENU_nav_ui_org + '0 2', '0.85 0.85 0', 0.75, 0);
+    drawline(12, lineOrg, CLIENT_MENU_nav_ui_org , '0.85 0.85 0', 0.67, 0);
+    //drawline(1, lineOrg + '0 4', CLIENT_MENU_nav_ui_org + '0 4', '0.85 0.85 0', 0.75, 0);
   }
   
   helpOrg = [mpos_x + panelSize_x - 12,  mpos_y];
