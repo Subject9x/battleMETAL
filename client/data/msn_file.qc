@@ -244,7 +244,7 @@ void() msn_unlock_stuff={
       unlockMechs = strcat(unlockMechs, MSN_OBJ_MECHS[obj.data_idx], " ");
     }
     if( MSN_OBJ_ITEMS[obj.data_idx] != "" ){
-      unlockItems = strcat(unlockMechs, MSN_OBJ_ITEMS[obj.data_idx], " ");
+      unlockItems = strcat(unlockItems, MSN_OBJ_ITEMS[obj.data_idx], " ");
     }
   }
   cacheGlobalString(MENU_DEBRIEF_unlocks_mechs, unlockMechs )

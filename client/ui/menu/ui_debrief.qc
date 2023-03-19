@@ -538,10 +538,9 @@ void() menu_debrief_sort_unlocks={
   if( MENU_DEBRIEF_unlocks_mechs != "" && strlen(MENU_DEBRIEF_unlocks_mechs) > 0){
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
     while( tokenItr < tokens ){
-      item = strzone(argv(tokenItr));
+      item = argv(tokenItr);
       itemCounter = stof(item);
       UNLOCKED_MECHS[itemCounter] = itemCounter;
-      strunzone(item);
       tokenItr = tokenItr + 1;
     }
   }
@@ -549,12 +548,12 @@ void() menu_debrief_sort_unlocks={
   tokenItr = 0;
   itemCounter = 1;
   if( MENU_DEBRIEF_unlocks_equip != "" && strlen(MENU_DEBRIEF_unlocks_equip) > 0){
+    
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
     while( tokenItr < tokens ){
-      item = strzone(argv(tokenItr));
+      item = argv(tokenItr);
       itemCounter = stof(item);
       UNLOCKED_ITEMS[itemCounter] = itemCounter;
-      strunzone(item);
       tokenItr = tokenItr + 1;
     }
   }
