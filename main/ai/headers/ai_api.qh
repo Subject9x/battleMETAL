@@ -35,9 +35,6 @@ float VIS_FRN   = 2;  //A friendly is blocking the way
 float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
 
 //GLOBALS
-vector enemySensorOrg;  //we only care about origin_x and origin_y, radar ignores _z
-vector selfSensorOrg;
-
 entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.
 
 void(entity newAttacker) ai_react_generic;

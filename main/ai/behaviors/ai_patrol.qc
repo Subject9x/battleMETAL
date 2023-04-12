@@ -5,6 +5,8 @@ Date: 07/07/2020
 Overview: 
 */
 
+void() ai_nodegraph_patrol_arrive;
+
 /*
   based on lean AI impl
     all-in-one, flat if-checking for patrol
@@ -27,7 +29,6 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
   local vector nqOrg;
   local float moveYaw;
   local float moveSpeed;
-  local float oldNode;
   local float walkAngle;
   
   if( self.nqLast != -1 ){
@@ -47,31 +48,19 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       if( nodeDist <= 8 ){
         //arrived at node
         if( self.nq1 == self.patrolNode.pathEndId ){
-          //arrived at patrol node
-          if( self.patrolNode.partNext ){
-            oldNode = self.patrolNode.pathEndId;
-            //continue the patrol route
-            self.patrolNode = self.patrolNode.partNext;
-            ai_nodegraph_clear_path();
-            ai_nodegraph_trace_norm( oldNode, self.patrolNode.pathEndId );
-          }
-          else{
-            //end of line
-            self.tether = TETHER_NONE;
-            self.moveState = MOVE_STAND;
-            pathFind = ai_nodegraph_to_org_filter( self.origin , self.patrolNode.pathEndId, TRUE );
-            if( pathFind != -1 ){
-              ai_nodegraph_trace_vecToNode( self.origin, pathFind );
-            }
-            else{
-              //ai_nodegraph_clear_locks();
-            }
-            self.patrolNode = world;
-          }
-          NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
+          ai_nodegraph_patrol_arrive();
         }
         else{
-          pathFind = ai_nodegraph_next();
+          //clustering fix-patch, if AI is 1-node away from path target, and target is occupied? early-exit, and keep moving.
+          if( self.nq2 == self.patrolNode.pathEndId ){
+            if( NODEGRAPH_DATA_BLOCK[self.nq2] != self.entnum ){
+              //if actual node dest is already blocked by another bot, treat this node as destination and path to next node
+              ai_nodegraph_patrol_arrive();
+            }
+          }
+          else{
+            pathFind = ai_nodegraph_next();
+          }
         }
       //------------------------------------------------------------------------------------------------------------------------------------------
       }
@@ -152,5 +141,38 @@ void( float turnSpeed, float walkSpeed ) ai_nodegraph_patrol_frame={
       }
     }
   }
+};
+
+/*
+  made this a generic because AI runs the check in 2 places, 
+    case 1: normal arrival to patrol path node they have a lock on.
+    case 2: they're only 1 node away FROM patrol path node that's LOCKED BY another AI, so treat the node they're at AS IF
+      they've reached the path node.
+*/
+void() ai_nodegraph_patrol_arrive={
+  local float oldNode;
+  local float pathFind;
+  //arrived at patrol node
+  if( self.patrolNode.partNext ){
+    oldNode = self.patrolNode.pathEndId;
+    //continue the patrol route
+    self.patrolNode = self.patrolNode.partNext;
+    ai_nodegraph_clear_path();
+    ai_nodegraph_trace_norm( oldNode, self.patrolNode.pathEndId );
+  }
+  else{
+    //end of line
+    self.tether = TETHER_NONE;
+    self.moveState = MOVE_STAND;
+    pathFind = ai_nodegraph_to_org_filter( self.origin , self.patrolNode.pathEndId, TRUE );
+    if( pathFind != -1 ){
+      ai_nodegraph_trace_vecToNode( self.origin, pathFind );
+    }
+    else{
+      //ai_nodegraph_clear_locks();
+    }
+    self.patrolNode = world;
+  }
+  NODEGRAPH_DATA_BLOCK[self.nqLast] = FALSE;
 };
 

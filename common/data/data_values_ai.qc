@@ -118,10 +118,12 @@ Overview: AI values that have been spun off from common/game
 #define AI_VIEW_ACE 0.45
 
 //View Ranges, multipliers against ai.radar_range
-#define AI_VIEW_RANGE_ROK 0.7
-#define AI_VIEW_RANGE_REG 0.8
-#define AI_VIEW_RANGE_VET 0.9
-#define AI_VIEW_RANGE_ACE 1
+// 5.0.0 - rebalance, view-range is tooooooo low
+// 0.7,0.8,0.9, 1.0
+#define AI_VIEW_RANGE_ROK 0.9
+#define AI_VIEW_RANGE_REG 1.0
+#define AI_VIEW_RANGE_VET 1.1
+#define AI_VIEW_RANGE_ACE 1.2
 
 //Adjust yaw_speed
 #define AI_YAW_VET 1.1
@@ -130,8 +132,8 @@ Overview: AI values that have been spun off from common/game
 //attack chances
 #define AI_ATTACK_ROK 0.125
 #define AI_ATTACK_REG 0.1
-#define AI_ATTACK_VET 0.075
-#define AI_ATTACK_ACE 0.05
+#define AI_ATTACK_VET 0.067
+#define AI_ATTACK_ACE 0.033
 
 //WEAPON TWEAKS - AI thinks are every 0.01 game tic, so weapon reload need to be ratio'd down to that scale.
 #define AI_WEAPON_RPS_MOD 1500
@@ -161,9 +163,13 @@ Overview: AI values that have been spun off from common/game
 #define AI_LEAD_ROK 0.4
 
 //common engage ranges
-#define AI_RANGE_S 400
-#define AI_RANGE_M 1000
-#define AI_RANGE_L 1600
+#define AI_RANGE_S 800
+#define AI_RANGE_M 1400
+#define AI_RANGE_L 2000
+
+//#define AI_RANGE_S 400
+//#define AI_RANGE_M 1000
+//#define AI_RANGE_L 1600
 
 //Patrol Node Check Range
 #define AI_NODE_DISTANCE 67

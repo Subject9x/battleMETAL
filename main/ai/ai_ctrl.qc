@@ -44,10 +44,10 @@ void() ai_touch={
     return;
   }
   if(self.enemy && other == self.enemy){
-    self.ai_react_buffer = time + (self.ai_react_time * 3);
+    self.ai_react_buffer = time + (self.ai_react_time * 2);
     return;
   }
-  self.ai_react_buffer = time + (self.ai_react_time * 2);
+  self.ai_react_buffer = time + (self.ai_react_time * 1.5);
   
   //AI lacks an enemy at the moment.
   otherFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) );
@@ -76,7 +76,7 @@ void() ai_touch={
   Generic th_pain reaction filter.
 */
 void(entity atk) ai_react={
-  if( !(atk.flags & FL_MONSTER) && !(atk.flags & FL_CLIENT)){
+  if( !(atk.flags & FL_UNIT) ){
     return;
   }
   
