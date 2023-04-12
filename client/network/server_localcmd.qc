@@ -374,17 +374,17 @@ void() cl_get_new_fog={
   
   FOG_WORLD_VAL = ReadByte();
   
-  FOG_TARG_RED = ReadCoord();
-  FOG_TARG_GREEN = ReadCoord();
-  FOG_TARG_BLUE = ReadCoord();
+  FOG_TARG_RED = ReadFloat();
+  FOG_TARG_GREEN = ReadFloat();
+  FOG_TARG_BLUE = ReadFloat();
   
-  FOG_TARG_DIST_MIN = ReadLong();
-  FOG_TARG_DIST_MAX = ReadLong();
-  FOG_TARG_DIST_TOP = ReadLong();
+  FOG_TARG_DIST_MIN = ReadFloat();
+  FOG_TARG_DIST_MAX = ReadFloat();
+  FOG_TARG_DIST_TOP = ReadFloat();
   
-  FOG_TARG_ALPHA = ReadCoord();
-  FOG_TARG_DENSITY = ReadCoord();
-  FOG_TARG_FADE_DEPTH = ReadCoord();
+  FOG_TARG_ALPHA = ReadFloat();
+  FOG_TARG_DENSITY = ReadFloat();
+  FOG_TARG_FADE_DEPTH = ReadFloat();
   
   /*cons_logAFloat("FOG_TARG_RED", FOG_TARG_RED); //debug
   cons_logAFloat("FOG_TARG_GREEN", FOG_TARG_GREEN); //debug
