@@ -12,9 +12,9 @@ Overview:
 //   FILE PATHS           
 //============================
 #ifdef CSQC
-string MAP_NAME;  //strips mapname global of junk
 float UNLOCKED_MECHS[256];
 #endif
+string MAP_NAME;  //strips mapname global of junk
 
 #define PATH_DATA_MAP "maps/"
 #define PATH_DATA_ANIM "anim"

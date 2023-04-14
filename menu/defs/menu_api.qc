@@ -771,9 +771,11 @@ void() menu_scan_saves={
   local float line_tag, save_skill, new_gameplus;
   local string line, save_name, save_num, map_name, contents;
   local string campid, campFile;
+  local float isVer1;   //detect version 1.0 save file format
   
   itr = 0;
   while(itr < GAME_SAVES_MAX){
+    isVer1 = FALSE;
       
     freeGlobalString(GAME_SAVES[itr])
     freeGlobalString(GAME_SAVES_DRAWNAME[itr])
@@ -784,25 +786,54 @@ void() menu_scan_saves={
     if(flannel != -1){
       new_gameplus = FALSE;
       contents = fgets(flannel);
+      cons_logAString("---- contents", contents);  //debug
+      if( contents == "{" ){
+        isVer1 = TRUE;
+        cons_logAFloat("---- version 1.0 ---", 1);  //debug
+      }
       line = fgets(flannel);
-      
       while( line != "" ){
         if( substring(line,0, 2) != "//" ){
-          line_tag = tokenizebyseparator(line, "=");
-          if( argv(0) == "save" ){
-            save_num = argv(1);
+          if( isVer1 ){
+            //process 1.0 save file format
+            line_tag = tokenizebyseparator(line, "'","'",": ",",");
+            if( argv(1) == "save" ){
+              save_num = argv(3);
+              cons_logAString("====save_num", save_num);  //debug
+            }
+            if( argv(1) == "mission" ){
+              map_name = argv(3);
+              cons_logAString("====map_name", map_name);  //debug
+            }
+            if( argv(1) == "skill" ){
+              save_skill = stof(argv(3));
+            }
+            if( argv(1) == CAMP_SAVE_TAG ){
+              campid = argv(3);
+              cons_logAString("====campid", campid);  //debug
+            }
+            if( argv(1) == CAMP_TAG_NEWG ){
+              new_gameplus = stof(argv(3));
+            }
           }
-          if( argv(0) == "mission" ){
-            map_name = argv(1);
-          }
-          if( argv(0) == "skill" ){
-            save_skill = stof(argv(1));
-          }
-          if( argv(0) == CAMP_SAVE_TAG ){
-            campid = argv(1);
-          }
-          if( argv(0) == CAMP_TAG_NEWG ){
-            new_gameplus = stof(argv(1));
+          else{
+            //process 2.0 save file format
+            line_tag = tokenizebyseparator(line, "=");
+            if( argv(0) == "save" ){
+              save_num = argv(1);
+            }
+            if( argv(0) == "mission" ){
+              map_name = argv(1);
+            }
+            if( argv(0) == "skill" ){
+              save_skill = stof(argv(1));
+            }
+            if( argv(0) == CAMP_SAVE_TAG ){
+              campid = argv(1);
+            }
+            if( argv(0) == CAMP_TAG_NEWG ){
+              new_gameplus = stof(argv(1));
+            }
           }
         }
         line = fgets(flannel);
@@ -830,6 +861,12 @@ void() menu_scan_saves={
       cacheGlobalString( GAME_SAVES_MAP[itr], map_name)
       GAME_SAVES_NEWG[itr] = new_gameplus;
       cacheGlobalString( GAME_SAVES_CAMP_FILE[itr], campFile )
+      
+      
+      if( isVer1 ){
+        menu_write_patch_save( itr, map_name, campFile );
+      }
+      
     }
     else{
       GAME_SAVES_SKILL[itr] = 0;
@@ -837,6 +874,7 @@ void() menu_scan_saves={
       GAME_SAVES_DRAWNAME[itr] = "";
       GAME_SAVES_MAP[itr] = "";
       GAME_SAVES_NEWG[itr] = 0;
+      GAME_SAVES_CAMP_FILE[itr] = "";
     }
     itr = itr + 1;
   }

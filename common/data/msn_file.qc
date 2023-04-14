@@ -108,7 +108,6 @@ void() msn_parsefile={
     //always close a file :3
     fclose(flannel);
   }
-  
 };
 
 //queries a msn file solely for its unlocks
@@ -222,6 +221,7 @@ void( float obj_id, string line, string val) msn_setobj_items={
   }
 };
 
+#ifdef CSQC
 //ops
 void() msn_unlock_stuff={
   local string unlockMechs;
@@ -274,5 +274,5 @@ void() msn_free_strings={
   freeGlobalString(MSN_INTEL)
   freeGlobalString(MSN_ANIM)
 };
-
+#endif
 

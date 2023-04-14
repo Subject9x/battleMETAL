@@ -57,9 +57,10 @@ string MSN_OBJ_TYPES[16];
 string MSN_OBJ_MECHS[16];
 string MSN_OBJ_ITEMS[16];
 
+string( string fileName ) msn_parsefile_get_unlocks;
+
 void() msn_getfile;
 void() msn_parsefile;
-string( string fileName ) msn_parsefile_get_unlocks;
 
 void(string val) msn_setmappic;
 float(float currentObjId, string line, string val) msn_mapobjid;
@@ -69,5 +70,7 @@ void( float obj_id, string line, string val) msn_setobj_mechs;
 void( float obj_id, string line, string val) msn_setobj_items;
 
 //ops
+#ifdef CSQC
 void() msn_unlock_stuff;
 void() msn_free_strings;
+#endif

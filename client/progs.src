@@ -21,7 +21,7 @@ data/defs_entity.qc
 
 data/headers/data_api.qh
 data/headers/ui_data.qh
-data/headers/msn_file.qh
+../common/data/msn_file.qh
 data/headers/data_buildings.qh
 data/headers/data_turrets.qh
 data/headers/data_vehicles.qh
@@ -159,7 +159,7 @@ data/data_system_ext.qc
 data/client_precache.qc
 data/data_api.qc
 data/ui_data.qc
-data/msn_file.qc
+../common/data/msn_file.qc
 data/data_buildings.qc
 data/data_turrets.qc
 data/data_vehicles.qc
