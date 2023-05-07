@@ -283,6 +283,9 @@ void() ai_wreck_smoke;
 void() ai_wreck_gev;
 void() ai_wreck_vec;
 
+void() ai_wreck_mech;
+void() ai_wreck_mech_th;
+
 //DEBUG function
 //when you need the var-name for a global var value.
 string(float tether) dbg_tether={

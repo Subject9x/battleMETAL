@@ -182,21 +182,21 @@ void() predraw_mech_corpse={
 void() mech_ai_die_stand1;
 
 void() predraw_mech_corpse_legs={
-  local vector cacheOrg;
-  local vector cacheAngle;
   
-  cacheOrg = self.origin;
-  cacheAngle = self.angles;
   makevectors(self.angles);
   self.legs_org = self.origin + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y) + (v_right * self.legs_compOffset_x);
   
+  self.scale = 1.0;
+  self.alpha = 1.0;
   setmodel(self, self.legs_mdl);
   self.origin = self.legs_org;
   self.angles = self.legs_angl;
   addentity(self);
   
-  self.origin = cacheOrg;
-  self.angles = cacheAngle;
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  self.scale = 0.1;
+  self.alpha = 0.01;
   
 };
 
@@ -230,13 +230,15 @@ void() sendevent_mech_ai_die={
     self.predraw = predraw_mech_corpse;
     
     self.think = mech_ai_die_stand1;
-    self.nextthink = time + 0.1;
+    self.nextthink = time + 0.01;
   }
   else{
-    self.predraw = predraw_mech_corpse_legs;
     self.classname = "wreck_mech";
+    
+    self.predraw = predraw_mech_corpse_legs;
+    
     self.think = te_mech_dead_legs_burn;
-    self.nextthink = servertime + frametime*0.5;
+    self.nextthink = servertime + time + 0.01;
   }
   if( self.unit_legs && !wasfreed(self.unit_legs) ){
     remove(self.unit_legs);
@@ -364,6 +366,13 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
         self.unit_legs.skin = self.skin;
       }
     }
+    else{
+      data_sync_new_mech_ai( self.data_idx );
+      if( self.deadflag != DEAD_NO ){
+      
+      }
+      pointparticles( PTC_WRECK_SMOKE, self.origin + '0 0 20', normalize( (self.origin + '0 0 20') - self.origin) * 5, 0.5);
+    }
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
@@ -399,9 +408,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   if( (changeFlags & SENDFLAG_CRIT) ){
     self.critBits = fabs(rint(ReadLong()));
     if( self.critBits != 0 ){
-      if( self.deadflag == DEAD_NO ){
-        sendevent_mech_ai_crit( self.critBits );
-      }
+      sendevent_mech_ai_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
       self.critBits = 0;
     }

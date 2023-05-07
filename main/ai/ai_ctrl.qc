@@ -424,6 +424,51 @@ void() ai_setup_patrol={
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
 };
 
+
+/*
+  Mech corpse optimization:
+    CSQC + SendEnt violates server-side culling, which works against us when doing cosmetic things
+    like corpses. So all mechs are reduced to a fun smoking pair of legs, and are copied into a server-only ent.
+*/
+
+void() ai_wreck_mech_th={
+  
+  local vector v;
+  
+  v = self.origin + [0,0, self.maxs_z + 5] + WeatherDominator.wind;
+  pointparticles( particleeffectnum("TE_WRECK_SMOKE"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+  
+  if(time > self.ai_timer_breathe){
+    self.think = SUB_Remove;
+  }
+  else{
+    self.think = ai_wreck_mech_th;
+  } 
+  self.nextthink = time + 0.1;
+};
+
+void() ai_wreck_mech={
+  local entity corpse;
+  
+  corpse = spawn();
+  if(corpse){
+    corpse.vec_size = self.vec_size;
+    setmodel(corpse, self.legs_mdl);
+    setsize(corpse, corpse.mins, corpse.maxs);
+    setorigin(corpse, self.legs_org);
+    
+    corpse.movetype = MOVETYPE_NONE;
+    corpse.solid = SOLID_NOT;
+    corpse.effects = corpse.effects | EF_LOWPRECISION;
+    
+    corpse.think = ai_wreck_mech_th;
+    corpse.nextthink = time + 0.1;
+    
+    corpse.ai_timer_breathe = time + 600;
+  }
+};
+
+
 /*
   rolled together all the flying code to a one-off call.
   this should be made everytime a flyer makes an engine-based move.
