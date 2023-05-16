@@ -32,7 +32,7 @@ void() data_ini_dunerunner_={
 //=====================================
  
 //RADAR================================
-  self.radar_range = 2100;
+  self.radar_range = 2300;
   self.w_firetime = 4;  //lock-on time in seconds
 //=====================================
 

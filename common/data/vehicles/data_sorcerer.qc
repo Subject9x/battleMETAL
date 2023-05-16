@@ -32,7 +32,7 @@ void() data_ini_sorcerer_={
 //=====================================
  
 //RADAR================================
-  self.radar_range = 2000;
+  self.radar_range = 3000;  //2000
   self.w_firetime = 3;  //lock-on time in seconds
 //=====================================
 

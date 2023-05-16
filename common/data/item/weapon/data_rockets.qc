@@ -35,12 +35,12 @@ void() data_ini_rockets_={
   self.data_idx = UID_ITEM_rocket_launcher;  
   
   self.w_clipsize = 1;
-  self.reloadRate = 1.25;
-  self.reloadMax = 1.25;
+  self.reloadRate = 1.33; //1.25 v4.0.0-
+  self.reloadMax = 1.33; //1.25 v4.0.0-
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 55;  //pre-release 67
+  self.damageValue = 50;  //55
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;

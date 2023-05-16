@@ -63,7 +63,7 @@ void() data_ini_particle_cannon_={
   self.energyRate = 300;
 
   self.w_range = 3000;
-  self.damageValue = 250;
+  self.damageValue = 300; //pre-5.0.0 250
   self.damageType = DMG_ENE;
  
   self.techLevel = 3;

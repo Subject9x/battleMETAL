@@ -9,8 +9,8 @@ Overview:
 */
 
 #ifdef SSQC
-float data_projectile_plasma_burn_time = 0.5;
-float data_projectile_plasma_burn_dmg = 0.1;
+#define DATA_PROJECTILE_PLASMA_BURN_TIME 1.0
+#define DATA_PROJECTILE_PLASMA_BURN_DMG 0.5
 
 void() data_projectile_plasma_touch;
 void() data_projectile_plasma_burn_ini_;
@@ -43,8 +43,9 @@ void() projectile_plasma_expl={
 
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  self.data_velocity = 1600;  //vel = Range / lifetime
-  self.data_lifetime = 1.12;
+  self.data_velocity = 1200;  //vel = Range / lifetime || vel * lifetime = Range / lifetime * lifetime
+  self.data_lifetime = 1.5;
+  self.scale = 1.25;
   
   #ifdef CSQC
     //cosmetics
@@ -65,11 +66,12 @@ void() data_projectile_ini_plasma_={
 #ifdef SSQC
 void() data_projectile_plasma_burn_ini_={
   self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
   self.alpha = 0.75;
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
   self.impactType = IMPACT_ARMOR;
   self.think = data_projectile_plasma_burn_th;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.05;
 };
 
 void() data_projectile_plasma_burn_th={
@@ -149,8 +151,8 @@ void() data_projectile_plasma_touch={
       
       self.partParentId = hit;
       
-      self.damageValue = data_projectile_plasma_burn_dmg;
-      self.data_lifetime = time + data_projectile_plasma_burn_time;
+      self.damageValue = DATA_PROJECTILE_PLASMA_BURN_DMG;
+      self.data_lifetime = time + DATA_PROJECTILE_PLASMA_BURN_TIME;
       setsize(self, '-1 -1 -1', '1 1 1');
       
       if( hit ){

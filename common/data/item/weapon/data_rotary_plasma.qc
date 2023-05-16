@@ -18,7 +18,7 @@ void() te_muzzle_rpc={
   local vector startOrg;
   local vector endOrg;
   
-  startOrg =self.wepFireOffset;
+  startOrg = self.wepFireOffset;
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
   
@@ -32,9 +32,9 @@ void() data_ini_plasma_={
 
   self.data_idx = UID_ITEM_rotary_plasma;
   
-  self.w_clipsize = 1;
-  self.reloadRate = 0.8; //0.55
-  self.reloadMax = 0.8; //0.55
+  self.w_clipsize = 6;
+  self.reloadRate = 2.0; //0.55
+  self.reloadMax = 2.0; //0.55
   self.energyRate = 0;
   
   self.w_range = 1800;
