@@ -9,9 +9,10 @@
   'sector' : 'Stormside'
   'location' : 'Deep Wastes'
   'time' : '04;12;37;91'
-  'brief' : '-COMM INTERCEPT- | | L.Yunver> Rollet Gavir. | | [L.Gavir] Shilo Yunver...interesting times we find ourselves in, eh? | | [L.Yunver] Hm, How goes negotiating with whats left of the MILITAR? | | [L.Gavir] not well at all, they believe these wraith <METAL>s are our handiwork. Doesn`t help that our initial ICBM attacks knocked out their Stock Exchange Halls. | | [L.Yunver] You must double your efforts, I have ordered my Landser Commands to organize for a major strike. My intel reports they have found some major enemy firebases within distance to one of my strongholds. | | [L.Gavir] Excellent, I don`t have much else I can spare. My House Guards have their hands full with supply bases along the Deep Wastes but I will see what I can do. | | [L.Yunver] I do appreciate this, Gavir. oh and one more thing; do we have any newer intel on this enemy? its not MILITAR, right? | | [L.Gavir] My surviving archivists are poring over historical data - whats left of it. I`ll update you by tomorrow... | <TRANSMISSION LOST>'
-  'intel' : 'Survest forces are moving to capture one of our lost Repair Facilities in this zone. You need to make sure they fail. | | Enemy force disposition is mostly armored vehicles with a <METAL> group as a blocking unit near the deployment zone. | | The salvaged MONITOR-class <METAL> will be out-numbered, we strongly recommend dealing with some of the enemy force groups on your way to (RHO). | | When you reach the (RHO), the friendly base will automatically deploy the MONITOR units and aid in the defense of the facility. | | Recommended Strike Package; + 1x MATOK <METAL> + at least 1x anti-shield weapon. | | Repair Facilities available to you as well at (RHO).'
-  'objtotal' : '2'
+//'brief' : '-COMM INTERCEPT- | | [L.Yunver] Rollet Gavir. | | [L.Gavir] Shilo Yunver...interesting times we find ourselves in, eh? | | [L.Yunver] Hm, How goes negotiating with whats left of the MILITAR? | | [L.Gavir] not well at all, they believe these wraith <METAL>s are our handiwork. Doesn`t help that our initial ICBM attacks knocked out their Stock Exchange Halls. | | [L.Yunver] You must double your efforts, I have ordered my Landser Commands to organize for a major strike. My intel reports they have found some major enemy firebases within distance to one of my strongholds. | | [L.Gavir] Excellent, I don`t have much else I can spare. My House Guards have their hands full with supply bases along the Deep Wastes but I will see what I can do. | | [L.Yunver] I do appreciate this, Gavir. oh and one more thing; do we have any newer intel on this enemy? its not MILITAR, right? | | [L.Gavir] My surviving archivists are poring over historical data - whats left of it. I`ll update you by tomorrow... | <TRANSMISSION LOST>'
+  'brief' : 'DEAD_HAND, your skills are needed in this sector. | | PSC force projections indicate we will need to activate a large contingent of assault <METALS> to truly reclaim this sector. | | Your task will be to punch through the enemy`s defensive perimeter to deliver an activation signal to our dormant compound. Upon reaching the compound, PSC will hot-load 4 [Monitor] class <METALS> for immediate deployment. | | Together all DEAD_HANDs will then attack the nearby hostile firebase and terminate with prejudice. | | Drone over-flight scans indicate invader personnel fleeing your attack in the previous sector are taking shelter here.'
+  'intel' : 'Invader forces are moving to capture one of our lost Repair Facilities in this zone. You need to make sure they fail. | | Enemy force disposition is mostly armored vehicles with a <METAL> group as a blocking unit near the deployment zone. | | The salvaged MONITOR-class <METAL> will be out-numbered, we strongly recommend dealing with some of the enemy force groups on your way to (RHO). | | When you reach the (RHO), the friendly base will automatically deploy the MONITOR units and aid in the defense of the facility. | | Recommended Strike Package; + 1x MATOK <METAL> + at least 1x anti-shield weapon. | | Repair Facilities available to you as well at (RHO).'
+  'objtotal' : '5'
   'anim' : ''
 }
 // objectives section
@@ -29,7 +30,8 @@
   'objid' : '3'
   'objtype': 'primary'
   'objdesc' : 'Defend <DEAD_HAND> Repair Depot at (RHO).'
-  'items' : '2 5 21'
+  'items' : '2 7 15'
+  'mechs' : '4'
 }
 {
   'objid' : '4'

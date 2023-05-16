@@ -3407,3 +3407,47 @@ velocitymultiplier 2
   originjitter 3 3 3
   velocityjitter 5 5 5
   gravity -0.00050
+
+//WRECK SMOKE EFFECT==================================
+  //TE_WRECK_SMOKE - SMOKE
+    effect TE_WRECK_SMOKE
+    count 1
+    type alphastatic
+    blend invmod
+    color 0x151515 0x2E2E2E
+    tex 8 15
+    size 4 5
+    sizeincrease 2
+    alpha 240 240 25
+    originjitter 1.0. 1.0 1.0
+    velocityjitter 2 2 8
+    gravity -0.005
+    
+  //TE_WRECK_SMOKE SMALL- SMOKE
+    effect TE_WRECK_SMOKE_SM
+    count 1
+    type alphastatic
+    blend invmod
+    color 0x151515 0x2E2E2E
+    tex 8 15
+    size 2 3
+    sizeincrease 2
+    alpha 240 240 50
+    originjitter 1.0. 1.0 1.0
+    velocityjitter 2 2 8
+    gravity -0.0025
+    
+  //TE_WRECK_SMOKE - SMOKE
+    effect TE_WRECK_SMOKE_LG
+    count 1
+    type alphastatic
+    blend invmod
+    color 0x151515 0x2E2E2E
+    tex 8 15
+    size 6 8
+    sizeincrease 2
+    alpha 240 240 15
+    originjitter 3 3 5
+    velocityjitter 2 2 5
+    gravity -0.0025
+//================================================

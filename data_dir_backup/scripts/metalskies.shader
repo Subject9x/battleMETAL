@@ -18,8 +18,10 @@ textures/skies/storm1
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
 	q3map_sunExt 0.65 0.25 0.15 125 135 55 4 16
+	q3map_lightmapFilterRadius 0 8
 	q3map_skylight 50 2
 	skyparms textures/skies/env/storm1/storm1 - -
 }
@@ -27,6 +29,7 @@ textures/skies/storm1
 textures/skies/cloud_storm1
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -48,14 +51,17 @@ textures/skies/storm2
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
 	q3map_sunExt 0.9 0.75 0.33 75 135 65 2 16
+	q3map_lightmapFilterRadius 0 8
 	q3map_skylight 100 3
 	skyparms textures/skies/env/storm2/storm2 - -
 }
 textures/skies/cloud_storm2
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -77,14 +83,17 @@ textures/skies/storm3
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
 	q3map_sunExt 1.0 0.33 0.9 175 135 60 4 32
+	q3map_lightmapFilterRadius 0 8
 	q3map_skylight 15 2
 	skyparms textures/skies/env/storm3/storm3 - -
 }
 textures/skies/cloud_storm3
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -105,14 +114,17 @@ textures/skies/frost1
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
 	q3map_sunExt 0.33 0.8 0.9 67 135 67 2 16
+	q3map_lightmapFilterRadius 0 8
 	q3map_skylight 10 4
 	skyparms textures/skies/env/frost1/frost1 - -
 }
 textures/skies/cloud_frost1
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -133,8 +145,10 @@ textures/skies/frost2
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
 	q3map_sunExt 0.1 0.4 0.67 25 135 75 3 16
+	q3map_lightmapFilterRadius 0 8
 	q3map_skylight 50 3
 	skyparms textures/skies/env/frost2/frost2 - -
 }
@@ -142,6 +156,7 @@ textures/skies/frost2
 textures/skies/cloud_frost2
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -162,14 +177,17 @@ textures/skies/ark1
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
-	q3map_sunExt 0.65 0.85 0.65 512 135 50 3 8
-	q3map_skylight 200 2
+	q3map_sunExt 0.65 0.85 0.65 185 135 50 8 16
+	q3map_lightmapFilterRadius 0 8
+	q3map_skylight 50 4
 	skyparms textures/skies/env/ark1/ark1 - -
 }
 textures/skies/cloud_ark1
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -190,14 +208,17 @@ textures/skies/ark2
 	surfaceparm sky
 	surfaceparm noimpact
 	surfaceparm nolightmap
+	surfaceparm nodlight
 	q3map_globaltexture
-	q3map_sunExt 0.55 0.65 0.45 512 150 80 3 8
-	q3map_skylight 100 2
+	q3map_sunExt 0.55 0.65 0.45 175 150 80 8 16
+  q3map_lightmapFilterRadius 0 8
+	q3map_skylight 25 4
 	skyparms textures/skies/env/ark2/ark2 - -
 }
 textures/skies/cloud_ark2
 {
   surfaceparm nolightmap
+	surfaceparm nodlight
 	surfaceparm noimpact
   surfaceparm nonsolid
   surfaceparm trans
@@ -206,6 +227,48 @@ textures/skies/cloud_ark2
     map textures/skies/cloud_ark2.tga
     tcMod scale 2 1
     tcMod scroll -0.01 -0.0075
+    blendFunc blend
+  }
+}
+
+
+//-------------------------------------
+//  QUANTUM 1
+//--------------------------------------
+
+textures/skies/fade_quant1
+{
+	qer_editorimage textures/skies/frost1.jpg
+	surfaceparm sky
+	surfaceparm noimpact
+	surfaceparm nolightmap
+	surfaceparm nodlight
+	q3map_globaltexture
+	q3map_sunExt 0.94 0.08 0.67 200 195 67 2 16
+	q3map_lightmapFilterRadius 0 8
+	q3map_skylight 10 4
+	skyparms textures/skies/env/frost1/frost1 - -
+	nopicmip
+}
+textures/skies/fog_quant1
+{
+  surfaceparm nolightmap
+	surfaceparm nodlight
+	surfaceparm noimpact
+  surfaceparm nonsolid
+  surfaceparm trans
+  dpnoshadow
+	q3map_globaltexture
+  {
+    map textures/skies/fog_quant1.tga
+    tcMod scale 4 4
+    tcMod scroll -0.01 -0.0075
+    blendFunc blend
+  }
+  {
+    map textures/skies/fog_quant1.tga
+    tcMod scale 5 5
+    tcMod scroll 0.01 0.01
     blendFunc blend
   }
 }

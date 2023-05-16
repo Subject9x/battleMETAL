@@ -29,7 +29,6 @@
   'objid' : '3'
   'objtype': 'primary'
   'objdesc' : 'Level entire base at (DELTA) except Repair Depots.'
-  'items' : '9'
 }
 {
   'objid' : '4'

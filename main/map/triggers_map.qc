@@ -242,3 +242,54 @@ void() map_func_rain={
   self.think = self.use;
   self.nextthink = time + 0.1;
 };
+
+
+/*void() func_destruct_die_explode={
+  
+};
+
+void() func_destruct_die_collapse={
+
+
+};*/
+
+void() func_destruct_die_dbg={
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+
+
+/*QUAKED func_destructible (0 .8 1) ? 
+  Brush-based shootable whose death will send triggers
+  health : int = starting health
+  
+  shield : int = shielded or not
+  
+  
+*/
+void() func_destructible={
+  self.mangle = self.angles;
+  self.angles = '0 0 0';
+
+  self.classname = "destruct";
+  self.solid = SOLID_BSP;
+  self.movetype = MOVETYPE_NONE;
+  setorigin (self, self.origin);
+  setmodel (self, self.model);
+  setsize (self, self.mins , self.maxs);
+
+  self.takedamage = DAMAGE_YES;
+  
+  if(!self.health){
+    self.health = 100;
+    self.max_health = self.health;
+  }
+  
+  if(!self.shield){
+    self.shield = 0;
+    self.shieldMax = 0;
+  }
+  
+  self.th_die = func_destruct_die_dbg;
+};

@@ -19,14 +19,6 @@ textures/common/areaportal
 	surfaceparm areaportal
 }
 
-textures/common/caulk
-{
-  qer_trans 0.5
-	surfaceparm nodraw
-	surfaceparm nolightmap
-	surfaceparm nomarks
-}
-
 textures/common/clip
 {
 	qer_trans 0.40
@@ -429,4 +421,6 @@ textures/blend/terrain_base
   q3map_terrain
   q3map_nonplanar
   q3map_shadeangle 179
+  q3map_lightmapAxis z
+  //q3map_novertexshadows
 }

@@ -40,6 +40,7 @@ float MOUSE_DOWN_COUNT;
 #define M_CREDITS 23
 #define M_NEWSAVE 24
 #define M_TRAINING 25
+#define M_WIKI_HOME 26
 
 float MAIN_MISSION;
 

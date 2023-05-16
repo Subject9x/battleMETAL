@@ -6,10 +6,10 @@
 //----------------------------------------------------
 //                 BALAKET
 //----------------------------------------------------
-q3mdl/mechs/balaket/skin_default/skin_balaket
+models/mechs/balaket/skin_default/skin_balaket
 {
   {
-    map q3mdl/mechs/balaket/skin_default/skin_balaket.tga
+    map models/mechs/balaket/skin_default/skin_balaket.tga
     rgbGen identity
   }
   
@@ -19,10 +19,10 @@ q3mdl/mechs/balaket/skin_default/skin_balaket
     rgbGen identity
   }
 }
-q3mdl/mechs/balaket/skin_militar/skin_balaket_militar
+models/mechs/balaket/skin_militar/skin_balaket_militar
 {
   {
-    map q3mdl/mechs/balaket/skin_militar/skin_balaket_militar.tga
+    map models/mechs/balaket/skin_militar/skin_balaket_militar.tga
     rgbGen identity
   }
   
@@ -32,10 +32,10 @@ q3mdl/mechs/balaket/skin_militar/skin_balaket_militar
     rgbGen identity
   }
 }
-q3mdl/mechs/balaket/skin_human/skin_balaket_human
+models/mechs/balaket/skin_human/skin_balaket_human
 {
   {
-    map q3mdl/mechs/balaket/skin_human/skin_balaket_human.tga
+    map models/mechs/balaket/skin_human/skin_balaket_human.tga
     rgbGen identity
   }
   
@@ -48,10 +48,10 @@ q3mdl/mechs/balaket/skin_human/skin_balaket_human
 //----------------------------------------------------
 //                 MATOK
 //----------------------------------------------------
-q3mdl/mechs/matok/skin_default/skin_default
+models/mechs/matok/skin_default/skin_default
 {
   {
-    map q3mdl/mechs/matok/skin_default/skin_default.tga
+    map models/mechs/matok/skin_default/skin_default.tga
     rgbGen identity
   }
   
@@ -61,10 +61,10 @@ q3mdl/mechs/matok/skin_default/skin_default
     rgbGen identity
   }
 }
-q3mdl/mechs/matok/skin_militar/skin_matok_militar
+models/mechs/matok/skin_militar/skin_matok_militar
 {
   {
-    map q3mdl/mechs/matok/skin_militar/skin_matok_militar.tga
+    map models/mechs/matok/skin_militar/skin_matok_militar.tga
     rgbGen identity
   }
   
@@ -74,10 +74,10 @@ q3mdl/mechs/matok/skin_militar/skin_matok_militar
     rgbGen identity
   }
 }
-q3mdl/mechs/matok/skin_human/skin_matok_human
+models/mechs/matok/skin_human/skin_matok_human
 {
   {
-    map q3mdl/mechs/matok/skin_human/skin_matok_human.tga
+    map models/mechs/matok/skin_human/skin_matok_human.tga
     rgbGen identity
   }
   
@@ -90,10 +90,10 @@ q3mdl/mechs/matok/skin_human/skin_matok_human
 //----------------------------------------------------
 //                 MONITOR
 //----------------------------------------------------
-q3mdl/mechs/monitor/skin_default/skin_monitor_default
+models/mechs/monitor/skin_default/skin_monitor_default
 {
   {
-    map q3mdl/mechs/monitor/skin_default/skin_monitor_default.tga
+    map models/mechs/monitor/skin_default/skin_monitor_default.tga
     rgbGen identity
   }
   
@@ -103,10 +103,10 @@ q3mdl/mechs/monitor/skin_default/skin_monitor_default
     rgbGen identity
   }
 }
-q3mdl/mechs/monitor/skin_militar/skin_monitor_militar
+models/mechs/monitor/skin_militar/skin_monitor_militar
 {
   {
-    map q3mdl/mechs/monitor/skin_militar/skin_monitor_militar.tga
+    map models/mechs/monitor/skin_militar/skin_monitor_militar.tga
     rgbGen identity
   }
   
@@ -116,10 +116,10 @@ q3mdl/mechs/monitor/skin_militar/skin_monitor_militar
     rgbGen identity
   }
 }
-q3mdl/mechs/monitor/skin_human/skin_monitor_human
+models/mechs/monitor/skin_human/skin_monitor_human
 {
   {
-    map q3mdl/mechs/monitor/skin_human/skin_monitor_human.tga
+    map models/mechs/monitor/skin_human/skin_monitor_human.tga
     rgbGen identity
   }
   
@@ -132,10 +132,10 @@ q3mdl/mechs/monitor/skin_human/skin_monitor_human
 //----------------------------------------------------
 //                 DUNERUNNER
 //----------------------------------------------------
-q3mdl/vecs/dunerunner/skin_default/skin_dunerunner
+models/vecs/dunerunner/skin_default/skin_dunerunner
 {
   {
-    map q3mdl/vecs/dunerunner/skin_default/skin_dunerunner.tga
+    map models/vecs/dunerunner/skin_default/skin_dunerunner.tga
     rgbGen identity
   }
   
@@ -145,10 +145,10 @@ q3mdl/vecs/dunerunner/skin_default/skin_dunerunner
     rgbGen identity
   }
 }
-q3mdl/vecs/dunerunner/skin_human/skin_dunerunner_a
+models/vecs/dunerunner/skin_human/skin_dunerunner_a
 {
   {
-    map q3mdl/vecs/dunerunner/skin_human/skin_dunerunner_a.tga
+    map models/vecs/dunerunner/skin_human/skin_dunerunner_a.tga
     rgbGen identity
   }
   
@@ -158,10 +158,10 @@ q3mdl/vecs/dunerunner/skin_human/skin_dunerunner_a
     rgbGen identity
   }
 }
-q3mdl/vecs/dunerunner/skin_militar/skin_dunerunner_b
+models/vecs/dunerunner/skin_militar/skin_dunerunner_b
 {
   {
-    map q3mdl/vecs/dunerunner/skin_militar/skin_dunerunner_b.tga
+    map models/vecs/dunerunner/skin_militar/skin_dunerunner_b.tga
     rgbGen identity
   }
   
@@ -174,10 +174,10 @@ q3mdl/vecs/dunerunner/skin_militar/skin_dunerunner_b
 //----------------------------------------------------
 //                 FOSLAGER
 //----------------------------------------------------
-q3mdl/vecs/foslager/skin_foslager
+models/vecs/foslager/skin_foslager
 {
   {
-    map q3mdl/vecs/foslager/skin_foslager.tga
+    map models/vecs/foslager/skin_foslager.tga
     rgbGen identity
   }
   
@@ -187,10 +187,10 @@ q3mdl/vecs/foslager/skin_foslager
     rgbGen identity
   }
 }
-q3mdl/vecs/foslager/skin_foslager_a
+models/vecs/foslager/skin_foslager_a
 {
   {
-    map q3mdl/vecs/foslager/skin_foslager_a.tga
+    map models/vecs/foslager/skin_foslager_a.tga
     rgbGen identity
   }
   
@@ -200,10 +200,10 @@ q3mdl/vecs/foslager/skin_foslager_a
     rgbGen identity
   }
 }
-q3mdl/vecs/foslager/skin_foslager_b
+models/vecs/foslager/skin_foslager_b
 {
   {
-    map q3mdl/vecs/foslager/skin_foslager_b.tga
+    map models/vecs/foslager/skin_foslager_b.tga
     rgbGen identity
   }
   
@@ -216,10 +216,10 @@ q3mdl/vecs/foslager/skin_foslager_b
 //----------------------------------------------------
 //                 ONNEK
 //----------------------------------------------------
-q3mdl/vecs/onnek/skin_default/skin_onnek_default
+models/vecs/onnek/skin_default/skin_onnek_default
 {
   {
-    map q3mdl/vecs/onnek/skin_default/skin_onnek_default.tga
+    map models/vecs/onnek/skin_default/skin_onnek_default.tga
     rgbGen identity
   }
   
@@ -229,10 +229,10 @@ q3mdl/vecs/onnek/skin_default/skin_onnek_default
     rgbGen identity
   }
 }
-q3mdl/vecs/onnek/skin_human/skin_onnek_a
+models/vecs/onnek/skin_human/skin_onnek_a
 {
   {
-    map q3mdl/vecs/onnek/skin_human/skin_onnek_a.tga
+    map models/vecs/onnek/skin_human/skin_onnek_a.tga
     rgbGen identity
   }
   
@@ -242,10 +242,10 @@ q3mdl/vecs/onnek/skin_human/skin_onnek_a
     rgbGen identity
   }
 }
-q3mdl/vecs/onnek/skin_militar/skin_onnek_b
+models/vecs/onnek/skin_militar/skin_onnek_b
 {
   {
-    map q3mdl/vecs/onnek/skin_militar/skin_onnek_b.tga
+    map models/vecs/onnek/skin_militar/skin_onnek_b.tga
     rgbGen identity
   }
   
@@ -258,10 +258,10 @@ q3mdl/vecs/onnek/skin_militar/skin_onnek_b
 //----------------------------------------------------
 //                 SORCERER
 //----------------------------------------------------
-q3mdl/vecs/sorcerer/skin_sorcerer
+models/vecs/sorcerer/skin_sorcerer
 {
   {
-    map q3mdl/vecs/sorcerer/skin_sorcerer.tga
+    map models/vecs/sorcerer/skin_sorcerer.tga
     rgbGen identity
   }
   
@@ -271,10 +271,10 @@ q3mdl/vecs/sorcerer/skin_sorcerer
     rgbGen identity
   }
 }
-q3mdl/vecs/sorcerer/skin_sorcerer_a
+models/vecs/sorcerer/skin_sorcerer_a
 {
   {
-    map q3mdl/vecs/sorcerer/skin_sorcerer_a.tga
+    map models/vecs/sorcerer/skin_sorcerer_a.tga
     rgbGen identity
   }
   
@@ -284,10 +284,10 @@ q3mdl/vecs/sorcerer/skin_sorcerer_a
     rgbGen identity
   }
 }
-q3mdl/vecs/sorcerer/skin_sorcerer_b
+models/vecs/sorcerer/skin_sorcerer_b
 {
   {
-    map q3mdl/vecs/sorcerer/skin_sorcerer_b.tga
+    map models/vecs/sorcerer/skin_sorcerer_b.tga
     rgbGen identity
   }
   
@@ -300,10 +300,10 @@ q3mdl/vecs/sorcerer/skin_sorcerer_b
 //----------------------------------------------------
 //                 TROWEL
 //----------------------------------------------------
-q3mdl/vecs/trowel/skin_trowel
+models/vecs/trowel/skin_trowel
 {
   {
-    map q3mdl/vecs/trowel/skin_trowel.tga
+    map models/vecs/trowel/skin_trowel.tga
     rgbGen identity
   }
   
@@ -313,10 +313,10 @@ q3mdl/vecs/trowel/skin_trowel
     rgbGen identity
   }
 }
-q3mdl/vecs/trowel/skin_trowel_a
+models/vecs/trowel/skin_trowel_a
 {
   {
-    map q3mdl/vecs/trowel/skin_trowel_a.tga
+    map models/vecs/trowel/skin_trowel_a.tga
     rgbGen identity
   }
   
@@ -326,10 +326,10 @@ q3mdl/vecs/trowel/skin_trowel_a
     rgbGen identity
   }
 }
-q3mdl/vecs/trowel/skin_trowel_b
+models/vecs/trowel/skin_trowel_b
 {
   {
-    map q3mdl/vecs/trowel/skin_trowel_b.tga
+    map models/vecs/trowel/skin_trowel_b.tga
     rgbGen identity
   }
   

@@ -27,7 +27,7 @@ textures/blend/sand/basin_blend_rock_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_rock_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     rgbGen vertex
   }
 
@@ -87,7 +87,7 @@ textures/blend/sand/sand_blend_rock_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_rock_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     rgbGen vertex
   }
   {
@@ -205,7 +205,7 @@ textures/blend/sand/high_blend_rock_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/desert/sand_desert_rock_a.tga
-    tcMod scale 4 4
+    tcMod scale 2 2
     rgbGen vertex
   }
 

@@ -28,7 +28,7 @@ textures/blend/snow/ice_blend_rock_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/ice/rock_a.tga
-    tcMod scale 3 3
+    tcMod scale 2 2
     rgbGen vertex
   }
 
@@ -62,7 +62,7 @@ textures/blend/snow/ice_blend_snow_a
   }
   {
     map textures/ice/snow_a.tga
-    tcMod scale 1 1
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -89,12 +89,12 @@ textures/blend/snow/snow_blend_rock_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/ice/rock_a.tga
-    tcMod scale 3 3
+    tcMod scale 2 2
     rgbGen vertex
   }
   {
     map textures/ice/snow_a.tga
-    tcMod scale 1 1
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -123,7 +123,7 @@ textures/blend/snow/snow_blend_ice_a
   }
   {
     map textures/ice/snow_a.tga
-    tcMod scale 1 1
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -146,7 +146,7 @@ textures/blend/snow/snow_blend_high_a
 
   {
     map textures/ice/snow_a.tga
-    tcMod scale 1 1
+    tcMod scale 2 2
     rgbGen vertex
   }
   {
@@ -176,7 +176,7 @@ textures/blend/snow/high_blend_snow_a
   q3map_alphaGen const 0.6
   {
     map textures/ice/snow_a.tga
-    tcMod scale 1 1
+    tcMod scale 2 2
     rgbGen vertex
   }
   {
@@ -203,7 +203,7 @@ textures/blend/snow/high_blend_rock_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/ice/rock_a.tga
-    tcMod scale 3 3
+    tcMod scale 2 2
     rgbGen vertex
   }
 
@@ -236,13 +236,13 @@ textures/blend/snow/rock_a_blend_snow_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/ice/rock_a.tga
-    tcMod scale 3 3
+    tcMod scale 2 2
     rgbGen vertex
   }
 
   {
     map textures/ice/snow_a.tga
-    tcMod scale 1 1
+    tcMod scale 2 2
     blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
     alphaGen vertex
     rgbGen vertex
@@ -264,7 +264,7 @@ textures/blend/snow/rock_a_blend_high_a
   //the sharp texture that dotproduct2 points to.
   {
     map textures/ice/rock_a.tga
-    tcMod scale 3 3
+    tcMod scale 2 2
     rgbGen vertex
   }
 
