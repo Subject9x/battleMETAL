@@ -11,12 +11,11 @@ Overview:
 
 #define lockVector2(vX,vY) local vector vlock; vlock_x = vX; vlock_y = vY;
 
-entity DEPLOY_POINTS;  //SendEnt now provides the state data;
-entity DEPLOYPOINT;
-
 .entity nextPoint;
 .entity prevPoint;
 entity FACTION_DEPLOY;
+
+float DEPLOY_LIST[32];  //more stable
 
 string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 

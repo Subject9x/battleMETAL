@@ -11,7 +11,7 @@ Overview: data file for building
 #ifdef CSQC
 void() power_plant_die_vfx={
   local vector margin;
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) );
@@ -211,7 +211,7 @@ void() power_plant_active={
     return;
   }
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
     //local vfx - green ball
     vfx = randompos( self.compAltOffset, self.compOffset);

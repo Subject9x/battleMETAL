@@ -21,7 +21,7 @@ data/defs_entity.qc
 
 data/headers/data_api.qh
 data/headers/ui_data.qh
-data/headers/msn_file.qh
+../common/data/msn_file.qh
 data/headers/data_buildings.qh
 data/headers/data_turrets.qh
 data/headers/data_vehicles.qh
@@ -159,7 +159,7 @@ data/data_system_ext.qc
 data/client_precache.qc
 data/data_api.qc
 data/ui_data.qc
-data/msn_file.qc
+../common/data/msn_file.qc
 data/data_buildings.qc
 data/data_turrets.qc
 data/data_vehicles.qc
@@ -198,7 +198,7 @@ ui/hud/crosshair/hud_crosshair4.qc
   network/receive_sendent_mech_ai.qc
   network/receive_sendent_turret.qc
   network/receive_sendent_building.qc
-  network/receive_sendent_player.qc
+  network/receive_sendent_client.qc
 //========================
 
 //MENU SYSTEM============
@@ -226,6 +226,7 @@ ui/hud/crosshair/hud_crosshair4.qc
   model/mech_ai.qc
 //=======================
 
+
 input_events.qc
 util/input_api.qc
 ../common/data/defs/defs_world.qc     //world server / rules entity
@@ -238,4 +239,5 @@ util/input_api.qc
   main/client_update_view.qc
   main/client_shutdown.qc
   main/client_entity.qc
+  main/client_playermovement.qc
 //===========================

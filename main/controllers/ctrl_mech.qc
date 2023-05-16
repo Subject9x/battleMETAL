@@ -56,9 +56,17 @@ void() ctrl_update_mechplayer={
     }
     
     ctrl_mech_critical_hits();
-    self.critBits = self.critBits | self.critBuffer;
+    self.critBits = 0 | self.critBuffer;
+    self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+    
+    if( (self.critBits & M_REPAIR) ){
+      self.criticalHits = self.criticalHits - (self.criticalHits & self.critBuffer);
+    }
+    else{
+      self.criticalHits = self.criticalHits | self.critBits;
+    }
+    
     self.critBuffer = 0;
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
   }
   
   ctrl_mech_burn_frame();
@@ -124,7 +132,7 @@ void() ai_ctrl_update_mechplayer={
     }
     
     ctrl_mech_critical_hits();
-    self.critBits = self.critBits | self.critBuffer;
+    self.critBits = 0 | self.critBuffer;
     self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
     self.critBuffer = 0;
   }
@@ -245,12 +253,12 @@ void() ctrl_unit_update_frame={
         self.shield = bound(0, self.shield, self.shieldMax);
         if( lastShield != self.shield ){
           //only send delta.
-          self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
+          self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
         }
       }
       self.energy = bound(0, self.energy, self.energyMax);
       if( lastEne != self.energy){
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ENERGY;
+        self.SendFlags = self.SendFlags | SENDFLAG_ENERGY;
       }
     }
     else{
@@ -391,9 +399,7 @@ void() ctrl_mech_critical_hits={
       self.data_speed_forward = self.data_speed_forward * 0.7;
       self.data_speed_strafe = self.data_speed_strafe * 0.8;
       self.data_speed_backward = self.data_speed_backward * 0.75;
-      if(self.clientData != world ){
-        self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
-      }
+      self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
     }
     else{
       //AI suffers way more for blown legs
@@ -539,6 +545,14 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    if( self.shieldHitFlag == 0 ){
+      WriteByte( MSG_ENTITY, (self.torC_hp / self.torC_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+    }
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){

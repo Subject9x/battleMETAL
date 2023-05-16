@@ -7,9 +7,15 @@ Overview:
   To that end, I've moved all the client-specific data to constants, ugly but necessary.
 */
 
-entity CLIENT_MENU_deploy;
+vector vPlayerOrigin;
+vector vPlayerOriginOld; // We definitely need this later
+vector vPlayerVelocity;
 
-entity CLIENT_server_ent; //this is the player's .clientData ent from the server.
+entity CLIENT_server_ent; //this is the player sent from the server.
+
+vector CLIENT_render_origin;
+
+float MAP_OBJECTS[4096];  //entnums for any IS_MAPKEY entities coming from server.
 
 //float CLIENT_currentWeaponGroup;
 
@@ -91,7 +97,7 @@ float CLIENT_stat_trg_ent_id;
 float CLIENT_stat_trg_ent_id_prev;
 
 entity CLIENT_target_ent;
-entity CLIENT_mech_self;
+entity CLIENT_server_ent;
 vector CLIENT_target_origin;
 
 float CLIENT_target_health_prev;

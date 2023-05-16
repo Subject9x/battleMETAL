@@ -336,14 +336,19 @@ void( entity mech, float turboMod ) cl_set_hud_vars={
   cvar_set("cl_sidespeed", ftos(mech.data_speed_strafe));
   cvar_set("cl_backspeed", ftos(mech.data_speed_backward));
   cvar_set("cl_movespeedkey", ftos(mech.data_speed_accel + turboMod));
+  
   cvar_set("cl_rollangle",  ftos(mech.hud_rollangle));
-  cvar_set("cl_bob", ftos(mech.hud_bob));
+  
+  //cvar_set("cl_bob", ftos(mech.hud_bob));
   cvar_set("cl_bobcycle", ftos(mech.hud_bob_cycle));
-  cvar_set("cl_bobup", ftos(mech.hud_bob_up));
-  cvar_set("cl_bobmodel", ftos(mech.hud_bob_model));
+  //cvar_set("cl_bobup", ftos(mech.hud_bob_up));
+  
+  //cvar_set("cl_bobmodel", ftos(mech.hud_bob_model)); 
+  
   cvar_set("cl_bobmodel_side", ftos(mech.hud_bob_side));
   cvar_set("cl_bobmodel_speed", ftos(mech.hud_bob_speed));
   cvar_set("cl_bobmodel_up", ftos(mech.hud_bob_model_up));
+  
   cvar_set("in_pitch_max", ftos(mech.pitchMax));
   cvar_set("in_pitch_min", ftos(mech.pitchMin));
   
@@ -369,17 +374,17 @@ void() cl_get_new_fog={
   
   FOG_WORLD_VAL = ReadByte();
   
-  FOG_TARG_RED = ReadCoord();
-  FOG_TARG_GREEN = ReadCoord();
-  FOG_TARG_BLUE = ReadCoord();
+  FOG_TARG_RED = ReadFloat();
+  FOG_TARG_GREEN = ReadFloat();
+  FOG_TARG_BLUE = ReadFloat();
   
-  FOG_TARG_DIST_MIN = ReadLong();
-  FOG_TARG_DIST_MAX = ReadLong();
-  FOG_TARG_DIST_TOP = ReadLong();
+  FOG_TARG_DIST_MIN = ReadFloat();
+  FOG_TARG_DIST_MAX = ReadFloat();
+  FOG_TARG_DIST_TOP = ReadFloat();
   
-  FOG_TARG_ALPHA = ReadCoord();
-  FOG_TARG_DENSITY = ReadCoord();
-  FOG_TARG_FADE_DEPTH = ReadCoord();
+  FOG_TARG_ALPHA = ReadFloat();
+  FOG_TARG_DENSITY = ReadFloat();
+  FOG_TARG_FADE_DEPTH = ReadFloat();
   
   /*cons_logAFloat("FOG_TARG_RED", FOG_TARG_RED); //debug
   cons_logAFloat("FOG_TARG_GREEN", FOG_TARG_GREEN); //debug
@@ -411,11 +416,11 @@ void() cl_get_new_fog={
 // the player specfically spawns into their mech.
 void() cl_set_chase={
   local string cmd;
-  if(cvar("chase_active") == TRUE ){
+  if(CLIENT_server_ent.chaseActive == TRUE ){
     cmd = "impulse 30\n";
     localcmd(cmd);
   }
-  HUD_EXTERNAL_CAM_ACTIVE = cvar("chase_active");
+  HUD_EXTERNAL_CAM_ACTIVE = CLIENT_server_ent.chaseActive ;
 };
 
 /*

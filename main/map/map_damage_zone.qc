@@ -268,12 +268,19 @@ void() map_hazard_rad_large={
 //=================================================================================================
 
 void() map_hazard_crys_die={
+  local vector shoot;
+  
   self.solid = SOLID_NOT;
   self.takedamage = DAMAGE_NO;
   
   //TODO - crystal explode effect.
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.deadflag = DEAD_DEAD;
+  
+  shoot = self.origin + '0 0 5';
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 6, 1 );
+  te_missile_explode( shoot, rint(ceil(self.vec_size * 1.5)), '0.33 0.67 1.33', 0.000005 );
+  sound(self, CHAN_AUTO, "sound/fx_shieldhit.ogg", ATTN_NORM, 1.0);
   
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;

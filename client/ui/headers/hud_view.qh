@@ -75,8 +75,14 @@ string HUD_TAGS[22];
   float HUD_LOCK_FLAG;
   vector HUD_FIXED_ANGLE;
   float VIEW_OBS_ID;
-  entity HUD_MODEL_STRUTS;
-  entity HUD_MODEL_CONSOLE;
+  
+  vector HUD_MODEL_CONSOLE_origin2;
+  vector HUD_MODEL_CONSOLE_origin1;
+  vector HUD_MODEL_CONSOLE_origin;
+  
+  vector HUD_MODEL_STRUTS_origin2;
+  vector HUD_MODEL_STRUTS_origin1;
+  vector HUD_MODEL_STRUTS_origin;
   
   float HUD_VIEW_OFS;
   vector HUD_VIEW_CL_ANGLES;

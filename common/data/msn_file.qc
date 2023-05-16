@@ -108,7 +108,6 @@ void() msn_parsefile={
     //always close a file :3
     fclose(flannel);
   }
-  
 };
 
 //queries a msn file solely for its unlocks
@@ -222,6 +221,7 @@ void( float obj_id, string line, string val) msn_setobj_items={
   }
 };
 
+#ifdef CSQC
 //ops
 void() msn_unlock_stuff={
   local string unlockMechs;
@@ -244,11 +244,12 @@ void() msn_unlock_stuff={
       unlockMechs = strcat(unlockMechs, MSN_OBJ_MECHS[obj.data_idx], " ");
     }
     if( MSN_OBJ_ITEMS[obj.data_idx] != "" ){
-      unlockItems = strcat(unlockMechs, MSN_OBJ_ITEMS[obj.data_idx], " ");
+      unlockItems = strcat(unlockItems, MSN_OBJ_ITEMS[obj.data_idx], " ");
     }
   }
   cacheGlobalString(MENU_DEBRIEF_unlocks_mechs, unlockMechs )
   cacheGlobalString(MENU_DEBRIEF_unlocks_equip, unlockItems )
+  
   cl_savefile_append();
 };
 
@@ -273,5 +274,5 @@ void() msn_free_strings={
   freeGlobalString(MSN_INTEL)
   freeGlobalString(MSN_ANIM)
 };
-
+#endif
 

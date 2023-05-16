@@ -33,6 +33,8 @@ void() particle_sys_ini_globals={
   PTC_HIT_EXPL_SML = particleeffectnum("TE_HIT_EXPL_SML");
   PTC_HIT_EXPL_MED = particleeffectnum("TE_HIT_EXPL_MED");
   PTC_HIT_EXPL_LRG = particleeffectnum("TE_HIT_EXPL_LRG");
+  
+  PTC_WRECK_SMOKE = particleeffectnum("TE_WRECK_SMOKE");
 };
 
 /*
@@ -194,7 +196,7 @@ void(entity item) te_weapon_fire_handler={
   local vector adjPartOffset;
   local vector offset;
   
-  view = self.angles;
+  view = self.rootAngle;
   view_x = 0;
   makevectors(view);
 
@@ -202,10 +204,10 @@ void(entity item) te_weapon_fire_handler={
   self = item;
     util_getPartFromName( self.partParentId, this);
     
-    offset = this.origin + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
+    offset = this.rootOrigin + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
-    if(this.clientLocalNum == player_localentnum && cvar("chase_active") == FALSE){
+    if(this.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){
       offset = offset + (v_forward * this.cameraOffset_z);
     }
     adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
@@ -235,7 +237,7 @@ void( vector org, float total ) te_unit_dust={
   local vector dir;
   local vector torg;
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     makevectors(self.angles);
     torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
@@ -274,7 +276,7 @@ void() te_building_fire_th={
     
   self.compAltOffset = te_apply_wind( self.origin );
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * 2, self.count);
   }
@@ -348,7 +350,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
   local vector back;
   local vector launch;
 
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     explode = spawn();
     if( explode ){
@@ -435,9 +437,9 @@ void() te_shield_hit_predraw={
   self.lerpfrac = lerp;
   
   
-  traceline(self.owner.origin, client_vis_org, FALSE, self);
+  traceline(self.owner.origin, CLIENT_vis_org, FALSE, self);
   
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     return;
   }
   
@@ -449,7 +451,7 @@ void() te_shield_hit_predraw={
 
 void() te_shield_hit_th={
   if(self.owner.clientServerNum == player_localentnum){
-    self.origin = pmove_org;
+    self.origin = CLIENT_vis_org;
   }
   else{
     self.origin = self.owner.origin;
@@ -470,13 +472,13 @@ void() te_shield_hit={
   local float shieldSize;
   local float sizeMod;
   
-  traceline(self.origin, pmove_org, TRUE, self);
+  traceline(self.origin, CLIENT_vis_org, TRUE, self);
   
   if( (trace_ent == world && trace_fraction < 1.0) || trace_ent.data_type == DATA_BLD){
     return;
   } 
   
-  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+  if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
     return;
   }
   
@@ -547,9 +549,9 @@ void() predraw_shield_explode={
   self.lerpfrac = lerp;
   
   
-  traceline(self.owner.origin, client_vis_org, FALSE, self);
+  traceline(self.owner.origin, CLIENT_vis_org, FALSE, self);
   
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     return;
   }
   
@@ -564,7 +566,7 @@ void() te_shield_explode_th={
   self.scale = self.scale + (2.25 * frametime);
   
   if(self.owner.clientServerNum == player_localentnum){
-    self.origin = pmove_org;
+    self.origin = CLIENT_vis_org;
   }
   else{
     self.origin = self.owner.origin;
@@ -582,13 +584,13 @@ void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
   local vector flashCol;
   
-  traceline(self.origin, pmove_org, TRUE, self);
+  traceline(self.origin, CLIENT_vis_org, TRUE, self);
   
   if( trace_ent == world && trace_fraction < 1.0){
     return;
   } 
   
-  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+  if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
     return;
   }
   
@@ -646,13 +648,13 @@ void() particle_missile_explode_th={
 void( vector org, float explodeSize, vector explodeColor, float onShield  ) particle_missile_explode={
   local entity explode;
  
-  traceline(self.origin, pmove_org, TRUE, self);
+  traceline(self.origin, CLIENT_vis_org, TRUE, self);
   
   if( trace_ent == world && trace_fraction < 1.0){
     return;
   } 
   
-  if( vlen(self.origin - pmove_org) > PARTICLE_HAZ_DISTANCE * 2){
+  if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
     return;
   }
   
@@ -697,7 +699,7 @@ void() particle_vehicle_wreck_cleanup={
 
 void() particle_vehicle_wreck_th={
   if( time < self.pcl_fadeout ){
-    particleDraw = vlen(client_vis_org - self.origin);
+    particleDraw = vlen(CLIENT_vis_org - self.origin);
     if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
       pointparticles( self.pcl_effectnum, self.origin, self.pcl_velocity, self.pcl_count);
     }
@@ -769,7 +771,7 @@ void(vector entOrg, vector entAngl, float entSize, vector entMins, float leftBoo
   local float effType;
   local float sizeMod;
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
     
     makevectors( entAngl );
@@ -881,7 +883,7 @@ void() te_mech_dead_legs_burn={
     return;
   }
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     makevectors(self.angles);
     fireOrg = self.origin + (v_up * self.maxs_z);
@@ -896,7 +898,7 @@ void() te_mech_dead_legs_burn={
 void() te_mech_dead_legs_smoke={
   local vector fireOrg;
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     makevectors(self.angles);
     fireOrg = self.origin + (v_up * self.maxs_z);
@@ -936,7 +938,7 @@ void() particle_box_ini={
   
   PTC_CUBE_FLAGS = ReadLong();
   
-  PTC_CUBE_ORG = pmove_org;
+  PTC_CUBE_ORG = CLIENT_vis_org;
 };
 
 void() particle_box_think={
@@ -950,11 +952,11 @@ void() particle_box_think={
   playerMove = vectoangles(pmove_vel);
   makevectors(playerMove);
   
-  playerOrgOffset = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
+  playerOrgOffset = CLIENT_vis_org + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
   
   cubeLen = vlen( playerOrgOffset - PTC_CUBE_ORG);
   if( cubeLen > PTC_CUBE_MAX_x ){
-    PTC_CUBE_ORG = pmove_org + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
+    PTC_CUBE_ORG = CLIENT_vis_org + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
   }
   
   traceline(playerOrgOffset, playerOrgOffset + (v_up * PTC_CUBE_MAX_z), TRUE, world);
@@ -964,7 +966,7 @@ void() particle_box_think={
   amax = PTC_CUBE_ORG + PTC_CUBE_MAX;
   
   for(meta = particleCubeMetaDataList; meta != world; meta = meta.w_slot){
-    if( BoxesOverlap(pmove_org - '2 2 2', pmove_org + '2 2 2', meta.absmin, meta.absmax ) ){
+    if( BoxesOverlap(CLIENT_vis_org - '2 2 2', CLIENT_vis_org + '2 2 2', meta.absmin, meta.absmax ) ){
       amin = meta.absmin;
       amax = meta.absmax;
       break;

@@ -1188,7 +1188,7 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
     viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
   }
   else{
-    viewOrg = pmove_org;
+    viewOrg = CLIENT_vis_org;
   }
   clearscene();
     setproperty(VF_ORIGIN, viewOrg + [modelMax_x * -5, 0, modelMax_z * 0.1]);	//look towards it.
@@ -1210,6 +1210,7 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
     setproperty(VF_FOG_END, 0);
     setproperty(VF_FOG_HEIGHT, 0);
     setproperty(VF_FOG_FADEDEPTH, 0.0);
+    setproperty(VF_MAINVIEW, FALSE);
     
     makevectors(getpropertyvec(VF_ANGLES));
     setorigin( UI_HANGAR_DATA_mech, viewOrg);
@@ -1218,6 +1219,7 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
     makevectors(UI_HANGAR_DATA_mech.angles);
     
     UI_HANGAR_DATA_mech.scale = 0.9;
+    UI_HANGAR_DATA_mech.effects = UI_HANGAR_DATA_mech.effects | EF_FULLBRIGHT | EF_NOSHADOW;
     
     mOffset = UI_HANGAR_DATA_mech.torC_compOffset * UI_HANGAR_DATA_mech.scale;
     UI_HANGAR_DATA_mech.torC_org = cOrg + (v_forward * mOffset_z) + (v_up * mOffset_y) + (v_right * mOffset_x);
@@ -1273,10 +1275,10 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
       }
       else{
         if( weaponEnt == UI_ARMING_hardpoint ){
-          weaponEnt.colormod = '2 2 2';
+          weaponEnt.colormod = '2.15 2.15 2.15';
         }
         else{
-          weaponEnt.colormod = '0.85 0.85 0.85';
+          weaponEnt.colormod = CLR_DEF_WHITE;
         }
         weaponEnt.alpha = 1.0;
         weaponEnt.effects = 0 | EF_FULLBRIGHT | EF_NOSHADOW;
@@ -1289,12 +1291,11 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
       weaponEnt = weaponEnt.w_slot;
     }
   renderscene();
-  setproperty(VF_ORIGIN, VIEW_VF_ORG);
+  setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
-  setproperty(VF_ORIGIN, pmove_org);	//look towards it.
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
-  setproperty(VF_DRAWWORLD, 0);
+  setproperty(VF_DRAWWORLD, TRUE);
 ///==========
 };

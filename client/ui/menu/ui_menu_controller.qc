@@ -69,7 +69,7 @@ float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseI
   areaSize = org+sz;
   if( ((mpos_x > org_x) && (mpos_x < areaSize_x)) && ((mpos_y > org_y) && (mpos_y < areaSize_y)) ){
     if( playClickSound ){
-      pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
+      pointsound(CLIENT_vis_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
     }
     return TRUE;
   }

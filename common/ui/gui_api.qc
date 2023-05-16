@@ -960,7 +960,7 @@ void(string msg, string s1) cons_logAString={
     dprint(sprintf("[CS] %s : %s \n", msg, s1));
   #endif
   #ifdef MENUQC
-    dprint(sprintf("[MC] %s : %s1 \n", msg, s1));
+    dprint(sprintf("[MC] %s : %s \n", msg, s1));
   #endif
 };
 

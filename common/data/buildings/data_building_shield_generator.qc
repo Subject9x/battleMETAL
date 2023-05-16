@@ -12,7 +12,7 @@ Overview: data file for building
 void() shield_gen_die_vfx={
   local vector margin;
   
-  particleDraw = vlen(client_vis_org - self.origin);      
+  particleDraw = vlen(CLIENT_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));  
     te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
@@ -199,30 +199,26 @@ void() hshield_th ={
  
   cost = 0;
   if( self.energy > 0 ){
-    for( t = nextent(world); t != world; t = nextent(t) ){   
-      if( t == self ){
-        continue;
-      }
-      if( !(t.flags & (FL_UNIT|FL_MONSTER)) ){
-        continue;
-      }
-      if( t.faction != self.faction ){
-        continue;
-      }
-      if( vlen(t.origin - self.origin) > self.ai_minrange ){
-        continue;
-      }
-      if( time > t.shieldHitDelay ){
-        mod = t.shieldRate + (self.shieldRate * 0.33);
-        t.shield = t.shield + mod;
-        if( t.shield > t.shieldMax ){
-          t.shield = t.shieldMax;
-        }
-        cost = cost + (self.shieldRate * 0.05);
-        if( !t.stat_client_shield ){
-          t.stat_client_shield = (t.shield / t.shieldMax) * 100;
+    t = findradius(self.origin, self.ai_minrange);
+    while(t){  
+      if( t != self ){
+        if( (t.flags & (FL_UNIT|FL_MONSTER)) ){
+          if( t.faction == self.faction ){
+            if( time > t.shieldHitDelay ){
+              mod = t.shieldRate + self.shieldRate;
+              t.shield = t.shield + mod;
+              if( t.shield > t.shieldMax ){
+                t.shield = t.shieldMax;
+              }
+              cost = cost + (self.shieldRate * 0.5);
+              if( !t.stat_client_shield ){
+                t.stat_client_shield = (t.shield / t.shieldMax) * 100;
+              }
+            }
+          }
         }
       }
+      t = t.chain;
     }
   }
   
@@ -275,7 +271,7 @@ void() shield_gen_active={
     return;
   }
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
     vfx = randompos(self.compOffset, self.compAltOffset);
     vfx2= randompos(self.compOffset, self.compAltOffset);
@@ -357,7 +353,7 @@ void() building_shield={
   }
   
   if( !self.shieldRate ){
-    self.shieldRate = 0.33;
+    self.shieldRate = 0.05;
   }
   
   if( !self.energyRate ){

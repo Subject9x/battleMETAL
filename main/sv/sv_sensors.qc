@@ -55,12 +55,11 @@ void() sv_getTarget={
     self.enemy = trace_ent;
     if( (self.enemy.flags & FL_CLIENT) ){
       targName = self.enemy.netname;
-      self.targetEntId = num_for_edict(self.enemy.clientData);
     }
     else{
       targName = self.enemy.vec_name;
-      self.targetEntId = num_for_edict(self.enemy);
     }
+    self.targetEntId = num_for_edict(self.enemy);
     
     //2.0.0: lock-on not timer-based anymore
     /*self.lock_timer = 0;  //make sure to reset the timer
@@ -77,7 +76,7 @@ void() sv_getTarget={
     else{
       trigger_event( self, self.trigOnTarget );
     }*/
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
+    self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
   }
 };
 
@@ -104,18 +103,13 @@ void() sv_updateTargetInfo={
       self.stat_trg_faction = 0;
       self.targLockState = 0;
       self.stat_target_name = "";
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
+      self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
       //self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS)); //2.0.0: lock-on not timer-based anymore
     }
     return;
   }
   
-  if( (self.enemy.flags & FL_CLIENT) ){
-    self.targetEntId = num_for_edict(self.enemy.clientData);
-  }
-  else{
-    self.targetEntId = num_for_edict(self.enemy);
-  }
+  self.targetEntId = num_for_edict(self.enemy);
   
   prevDeadFlags = self.stat_trg_ddflg;
   prevDist = self.stat_trg_dist;
@@ -149,7 +143,7 @@ void() sv_updateTargetInfo={
     self.stat_trg_dist = 0;
     self.stat_trg_faction = 0;
     self.stat_target_name = "";
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TARGET;
+    self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
     //self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS)); //2.0.0: lock-on not timer-based anymore
     return;
   }

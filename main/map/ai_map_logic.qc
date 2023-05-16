@@ -79,6 +79,10 @@ void() node_setup={
 void() ai_node_check={
   local entity nexNode;
   local float contentCache;
+  local float minDist;
+  local float checkDist;
+  local float itr;
+  local vector checkAng;
   
   self.pathEndId = ai_nodegraph_to_org( self.origin, FALSE );  //snap patrolnode to nodegraph
   self.compOffset = nodegraph_get_node_origin( self.pathEndId );
@@ -103,10 +107,6 @@ void() ai_node_check={
   }
   else{
     if( !self.ai_view ){
-      local float minDist;
-      local float checkDist;
-      local float itr;
-      local vector checkAng;
       minDist = AI_RANGE_M;
       itr = 0;
       checkAng = '0 0 0';

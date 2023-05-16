@@ -25,15 +25,16 @@ Overview:
 #ifdef SSQC
 void() building_repair_touch;
 
+.entity repair_field; //touch this to trigger repairs.
+
 /*
   util to correctly set player FL_NOSHOOT state
 */
 void(float toggleGuns) building_repair_allowGuns={
-  local entity player, data;
+  local entity player;
   player = self.ladder_entity;
   
   if( (player.flags & FL_CLIENT) ){
-    data = player.clientData;
     if(toggleGuns){
       player.flags = player.flags - (player.flags & FL_NOSHOOT);
     }
@@ -45,7 +46,7 @@ void(float toggleGuns) building_repair_allowGuns={
     player.flags = player.flags | FL_DISARMED;
   }
 
-  data.SendFlags = data.SendFlags | SENDFLAG_EFLAGS;
+  player.SendFlags = player.SendFlags | SENDFLAG_EFLAGS;
 };
 
 void() building_repair_touch;
@@ -112,7 +113,7 @@ void() building_repair_select={
     }
     else{
       lowHP = 99.99;
-      if( player.criticalHits != 0 ){
+      if( player.criticalHits > 0 ){
         //prioritize blown off sections first
         if( (player.criticalHits & M_LEGS) ){
           typeId = M_LEGS;
@@ -208,7 +209,7 @@ void() building_repair_fixing={
     player = self.goalentity;
   }
   
-  if(vlen(player.origin - self.origin) > player.maxs_x){
+  if(vlen(player.origin - self.repair_field.origin) > 48){
     //player walked away from node
     self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
@@ -226,9 +227,11 @@ void() building_repair_fixing={
   //------------------------------------------------------
   altSelf = self;
   //energ recharge freebie
-  player.energy = player.energy + (player.energyRate * 0.85);
-  if( player.energy > player.energyMax ){
-    player.energy = player.energyMax;
+  if( player.energy != player.energyMax ){
+    player.energy = player.energy + (player.energyRate * 0.85);
+    if( player.energy >= player.energyMax ){
+      player.energy = player.energyMax;
+    }
   }
   
   end_repair = FALSE;
@@ -236,55 +239,63 @@ void() building_repair_fixing={
   //fix 'client' / aka CT
   if( self.critBits == M_TOR_CENTER ){
     //part is not critical'd, repair as normal.
-    player.health = min(player.health + self.reloadRate, player.max_health);
+    player.health = player.health + self.reloadRate;
     self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
     if( player.health >= player.max_health ){
       end_repair = TRUE;
+      player.health = player.max_health;
     }
   }
   else{
     self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
     switch(self.critBits){
+    
       case M_LEGS:
-        player.legs_hp = min(player.legs_hp + self.reloadRate / 1.15, player.legs_hpMax);
-        if( player.legs_hp == player.legs_hpMax ){
+        player.legs_hp = player.legs_hp + self.reloadRate;
+        if( player.legs_hp >= player.legs_hpMax ){
+          player.legs_hp = player.legs_hpMax;
           end_repair = TRUE;
         }
         break;
+        
       case M_TOR_LEFT:
-        player.torL_hp = min(player.torL_hp + self.reloadRate / 1.15, player.torL_hpMax);
-        if( player.torL_hp == player.torL_hpMax ){
+        player.torL_hp = player.torL_hp + self.reloadRate;
+        if( player.torL_hp >= player.torL_hpMax ){
+          player.torL_hp = player.torL_hpMax;
           end_repair = TRUE;
         }
         break;
+        
       case M_TOR_RIGHT:
-        player.torR_hp = min(player.torR_hp + self.reloadRate / 1.15, player.torR_hpMax);
-        if( player.torR_hp == player.torR_hpMax ){
+        player.torR_hp = player.torR_hp + self.reloadRate;
+        if( player.torR_hp >= player.torR_hpMax ){
+          player.torR_hp = player.torR_hpMax;
           end_repair = TRUE;
         }
         break;
+        
       case M_ARM_LEFT:
-        player.armL_hp = min(player.armL_hp + self.reloadRate / 1.15, player.armL_hpMax);
-        if( player.armL_hp == player.armL_hpMax ){
+        player.armL_hp = player.armL_hp + self.reloadRate;
+        if( player.armL_hp >= player.armL_hpMax ){
+          player.armL_hp = player.armL_hpMax;
           end_repair = TRUE;
         }
         break;
+        
       case M_ARM_RIGHT:
-        player.armR_hp = min(player.armR_hp + self.reloadRate / 1.15, player.armR_hpMax);
-        if( player.armR_hp == player.armR_hpMax ){
+        player.armR_hp = player.armR_hp + self.reloadRate;
+        if( player.armR_hp >= player.armR_hpMax ){
+          player.armR_hp = player.armR_hpMax;
           end_repair = TRUE;
         }
         break;
     }
+    //repairing up from a critically hit component
     if( (player.criticalHits & self.critBits) && self.attack_state){
       self.attack_state = FALSE;
       player.critBits = player.critBits | (M_REPAIR | self.critBits);
-      if( (player.flags & FL_CLIENT) ){
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_CRIT;
-      }
-      else{
-        player.SendFlags = player.SendFlags | SENDFLAG_CRIT;
-      }
+      player.SendFlags = player.SendFlags | SENDFLAG_CRIT | SENDFLAG_IMPACT;
+      player.criticalHits = player.criticalHits - (player.criticalHits & self.critBits);
       part = player.w_slot;
       while( part != world ){
         if( part.partParentId == self.critBits && part.deadflag != DEAD_NO ){
@@ -323,12 +334,7 @@ void() building_repair_fixing={
   if(end_repair){
   
     player.burnBits = player.burnBits - (player.burnBits & self.critBits);
-    if( (player.flags & FL_CLIENT) ){
-      player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_BURN;
-    }
-    else{
-      player.SendFlags = player.SendFlags | SENDFLAG_BURN;
-    }
+    player.SendFlags = player.SendFlags | SENDFLAG_BURN | SENDFLAG_IMPACT;
     self.ai_state_next = REPAIR_STATE_START;
   }
 };
@@ -384,6 +390,10 @@ void() building_repair_cooldown={
     else{
       self.ai_movedist = time + 35;
     }
+    
+    self.repair_field.touch = building_repair_touch;
+    self.repair_field.solid = SOLID_TRIGGER;
+    setorigin(self.repair_field, self.repair_field.origin);
   }
   building_repair_recharge_frame();
   if( time > self.ai_movedist ){
@@ -405,6 +415,24 @@ void() building_repair_touch;
 
 
 void() building_repair_state={
+  if(!self.repair_field){
+    self.repair_field = spawn(); //making sure this gets spawned in.
+    self.repair_field.movetype = MOVETYPE_NONE;
+    self.repair_field.solid = SOLID_BBOX;
+    self.repair_field.touch = building_repair_touch;
+    self.repair_field.owner = self;
+    makevectors(self.angles);
+    self.repair_field.origin = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
+    setsize(self.repair_field, '-8 -8 -16', '8 8 16');
+    setorigin( self.repair_field,  self.repair_field.origin);
+  }
+  else{
+    makevectors(self.angles);
+    self.repair_field.origin = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
+    setorigin( self.repair_field,  self.repair_field.origin);
+  }
+  
+  
   self.ai_state_last = self.ai_state;
   self.ai_state = self.ai_state_next;
   
@@ -481,7 +509,7 @@ void() repair_bay_dlights={
     }
     //apparently when menu running, these just get STACCCCCCKED and murder framerate.
     if(MENU_PROG_OFF){  
-      particleDraw = vlen(client_vis_org - self.origin);      
+      particleDraw = vlen(CLIENT_vis_org - self.origin);      
       if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){  
         adddynamiclight2( self.origin, 256, lightColor, lightStyle, "", PFLAGS_FULLDYNAMIC); 
       }
@@ -492,7 +520,7 @@ void() sendevent_repair_beam={
   local vector partOfs;
   local vector beamEnd;
   
-  particleDraw = vlen(client_vis_org - self.origin);      
+  particleDraw = vlen(CLIENT_vis_org - self.rootOrigin);
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2 ){  
   
     switch(self.critBits){
@@ -546,7 +574,6 @@ void() repair_bay_idle={
 };
 #endif
 
-
 void() building_repair_bay={
   
   self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
@@ -565,8 +592,10 @@ void() building_repair_bay={
   self.skin = self.faction - 1;
   self.model = "models/buildings/repair_bay/repairbay.md3";
   precache_model("models/buildings/repair_bay/repairbay.md3");
+  
   setmodel(self, "models/buildings/repair_bay/repairbay.md3");
   setsize(self, self.mins, self.maxs);
+  
   self.th_die = hrepair_die;
     
   if( !self.health ){
@@ -607,7 +636,7 @@ void() building_repair_bay={
   }
 
   if( !self.reloadRate ){
-    self.reloadRate = 4;
+    self.reloadRate = 3.5;
   }
 
 #ifdef CSQC
@@ -645,7 +674,6 @@ void() building_repair_bay={
   setorigin(self, self.origin);
   
   self.compOffset = self.origin;// + (v_forward * (self.maxs_x/2)) + (v_up * self.mins_z + 16) + (v_right * self.mins_y/2);
-  self.touch = building_repair_touch;
   
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   self.compAltOffset = self.origin;
@@ -656,6 +684,18 @@ void() building_repair_bay={
   self.canTarget = TRUE;
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = FALSE;
+  }
+  
+  self.repair_field = spawn();
+  if(self.repair_field){
+    self.repair_field.movetype = MOVETYPE_NONE;
+    self.repair_field.solid = SOLID_TRIGGER;
+    self.repair_field.touch = building_repair_touch;
+    self.repair_field.owner = self;
+    makevectors(self.angles);
+    self.repair_field.origin = self.origin + (v_up * self.maxs_y * 0.33) + (v_forward * -8);
+    setsize(self.repair_field, '-8 -8 -16', '8 8 16');
+    setorigin( self.repair_field,  self.repair_field.origin);
   }
   
   self.SendEntity = ctrl_send_building;
@@ -672,27 +712,28 @@ void() building_repair_touch={
   if( !(other.flags & FL_CLIENT) ){
     return;
   }
-  if( self.goalentity != world ){
+  if( self.owner.goalentity != world ){
     return;
   }
   if(util_getMechHpAverage(other) >= 1){
     return;
   }
-  if( self.ai_state != REPAIR_STATE_IDLE ){
+  if( self.owner.ai_state != REPAIR_STATE_IDLE ){
     //repair either already has a client, or is cooling off
     return;
   }
-  if(other.faction != self.faction){
+  if(other.faction != self.owner.faction){
     //TODO -> repair bay will 'attack' by deconstructing your mech >:|
     return;
   }
-  if( vlen(other.origin - self.origin) > other.maxs_x){
-    return;
-  }
-  self.goalentity = other;
-  self.ladder_entity = other;   //cache here to check for player disconnects.
-  self.ai_state_next = REPAIR_STATE_START;
-  self.moveState = FALSE;
+  
+  self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
+  
+  self.owner.goalentity = other;
+  self.owner.ladder_entity = other;   //cache here to check for player disconnects.
+  self.owner.ai_state_next = REPAIR_STATE_START;
+  self.owner.moveState = FALSE;
 };
 #endif
 

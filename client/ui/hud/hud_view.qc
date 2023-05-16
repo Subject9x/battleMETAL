@@ -345,7 +345,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
   local vector rOrg;
   
   oself = self;
-  self = CLIENT_mech_self;
+  self = CLIENT_server_ent;
     theWeapon = sendent_get_weapon(w_bit);
   self = oself;
   
@@ -414,7 +414,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
   local entity oself;
   
   oself = self;
-  self = CLIENT_mech_self;
+  self = CLIENT_server_ent;
     theWeapon = sendent_get_weapon(w_bit);
   self = oself;
   
@@ -824,12 +824,12 @@ void() data_hud_frame={
   }
   menu_chat_render_frame( [UI_MAX_x - 250, UI_ORG_y],'262 144',10);
   
-  if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
-    hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
+  if( CLIENT_target_ent.data_idx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
+    hud_renderTargetOverlay(CLIENT_target_ent.rootOrigin, CLIENT_vis_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     
     //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
     if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.0){
-      hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
+      hud_renderShieldOverlay(CLIENT_target_ent.origin, CLIENT_vis_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
     }
   }
 
@@ -906,14 +906,14 @@ void() data_hud_frame={
     if( player.faction != CLIENT_faction ){continue;}
     if( player.faction == FACTION_ALL){continue;}
     if( player != CLIENT_target_ent ){
-      if( vlen(player.origin - pmove_org) <= (CLIENT_radar_range * 0.3) ){
+      if( vlen(player.origin - CLIENT_vis_org) <= (CLIENT_radar_range * 0.3) ){
         hud_render_ally_names( player );
       }
     }
     
     if( player.targetEntId <= 0 ){continue;}
     if( player.enemy.deadflag != DEAD_NO ){continue;}
-    hud_renderTargetOverlay_Ally(pmove_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
+    hud_renderTargetOverlay_Ally(CLIENT_vis_org, player.enemy, 0, CLIENT_faction, CLIENT_radar_range);
   }
 };
 
@@ -1000,7 +1000,7 @@ void() data_hud_fps_cam={
   local vector color2;
   
   hasTarget = FALSE;
-  if( CLIENT_stat_trg_dataidx > 0 || CLIENT_target_ent != world ){
+  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_target_ent.entnum != 0){
     hasTarget = TRUE;
   }
   
@@ -1108,7 +1108,7 @@ void() data_hud_fps_cam={
           porg = UI_DATA_POS[uid]; 
           algn = UI_DATA_ALIGN[uid];
           vsize = UI_DATA_SIZE[uid];
-          hud_renderRadar(porg, algn, CLIENT_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
+          hud_renderRadar(porg, algn, CLIENT_faction, CLIENT_vis_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
         }
         break;
       /*case HUD_UID_NAV:      
@@ -1130,7 +1130,7 @@ void() data_hud_fps_cam={
           if( hasTarget ){
             porg = UI_DATA_POS[uid]; 
             algn = UI_DATA_ALIGN[uid];
-            hud_renderTargetRange(porg, CLIENT_target_origin, pmove_org, algn);
+            hud_renderTargetRange(porg, CLIENT_target_origin, CLIENT_vis_org, algn);
           }
         }
         break;

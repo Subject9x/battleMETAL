@@ -49,23 +49,32 @@ void() hud_renderCrosshair1={
       hitAlpha = 1;
     }
   }
-  hasLock = TRUE;
+  hasLock = FALSE;
   
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
   
   //essentially, the 'lock on' reticle overrides the normal one ONLY when a true target has been acquired.
-  if( CLIENT_target_ent != world ){
-    if( CLIENT_stat_trg_face < 270 && CLIENT_stat_trg_face > 45){
-      hasLock = FALSE;
+  if( CLIENT_stat_trg_ent_id != 0 ){
+    if( CLIENT_stat_rdr_mode ){
+      if( CLIENT_stat_trg_face >= 270 || CLIENT_stat_trg_face <= 45){
+        hasLock = TRUE;
+      }
     }
   }
   else{
     hasLock = FALSE;
   }
   
-  if( !hasLock ){
+  if( hasLock ){
+    lockSize = '34 34';
+    //lockSize = '34 34' * HUD_LOCK_SIZE; //couldnt get it working for release.
+    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, CLR_DEF_RET_HASLOCK, HUD_ALPHA, DRAWFLAG_NORMAL);
+  }
+  else{
     drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
     //convergence
     pipLeft = VIEW_CTR - '11 1.5';
@@ -85,18 +94,5 @@ void() hud_renderCrosshair1={
     
     drawpic(pipTop, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
     drawpic(pipBottom, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  }
-
-
-  //lock on indicators
-  if( CLIENT_target_ent == world ){
-    return;
-  }
-  if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
-    lockSize = '34 34';
-    //lockSize = '34 34' * HUD_LOCK_SIZE; //couldnt get it working for release.
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, CLR_DEF_RET_HASLOCK, HUD_ALPHA, DRAWFLAG_NORMAL);
   }
 }; 

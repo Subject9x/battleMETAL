@@ -190,7 +190,7 @@ const float MASK_HUD        = 8; //custom, used to turn model on/off for hud dra
 
 
 //no proof these render flags are accessible by DP's flavor of QuakeC - Roohr :|
-const float RF_VIEWMODEL	= 1; // The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
+const float RF_VIEWMODEL	= 1; // REQUIRES TAG! The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
 const float RF_EXTERNALMODEL	= 2; // The entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
 const float RF_DEPTHHACK	= 4; // The entity appears closer to the view than normal, either by scaling it wierdly or by just using a depthrange. This will usually be found in conjunction with RF_VIEWMODEL
 const float RF_ADDITIVE		= 8;// Add the entity acording to it's alpha values instead of the normal blend
@@ -1734,6 +1734,7 @@ vector gettaginfo_up;
 float checkpvs(vector viewpos, entity viewee) = #240;
 float mod(float dividend, float divisor) = #245;
 
+
 //compatability with common/data stuff - Roohr
 float() crandom ={
 	return 2*(random() - 0.5);
@@ -1754,10 +1755,40 @@ void() SUB_Remove={
   remove(self);
 };
 
+
+//Playe movement and prediction
+.float pmove_flags;
+.float button8;
+float lastclientthink;
+float cs_maxairspeed;
+float cs_maxspeed;
+float cs_friction;
+float cs_accelerate;
+float cs_stopspeed;
+float cs_gravity;
+
+.float teleport_time;
+.vector movedir;
+.vector movement;
+.vector prevMovement;
+
+
+.float watertype;		// a contents value
+.float waterlevel;
+
+.float ladder_time;
+.entity ladder_entity;
+.float speed;
+
+void() CS_PlayerPhysics;
+
+.vector view_ofs;
+.vector v_angle;
 .float gravity;
 .float renderflags; //again, lost in documentation somewhere, use RF_* flags on this.
 .float scale;
 .float ping; //client string ping value doesn't seem to work :|
+.vector fixangle;
 
 #define cacheGlobalString(var, val) if(val!="" && strlen(val) > 0){if (var!="" && strlen(val) > 0){strunzone(var);} var = strzone(val);}
 #define freeGlobalString(var) if (var!="" && strlen(var) > 0){strunzone(var); var = "";}

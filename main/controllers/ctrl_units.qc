@@ -181,6 +181,11 @@ float( float isNew, float changedFlags ) send_deploy_point={
   //EVENT - New Ent
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
+    WriteCoord( MSG_ENTITY, self.origin_x );
+    WriteCoord( MSG_ENTITY, self.origin_y );
+    WriteCoord( MSG_ENTITY, self.origin_z );
+    WriteByte( MSG_ENTITY, self.isActive );
+    WriteByte( MSG_ENTITY, self.faction );
   }
   
   return TRUE;

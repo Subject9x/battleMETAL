@@ -47,24 +47,27 @@ void( float dataID ) data_sync_new_projectile={
 };
 
 
-void( entity e ) data_sync_new_debris={
+void() data_sync_new_debris={
   
-  e.effects = e.effects | EF_NOSHADOW;
-  switch( e.vec_size ){
+  self.effects = self.effects | EF_NOSHADOW;
+  switch( self.vec_size ){
     case 2:
       precache_model("models/fx/debris2/mdl_debris_2.md3");
-      setmodel(e, "models/fx/debris2/mdl_debris_2.md3");
-      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
+      self.model = "models/fx/debris2/mdl_debris_2.md3";
+      setmodel(self, "models/fx/debris2/mdl_debris_2.md3");
+      self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
       precache_model("models/fx/debris3/mdl_debris_3.md3");
-      setmodel(e, "models/fx/debris3/mdl_debris_3.md3");
-      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
+      self.model = "models/fx/debris3/mdl_debris_3.md3";
+      setmodel(self, "models/fx/debris3/mdl_debris_3.md3");
+      self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
       precache_model("models/fx/debris1/mdl_debris_1.md3");
-      setmodel(e, "models/fx/debris1/mdl_debris_1.md3");
-      e.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      self.model = "models/fx/debris1/mdl_debris_1.md3";
+      setmodel(self, "models/fx/debris1/mdl_debris_1.md3");
+      self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
   self.angles = vectoangles(self.velocity);
@@ -79,13 +82,13 @@ void() predraw_missile={
   interpolate_origin();
   interpolate_angle();
   
-  traceline(self.origin, client_vis_org, FALSE, self);
+  traceline(self.origin, CLIENT_vis_org, FALSE, self);
   
   if(trace_fraction != 1.0 ){
     return;
   }
   
-  if( vlen(self.origin - client_vis_org) > PARTICLE_HAZ_DISTANCE){
+  if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE){
     return;
   }
   
@@ -96,13 +99,13 @@ void() predraw_missile={
   if( self.predraw_projectile ){
     self.predraw_projectile();
   }
+  if( self.data_postinit ){
+    self.traileffectnum = self.data_traileff;
+  }
   
   setmodel(self, self.model);
   addentity(self);
   
-  if( self.data_postinit ){
-    self.traileffectnum = self.data_traileff;
-  }
   
 };
 

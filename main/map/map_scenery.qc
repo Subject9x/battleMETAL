@@ -71,11 +71,19 @@ void() scenery_obj={
 };
 
 void() DoodadRockDie={
+  local vector shoot;
+  
   self.solid = SOLID_NOT;
   self.takedamage = DAMAGE_NO;
   //TODO - rock death effect.
   //self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.deadflag = DEAD_DEAD;
+  
+  shoot = self.origin + [0, 0, self.maxs_z/2];
+  
+  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  te_missile_explode( shoot, 5, '1 0.85 0.33', 0.000025 );
+  sound(self, CHAN_AUTO, "sound/fx_boom.ogg", ATTN_NORM, 1.0);
   
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;

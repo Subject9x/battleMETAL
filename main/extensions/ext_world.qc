@@ -253,10 +253,19 @@ void() world_get_fog={
     found = world;
   }
   
-  self.fog_density = found.fog_density;
-  self.fog_alpha = found.fog_alpha;
-  self.fog_dist = found.fog_dist;
-  self.fog_fade = found.fog_fade;
+  if( found.fog_density ){
+    self.fog_density = found.fog_density;
+    self.fog_alpha = found.fog_alpha;
+    self.fog_dist = found.fog_dist;
+    self.fog_fade = found.fog_fade;
+  }
+  else{
+  
+    self.fog_density = 0.0;
+    self.fog_alpha = 0.0;
+    self.fog_dist = '0 0 0';
+    self.fog_fade = 0.0;
+  }
 };
 
 /*
@@ -493,7 +502,7 @@ void() sv_endServer={
         continue;
       }
       if( player.data_type == DATA_MECH ){
-        player.clientData.SendFlags = player.clientData.SendFlags | SENDFLAG_EFLAGS;
+        player.SendFlags = player.SendFlags | SENDFLAG_EFLAGS;
       }
       if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN || ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
         client_send_campaign_end_data( player );

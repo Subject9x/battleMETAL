@@ -23,12 +23,7 @@ float( float isNew, float changedFlags ) te_send_missile={
   if( (changedFlags & SENDFLAG_NEWENT) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.damageValue );
-    if( (self.owner.flags & FL_CLIENT) ){
-      WriteLong( MSG_ENTITY, num_for_edict(self.owner.clientData));
-    }
-    else{
-      WriteLong( MSG_ENTITY, num_for_edict(self.owner));
-    }
+    WriteShort( MSG_ENTITY, num_for_edict(self.owner));
   }
   
   if( (changedFlags & SENDFLAG_MOVE) ){
@@ -38,9 +33,9 @@ float( float isNew, float changedFlags ) te_send_missile={
   }
   
   if( (changedFlags & SENDFLAG_VELOCITY) ){
-    WriteLong( MSG_ENTITY, self.velocity_x );
-    WriteLong( MSG_ENTITY, self.velocity_y );
-    WriteLong( MSG_ENTITY, self.velocity_z );
+    WriteFloat( MSG_ENTITY, self.velocity_x );
+    WriteFloat( MSG_ENTITY, self.velocity_y );
+    WriteFloat( MSG_ENTITY, self.velocity_z );
   }
   
   if( (changedFlags & SENDFLAG_TURRET) ){

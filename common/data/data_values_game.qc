@@ -12,9 +12,9 @@ Overview:
 //   FILE PATHS           
 //============================
 #ifdef CSQC
-string MAP_NAME;  //strips mapname global of junk
 float UNLOCKED_MECHS[256];
 #endif
+string MAP_NAME;  //strips mapname global of junk
 
 #define PATH_DATA_MAP "maps/"
 #define PATH_DATA_ANIM "anim"
@@ -310,6 +310,7 @@ float AS_INT = 8;
 #define SENDTYPE_MISC 13
 #define SENDTYPE_MISC_BLD 14
 #define SENDTYPE_ITEM 15
+#define SENDTYPE_CLIENT 16
 //SendFlags-------------------
 //note: sendEnt is capped to 7 bitflags + NEWENT 
 //      and uses WriteByte, to add more flags, try switching

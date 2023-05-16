@@ -36,9 +36,9 @@ void(float isnew) CSQC_Ent_Update =
   entFlags = ReadLong(); //expanding entFlags values -> data/common
   
   switch(entType){
-    case SENDTYPE_PLAYER:
-      sendent_handle_player( isnew, entFlags );
-      break;
+    //case SENDTYPE_PLAYER:
+      //sendent_handle_player( isnew, entFlags );
+      //break;
     case SENDTYPE_TANK:
       sendent_handle_tank( isnew, entFlags );
       break;
@@ -74,6 +74,9 @@ void(float isnew) CSQC_Ent_Update =
       break;
     case SENDTYPE_ITEM:
       sendent_handle_item( isnew, entFlags );
+      break;
+    case SENDTYPE_CLIENT:
+      sendent_handle_client( isnew, entFlags );
       break;
   }
 };

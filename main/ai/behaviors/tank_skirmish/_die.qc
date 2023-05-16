@@ -7,11 +7,56 @@ Overview: ai unit
   Behavior - Skirmish
 */
 
-void() ai_tank_sk_die1={
+void() ai_wreck_smoke={
+  local vector v;
+  
+  v = self.origin + [0,0, self.maxs_z + 5] + WeatherDominator.wind;
+  if( time > self.ai_action_time ){
+    pointparticles( particleeffectnum("TE_WRECK_SMOKE_SM"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+  }
+  else{
+    pointparticles( particleeffectnum("TE_WRECK_SMOKE"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+  }
+  
+  if( time > self.ai_viewtime ){
+    self.think = SUB_Null;
+  }
+  else{
+    self.think = ai_wreck_smoke;
+  }
+  self.nextthink = time + 0.1;
+};
+
+void() ai_wreck_vec={
+  local entity wreck;
+  local vector wreckOrg;
+  
+  wreck = spawn();
+  
+  if(!wreck){return;}
+  
+  wreck.vec_size = self.vec_size;
+  wreck.movetype = MOVETYPE_NONE;
+  wreck.solid = SOLID_NOT;
+  wreck.colormod = '0.45 0.45 0.45';
+  wreck.angles = self.angles;
+  
+  makevectors(wreck.angles);
+  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
+  wreckOrg = trace_endpos + (v_up * self.mins_z * -1 );
+  GetAlignedSurfaceAngles(self);
   
   
-  self.think = SUB_Remove;
-  self.nextthink = time + 600;
+  setmodel(wreck, self.legs_mdl);
+  setsize(wreck, wreck.mins, wreck.maxs);
+  setorigin(wreck, wreckOrg);
+  
+  
+  wreck.ai_viewtime = time + 180 * (random() * 180);
+  wreck.ai_action_time = time + 180;
+  
+  wreck.think = ai_wreck_smoke;
+  wreck.nextthink = time + 0.1;
 };
 
 void() ai_tank_sk_die={
@@ -51,7 +96,9 @@ void() ai_tank_sk_die={
   
   ai_nodegraph_clear_locks();
   
+  ai_wreck_vec();
+  
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
   self.think = SUB_Remove;
-  self.nextthink = time + 600;
+  self.nextthink = time + 0.1;
 };

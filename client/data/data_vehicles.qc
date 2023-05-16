@@ -80,15 +80,18 @@ void() data_vehicle_wreck={
       self.data_lifetime = servertime + 120;
       break;
   }
+  
   self.think = data_vehicle_wreck_th;
   self.nextthink = time + 0.01;
 };
 
 
 void() data_vehicle_wreck_th={
-  if( self.pcl_effectnum > 0 && servertime < self.health && vlen(self.origin - client_vis_org) < PARTICLE_HAZ_DISTANCE / 2 ){
+  if( self.pcl_effectnum > 0 && servertime < self.health && vlen(self.origin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE / 2 ){
     makevectors(self.angles);
     pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+    
+    pointparticles( PTC_WRECK_SMOKE, self.origin + '0 0 20', normalize( (self.origin + '0 0 20') - self.origin) * 5, 0.5);
   }
   self.think = data_vehicle_wreck_th;
   self.nextthink = time + random() * 0.5;

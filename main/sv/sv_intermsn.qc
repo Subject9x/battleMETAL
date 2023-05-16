@@ -190,9 +190,7 @@ void() execute_changelevel={
       if( world.animaticOnly == FALSE ){
         self.playerState = PLAYER_INTERMSN;  //TEST
         client_push_mapobjects();
-        if(self.clientData != world ){
-          self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_EFLAGS;
-        }
+        self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
       }
     this = self;
 		other = find (other, classname, "player");

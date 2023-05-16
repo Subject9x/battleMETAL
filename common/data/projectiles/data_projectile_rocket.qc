@@ -82,7 +82,7 @@ void(entity theOther ) data_prj_mis_hit={
       else{
         damage = damage * 0.67;
       }
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE );
+      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, FALSE );
       self.impactType = IMPACT_SHIELD;
     }
     else{

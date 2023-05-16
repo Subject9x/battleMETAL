@@ -94,9 +94,9 @@ void() data_ini_warden_={
   
   //camera location
 #ifdef CSQC
-  self.cameraOffset = '0 8 14';
+  self.cameraOffset = '0 7 12';
 #else
-  self.cameraOffset = '0 8 7';
+  self.cameraOffset = '0 7 7';
 #endif
 //=====================================
  
@@ -116,13 +116,15 @@ void() data_ini_warden_={
     precache_model("models/mechs/balaket/balaket_hud.obj");
     self.weaponmodel = "models/mechs/warden/warden_view.obj";
     self.hud_model = "models/mechs/balaket/balaket_hud.obj";
-    self.hud_StrutsOffset = '0 -1.5 -1';
+    self.hud_StrutsOffset = '0 -1.0 -0.75';
     self.pitchMax = 25; //pitch down limit
     self.pitchMin = -28;//pitch up limit
     self.hud_rollangle = 4;
-    self.hud_bob = 0.03;
+    
+    self.hud_bob = 2.5;
+    self.hud_bob_up = 5.0;
+    
     self.hud_bob_cycle = 0.5;
-    self.hud_bob_up = 0.20; //0.15
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.09;
     self.hud_bob_speed = 6;
@@ -135,7 +137,7 @@ void() data_ini_warden_={
     self.config_default_brawl = warden_config_default_brawl;
     self.abbrev = "WRD";
     self.description = "MILITAR burned out their best hackers on black ICE breaking into a salvaged Federation data core. Amongst the encrypted modules was blueprints for a highly advanced light metal - the WARDEN. | | Tech degradation after the toppling of the Federation meant that MILITAR could not create a perfect copy...but they tried anyway. | | The result is a tough-as-nails light metal. It is not the fastest metal on the planet, but well-protected hardpoints and fast enough movement allow the WARDEN to stay out of most trouble. | | BALAKET pilots have a particular disdain for WARDEN units, frustrated that their vaunted hit-and-run style won`t take a WARDEN down quickly.";
-
+    self.icon = "gfx/ui/mech_icons/icon_warden.png";
     //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
     local entity hardpnt;
     hardpnt = self.w_slot;

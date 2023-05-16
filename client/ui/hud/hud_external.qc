@@ -33,7 +33,7 @@ void() data_hud_external={
       if( (CLIENT_weapon_state & wepBit) ){
         
         oself = self;
-        self = CLIENT_mech_self;
+        self = CLIENT_server_ent;
           theWep = sendent_get_weapon( wepBit );
         self = oself;
         

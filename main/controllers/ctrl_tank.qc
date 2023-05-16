@@ -77,30 +77,24 @@ void() ctrl_updateTank={
   if( self.deadflag <= DEAD_NO ){
     hp = self.health / self.max_health;
     if( hp <= 0.25 ){
-      
-      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
-      if( self.data_type == DATA_BLD ){
-        if( !(self.burnBits & WEAPON3) ){
-          self.burnBits = self.burnBits | WEAPON3;
-        }
+      if( !(self.burnBits & WEAPON3) ){
+        self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+        self.burnBits = self.burnBits | WEAPON2;
+        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
       }
     }
     else if( hp <= 0.5 ){
-      
-      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
-      if( self.data_type == DATA_BLD ){
-        if( !(self.burnBits & WEAPON2) ){
-          self.burnBits = self.burnBits | WEAPON2;
-        }
+      if( !(self.burnBits & WEAPON2) ){
+        self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE_HOT");
+        self.burnBits = self.burnBits | WEAPON2;
+        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
       }
     }
     else if( hp <= 0.75 ){
-     
-      self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
-      if( self.data_type == DATA_BLD ){
-        if( !(self.burnBits & WEAPON1) ){
-          self.burnBits = self.burnBits | WEAPON1;
-        }
+      if( !(self.burnBits & WEAPON1) ){
+        self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
+        self.burnBits = self.burnBits | WEAPON1;
+        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
       }
     }
   }

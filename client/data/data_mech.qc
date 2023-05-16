@@ -52,4 +52,8 @@ void( float dataID ) data_sync_new_mech_ai={
   
   self.legs_frame = 0;
   self.legs_nextthink = self.legs_frame1time = self.legs_frame2time = time + 0.1;
+  if( !self.unit_legs ){
+    self.unit_legs = spawn();
+    self.unit_legs.skin = self.skin;
+  }
 };

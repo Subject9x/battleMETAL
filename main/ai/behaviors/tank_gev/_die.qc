@@ -10,6 +10,45 @@ Overview: ai unit
     
 */
 
+
+void() ai_wreck_gev={
+  
+  local entity wreck;
+  
+  wreck = spawn();
+  
+  if(!wreck){return;}
+  
+  makevectors( self.angles );
+  
+  wreck.movetype = MOVETYPE_BOUNCE;
+  wreck.solid = SOLID_CORPSE;
+  wreck.angles = self.angles;
+  
+  if( self.attack_state != ST_STAND ){
+    wreck.velocity = normalize( (self.origin + (v_forward * 5)) - self.origin);
+    wreck.velocity = wreck.velocity * 125;
+    wreck.velocity_z = wreck.velocity_z + 50;
+    wreck.gravity = 0.33;
+    wreck.avelocity_x = crandom() * 150;
+    wreck.avelocity_y = crandom() * 300; 
+    wreck.avelocity_z = crandom() * 400;
+  }
+  else{
+    wreck.velocity = normalize( (self.origin + (v_up * -2)) - self.origin);
+    wreck.velocity_x = wreck.velocity_x * crandom() * 5;
+    wreck.velocity_y = wreck.velocity_y * crandom() * 5;
+    wreck.velocity_z = wreck.velocity_z * 15;
+    wreck.gravity = 0.33;
+  }
+  wreck.traileffectnum = particleeffectnum("TE_WRECK_SMOKE");
+  wreck.colormod = '0.45 0.45 0.45';
+  
+  setmodel(wreck, self.legs_mdl);
+  setsize(wreck, wreck.mins, wreck.maxs);
+  setorigin(wreck, self.origin + (v_up * 10));
+};
+
 void() ai_gev_touch_death={
   if( other == world ){
     self.movetype = MOVETYPE_NONE;
@@ -62,7 +101,7 @@ void() ai_gev_die={
   self.th_pain = ai_NULL_pain;
   self.th_missile = ai_NULL_missile;
   self.deadflag = DEAD_DEAD;
-  self.movetype = MOVETYPE_BOUNCE;
+  self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.enemy = world;
   
@@ -73,9 +112,9 @@ void() ai_gev_die={
     
   ai_nodegraph_clear_locks();
   
-  setorigin(self, self.origin + (v_up * 5));
+  ai_wreck_gev();
+  
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
-  self.touch = ai_gev_touch_death;
   self.think = SUB_Remove;
-  self.nextthink = time + (random() * 500);
+  self.nextthink = time + 0.1;
 };

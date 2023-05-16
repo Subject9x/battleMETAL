@@ -163,9 +163,7 @@ void() ImpulseCommands ={
         self.stat_rdr_rng = self.radar_range * 2;
       }
     }
-    if(self.clientData != world){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_RADAR;
-    }
+    self.SendFlags = self.SendFlags | SENDFLAG_RADAR;
   } 
 
   if(self.impulse == IMP_SLIDE){
@@ -202,7 +200,7 @@ void() ImpulseCommands ={
         PutClientInServer();
       }
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_FACTION;
+    self.SendFlags = self.SendFlags | SENDFLAG_FACTION;
   }
   
   if(self.impulse == IMP_FAC_PREV){
@@ -219,7 +217,7 @@ void() ImpulseCommands ={
         PutClientInServer();
       }
     }
-    self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_FACTION;
+    self.SendFlags = self.SendFlags | SENDFLAG_FACTION;
   }
 
   if(self.impulse == IMP_EXTERNAL_CAMERA){
@@ -229,9 +227,7 @@ void() ImpulseCommands ={
     else{
       self.chaseActive = TRUE;
     }
-    if(self.clientData != world){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CAMERA;
-    }
+    self.SendFlags = self.SendFlags | SENDFLAG_CAMERA;
   }
 
   if(self.impulse == IMP_HEADLIGHT){
@@ -241,10 +237,7 @@ void() ImpulseCommands ={
     else{
       self.headlight = TRUE;
     }
-    if(self.clientData != world){
-      //running out of SENDFLAGS_...
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CAMERA;
-    }
+    self.SendFlags = self.SendFlags | SENDFLAG_CAMERA;
   }
 
 	self.impulse = 0;
@@ -262,7 +255,9 @@ void() ButtonCommands={
       if( self.energy > 0 && !(self.legs_flags & FL_DISARMED)){
         if( self.playerState == PLAYER_ACTIVE ){
           self.ramAngle_y = self.v_angle_y;
-          self.moveState = MOVE_SPRINT;
+          if( self.movement_x || self.movement_y){
+            self.moveState = MOVE_SPRINT;
+          }
           //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
         }
       }

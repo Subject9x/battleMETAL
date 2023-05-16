@@ -91,7 +91,7 @@ void() data_ini_matok_={
   
   //camera location
   #ifdef CSQC
-    self.cameraOffset = '0 15 15';
+    self.cameraOffset = '0 15 13';
   #else
     self.cameraOffset = '0 15 7';
   #endif
@@ -118,9 +118,11 @@ void() data_ini_matok_={
     self.pitchMax = 55;
     self.pitchMin = -45;
     self.hud_rollangle = 3.25;
-    self.hud_bob = 0.035;
+    
+    self.hud_bob = 3.0;
+    self.hud_bob_up = 5.0;
+    
     self.hud_bob_cycle = 0.5;
-    self.hud_bob_up = 0.4;
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.35;
     self.hud_bob_speed = 6.55;
@@ -132,7 +134,8 @@ void() data_ini_matok_={
     self.config_default_missile = matok_config_default_missile;
     self.config_default_brawl = matok_config_default_brawl;
     self.description = "The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its offense. Its speed is also a problem against more agile targets.";
-    
+    self.icon = "gfx/ui/mech_icons/icon_matok.png";
+     
     //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
     local entity hardpnt;
     hardpnt = self.w_slot;

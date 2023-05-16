@@ -230,10 +230,10 @@ void() data_ini_attack_electro_repeater_={
     damage = self.damageValue; 
     if( trace_ent.shield > 0 ){
       damage = damage * 0.67;
-      t_damage_shield(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, FALSE);
+      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, FALSE);
     }
     else{
-      HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, damage, FIRE_ENDPOINT, '0 0 0');
+      HIT_LOCATION = t_damage(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, '0 0 0');
       if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
         self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }

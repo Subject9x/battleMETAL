@@ -96,7 +96,7 @@ void()data_projectile_ion_explode={
       continue;
     }
     if( other.shield > 0 ){
-      t_damage_shield(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
+      t_damage_shield(trace_ent, self, self.owner, self.damageValue, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_SKY;
     }
     else{
@@ -115,11 +115,11 @@ void() data_projectile_ion_touch={
   
   if(other.takedamage){
     if( other.shield > 0 ){
-      t_damage_shield(other, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, TRUE);
+      t_damage_shield(other, self, self.owner, self.damageValue, FIRE_ENDPOINT, TRUE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      t_damage_shield(other, self, FIRE_ENT, self.damageValue * 0.1, FIRE_ENDPOINT, TRUE);
+      t_damage(other, self, self.owner, self.damageValue * 0.15, FIRE_ENDPOINT, '0 0 0');
       self.impactType = IMPACT_ARMOR;
     }
     self.targetEntId = num_for_edict(other);

@@ -106,13 +106,17 @@ float(entity t) ai_valid_target={
   if( !t ){
     return FALSE;
   }
-  if( t != self ){
-    if( t.faction == self.faction){
-      return FALSE;
-    }
-    if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
-      return t.canTarget;
-    }
+  if( t == self ){
+    return FALSE;
+  }
+  if( t.deadflag != DEAD_NO ){
+    return FALSE;
+  }
+  if( t.faction == self.faction){
+    return FALSE;
+  }
+  if( (t.flags & FL_UNIT) ){
+    return t.canTarget;
   }
   return FALSE;
 };
@@ -138,12 +142,11 @@ entity( float radiius) ai_find_friend={
 };
 
 void( entity t) ai_alert_close={
-  
   local entity ally;
   local float rng;
   local float fog;
   local float fogLen;
-  local float alertMax;
+  local float vis;
   
   if( alarm_ent == world ){
     alarm_ent = self;
@@ -152,28 +155,26 @@ void( entity t) ai_alert_close={
   if((t.flags&FL_CLIENT)){
     ai_sfx_help();
   }
-  if(!self.ai_view || self.ai_view < 1){
-    self.ai_view = AI_RANGE_M;
-  }
   
   rng =  self.ai_view;
-  if( self.fog_alpha && self.fog_dist_x <= AI_RANGE_L){
-    fogLen = self.fog_dist_y - self.fog_dist_x;
-    fogLen = max(self.ai_view, fogLen);
-   // cons_logAFloat("fogLen", fogLen); //debug
-    fog = bound(0.1, self.fog_alpha + self.fog_density / 2, 1.0);
-    fog = fog * fogLen;
-    rng = max(256, self.ai_view - fogLen);
-    //cons_logAFloat("fog range", rng); //debug
+  if(!self.ai_view || self.ai_view < 1){
+    rng = AI_RANGE_M;
   }
   
-  alertMax = self.ai_rank + 2;
+  if( !self.stat_rdr_mode ){
+    rng = rng / 2;
+  }
+  
   for(ally = findradius(self.origin, rng); ally != world; ally = ally.chain){
     if( ally.faction != self.faction ){
       continue;
     }
     if( !ai_valid_target(ally) ){
       continue;
+    }
+    if( !self.stat_rdr_mode ){
+      vis = ai_check_vis(ally);
+      if( vis != VIS_FRAC && vis != VIS_FRN ){continue;}
     }
     ai_give_target( ally, t, ((t.flags&FL_CLIENT) && !(ally.enemy.flags & FL_CLIENT)));
   }      
@@ -186,72 +187,56 @@ void( entity t) ai_alert_close={
 float() ai_find_target_visual={
   local entity targ, found;
   local float rng, fog, fogLen, ndist;
+  local float visFrac;
 
   if( ai_valid_target(self.enemy) ){
     return FALSE;
   }
     
-  rng =  self.ai_view;
-  if( self.fog_alpha && self.fog_dist_x <= AI_RANGE_L){
+  rng = self.ai_view;
+  if( self.fog_alpha && (self.fog_dist_x && self.fog_dist_x <= AI_RANGE_L)){
     fogLen = self.fog_dist_y - self.fog_dist_x;
-    fogLen = max(self.ai_view, fogLen);
-    //cons_logAFloat("fogLen", fogLen); //debug
-    fog = bound(0.1, self.fog_alpha + self.fog_density / 2, 1.0);
-    fog = fog * fogLen;
-    rng = max(256, self.ai_view - fogLen);
-    //cons_logAFloat("fog range", rng); //debug
+    if( rng < fogLen){
+      fog = fogLen - rng / fogLen * self.fog_alpha;
+    }
+    else{
+      fog = self.fog_alpha;
+    }
+    rng = rng * fog;
   }
-  selfSensorOrg_x = self.origin_x;
-  selfSensorOrg_y = self.origin_y;
-  selfSensorOrg_z = 0;
-  
+
   for(targ = findradius(self.origin, rng); targ != world; targ = targ.chain){ 
     if( (targ.flags & FL_NOTARGET) ){
-      continue;
-    }
-    if( targ.faction == self.faction ){
       continue;
     }
     if( !ai_valid_target(targ) ){
       continue;
     }
-    enemySensorOrg_x = targ.origin_x;
-    enemySensorOrg_y = targ.origin_y;
-    enemySensorOrg_z = 0;
-    ndist = vlen(enemySensorOrg - selfSensorOrg);
-    if(ndist > rng){
-      continue;
-    }
-    if( ai_check_vis(targ) != VIS_FRAC ){
-      continue;
-    }
-    if( (self.flags & FL_TURRET) ){
-      if( !ai_check_targ_infront( targ, self.ai_fov, TRUE)){
+    
+    ndist = vlen([targ.origin_x, targ.origin_y, 0] - [self.origin_x, self.origin_y, 0]);
+    visFrac = ai_check_vis(targ);
+    
+    if(!ai_check_face_origin(targ.origin, self.ai_fov, (self.flags & FL_TURRET)) ){
         continue;
-      }
     }
-    else{
-      if( !ai_check_face(targ, self.ai_fov, FALSE) ){
-        continue;
-      }
+    if( ndist > rng || visFrac != VIS_FRAC){
+      continue;
     }
     rng = ndist;
     found = targ;
   }
 
-  if( found != world ){
+  if( found ){
+    ai_alert_close(found);
     if( (self.flags & FL_DISARMED) ){
       if((found.flags&FL_CLIENT)){
         ai_sfx_help();
       }
-      ai_alert_close(found);
       return FALSE;
     }
-    else{
-      self.enemy = found;
-      ai_sfx_spotted();
-      return TRUE;
-    }
+    self.enemy = found;
+    ai_sfx_spotted();
+    return TRUE;
   }
   return FALSE;
 };
@@ -262,10 +247,7 @@ float() ai_find_target_radar={
   }
   local entity targ, found;
   local float rng, ndist;
-  
-  selfSensorOrg_x = self.origin_x;
-  selfSensorOrg_y = self.origin_y;
-  selfSensorOrg_z = 0;
+  local float vis;
   
   rng = self.ai_view;
   for(targ = findradius(self.origin, self.ai_view); targ != world; targ = targ.chain){
@@ -275,13 +257,7 @@ float() ai_find_target_radar={
     if( !ai_valid_target(targ) ){
       continue;
     }
-    if( targ.faction == self.faction ){
-      continue;
-    }
-    enemySensorOrg_x = targ.origin_x;
-    enemySensorOrg_y = targ.origin_y;
-    enemySensorOrg_z = 0;
-    ndist = vlen(enemySensorOrg - selfSensorOrg);
+    ndist = vlen([targ.origin_x, targ.origin_y, 0] - [self.origin_x, self.origin_y, 0]);
     if( ndist > rng ){
       continue;
     }
@@ -290,25 +266,24 @@ float() ai_find_target_radar={
         continue;
       }
     }
-    if( (ai_check_vis(targ) != VIS_FRAC) && (ai_check_vis(targ) != VIS_FRN)){
-      continue;
-    }
+    
+    vis = ai_check_vis(targ);
+    if( vis != VIS_FRAC && vis != VIS_FRN ){continue;}
+    
     rng = ndist;
     found = targ;
   }
   if( found ){
+    ai_alert_close(found);
     if( (self.flags & FL_DISARMED) ){
       if((found.flags&FL_CLIENT)){
         ai_sfx_help();
       }
-      ai_alert_close(found);
       return FALSE;
     }
-    else{
-      self.enemy = found;
-      ai_sfx_spotted();
-      return TRUE;
-    }
+    self.enemy = found;
+    ai_sfx_spotted();
+    return TRUE;
   }
   return FALSE;
 };

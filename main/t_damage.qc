@@ -45,13 +45,11 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
     }
   }
   
-                            //------------> Damage Buffer system
-                            if( (dmgTrg.flags & FL_CLIENT) ){
-                              if( trg.faction == FACTION_ALL && trg.data_type != DATA_BLD ){
-                                dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
-                              }
-                            }
-                            //-----------------------
+  //------------> Damage Buffer system
+  if( trg.data_type != DATA_BLD ){
+    dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
+  }
+  //-----------------------
                             
   trg.dmg_inflictor = inflictor;
   if(trg.was_hit < time){
@@ -76,15 +74,18 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.playerDMdamage = attacker.playerDMdamage + dmgAmt;
-    if( !attacker.enemy && dmgTrg.canTarget ){
-      attacker.enemy = dmgTrg;
-      attacker.targetEntId = num_for_edict(dmgTrg);
-      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
-      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
-    }
-    attacker.w_proj = time + 0.2;
-    if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
-      attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
+    if( attacker != dmgTrg ){
+      //make sure can't target self.
+      if( !attacker.enemy && dmgTrg.canTarget ){
+        attacker.enemy = dmgTrg;
+        attacker.targetEntId = num_for_edict(dmgTrg);
+        attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
+        //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
+      }
+      attacker.w_proj = time + 0.2;
+      if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
+        attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
+      }
     }
   }
                         
@@ -140,6 +141,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             dmgTrg.torL_hp = max(0, dmgTrg.torL_hp - dmgAmt);
             if(dmgTrg.torL_hp <= 0){
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_LEFT;
+              dmgTrg.torL_hp = 0;
               if( (dmgTrg.unitModFlags & MOD_HAS_ARM_L) && !(dmgTrg.criticalHits & M_ARM_LEFT) ){
                 dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
                 dmgTrg.armL_hp = 0;
@@ -150,6 +152,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             dmgTrg.torR_hp = max(0, dmgTrg.torR_hp - dmgAmt);
             if(dmgTrg.torR_hp <= 0){
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_RIGHT;
+              dmgTrg.torR_hp = 0;
               if( (dmgTrg.unitModFlags & MOD_HAS_ARM_R) && !(dmgTrg.criticalHits & M_ARM_RIGHT) ){
                 dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
                 dmgTrg.armR_hp = 0;
@@ -160,17 +163,20 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             dmgTrg.armR_hp = max(0, dmgTrg.armR_hp - dmgAmt);
             if(dmgTrg.armR_hp <= 0){
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
+              dmgTrg.armR_hp = 0;
             }
             break;
           case M_ARM_LEFT:
             dmgTrg.armL_hp = max(0, dmgTrg.armL_hp - dmgAmt);
             if(dmgTrg.armL_hp <= 0){
+              dmgTrg.armL_hp = 0;
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
             }
             break;
           case M_LEGS:
             dmgTrg.legs_hp = max(0, dmgTrg.legs_hp - dmgAmt);
             if(dmgTrg.legs_hp <= 0){
+              dmgTrg.legs_hp = 0;
               dmgTrg.critBuffer = dmgTrg.critBuffer | M_LEGS;
             }
             break;
@@ -265,12 +271,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  if( (dmgTrg.flags & FL_CLIENT) ){
-    dmgTrg.clientData.SendFlags = dmgTrg.clientData.SendFlags | SENDFLAG_IMPACT;
-  }
-  else{
-    dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
-  }
+  dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
   
   dmgTrg.dmg_inflictor = inflictor;
   if(dmgTrg.was_hit < time){
@@ -282,11 +283,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.w_proj = time + 0.2;
-    if( !attacker.enemy && dmgTrg.canTarget ){
-      attacker.enemy = dmgTrg;
-      attacker.targetEntId = num_for_edict(dmgTrg);
-      //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
-      attacker.clientData.SendFlags = attacker.clientData.SendFlags | SENDFLAG_TARGET;
+    if( attacker != dmgTrg ){
+      if( !attacker.enemy && dmgTrg.canTarget ){
+        attacker.enemy = dmgTrg;
+        attacker.targetEntId = num_for_edict(dmgTrg);
+        //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
+        attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
+      }
     }
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
@@ -330,6 +333,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
         else{
           dmgTrg.shieldHitDelay = dmgTrg.shieldHitDelay + (SHIELD_DELAY * 0.33);
         }
+        dmgTrg.shieldHitDelayStart = time;
       }
     }
   }

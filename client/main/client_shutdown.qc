@@ -57,13 +57,7 @@ void() CSQC_Shutdown =
     freeGlobalString(SAVEFILE_CAMPAIGN)
   }
   
-  
-  
   freeGlobalString(SAVEFILE_CACHE_MAP)
-  
-  freeGlobalString(MENU_DEBRIEF_unlocks_mechs)
-  freeGlobalString(MENU_DEBRIEF_unlocks_equip)
-  
   freeGlobalString(DATA_CONFIG_BUFFER_NAME)
   
   //mission file cleanup

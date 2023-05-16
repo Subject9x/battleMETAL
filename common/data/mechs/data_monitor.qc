@@ -32,7 +32,7 @@ void() data_ini_monitor_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 600;
-  self.energyRate= 3.85;
+  self.energyRate= 3.95;
   self.shieldMax = 375;
   self.shieldRate= 2.75;
   self.startupDelay = 9;
@@ -89,9 +89,11 @@ void() data_ini_monitor_={
   
   //camera location
 #ifdef CSQC
-  self.cameraOffset = '0 18 18';
+  //X - unused, Y - height offset from mech ORIGIN! Z - moves the player mech BACK this many units
+  self.cameraOffset = '0 17 9';
 #else
-  self.cameraOffset = '0 18 8';
+  //X - unused, Y - height offset from mech ORIGIN! Z - moves player camera FORWARD this many units
+  self.cameraOffset = '0 17 8';
 #endif
 //=====================================
  
@@ -115,13 +117,15 @@ void() data_ini_monitor_={
     precache_model("models/mechs/monitor/monitor_hud.obj");
     self.weaponmodel = "models/mechs/monitor/monitor_view.obj";
     self.hud_model = "models/mechs/monitor/monitor_hud.obj";
-    self.hud_StrutsOffset = '0 -1.05 0.33';
+    self.hud_StrutsOffset = '0 -1.25 0.33';
     self.pitchMax = 43;
     self.pitchMin = -25;
     self.hud_rollangle = 2.75;
-    self.hud_bob = 0.05;
+    
+    self.hud_bob = 1.5;
+    self.hud_bob_up = 7.0;
+    
     self.hud_bob_cycle = 0.65;
-    self.hud_bob_up = 0.35;
     self.hud_bob_model = 1;
     self.hud_bob_side = 0.4;
     self.hud_bob_speed = 3.85;
@@ -134,6 +138,7 @@ void() data_ini_monitor_={
     self.config_default_brawl = monitor_config_default_brawl;
     self.abbrev = "MNT";
     self.description = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
+    self.icon = "gfx/ui/mech_icons/icon_monitor.png";
     
     //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
     local entity hardpnt;

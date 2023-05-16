@@ -107,7 +107,7 @@ void() hud_render_tactical_map={
     }
     //PLAYER TAC MAP INFO
     if( player.clientServerNum == player_localentnum ){
-      drawpic(gui_mapCoordToImgCoord(mapMins, map_size, pmove_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
+      drawpic(gui_mapCoordToImgCoord(mapMins, map_size, CLIENT_vis_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
       if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
       if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
       if(player.enemy == world){continue;}
@@ -121,6 +121,7 @@ void() hud_render_tactical_map={
       else if( CLIENT_target_datatype == DATA_BLD ){
         pipType = HUD_RAD_PIP_BLD;
       }
+      if( !pipType || strlen(pipType) == 0){continue;}
       drawpic(target_org - '5 5', pipType, '10 10', CLR_DEF_IFF_ENEMY, 1, 0);
     }
     else{
@@ -135,6 +136,7 @@ void() hud_render_tactical_map={
         drawfont = FONT_NUM_ROBOT_REGULAR;
         
         playerName = getplayerkeyvalue(player.clientLocalNum, "name");
+        if( (!playerName || playerName == "") || strlen(playerName) == 0){continue;}
         nameLen = stringwidth( playerName, 0, '10 10 0');
         nameOrg_x = nameOrg_x - ( nameLen / 2 );
         drawstring( nameOrg, playerName, '10 10 0', CLR_DEF_IIF_FRIEND_BLD, 1, 0);
@@ -153,7 +155,7 @@ void() hud_render_tactical_map={
   //arrow = gui_angleToArrow(input_angles_y - 90);
   arrowAng = anglemod( 90 - input_angles_y);
   makevectors(input_angles);
-  playerMapOrg = gui_mapCoordToImgCoord(mapMins, map_size, pmove_org, mapOrg, mapImgSize);
+  playerMapOrg = gui_mapCoordToImgCoord(mapMins, map_size, CLIENT_vis_org, mapOrg, mapImgSize);
   drawrotpic(playerMapOrg, "gfx/hud/map_up.png", '12 12', '6 6', arrowAng, '0.25 1 2', 1, 0);
 };
 

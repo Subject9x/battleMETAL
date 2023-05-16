@@ -178,7 +178,15 @@ void() map_deploy_point_remote={
 void() coop_deploy_postconstruct={
 
   local entity parent;
-  parent = find(world, group, self.group);
+  parent = findchain(group, self.group);
+  
+  while(parent){
+    if(parent.classname == "map_deploy_point"){
+      break;
+    }
+    parent = parent.chain;
+  }
+  
   
   if( !parent ){
     cons_logAVector("map_deploy_point_coop missing valud coopClientId, removing!", self.origin);
@@ -186,6 +194,7 @@ void() coop_deploy_postconstruct={
     return;
   }
   
+  self.owner = parent;
   cacheGlobalString( self.iniConfig, strcat(self.group, ftos(self.coopClientId)) )
   
 };
@@ -207,10 +216,8 @@ void() map_deploy_point_coop={
     return;
   }
   
-  if( self.coopClientId < 2 ){
-    cons_logAVector("map_deploy_point_coop missing valud coopClientId, removing!", self.origin);
-    remove(self);
-    return;
+  if( !self.coopClientId ){
+    self.coopClientId = 1;
   }
 
   self.think = coop_deploy_postconstruct;

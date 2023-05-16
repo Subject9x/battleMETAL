@@ -106,6 +106,12 @@ void() sendent_building_settle={
   setorigin(self, self.origin);
   self.cache_mins = self.mins;
   self.cache_maxs = self.maxs;
+  
+  if( self.building_delay_think ){
+    self.think = self.building_delay_think;
+    self.nextthink = time + 0.01;
+  }
+  
 };
 
 

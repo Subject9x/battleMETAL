@@ -22,6 +22,16 @@ engine notes;
 ** - this has been modified to be incorporated into battleMETAL and is not compatible with
       other code bases.
 */
+
+/*
+  
+*/
+void() player_think_normal={
+
+  self.think = player_think_normal;
+  self.nextthink = time + 0.01;
+};
+
 /*
 ===========
 PlayerPreThink
@@ -71,11 +81,6 @@ void() PlayerPreThink = {
 	//if (self.waterlevel == 2)
 		//CheckWaterJump ();
 
-  //Player powering up their mech, prevent movement
-  if(time < self.power_timer){
-    PlayerPreThink_powerup();
-    return;
-  }
 
 	//if (self.button2){
 		//PlayerJump();
@@ -86,6 +91,12 @@ void() PlayerPreThink = {
 // teleporters can force a non-moving pause time	
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
+  
+  //Player powering up their mech, prevent movement
+  if(time < self.power_timer){
+    PlayerPreThink_powerup();
+    return;
+  }
   
   if( (self.unitModFlags & MOD_HAS_RAMSHOCKS)){
     if( !self.button8 ){
@@ -118,6 +129,7 @@ called after running player input frame
 void() PlayerPostThink = {
   local entity wep_chain;
   local float legDmg, centerTorsoDmg;
+  
   if (self.deadflag >= DEAD_DYING){
     return;
   }
@@ -300,39 +312,35 @@ void() PlayerPostThink = {
   }
   
   //network SendFlags 
-  if( self.clientData != world ){
-    if( self.last_origin != self.origin ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_MOVE;
-    }
-    if( self.last_angle != self.v_angle ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_TURRET;
-    }
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+  self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
+  
+  if( self.last_color != self.new_color ){
+    self.SendFlags = self.SendFlags | SENDFLAG_COLORS;
+    self.new_color = FALSE;
+    self.last_color = self.new_color;
+  }
+  
+  //NON-OBSERVER SEND DATA
+  if( self.data_type != DATA_POBS ){
     if( self.damageValue > 0 ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
+      self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
     }
+    
     if( self.last_shield != self.stat_client_shield ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_SHIELD;
+      self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
       self.last_shield = self.stat_client_shield;
     }
-    if( self.last_crit != self.critBits ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_CRIT;
-      if( !(self.critBits & M_REPAIR) ){
-        client_send_critical_hit( num_for_edict(self), self.critBits );
-      }
-      self.last_crit = self.critBits;
-      
-    }
+    
     if( self.last_burn != self.burnBits ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_BURN;
+      self.SendFlags = self.SendFlags | SENDFLAG_BURN;
       self.last_burn = self.burnBits;
     }
-    if( self.last_color != self.new_color ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_COLORS;
-      self.new_color = FALSE;
-      self.last_color = self.new_color;
-    }
+    
     if( self.attackFlag > 0 ){
-      self.clientData.SendFlags = self.clientData.SendFlags | SENDFLAG_ATTACK;
+      self.SendFlags = self.SendFlags | SENDFLAG_ATTACK;
     }
   }
   
@@ -350,7 +358,9 @@ void() PlayerPostThink = {
   //========================================  
   
   self.last_origin = self.origin; //used for SENDFLAG_MOVE delta
-  self.last_angle = self.v_angle;
+  self.last_angle = self.angles;
+  self.last_velocity = self.velocity;
+  self.last_flags = self.flags;
 };
 
 void() PlayerPreThink_powerup={
@@ -382,7 +392,23 @@ void() PlayerPostThink_powerup={
     }
     ctrl_weapon_think(wep_chain);
   }
-
+  
+  if (!(self.flags & FL_ONGROUND)){
+    self.jump_flag = self.velocity_z;
+  }
+  
+  //network SendFlags 
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
+  self.SendFlags = self.SendFlags | SENDFLAG_TURRET;
+  self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
+  
+  if( self.last_color != self.new_color ){
+    self.SendFlags = self.SendFlags | SENDFLAG_COLORS;
+    self.new_color = FALSE;
+    self.last_color = self.new_color;
+  }
+  
   //DEBUG / DEV ONLY!
   if( cvar("developer") ){
     if(self.button0){
@@ -421,7 +447,7 @@ void() PlayerDie={
   self.critBits = 0;
   self.last_crit = 0;
   self.targetEntId = 0;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
   
   self.effects = 0;
   self.deadflag = DEAD_DYING;
@@ -497,7 +523,7 @@ void() PlayerDieNetwork={
   self.critBits = 0;
   self.last_crit = 0;
   self.targetEntId = 0;
-  self.clientData.SendFlags = self.clientData.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
   
   self.playerDeaths = self.playerDeaths + 1;
   

@@ -54,7 +54,7 @@ void() hud_renderCrosshair3={
     drawpic(hitCenter, "gfx/hud/ret/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
   }
   //lock on indicators  
-  if( CLIENT_target_ent == world ){
+  if( CLIENT_stat_trg_ent_id == 0 ){
     return;
   }
   if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){

@@ -10,6 +10,8 @@ defs/headers/menu.qh
 defs/headers/menu_gfx.qh
 defs/headers/menu_api.qh
 
+../common/data/msn_file.qh
+
 //=======================
 
 defs/utils.qc
@@ -18,6 +20,7 @@ defs/utils.qc
 defs/menu_api.qc
 
 ../common/data/data_campaign.qc
+../common/data/msn_file.qc
 
 menu_main.qc
 

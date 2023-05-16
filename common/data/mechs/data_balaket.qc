@@ -116,10 +116,12 @@ void() data_ini_balaket_={
     self.pitchMax = 30; //pitch down limit
     self.pitchMin = -35;//pitch up limit
     self.hud_rollangle = 4;
-    self.hud_bob = 0.03;
+    
+    self.hud_bob = 2.0;
+    self.hud_bob_up = 6.0;
+    
     self.hud_bob_cycle = 0.5;
-    self.hud_bob_up = 0.15;
-    self.hud_bob_model = 1;
+    //self.hud_bob_model = 1; automatically given
     self.hud_bob_side = 0.09;
     self.hud_bob_speed = 6;
     self.hud_bob_model_up = 0.1;
@@ -131,6 +133,7 @@ void() data_ini_balaket_={
     self.config_default_brawl = balaket_config_default_brawl;
     self.abbrev = "BLK";
     self.description = "A primitive combat platform, BALAKETs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKET units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
+    self.icon = "gfx/ui/mech_icons/icon_balaket.png";
     
     //Menu position for hardpoint icons in UI_HANGAR / UI_ARMING
     local entity hardpnt;

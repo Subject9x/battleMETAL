@@ -26,7 +26,6 @@ void() sendevent_tank_die={
 */
 void( float isNew, float changeFlags ) sendent_handle_tank={
   local float prevShield;
-  local float pclEffect;
   local vector turretAng;
   local string newName;
   local float prevDeadFlag;
@@ -99,10 +98,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - CRITICAL HIT
   if( (changeFlags & SENDFLAG_CRIT) ){
-    pclEffect = ReadByte();
-    if( pclEffect > 0 ){
-      self.pcl_effectnum = pclEffect;
-    }
+    self.pcl_effectnum = ReadByte();
   }
   //EVENT - DEAD AND BURNING
   if( (changeFlags & SENDFLAG_BURN) ){
@@ -110,11 +106,12 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
       if( self.pcl_effectnum == 0 ){
         self.pcl_effectnum = particleeffectnum("TE_MECHPIECE_DAMAGE");
       }
-      particleDraw = vlen(client_vis_org - self.origin); 
-      if( particleDraw < PARTICLE_HAZ_DISTANCE ){
-        makevectors(self.angles);
-        pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
-      }
+      //todo - move me, this shouldnt be here
+      //particleDraw = vlen(CLIENT_vis_org - self.origin); 
+      //if( particleDraw < PARTICLE_HAZ_DISTANCE ){
+      //  makevectors(self.angles);
+      //  pointparticles( self.pcl_effectnum, self.origin + (v_up * 5), normalize( (self.origin + (v_up * 5)) - self.origin) * 5, 0.5);
+      //}
     }
   }
   
@@ -162,32 +159,32 @@ void() interpolate_tank={
   local vector chasOrg;
   local entity wepn;
   local vector saved;
-  local vector cacheOrg;
-  local vector cacheAngl;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
+  
 	setorigin(self, self.origin);
   
   makevectors(self.angles);
   traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
   
-  cacheOrg = self.origin;
-  cacheAngl = self.angles;
+  self.rootOrigin = self.origin;
+  self.rootAngle = self.angles;
   
   chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
+  self.originNext = chasOrg;
   
-  traceline(self.origin, client_vis_org, FALSE, self);
+  traceline(self.origin, CLIENT_vis_org, FALSE, self);
   
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
   
   if( self.cl_lod_unit ){
     self.cl_lod_weapon = TRUE;
-    if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+    if( vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
       self.cl_lod_weapon = FALSE;
     }
     
@@ -197,6 +194,8 @@ void() interpolate_tank={
     self.origin = chasOrg;
     self.cacheGroundPos = chasOrg;
     addentity(self);
+    self.origin = self.rootOrigin;
+    self.angles = self.rootAngle;
     
     if( (self.flags & FL_TURRET) ){
       saved = self.angles;
@@ -208,42 +207,49 @@ void() interpolate_tank={
       self.origin =  self.torC_org;
       self.angles = self.torC_angl;
       addentity(self);
-      self.origin = cacheOrg;
-      self.angles = cacheAngl;
+      self.origin = self.rootOrigin;
+      self.angles = self.rootAngle;
       setsize(self, self.cache_mins, self.cache_maxs);
     }
 
     if(self.cl_lod_weapon){
+      if( self.pcl_effectnum != 0 ){
+         pointparticles( self.pcl_effectnum, self.cacheGroundPos, normalize( (self.cacheGroundPos + [0, 0, self.maxs_z]) - self.cacheGroundPos) * (10/2), 0.5);
+      }
+    
       if(self.weaponEnt1.data_idx){
-        predraw_unit_weapon(self.weaponEnt1);
+        predraw_unit_weapon_tank(self.weaponEnt1);
       }
       if(self.weaponEnt2.data_idx){
-        predraw_unit_weapon(self.weaponEnt2);
+        predraw_unit_weapon_tank(self.weaponEnt2);
       }
       if(self.weaponEnt3.data_idx){
-        predraw_unit_weapon(self.weaponEnt3);
+        predraw_unit_weapon_tank(self.weaponEnt3);
       }
       if(self.weaponEnt4.data_idx){
-        predraw_unit_weapon(self.weaponEnt4);
+        predraw_unit_weapon_tank(self.weaponEnt4);
       }
       if(self.weaponEnt5.data_idx){
-        predraw_unit_weapon(self.weaponEnt5);
+        predraw_unit_weapon_tank(self.weaponEnt5);
       }
       if(self.weaponEnt6.data_idx){
-        predraw_unit_weapon(self.weaponEnt6);
+        predraw_unit_weapon_tank(self.weaponEnt6);
       }
       if(self.weaponEnt7.data_idx){
-        predraw_unit_weapon(self.weaponEnt7);
+        predraw_unit_weapon_tank(self.weaponEnt7);
       }
       if(self.weaponEnt8.data_idx){
-        predraw_unit_weapon(self.weaponEnt8);
+        predraw_unit_weapon_tank(self.weaponEnt8);
       }
       if(self.weaponEnt9.data_idx){
-        predraw_unit_weapon(self.weaponEnt9);
+        predraw_unit_weapon_tank(self.weaponEnt9);
       }
     }
   }
   setsize(self, self.cache_mins, self.cache_maxs);
+  setorigin(self, self.rootOrigin);
+  self.angles = self.rootAngle;
+  
 };
 
 void() predraw_tank={

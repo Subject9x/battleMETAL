@@ -14,6 +14,7 @@ Overview:
     CLIENT_stat_rdr_mode    - player active radar
 */
 void() hud_renderCrosshair2={
+  local float haslock;
   local float hitAlpha;
   local vector hitColor;
   
@@ -29,6 +30,14 @@ void() hud_renderCrosshair2={
   local vector pipRight;
   local vector pipTop;
   local vector pipBottom;
+  
+  haslock = TRUE;
+  if( CLIENT_stat_trg_ent_id == 0 ){
+    haslock = FALSE;
+  }
+  else if( !CLIENT_stat_rdr_mode ){
+    haslock = FALSE;
+  }
   
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
@@ -57,32 +66,33 @@ void() hud_renderCrosshair2={
   }
 
   //convergence
-  pipLeft = VIEW_CTR - '17 1.5';
-  pipLeft_x = pipLeft_x - drift_x;
+  if( !haslock ){
+    pipLeft = VIEW_CTR - '17 1.5';
+    pipLeft_x = pipLeft_x - drift_x;
+      
+    pipRight = VIEW_CTR + '2 -1.5';
+    pipRight_x = pipRight_x + drift_x;
     
-  pipRight = VIEW_CTR + '2 -1.5';
-  pipRight_x = pipRight_x + drift_x;
-  
-  pipTop = VIEW_CTR - '1.5 17';
-  pipTop_y = pipTop_y - drift_y;
-  
-  pipBottom = VIEW_CTR + '-1.5 2';
-  pipBottom_y = pipBottom_y + drift_y;
-  
-  drawpic(pipLeft, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipRight, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  
-  drawpic(pipTop, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipBottom, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+    pipTop = VIEW_CTR - '1.5 17';
+    pipTop_y = pipTop_y - drift_y;
+    
+    pipBottom = VIEW_CTR + '-1.5 2';
+    pipBottom_y = pipBottom_y + drift_y;
+    
+    drawpic(pipLeft, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+    drawpic(pipRight, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+    
+    drawpic(pipTop, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+    drawpic(pipBottom, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  }
 
   //lock on indicators
-  if( CLIENT_target_ent == world ){
-    return;
-  }
-  if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
-    lockSize = '34 34';
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    drawpic(lockCenter, "gfx/hud/ret/crosshair2_lock.png", lockSize, CLR_DEF_RET_HASLOCK, HUD_ALPHA, DRAWFLAG_NORMAL);
+  if( haslock ){
+    if( CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45 ){
+      lockSize = '34 34';
+      lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+      lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+      drawpic(lockCenter, "gfx/hud/ret/crosshair2_lock.png", lockSize, CLR_DEF_RET_HASLOCK, HUD_ALPHA, DRAWFLAG_NORMAL);
+    }
   }
 };

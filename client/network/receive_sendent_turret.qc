@@ -143,6 +143,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( isNew ){
+    self.rootAngle = self.angles;
     self.predraw = predraw_turret;
     data_sync_new_turret(self.data_idx);
     if( self.deadflag == DEAD_NO){
@@ -203,49 +204,42 @@ void() interpolate_turret={
   local entity parent;
   local entity wepn;
   local vector saved;
-  local vector cacheOrg;
-  local vector cacheAngl;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
   
-  traceline(self.origin + [0,0, self.maxs_z], client_vis_org, FALSE, self);
+  self.rootOrigin = self.origin;
+  
+  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
   
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
   
   if(self.cl_lod_unit){
-  
     self.cl_lod_weapon = TRUE;
-    if( vlen(client_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
+    if( vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
       self.cl_lod_weapon = FALSE;
     }
-    cacheOrg = self.origin;
-    cacheAngl = self.angles;
     
     setmodel(self, self.legs_mdl);
     setsize(self, self.cache_mins, self.cache_maxs);
     self.skin = 0;
+    self.angles = self.rootAngle;
     addentity(self);
     
     makevectors(self.angles);
-    self.torC_org =  self.origin + (v_right * self.torC_compOffset_x) + (v_forward * self.torC_compOffset_z) + (v_up * self.torC_compOffset_y);
+    self.torC_org =  self.rootOrigin + (v_right * self.torC_compOffset_x) + (v_forward * self.torC_compOffset_z) + (v_up * self.torC_compOffset_y);
     self.origin = self.torC_org;
     self.angles = self.torC_angl;
-    
     setmodel(self, self.torC_mdl);
     self.skin = 0;
     addentity(self);
-    self.angles = cacheAngl;
-    self.origin = cacheOrg;
-    setmodel(self, self.legs_mdl);
-    setsize(self, self.cache_mins, self.cache_maxs);
     
     
-    if(self.cl_lod_weapon){
+    if(self.cl_lod_weapon && self.deadflag == DEAD_NO){
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon(self.weaponEnt1);
       }
@@ -275,6 +269,8 @@ void() interpolate_turret={
       }
     }
   }
+  self.origin = self.rootOrigin;
+  setmodel(self, self.legs_mdl);
   setsize(self, self.cache_mins, self.cache_maxs);
 };
 

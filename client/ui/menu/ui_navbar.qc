@@ -173,6 +173,7 @@ void( vector ofs ) ui_navbutton_deploy_draw={
 void() ui_navbutton_deploy_click={
   local entity deploy;
   local entity previous;
+  local float deployId;
   
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     if( CLIENT_MENU_nex_grp1 == 0 && time > UI_ARMING_GROUP_WARN_TIMER){
@@ -190,35 +191,28 @@ void() ui_navbutton_deploy_click={
     cl_send_infostring( INFO_FLAG_GROUPS );
   }
   
-  if( CLIENT_MENU_deploy == world ){
-    //build list of faction-only deply points
-    for( deploy = DEPLOYPOINT; deploy != world; deploy = deploy.partNext ){
-      if( deploy.faction == CLIENT_faction || deploy.faction == FACTION_ALL ){
-        if( !previous.data_idx ){
-          FACTION_DEPLOY = deploy; // first point
-          previous = deploy;
-        }
-        else{
-          previous.nextPoint = deploy;
-          deploy.prevPoint = previous;
-          previous = deploy;
-        }
-      }
-    }
-    if( FACTION_DEPLOY.data_idx ){
-      CLIENT_MENU_deploy = FACTION_DEPLOY;
-      CLIENT_MENU_nav_pnt = CLIENT_MENU_deploy.data_idx;
-      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
-      }
-    }
-    
-    if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
-      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
-      cl_send_infostring( INFO_FLAG_DEPLOY );
+  CLIENT_MENU_nav_pnt = -1;
+  for( deployId = 0; deployId < 32; deployId = deployId + 1){
+    deploy = entitybyindex( DEPLOY_LIST[deployId] );
+    if( !deploy ){continue;}
+    if( !deploy.isActive){continue;}
+    if( CLIENT_MENU_nav_pnt != -1){continue;}
+    CLIENT_MENU_nav_pnt = deploy.data_idx;
+  }
+  if( CLIENT_MENU_nav_pnt == - 1){
+    CLIENT_MENU_nav_pnt = 0;
+  }
+  if( DEPLOY_LIST[CLIENT_MENU_nav_pnt] ){
+    if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
   }
   
+  if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_SPAWNFAR) ){
+    cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+    cl_send_infostring( INFO_FLAG_DEPLOY );
+  }
+
   SPRITE_deploy_point_FRAME = 1;
   CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
   

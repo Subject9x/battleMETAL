@@ -262,29 +262,29 @@ void( float isNew, float entFlags ) data_deploy={
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.isActive = ReadByte();
+    self.faction = ReadByte();
   }
   if( isNew ){
+    if( self.faction == CLIENT_faction ){
+      DEPLOY_LIST[self.data_idx] = num_for_edict(self);
+    }
+    
     if( cvar("developer") ){
       self.alpha = 0.9;
       self.scale = 1;
     }
     else{
-      self.alpha = 0.01;
-      self.scale = 0.01;
+      self.alpha = 0.0;
+      self.scale = 0.1;
     }
-    
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
     setmodel(self, "models/testball.md3");
     setorigin(self, self.origin);
-    if( DEPLOY_POINTS.data_idx ){
-      DEPLOY_POINTS.partNext = self;
-      self.partPrev = DEPLOY_POINTS;
-      DEPLOY_POINTS = self;
-    }
-    else{
-      //first deploy point received.
-      DEPLOY_POINTS = self;
-      DEPLOYPOINT = self; //first
-    }
   }
 };
 
@@ -323,7 +323,7 @@ void() hazard_rad_think={
   partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
   partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
   
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE){
     if( random() > 0.9 && MENU_PROG_OFF){
       te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
@@ -335,7 +335,7 @@ void() hazard_rad_think={
     }
   }
   if( self.isActive ){
-    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 3) ){
+    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 3) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 2;
     }
@@ -361,7 +361,7 @@ void() hazard_crs_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE){
     if( random() > 0.9 && MENU_PROG_OFF){
       te_field_mineral(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
@@ -371,7 +371,7 @@ void() hazard_crs_think={
   //te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 244, FALSE, 15); 
    
   if( self.isActive ){
-    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 1;
     }
@@ -398,7 +398,7 @@ void() hazard_quant_think={
   partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
   partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
 
-  particleDraw = vlen(client_vis_org - self.origin);
+  particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE){
     if( random() > 0.9 && MENU_PROG_OFF){
       te_field_quantum( partclPoint, randompos((self.origin+self.mins), (self.origin+self.maxs)) );
@@ -408,7 +408,7 @@ void() hazard_quant_think={
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
   
   if( self.isActive ){
-    if( vlen(client_vis_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 4;
     }

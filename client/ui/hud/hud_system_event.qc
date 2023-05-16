@@ -203,7 +203,7 @@ void() hud_event_powerup={
   if( !HUD_EVENT_SOUND_START ){
     HUD_EVENT_SOUND_START = TRUE;
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
-    //pointsound(pmove_org, "sound/mech_start.ogg", 1.0, ATTN_NORM);
+    //pointsound(CLIENT_vis_org, "sound/mech_start.ogg", 1.0, ATTN_NORM);
     sound7(entitybyindex(player_localentnum), CHAN_WEAPON, "sound/mech_start.ogg", 1, ATTN_NONE, 100, SOUNDFLAG_RELIABLE);
   }
   hud_render_message( HUD_TXT_ORG, HUD_TEXT_POWERUP, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);

@@ -12,7 +12,6 @@ Overview:
 
 .entity w_slot;     //use this for teh linked list goodness
 .float data_type;
-.entity clientData;
 
 #ifdef CSQC
 float input_sequence;
@@ -34,6 +33,11 @@ float input_sequence;
 .vector unit_light_org1;  //headlight / spotlight
 .vector unit_light_org2;
 .vector unit_light_org;
+.entity unit_legs;      //
+
+.vector fixAngle;   //used for new spawn;
+.float hud_roll_val;
+
 #endif
 
 .float getTarget;   //switch for sendEnt
@@ -58,10 +62,17 @@ float input_sequence;
 .float w_group4;
 
 .float chaseActive; //tracks player chase cam status on the server.
-
+.vector ramAngle;
+.float ramCharge;
+.float ramCool;
+.vector ramPower;
+.vector ramVelocity;
+.float ramUp;
 .float ramUpMax;
 .float ramCooldown;
+
 .float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
+
 .vector laser_sight_org;
 .float nextVecChoice;
 .float subType;   //used by AI to delineate unit variant - Zap , gun, brawl, sniper etc
@@ -114,10 +125,4 @@ float input_sequence;
 
 .float laser_sight_timer;
 
-.vector ramAngle;
-.float ramCharge;
-.float ramCool;
-.vector ramPower;
-.vector ramVelocity;
-.float ramUp;
 #endif
