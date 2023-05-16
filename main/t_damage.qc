@@ -333,6 +333,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
         else{
           dmgTrg.shieldHitDelay = dmgTrg.shieldHitDelay + (SHIELD_DELAY * 0.33);
         }
+        dmgTrg.shieldHitDelayStart = time;
       }
     }
   }

@@ -126,9 +126,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       setproperty(VF_ANGLES, HUD_FIXED_ANGLE); 
     }
   }
-  else{
-    setproperty(VF_ANGLES, input_angles);
-  }
+  //NOTE: this seems to fix 'input lag' when toggling menu during gameplay, but not sure why
+  //else{
+  //  setproperty(VF_ANGLES, input_angles);
+  //}
   /*else{
     //note: demonstrates the basics for player-observer mode where you follow another player
     if( VIEW_OBS_ID == 2 ){

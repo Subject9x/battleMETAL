@@ -128,7 +128,7 @@ void() client_predraw={
     vOldOrigin = self.origin;
     vOldVelocity = self.velocity;
     fOldPMoveFlags = self.pmove_flags;
-    for ( frameItr = servercommandframe + 1; frameItr <= clientcommandframe; frameItr++ ) {
+    for ( frameItr = servercommandframe + 1; frameItr < clientcommandframe; frameItr++ ) {
       flSuccess = getinputstate( frameItr );
 
       if ( flSuccess == FALSE ) {
@@ -136,7 +136,7 @@ void() client_predraw={
       }
 
       // Partial frames are the worst
-      if (  input_timelength == 0 ) {
+      if ( input_timelength == 0 ) {
           break;
       }
       //runstandardplayerphysics( self );
@@ -209,6 +209,8 @@ void() client_predraw={
   self.rootAngle = self.angles;
   
   if( self.data_type == DATA_MECH ){
+    self.alpha = 1.0;
+    self.scale = 1.0;
     self.effects = self.effects - (self.effects & (EF_FULLBRIGHT | EF_NOSHADOW) );  //just in case they creeped in?
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2 - self.laser_sight_org1 ) * self.lerpfrac;
@@ -249,8 +251,6 @@ void() client_predraw={
         self.origin = self.torC_org;
         self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax);
         addentity(self);
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
       }
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
@@ -266,8 +266,6 @@ void() client_predraw={
           self.angles = self.torL_angl;
           self.origin = self.torL_org;
           addentity(self);
-          self.origin = self.rootOrigin;
-          self.angles = self.rootAngle;
         }
       }
       
@@ -283,8 +281,6 @@ void() client_predraw={
           self.angles = self.torR_angl;
           self.origin = self.torR_org;
           addentity(self);
-          self.origin = self.rootOrigin;
-          self.angles = self.rootAngle;
         }
       }
       
@@ -300,8 +296,6 @@ void() client_predraw={
           self.angles = self.armL_angl;
           self.origin = self.armL_org;
           addentity(self);
-          self.origin = self.rootOrigin;
-          self.angles = self.rootAngle;
         }
       }
       
@@ -317,8 +311,6 @@ void() client_predraw={
           self.angles = self.armR_angl;
           self.origin = self.armR_org;
           addentity(self);
-          self.origin = self.rootOrigin;
-          self.angles = self.rootAngle;
         }
       }
       if(self.deadflag == DEAD_NO){
@@ -383,6 +375,8 @@ void() client_predraw={
   self.origin = self.rootOrigin;
   setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
+  self.alpha = 0.01;
+  self.scale = 0.01;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_client={

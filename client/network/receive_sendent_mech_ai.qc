@@ -37,169 +37,7 @@ void() mech_corpse_remove={
   }
 };
 
-
-void() mech_corpse_th={
-  self.think = mech_corpse_th;
-  if( time > self.data_lifetime ){
-    self.think = mech_corpse_remove;
-  }
-  self.nextthink = time + 0.1;
-};
-
-
-void() predraw_mech_corpse={
-  local vector prevOrg;
-  local vector prevAngle;
-  
-  prevOrg = self.origin;
-  prevAngle = self.angles;
-  
-  interpolate_origin();
-  interpolate_angle();
-	
-  self.origin = self.origin;
-  self.rootOrigin = self.origin;
-  self.rootAngle = self.angles;
-  
-  traceline(self.origin, CLIENT_vis_org, FALSE, self);
-  
-  self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE){
-    self.cl_lod_unit = FALSE;
-  }
-  
-  if(self.cl_lod_unit){
-    self.cl_lod_weapon = TRUE;
-    if( vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE / 2 ){
-      self.cl_lod_weapon = FALSE;
-    }
-    
-    makevectors(self.angles);
-    prevOrg = self.rootOrigin;
-    prevAngle = self.angles;
-    
-    self.legs_org = self.rootOrigin + (v_right * self.legs_compOffset_x) + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y);
-    self.legs_angl = [0, self.angles_y, 0];
-    self.legs_angl_y = self.legDir;
-    
-    self.frame = self.legs_frame;
-    setmodel(self, self.legs_mdl);
-    self.angles = self.legs_angl;
-    self.origin = self.legs_org;
-    self.colormod = CLR_DEF_WHITE * (self.legs_hp / self.legs_hpMax);
-    addentity(self);
-    self.origin = self.rootOrigin;
-    self.angles = self.rootAngle;
-    
-    if( !(self.criticalHits & M_TOR_CENTER) ){
-      if( strlen(self.torC_mdl ) > 0 ){
-        self.torC_org = predraw_unit_part(self.torC_compOffset); 
-        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-          self.torC_angl_x = self.torC_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
-        setmodel(self, self.torC_mdl);
-        self.origin = self.torC_org;
-        self.angles = self.torC_angl;
-        addentity(self);
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
-      }
-    }
-    makevectors(self.torC_angl);
-    if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.criticalHits & M_TOR_LEFT) ){
-      if( strlen(self.torL_mdl ) > 0 ){
-        self.torL_org = predraw_unit_part(self.torL_compOffset); 
-        self.torL_angl = self.torC_angl;
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
-           self.torL_angl_x = self.torL_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
-        setmodel(self, self.torL_mdl);
-        self.angles = self.torL_angl;
-        self.origin = self.torL_org;
-        addentity(self);
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
-      }
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.criticalHits & M_TOR_RIGHT) ){
-      if( strlen(self.torR_mdl ) > 0 ){
-        self.torR_org = predraw_unit_part(self.torR_compOffset); 
-        self.torR_angl = self.torC_angl;
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
-           self.torR_angl_x = self.torR_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
-        setmodel(self, self.torR_mdl);
-        self.angles = self.torR_angl;
-        self.origin = self.torR_org;
-        addentity(self);
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
-      }
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_ARM_R) && !(self.criticalHits & M_ARM_RIGHT) ){
-      if( strlen(self.armL_mdl ) > 0 ){
-        self.armL_org = predraw_unit_part(self.armL_compOffset); 
-        self.armL_angl = self.torC_angl;
-        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
-          self.armL_angl_x = self.armL_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
-        setmodel(self, self.armL_mdl);
-        self.angles = self.armL_angl;
-        self.origin = self.armL_org;
-        addentity(self);
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
-      }
-    }
-    
-   if( (self.unitModFlags & MOD_HAS_ARM_L) && !(self.criticalHits & M_ARM_LEFT) ){
-      if( strlen(self.armR_mdl ) > 0 ){
-        self.armR_org = predraw_unit_part(self.armR_compOffset); 
-        self.armR_angl = self.torC_angl;
-        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
-          self.armR_angl_x = self.armR_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
-        setmodel(self, self.armR_mdl);
-        self.angles = self.armR_angl;
-        self.origin = self.armR_org;
-        addentity(self);
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
-      }
-    }
-  }
-  setsize(self, self.cache_mins, self.cache_maxs);
-  self.colormod = CLR_DEF_WHITE;
-};
-
 void() mech_ai_die_stand1;
-
-void() predraw_mech_corpse_legs={
-  
-  makevectors(self.angles);
-  self.legs_org = self.origin + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y) + (v_right * self.legs_compOffset_x);
-  
-  self.scale = 1.0;
-  self.alpha = 1.0;
-  setmodel(self, self.legs_mdl);
-  self.origin = self.legs_org;
-  self.angles = self.legs_angl;
-  addentity(self);
-  
-  self.origin = self.rootOrigin;
-  self.angles = self.rootAngle;
-  self.scale = 0.1;
-  self.alpha = 0.01;
-  
-};
-
 void() sendevent_mech_ai_die={
   local entity weps;
   local entity rem;
@@ -222,27 +60,13 @@ void() sendevent_mech_ai_die={
   self.legs_angl_y = self.legDir;
   self.legs_frame = self.unit_legs.frame;
   
-  if( self.moveState == FALSE ){
-    self.compOffset = self.origin;
-    self.angles = self.torC_angl;
-    self.angles_x = anglemod(self.angles_x + (crandom() * 20));
-    self.angles_y = anglemod(self.angles_y + (crandom() * 10));
-    self.predraw = predraw_mech_corpse;
-    
-    self.think = mech_ai_die_stand1;
-    self.nextthink = time + 0.01;
-  }
-  else{
-    self.classname = "wreck_mech";
-    
-    self.predraw = predraw_mech_corpse_legs;
-    
-    self.think = te_mech_dead_legs_burn;
-    self.nextthink = servertime + time + 0.01;
-  }
   if( self.unit_legs && !wasfreed(self.unit_legs) ){
-    remove(self.unit_legs);
+    self.unit_legs.think = SUB_Remove;
+    self.unit_legs.nextthink = time + 0.1;
+    
   }
+  self.think = mech_ai_die_stand1;
+  self.nextthink = time + 0.01;
 };
 
 /*

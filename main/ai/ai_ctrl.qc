@@ -440,11 +440,12 @@ void() ai_wreck_mech_th={
   
   if(time > self.ai_timer_breathe){
     self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
   }
   else{
     self.think = ai_wreck_mech_th;
+    self.nextthink = time + (random() * 0.5);
   } 
-  self.nextthink = time + 0.1;
 };
 
 void() ai_wreck_mech={
@@ -457,6 +458,8 @@ void() ai_wreck_mech={
     setsize(corpse, corpse.mins, corpse.maxs);
     setorigin(corpse, self.legs_org);
     
+    corpse.angles = self.legs_angl;
+    
     corpse.movetype = MOVETYPE_NONE;
     corpse.solid = SOLID_NOT;
     corpse.effects = corpse.effects | EF_LOWPRECISION;
@@ -465,6 +468,7 @@ void() ai_wreck_mech={
     corpse.nextthink = time + 0.1;
     
     corpse.ai_timer_breathe = time + 600;
+    corpse.colormod = '0.45 0.45 0.45';
   }
 };
 

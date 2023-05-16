@@ -189,9 +189,9 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
     NEWSHOT = spawn();
     self = NEWSHOT;
       self.owner = FIRE_ENT;
+      theWeapon.data_ini_projectile();
       self.damageType = theWeapon.damageType;
       self.damageValue = theWeapon.damageValue;
-      theWeapon.data_ini_projectile();
       self.data_idx = theWeapon.data_idx; //use weapon idx to sync to CSQC
       self.data_lifetime = time + self.data_lifetime;
       self.w_firetime = time + 0.5;

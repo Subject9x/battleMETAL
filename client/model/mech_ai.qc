@@ -182,6 +182,4 @@ void() mech_ai_die_stand10={
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
   self.data_lifetime = servertime + 360 + (random() * 180);
-  self.think = mech_corpse_th;
-  self.nextthink = servertime + 0.1;
 };
