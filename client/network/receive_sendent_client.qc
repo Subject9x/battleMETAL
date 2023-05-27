@@ -28,10 +28,9 @@ float() remove_client={
   return TRUE;
 };
 
+float VFX_RAM_TIME;
 
 void() client_entity_think={
-  local vector boostLeft, boostRight, backLeft, backRight;
-  local string te;
   local vector laserHit;
   local vector laserOrg;
   local entity theWeapon;
@@ -49,32 +48,6 @@ void() client_entity_think={
   laserHit = laserOrg + (v_forward * 10000);
   traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
-  
-  particleDraw = vlen(CLIENT_vis_org - self.origin);
-  if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
-    if( self.moveState > MOVE_SPRINT ){
-      if( vlen(self.origin2 - self.origin1) > 16 ){
-        makevectors(self.legs_angl);
-        boostLeft = boostRight = self.legs_org + (v_up * (self.mins_z * 0.75));
-        boostLeft = boostLeft + (v_right * self.mins_x * 0.5);
-        boostRight = boostRight + (v_right * self.maxs_x * 0.5);
-        
-        backLeft = backRight = self.legs_org + (v_forward * -16) + (v_up * (self.mins_z * 0.67));
-        backLeft = backLeft + (v_right * self.mins_x * 0.5);
-        backRight = backRight + (v_right * self.maxs_x * 0.5);
-        
-        te = "TE_FIRE_2";
-        if( self.vec_size == 3 ){
-          te = "TE_FIRE_3";
-        }
-        
-        if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-          trailparticles(world, particleeffectnum(te), boostLeft, backLeft);
-          trailparticles(world, particleeffectnum(te), boostRight, backRight);
-        }
-      }
-    }
-  }
   
   if( self.clientServerNum == player_localentnum ){
     wepItr = 0;
@@ -119,6 +92,8 @@ void() client_predraw={
   local vector vOldOrigin;
   local vector vOldVelocity;
   local float fOldPMoveFlags;
+  
+  local vector boostLeft, boostRight, backLeft, backRight;
   /*
     Credit:
       thanks, Marco “eukara” Hladik for tutorial!
@@ -366,6 +341,29 @@ void() client_predraw={
               adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
             }
           }
+        }
+      }
+      
+      //RAMSHOCKS EFFECT
+      particleDraw = vlen(CLIENT_vis_org - self.origin);
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
+        if( self.moveState > MOVE_SPRINT ){
+          makevectors(self.legs_angl);
+          
+          boostLeft = boostRight = self.legs_org + (v_up * (self.cache_mins_z * 0.75));
+          
+          boostLeft = boostLeft + (v_right * self.cache_mins_x * 0.5);
+          boostRight = boostRight + (v_right * self.cache_maxs_x * 0.5);
+          
+          backLeft = backRight = self.legs_org + (v_forward * -16) + (v_up * (self.cache_mins_z * 0.67));
+          
+          backLeft = backLeft + (v_right * self.cache_mins_x * 0.5);
+          backRight = backRight + (v_right * self.cache_maxs_x * 0.5);
+          
+          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostLeft, normalize(backLeft - boostLeft) * 4, random()*4);
+          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostRight, normalize(backRight - boostRight) * 4, random()*4);
+          pointparticles(particleeffectnum("TE_RAM_RING"),  self.legs_org + (v_up * (self.cache_mins_z * 0.4)), '0 0 0', 1.0);
+          
         }
       }
     }

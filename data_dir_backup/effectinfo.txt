@@ -86,7 +86,7 @@
     originjitter 0.25 0.25 0.5
     velocityjitter 4 4 0
     velocitymultiplier 2
-    stretchfactor 10
+    stretchfactor 6
     notunderwater
     trailspacing 24
     bounce -1
@@ -2981,7 +2981,7 @@ velocitymultiplier 2
     velocityjitter 0.25 0.25 0.75
     velocitymultiplier -4
     notunderwater
-    trailspacing 1
+    trailspacing 8
     bounce -1
     
   //TE_REPAIR_IMPACT - BULLET FRAGS
@@ -3450,4 +3450,78 @@ velocitymultiplier 2
     originjitter 3 3 5
     velocityjitter 2 2 5
     gravity -0.0025
+//================================================
+
+
+//RAM SMOKE EFFECT==================================
+  //TE_RAM_MOVE- PUFFS
+    effect TE_RAM_MOVE
+    count 1
+    type alphastatic
+    blend alpha
+    color 0x4b613c 0xc6d8a3
+    tex 42 42
+    size 2.33 3
+    alpha 256 356 128 
+    originjitter 6 6 4
+    velocityjitter 10 10 10
+    velocitymultiplier 1
+    gravity 0.05
+    notunderwater
+
+  //TE_RAM_MOVE- DEBRIS CHIPS
+    effect TE_RAM_MOVE
+    count 3
+    type spark
+    blend alpha
+    orientation spark
+    color 0x01dfbc 0x81f5dc
+    tex 48 55
+    size 2 3
+    alpha 128 256 512
+    originjitter 10 10 10
+    velocityjitter 10 10 10
+    velocitymultiplier 3
+    stretchfactor 4
+    notunderwater
+
+  //TE_RAM_MOVE - SMOKE PUFF
+    effect TE_RAM_MOVE
+    count 1
+    type alphastatic
+    blend alpha
+    color 0x006868 0x00BAAF
+    tex 8 15
+    size 1 2
+    sizeincrease 0.5
+    originjitter 6 6 4
+    alpha 512 1024 512
+    notunderwater
+    stretchfactor 3
+    velocitymultiplier 1.5
+    
+  //TE_RAM_RING - damage ring
+  effect TE_RAM_RING
+  countabsolute 1
+  type decal
+  tex 34 34
+  size 10 12
+  alpha 256 768 0
+  originjitter 5 0 0
+  
+  //TE_RAM_RING - shockwave
+  effect TE_RAM_RING
+  notunderwater
+  countabsolute 1
+  type static
+  blend alpha
+  color 0x01dfbc 0x81f5dc
+  tex 32 32
+  size 1 2
+  sizeincrease 250
+  alpha 128 256 450
+  velocityjitter 0 0 1	// must be set to this !!
+  orientation oriented	// must be set to this !!
+  rotate 0 10 -20 20
+
 //================================================
