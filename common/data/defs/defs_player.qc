@@ -125,4 +125,5 @@ float input_sequence;
 
 .float laser_sight_timer;
 
+.float timer_hittarg; // player hit object timer;
 #endif

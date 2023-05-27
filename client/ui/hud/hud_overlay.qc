@@ -216,12 +216,13 @@ void(float hitDirBit) hud_renderDirectionHit={
   local vector orgLeft;
   local vector orgRight;
   local vector hitColor;
+  
   icoSize_x = 24;
   icoSize_y = VIEW_MAX_y * 0.67;
   orgLeft_y = orgRight_y = VIEW_ORG_y + (VIEW_MAX_y * 0.15);
   
   
-  if( CLIENT_shield > 0 ){
+  if( CLIENT_shield > 0  && CLIENT_shield < 100.1){
     hitColor = CLR_HUD_DMG_SHIELD;
   }
   else{

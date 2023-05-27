@@ -181,7 +181,7 @@ void() PlayerPostThink = {
     }
     
     self.stat_hit_dirs = self.hitdir_buffer;
-    if(time >= self.w_proj){
+    if(time >= self.timer_hittarg){
       self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
     }
     if(time >= self.was_hit){

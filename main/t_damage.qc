@@ -82,7 +82,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
         attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
         //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       }
-      attacker.w_proj = time + 0.2;
+      attacker.timer_hittarg = time + 0.2;
       if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
         attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
       }
@@ -282,7 +282,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   util_chekPointToHitDir(dmgTrg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
-    attacker.w_proj = time + 0.2;
+    attacker.timer_hittarg = time + 0.2;
     if( attacker != dmgTrg ){
       if( !attacker.enemy && dmgTrg.canTarget ){
         attacker.enemy = dmgTrg;
