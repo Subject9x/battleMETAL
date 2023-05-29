@@ -27,6 +27,7 @@ void() CSQC_Init =
   registercvar("cl_newgameplus", "0", CF_CLIENT | CF_ARCHIVE);
   registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
   registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
+  registercvar("cl_loremap", "0", CF_CLIENT);
   cvar_set("con_chat", "0");  //force old chat system off
   
 	maxclients = 0;
@@ -219,6 +220,8 @@ void() CSQC_Init =
   cl_ini_infostring();
   
   CHAT_INP_SEND = FALSE;
+  
+  localcmd("cd stop");
 };
 
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat),

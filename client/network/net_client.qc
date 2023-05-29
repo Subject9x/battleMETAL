@@ -639,9 +639,9 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     
     if( self.critBits != 0 ){
       if( (self.critBits & M_REPAIR) ){
-        client_event_repair();
         self.critBits = self.critBits - (self.critBits & M_REPAIR);
         self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
+        client_event_repair(self.critBits);
       }
       else{
         client_event_critical();

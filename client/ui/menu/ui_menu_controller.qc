@@ -198,13 +198,6 @@ void() menu_navbBar_listener={
   }
 };
 
-void() mechAcceptButtonListener={
-
-  if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
-
-  }
-};
-
 void( float fact ) menu_update_colors={
   switch( fact ){
     case FACTION_PSC:
@@ -252,6 +245,9 @@ float() menu_connect_choice={
     case GAMEMODE_CAMPAIGN:
       choice = MENU_BRIEF_ACTIVE;
       INFO_SWITCH = 1;
+      break;
+    case GAMEMODE_LORE:
+      choice = MENU_WIKI_ACTIVE;
       break;
     default:
       choice = MENU_CONNECT_ACTIVE;

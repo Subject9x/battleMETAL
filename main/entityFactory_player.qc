@@ -64,7 +64,7 @@ void() player_makeMech={
   
   client_push_player_info();
   
-  client_playTrack(self, world.sounds, TRUE);  //exiting hangar menu
+  //client_playTrack(self, world.sounds, TRUE);  //exiting hangar menu
  
   //player_setup_hudconsole();
   //configure player mech bits visibility

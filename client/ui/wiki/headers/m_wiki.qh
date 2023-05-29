@@ -1,0 +1,25 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/26/2023
+Overview:
+  Gameplay wiki and lore dump
+*/
+
+float MENU_WIKI_ACTIVE;
+
+float WIKI_MENU_CHOICE;
+
+#define WIKI_MENU_MAIN 1
+#define WIKI_MENU_ITEMS 2
+#define WIKI_MENU_MECHS 3
+#define WIKI_MENU_VEHCS 4
+#define WIKI_MENU_BUILD 5
+#define WIKI_MENU_MAPS 6
+#define WIKI_MENU_FACTION 7
+
+
+void() wiki_handleFrame;
+void() wiki_mainListener;
+
+

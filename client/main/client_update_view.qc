@@ -221,7 +221,13 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   //menu system
   if(MENU_ACTIVE || CLIENT_MENU_menu_choice == MENU_REBIND_ACTIVE){
-    menu_handleFrame();
+    if(cvar("gamemode") == GAMEMODE_LORE){
+      wiki_handleFrame();
+    }
+    else{
+      menu_handleFrame();
+    }
+    
   }
   
   //put this last on the rendering order to make sure it 

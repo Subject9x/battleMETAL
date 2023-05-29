@@ -151,6 +151,8 @@ util/headers/input_events.qh
   ui/menu/headers/ui_connect.qh
   ui/menu/headers/ui_score.qh
   ui/menu/headers/ui_rebind.qh
+  
+  ui/wiki/headers/m_wiki.qh
 //================
 
 ../common/data/data_system.qc
@@ -190,15 +192,15 @@ ui/hud/crosshair/hud_crosshair4.qc
 
 //Client / Server CMD===
   network/server_localcmd.qc
-  network/receive_entities.qc
-  network/receive_sendent.qc
-  network/receive_sendent_tank.qc
-  network/receive_sendent_spg.qc
-  network/receive_sendent_gev.qc
-  network/receive_sendent_mech_ai.qc
-  network/receive_sendent_turret.qc
-  network/receive_sendent_building.qc
-  network/receive_sendent_client.qc
+  network/net_game.qc
+  network/net_general.qc
+  network/net_tank.qc
+  network/net_spg.qc
+  network/net_gev.qc
+  network/net_mech_ai.qc
+  network/net_turret.qc
+  network/net_building.qc
+  network/net_client.qc
 //========================
 
 //MENU SYSTEM============
@@ -219,6 +221,11 @@ ui/hud/crosshair/hud_crosshair4.qc
   ui/menu/ui_score.qc
   ui/menu/ui_rebind.qc
 //=======================
+
+
+//Wiki menu================
+  ui/wiki/m_wiki.qc
+//============================
 
 //EFFECTS================
   util/particle_sys.qc

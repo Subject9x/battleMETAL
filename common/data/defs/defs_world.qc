@@ -25,6 +25,9 @@ entity() world_ini_serverInfo_ent={
   eServerInfo.serverFlags = serverflags;
   eServerInfo.SendEntity = world_rules_sendEntity;
   eServerInfo.SendFlags = eServerInfo.SendFlags | SENDFLAG_NEWENT;
+  
+  eServerInfo.sounds = world.sounds;
+  
   eServerInfo.think = world_server_rules_frame;
   eServerInfo.nextthink = time + 0.01;
   return eServerInfo;
@@ -106,6 +109,8 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
     WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_x);
     WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_y);
     WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_z);
+    
+    WriteByte( MSG_ENTITY, self.sounds );
   }
   
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
@@ -209,6 +214,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     self.minimapMins = te_read_vector();
     self.minimapMaxs = te_read_vector();
     self.uiViewBoxOrg = te_read_vector();
+    self.sounds = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){

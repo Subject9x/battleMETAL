@@ -274,31 +274,41 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       INPUT_mouse_state = MOUSE_DOWN;
       
       if( MENU_ACTIVE ){
-        switch( CLIENT_MENU_menu_choice ){
-          case MENU_HANGAR_ACTIVE:
-            menu_hangarListener_onClick();
-            break;
-          case MENU_BRIEF_ACTIVE:
-            menu_briefListener_onClick();
-            break;
-          case MENU_ARMING_ACTIVE:
-            menu_armingListener_onClick();
-            break;
-          case MENU_DEPLOY_ACTIVE:
-            menu_deployListener_onClick();
-            break;
-          case MENU_DEBRIEF_ACTIVE:
-            menu_debriefListener_onClick();
-            break;
-          case MENU_CONNECT_ACTIVE:
-            menu_connectListener_onClick();
-            break;
-          case MENU_SCORE_ACTIVE:
-            menu_scoreListener_onClick();
-            break;
-          case MENU_REBIND_ACTIVE:
-            menu_rebindListener_onClick();
-            break;
+        if( cvar("gamemode") == GAMEMODE_LORE ){
+          switch( CLIENT_MENU_menu_choice ){
+            default:
+              break;
+          }
+        }
+        else{
+          switch( CLIENT_MENU_menu_choice ){
+            case MENU_HANGAR_ACTIVE:
+              menu_hangarListener_onClick();
+              break;
+            case MENU_BRIEF_ACTIVE:
+              menu_briefListener_onClick();
+              break;
+            case MENU_ARMING_ACTIVE:
+              menu_armingListener_onClick();
+              break;
+            case MENU_DEPLOY_ACTIVE:
+              menu_deployListener_onClick();
+              break;
+            case MENU_DEBRIEF_ACTIVE:
+              menu_debriefListener_onClick();
+              break;
+            case MENU_CONNECT_ACTIVE:
+              menu_connectListener_onClick();
+              break;
+            case MENU_SCORE_ACTIVE:
+              menu_scoreListener_onClick();
+              break;
+            case MENU_REBIND_ACTIVE:
+              menu_rebindListener_onClick();
+              break;
+             default:
+              break;
+          }
         }
         return TRUE;
       }

@@ -283,7 +283,7 @@ void(string cmdString) client_parse_clientInfoString={
         }
         sv_client_spawnpoint_select();
         player_makeMech();
-        client_playTrack( self, world.sounds, TRUE );
+        //client_playTrack( self, world.sounds, TRUE ); //music play triggers moved to client
         if( self.client_num < 1){
           CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
           self.client_num = CLIENTS;  //book keeping for multiplayer

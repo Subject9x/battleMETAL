@@ -49,10 +49,9 @@ void() receive_ent_bindData={
   prevFaction = CLIENT_faction;
   CLIENT_faction = rint(stof(getplayerkeyvalue(player_localentnum - 1, "colors")));
   if( prevFaction != CLIENT_faction ){
+    cons_logAFloat("receive_ent_bindData faction change?", CLIENT_faction); //debug
     menu_update_colors( CLIENT_faction );
     cl_set_faction( CLIENT_faction );
-    //rebuild nav points
-    //TODO
   }
   
   if( CLIENT_data_type == DATA_MECH ){
@@ -201,6 +200,12 @@ void() client_state_events={
         }
       }
       if( !MENU_ACTIVE ){
+        if( ENT_SERVER_INFO.gameType == GAMEMODE_LORE ){
+          localcmd("cd loop 11\n");
+        }
+        else{
+          localcmd("cd loop 3\n");
+        }
         menu_update_colors( CLIENT_faction );
         menu_enter( menu_connect_choice() );
         menu_chat_config(FALSE);
@@ -215,6 +220,7 @@ void() client_state_events={
       setcursormode( 0 );
       menu_exit();
       localcmd("togglemenu\n");
+      localcmd("cd loop 3\n");
       return;
     }
     //------------------------------------

@@ -41,7 +41,12 @@ void() world_metal_ini={
     NODEGRAPH_MAX_REQUEST = NODEGRAPH_MAX_REQUEST_NET;
   }
   else{
-    GAMETYPE = GAMEMODE_CAMPAIGN;
+    if( mapname == "archives.bsp" ){
+      GAMETYPE = GAMEMODE_LORE;
+    }
+    else{
+      GAMETYPE = GAMEMODE_CAMPAIGN;
+    }
     AI_RATE = AI_RATE_LOCAL;
     NODEGRAPH_queue_timeout = NODEGRAPH_QUEUE_TIMEOUT_LOCAL;
     NODEGRAPH_MAX_REQUEST = NODEGRAPH_MAX_REQUEST_LOCAL;

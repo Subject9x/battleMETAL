@@ -414,6 +414,7 @@ void() te_shield_hit_predraw={
   
   if( time > self.data_lifetime || servertime > self.data_lifetime ){
     self.owner.shieldHitFlag = FALSE;
+    self.owner.shieldEffectTime = time;
     remove(self);
     return;
   }
@@ -436,12 +437,14 @@ void() te_shield_hit_predraw={
   lerp = 1 - bound(0, lerpDiff, 1);
   self.lerpfrac = lerp;
   
-  
-  traceline(self.owner.origin, CLIENT_vis_org, FALSE, self);
-  
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
-    return;
+  if( self.owner.entnum != player_localentnum ){
+    traceline(self.owner.origin, CLIENT_vis_org, FALSE, self);
+    
+    if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+      return;
+    }
   }
+  
   
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
   self.alpha = self.frame1 + (self.frame2-self.frame1)*self.lerpfrac;
@@ -458,6 +461,8 @@ void() te_shield_hit_th={
   }
   
   if( self.alpha < 0.01 ){
+    self.owner.shieldHitFlag = FALSE;
+    self.owner.shieldEffectTime = time;
     remove(self);
     return;
   }
@@ -472,24 +477,27 @@ void() te_shield_hit={
   local float shieldSize;
   local float sizeMod;
   
-  traceline(self.origin, CLIENT_vis_org, TRUE, self);
-  
-  if( (trace_ent == world && trace_fraction < 1.0) || trace_ent.data_type == DATA_BLD){
-    return;
-  } 
-  
-  if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
-    return;
+  if( self.entnum != player_localentnum ){
+    traceline(self.origin, CLIENT_vis_org, TRUE, self);
+    
+    if( (trace_ent == world && trace_fraction < 1.0) || trace_ent.data_type == DATA_BLD){
+      return;
+    } 
+    
+    if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
+      return;
+    }
   }
+  
   
   hitTime = 0.4;
   
-  self.shieldEffectTime = servertime + hitTime;
+  self.shieldEffectTime = time + hitTime;
   
   explode = spawn();
   if( explode ){
     sizeMod = self.shield / self.shieldMax;
-    shieldSize = max(0.8, (self.maxs_x / 64) * sizeMod);
+    shieldSize = max(0.8, (self.cache_maxs_x / 64) * sizeMod);
     explode.data_lifetime = self.shieldEffectTime;
     explode.scale = 1.0;
     explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
@@ -508,6 +516,7 @@ void() te_shield_hit={
     if(self.shieldHitFlag == SHIELD_HIT_EMP){
       flashCol = '1.0 0.4 1.0';
       explode.colormod = '1.2 0.6 1.2';
+      explode.alpha = 0.55;
     }
     else {
       //SHIELD_HIT_REG
@@ -517,7 +526,7 @@ void() te_shield_hit={
     explode.compOffset = explode.colormod;
   }
   
-  te_customflash( self.origin, self.vec_size * 50, 0.25, flashCol);
+  te_customflash( self.origin, self.shield * 1.5, 0.33, flashCol);
   sound7(self, CHAN_AUTO, "sound/fx_shieldhit.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 125, 0 );
 };
 
@@ -548,11 +557,12 @@ void() predraw_shield_explode={
   lerp = 1 - bound(0, lerpDiff, 1);
   self.lerpfrac = lerp;
   
-  
-  traceline(self.owner.origin, CLIENT_vis_org, FALSE, self);
-  
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
-    return;
+  if( self.owner.entnum != player_localentnum ){
+    traceline(self.owner.origin, CLIENT_vis_org, FALSE, self);
+    
+    if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+      return;
+    }
   }
   
   self.origin = self.origin1 + (self.origin2-self.origin1)*self.lerpfrac;
@@ -562,8 +572,8 @@ void() predraw_shield_explode={
 };
 
 void() te_shield_explode_th={
-  self.alpha = self.alpha - (2.2 * frametime);
-  self.scale = self.scale + (2.25 * frametime);
+  self.alpha = self.alpha - (1.67 * frametime);
+  self.scale = self.scale + (2 * frametime);
   
   if(self.owner.clientServerNum == player_localentnum){
     self.origin = CLIENT_vis_org;
@@ -573,6 +583,8 @@ void() te_shield_explode_th={
   }
   
   if( self.alpha < 0.01 ){
+    self.owner.shieldHitFlag = FALSE;
+    self.owner.shieldEffectTime = time;
     remove(self);
     return;
   }
@@ -584,14 +596,16 @@ void( vector org, float vecSize ) te_shield_explode={
   local entity explode;
   local vector flashCol;
   
-  traceline(self.origin, CLIENT_vis_org, TRUE, self);
-  
-  if( trace_ent == world && trace_fraction < 1.0){
-    return;
-  } 
-  
-  if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
-    return;
+  if( self.entnum != player_localentnum ){
+    traceline(self.origin, CLIENT_vis_org, TRUE, self);
+    
+    if( (trace_ent == world && trace_fraction < 1.0) || trace_ent.data_type == DATA_BLD){
+      return;
+    } 
+    
+    if( vlen(self.origin - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
+      return;
+    }
   }
   
   explode = spawn();
@@ -602,12 +616,12 @@ void( vector org, float vecSize ) te_shield_explode={
     explode.nextthink = time + 0.01;
     explode.data_lifetime = 10;
     explode.scale = 0.1 + (vecSize / 3);
-    explode.alpha = 0.6;
-    if(self.owner.clientServerNum == player_localentnum){
-    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_DOUBLESIDED;
+    explode.alpha = 0.75;
+    if(self.clientServerNum == player_localentnum){
+      explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_DOUBLESIDED;
     }
     else{
-    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
+      explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT;
     }
     
     explode.predraw = predraw_shield_explode;
@@ -627,7 +641,7 @@ void( vector org, float vecSize ) te_shield_explode={
       flashCol = '0.003 0.87 0.22';
     }
     explode.compOffset = explode.colormod;
-    te_customflash( org, vecSize * 100, 2, flashCol);
+    te_customflash( org, vecSize * 450, 2, flashCol);
   }
 };
 

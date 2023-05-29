@@ -422,7 +422,7 @@ void() ClientConnect = {
     }
   }
   else{
-    client_playTrack(self, 3, TRUE);  //entering hangar menu
+    stuffcmd(self, "cd stop\n");
   }
   
   client_send_server_info_connect( self );

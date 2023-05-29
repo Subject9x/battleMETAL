@@ -49,6 +49,7 @@ string SAVE_ITEMS_ALL;
 #define GAMEMODE_COOP 2
 #define GAMEMODE_DM 3
 #define GAMEMODE_TEAMDM 4
+#define GAMEMODE_LORE 5
 
 #ifndef MENUQC
 float TEAM_SURVEST_TOTAL;  //team deathmatch
