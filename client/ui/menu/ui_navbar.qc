@@ -196,6 +196,7 @@ void() ui_navbutton_deploy_click={
     deploy = entitybyindex( DEPLOY_LIST[deployId] );
     if( !deploy ){continue;}
     if( !deploy.isActive){continue;}
+    if( deploy.faction != CLIENT_faction && deploy.faction != FACTION_ALL){continue;}
     if( CLIENT_MENU_nav_pnt != -1){continue;}
     CLIENT_MENU_nav_pnt = deploy.data_idx;
   }
@@ -375,6 +376,8 @@ void() ui_navbutton_launch_click={
       CLIENT_spawn_time = servertime; //mark for when player dies.
       CLIENT_ram_max = UI_HANGAR_DATA_mech.ramUpMax;
       menu_exit();
+      
+      localcmd(sprintf("cd loop %s\n", ftos(fabs(rint(ENT_SERVER_INFO.sounds))))); 
       
       menu_chat_config(TRUE);
     }

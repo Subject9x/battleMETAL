@@ -17,10 +17,10 @@ vector FIRE_ENDPOINT;
 float HIT_LOCATION;
 
 //WEAPON FIRE STATUS
-float READY = 0;
-float RELOADING = 1;
-float WAITING = 2;
-float RECOIL = 4;
+#define READY 0
+#define RELOADING 1
+#define WAITING 2
+#define RECOIL 4
 
 //from world.qc
 entity lastspawn;
@@ -48,14 +48,14 @@ float sv_gravity;
 //======================
 
 //direction values
-float DIR_N   = 0;
-float DIR_NE  = 1;
-float DIR_E   = 2;
-float DIR_SE  = 3;
-float DIR_S   = 4;
-float DIR_SW  = 5;
-float DIR_W   = 6;
-float DIR_NW  = 7;
+#define DIR_N  0
+#define DIR_NE 1
+#define DIR_E  2
+#define DIR_SE 3
+#define DIR_S  4
+#define DIR_SW 5
+#define DIR_W  6
+#define DIR_NW 7
 
 //fire modes
 #define FIRE_SINGLE 1

@@ -174,7 +174,7 @@ float( float isNew, float changedFlags ) send_deploy_point={
   }
   
   //EVENT - Change Faction
-  if( (changedFlags & SENDFLAG_CRIT) ){
+  if( (changedFlags & SENDFLAG_FACTION) ){
     WriteByte( MSG_ENTITY, self.faction );
   }
   

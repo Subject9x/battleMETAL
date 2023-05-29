@@ -21,14 +21,18 @@ void() deploy_point_use={
 
 
 void() deploy_point_th={
-  self.think = deploy_point_th;
-  self.nextthink = time + 0.5;
+  return;
 };
 
 void() deploy_point_ini={
     
-  trigger_event( self, self.trigOnSpawn );
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.alpha = 0.01;
+  self.scale = 0.01;
+  
+  if( self.trigOnSpawn && strlen(self.trigOnSpawn) > 0 ){
+    trigger_event( self, self.trigOnSpawn );
+  }
+  
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
 };
@@ -66,9 +70,7 @@ void() map_deploy_point={
   setorigin( self, self.origin );
   
   //wild-  EF_NODEPTHTEST allows SendEnt to blast this through to all clients!
-  self.effects = self.effects | (EF_LOWPRECISION | EF_NODEPTHTEST);
-  self.alpha = 0.01;
-  self.scale = 0.01;
+  self.effects = self.effects | EF_NODEPTHTEST;
   
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -81,14 +83,16 @@ void() map_deploy_point={
     self.isActive = TRUE;
   }
   
-  self.nextVecChoice = 1; //(satisfies ai_can_spawn() call)
+  self.nextVecChoice = 2; //(satisfies ai_can_spawn() call)
   
-  if( ai_can_spawn() == FALSE ){
-    remove(self);
+  if( !ai_can_spawn() ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
     return;
   }
   
   self.SendEntity = send_deploy_point;
+  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = deploy_point_ini;
   self.nextthink = time + 0.1;
 }

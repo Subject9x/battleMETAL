@@ -199,43 +199,13 @@ void( float isNew, float entFlags ) data_objective={
   }
 };
 
-
-/*
-  Reorganize client's deploy point list
-*/
-void( entity dep , float prevFac ) data_deploy_changeFaction={
-  
-  //deploy point was removed from player's deploy queue
-  if( prevFac == CLIENT_faction && dep.faction != CLIENT_faction ){
-    if( dep.prevPoint.data_idx ){
-      dep.prevPoint.nextPoint = dep.nextPoint;
-      dep.nextPoint.prevPoint = dep.prevPoint;
-    }
-    else{
-      FACTION_DEPLOY = dep.nextPoint;
-    }
-    return;
-  }
-  
-  //deploy point was added to player's queue
-  if( prevFac != CLIENT_faction && dep.faction == CLIENT_faction ){
-    if(FACTION_DEPLOY){
-      FACTION_DEPLOY.prevPoint = dep;
-      dep.nextPoint = FACTION_DEPLOY;
-      FACTION_DEPLOY = dep;
-    }
-    else{
-      FACTION_DEPLOY = dep;
-    }
-  }
-};
-
 /*
   OBJECT - Deploy Point
 */
 void( float isNew, float entFlags ) data_deploy={
   local float prevState;
   local float prevFaction;
+  local vector nextOrg;
   
   prevState = self.isActive;
   prevFaction = self.faction;
@@ -246,33 +216,27 @@ void( float isNew, float entFlags ) data_deploy={
   
   //EVENT - Set Origin
   if( (entFlags & SENDFLAG_MOVE) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
+    nextOrg_x = ReadCoord();
+    nextOrg_y = ReadCoord();
+    nextOrg_z = ReadCoord();
   }
   
   //EVENT - Change Faction
-  if( (entFlags & SENDFLAG_CRIT) ){
+  if( (entFlags & SENDFLAG_FACTION) ){
     self.faction = ReadByte();
-    if( prevFaction != self.faction && self.faction != FACTION_ALL ){
-      data_deploy_changeFaction(self, prevFaction);
-    }
   }
   
   //EVENT - new to player
   if( (entFlags & SENDFLAG_NEWENT) ){
     self.data_idx = ReadByte();
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
+     nextOrg_x = ReadCoord();
+     nextOrg_y = ReadCoord();
+     nextOrg_z = ReadCoord();
     self.isActive = ReadByte();
     self.faction = ReadByte();
   }
   if( isNew ){
-    if( self.faction == CLIENT_faction ){
-      DEPLOY_LIST[self.data_idx] = num_for_edict(self);
-    }
-    
+    DEPLOY_LIST[self.data_idx] = num_for_edict(self);
     if( cvar("developer") ){
       self.alpha = 0.9;
       self.scale = 1;
@@ -284,7 +248,8 @@ void( float isNew, float entFlags ) data_deploy={
     self.solid = SOLID_NOT;
     self.movetype = MOVETYPE_NONE;
     setmodel(self, "models/testball.md3");
-    setorigin(self, self.origin);
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, nextOrg);
   }
 };
 

@@ -122,6 +122,7 @@ void() navListSelectListener={
       if( DEPLOY_LIST[deployId] == 0 ){continue;}
       if( found ){break;}
       deploy = entitybyindex( DEPLOY_LIST[deployId] );
+      if(deploy.faction != CLIENT_faction && deploy.faction != FACTION_ALL){continue;}
       found = deploy;
     }
     if( found == world){
@@ -129,6 +130,7 @@ void() navListSelectListener={
         if( DEPLOY_LIST[deployId] == 0 ){continue;}
         if( found ){break;}
         deploy = entitybyindex( DEPLOY_LIST[deployId] );
+        if(deploy.faction != CLIENT_faction && deploy.faction != FACTION_ALL){continue;}
         found = deploy;
       }
     }
@@ -149,6 +151,7 @@ void() navListSelectListener={
       if( DEPLOY_LIST[deployId] == 0 ){continue;}
       if( found ){break;}
       deploy = entitybyindex( DEPLOY_LIST[deployId] );
+      if(deploy.faction != CLIENT_faction && deploy.faction != FACTION_ALL){continue;}
       found = deploy;
     }
     if( found == world ){
@@ -156,6 +159,7 @@ void() navListSelectListener={
         if( DEPLOY_LIST[deployId] == 0 ){continue;}
         if( found ){break;}
         deploy = entitybyindex( DEPLOY_LIST[deployId] );
+        if(deploy.faction != CLIENT_faction && deploy.faction != FACTION_ALL){continue;}
         found = deploy;
       }
     }
