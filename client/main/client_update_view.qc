@@ -100,7 +100,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   if(CLIENT_data_type == DATA_MECH){
     if( CLIENT_server_ent.chaseActive ){
-      makevectors(input_angles);
+      makevectors(view_angles);
       traceline( CLIENT_server_ent.rootOrigin,  CLIENT_server_ent.rootOrigin + (v_forward * cvar("chase_back") * -0.9) + (v_up * cvar("chase_up")), TRUE, CLIENT_server_ent);
       CLIENT_vis_org = trace_endpos + (v_forward * 2);
     }

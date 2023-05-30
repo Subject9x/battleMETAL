@@ -510,7 +510,7 @@ void(vector ofs, vector viewSize) menu_hangar_MechModelDisplay={
   renderscene();
   setproperty(VF_ORIGIN, CLIENT_vis_org);
   setproperty(VF_FOV, VIEW_FOV); 
-  setproperty(VF_ANGLES, input_angles);
+  setproperty(VF_ANGLES, view_angles);
   setproperty(VF_MIN, '0 0 0');
   setproperty(VF_SIZE, VIEW_ACT);
   setproperty(VF_DRAWWORLD, TRUE);

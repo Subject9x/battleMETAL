@@ -136,7 +136,7 @@ void() receive_ent_bindData={
       }
       CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       
-      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.rootOrigin, CLIENT_server_ent.rootOrigin, input_angles) );
+      CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.rootOrigin, CLIENT_server_ent.rootOrigin, view_angles) );
       
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;

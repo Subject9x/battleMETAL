@@ -109,7 +109,7 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   
   ang = vectoyaw(blip.origin - RADAR_ORG);
 
-  entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
+  entAngle = anglemod( 90 + (view_angles_y - ang)); //go figure this works
   entAngleRadian = entAngle * DEG2RAD;
   hudorg_x = cos(entAngleRadian);
   hudorg_y = sin(entAngleRadian);
@@ -156,7 +156,7 @@ void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
   
   ang = vectoyaw(navOrg - RADAR_ORG);
 
-  entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
+  entAngle = anglemod( 90 + (view_angles_y - ang)); //go figure this works
   entAngleRadian = entAngle * DEG2RAD;
   hudorg_x = cos(entAngleRadian);
   hudorg_y = sin(entAngleRadian);

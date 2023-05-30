@@ -172,7 +172,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   
   boxAlpha  = max(0.25, HUD_ALPHA - 0.15);
   
-  viewAngle = input_angles;
+  viewAngle = view_angles;
   viewAngle_x = viewAngle_x * -1;
 
   makevectors(viewAngle);
@@ -765,9 +765,9 @@ void(vector vorg, float algn, vector siz, float val,  float lFlag, float lalgn, 
     tAngles = vectoangles(CLIENT_target_ent.origin - CLIENT_vis_org);
   
     setmodel(HUD_MODEL_ARMOR_GRAPH_TARGET, CLIENT_target_ent.legs_mdl);
-    HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);
     HUD_MODEL_ARMOR_GRAPH_TARGET.origin =  viewOrg;
     HUD_MODEL_ARMOR_GRAPH_TARGET.angles = CLIENT_target_ent.angles;
+    HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y = anglemod(HUD_MODEL_ARMOR_GRAPH_TARGET.angles_y - tAngles_y);
     addentity(HUD_MODEL_ARMOR_GRAPH_TARGET);
     
     //Vehicle has a Turret
@@ -874,7 +874,7 @@ void(vector org, entity allyTarget, float algn, float faction1, float radRange) 
     imgSize_y = 8;
   }
   
-  viewAngle = input_angles;
+  viewAngle = view_angles;
   viewAngle_x = viewAngle_x * -1;
 
   makevectors(viewAngle);

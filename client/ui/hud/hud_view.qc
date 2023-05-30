@@ -64,7 +64,7 @@ void(vector pos, float algn) hud_renderPitchIndicator={
   pmax = min(HUD_PITCH_MAX * -1, -1);
   pmin = max(HUD_PITCH_MIN * -1, 1);
   
-  pcur = input_angles_x;
+  pcur = view_angles_x;
   if( pcur == 0 ){
     pcur = 1;
   }
@@ -79,7 +79,7 @@ void(vector pos, float algn) hud_renderPitchIndicator={
   
   ofs = '2 13';
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_TOP), pos);
-  gui_renderMeter(perc, ofs, '4 26', '-1 0 0', HUD_COLOR_DEF, HUD_ALPHA, 0, AXIS_V, input_angles_x > 0);
+  gui_renderMeter(perc, ofs, '4 26', '-1 0 0', HUD_COLOR_DEF, HUD_ALPHA, 0, AXIS_V, view_angles_x > 0);
   drawfill( (ofs - '0 0' ), '8 1', HUD_COLOR_DEF, HUD_ALPHA, 0);
   drawfill( (ofs + '0 52' ), '8 1', HUD_COLOR_DEF, HUD_ALPHA, 0);  
 };
@@ -519,7 +519,7 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
     warnArrowPos_x = UI_CTR_x - (warnArrowPos_x * 64);
     warnArrowPos_y = UI_CTR_y - (warnArrowPos_y * 64);
   
-    warnArrow = gui_angleToEnum( anglemod(input_angles_y - warnDir) );
+    warnArrow = gui_angleToEnum( anglemod(view_angles_y - warnDir) );
     switch( warnArrow ){
       default:
         warnImg = HUD_TRG_PIP_U;

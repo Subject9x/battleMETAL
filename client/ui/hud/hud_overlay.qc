@@ -181,7 +181,7 @@ void() hud_render_vip_overlay={
       imgSize_y = 16;
     }
     
-    viewAngle = input_angles;
+    viewAngle = view_angles;
     viewAngle_x = viewAngle_x * -1;
 
     makevectors(viewAngle);
@@ -303,7 +303,7 @@ void() hud_model_cockpit_draw_frame={
     local float aimdir;
     
     vel = vectoangles(self.velocity);
-    aimdir = anglemod(input_angles_y - vel_y );
+    aimdir = anglemod(view_angles_y - vel_y );
     
     if( aimdir > 15 && aimdir <= 105){
       self.hud_roll_val = min(self.hud_roll_val + (frametime * 4), 3);
@@ -335,7 +335,8 @@ void() hud_model_cockpit_draw_frame={
     self.angles = self.fixAngle;
   }
   else{
-    self.angles = self.torC_angl;
+    //self.angles = self.torC_angl;
+    self.angles = [self.torC_angl_x, view_angles_y, self.torC_angl_z];
   }
   self.angles_z = self.hud_roll_val;
   
@@ -349,7 +350,7 @@ void() hud_model_cockpit_draw_frame={
   HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_up *  (self.hud_StrutsOffset_y + -1.55 + self.cameraOffset_y));
   
   setmodel(self, self.hud_model);
-  self.angles = [45, input_angles_y, 0];
+  self.angles = [45, view_angles_y, 0];
   self.origin = HUD_MODEL_CONSOLE_origin;
   addentity(self);
   self.origin = self.rootOrigin;

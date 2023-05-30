@@ -58,7 +58,8 @@ vector		pmove_mins;
 vector		pmove_maxs;
 //retrieved from the current movement commands (read by player physics)
 float		input_timelength;
-vector		input_angles;
+vector		input_angles;   //input_angles is the output of getinputstate and input of runstandardplayerphysics (which dp lacks anyway) - Spoike
+                          // this makes input_angles laggy, especially so at higher framerates.
 vector		input_movevalues;	//forwards, right, up.
 float		input_buttons;		//attack, use, jump (default physics only uses jump)
 
@@ -150,7 +151,7 @@ float serverdeltatime;
 // Additional OPTIONAL Fields and Globals
 float		intermission; // indicates intermission state (0 = normal, 1 = scores, 2 = finale text)
 
-vector		view_angles; // same as input_angles
+vector		view_angles; // view_angles is a copy of the client's internal view angles. - Spoike
 vector		view_punchangle; // from server
 vector		view_punchvector; // from server
 
