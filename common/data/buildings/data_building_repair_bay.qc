@@ -685,6 +685,11 @@ void() building_repair_bay={
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = FALSE;
   }
+    
+  if( self.canTarget || (self.spawnflags & IS_MAPKEY) ){
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  }
   
   self.repair_field = spawn();
   if(self.repair_field){
@@ -698,8 +703,6 @@ void() building_repair_bay={
     setorigin( self.repair_field,  self.repair_field.origin);
   }
   
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   self.ai_state_next = REPAIR_STATE_IDLE;
   self.building_delay_think = building_repair_state;
   self.think = building_bbox_settle;

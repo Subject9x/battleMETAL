@@ -140,14 +140,16 @@ void() building_guard_tower={
   makevectors(self.angles);
   self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   if( (self.spawnflags & IS_MAPKEY) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
   self.canTarget = TRUE;
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = FALSE;
+  }  
+  if( self.canTarget || (self.spawnflags & IS_MAPKEY) ){
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   }
   self.think = building_bbox_settle;
   self.nextthink = time + 0.01;

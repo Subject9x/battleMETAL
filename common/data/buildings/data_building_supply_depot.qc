@@ -236,8 +236,11 @@ void() building_supply_depot={
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = FALSE;
   }
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  
+  if( self.canTarget || (self.spawnflags & IS_MAPKEY) ){
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  }
   
   self.think = building_bbox_settle;
   self.nextthink = time + 0.01;

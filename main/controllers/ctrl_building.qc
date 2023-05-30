@@ -356,7 +356,9 @@ void() building_bbox_settle={
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
   
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  if( self.canTarget ){
+    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+  }
   
   if( self.building_delay_think ){
     self.think = self.building_delay_think;

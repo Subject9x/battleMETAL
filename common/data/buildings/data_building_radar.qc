@@ -446,14 +446,16 @@ void() building_radar={
     }
   }
   
-  self.SendEntity = ctrl_send_building;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   if( (self.spawnflags & IS_MAPKEY) ){
     self.effects = self.effects | EF_NODEPTHTEST;
   }
   self.canTarget = TRUE;
   if( (self.spawnflags & BUILDING_TARGET_FLAG) ){
     self.canTarget = FALSE;
+  }  
+  if( self.canTarget || (self.spawnflags & IS_MAPKEY) ){
+    self.SendEntity = ctrl_send_building;
+    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   }
   self.building_delay_think = building_radar_patrol1;
   self.think = building_bbox_settle;
