@@ -13,7 +13,7 @@ entity camp_load;
 entity camp_back;
 
 //Main Menu Constants
-string IMG_CAMP_TITLE   = "gfx/menu/single/camp_label.png";
+#define IMG_CAMP_TITLE "gfx/menu/single/camp_label.png"
 
 //button callbacks
 void() click_camp_new ={

@@ -11,7 +11,7 @@ entity save_back;
 entity save_list;
 
 //save menu Constants
-string IMG_SAVE_TITLE   = "gfx/menu/save/save_title.png";
+#define IMG_SAVE_TITLE "gfx/menu/save/save_title.png"
 
 //button callbacks
 void() click_save_back={

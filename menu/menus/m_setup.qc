@@ -40,8 +40,6 @@ entity setup_team_next;
 
 entity setup_pic_label;
 
-
-
 //color tinting
 #define TINT_COLOR_TORSO_CENTER "gfx/ui/tint/tint_torso_center.png"
 #define TINT_COLOR_TORSO_LEFT   "gfx/ui/tint/tint_torso_left.png"

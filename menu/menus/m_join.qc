@@ -29,8 +29,7 @@ float	gethostcachenumber(float fld, float hostnr)
 */
 
 //join Globals
-
-string SERVER_BASE_DATA_DIR = "metaldata";
+#define SERVER_BASE_DATA_DIR "metaldata"
 
 float SERVER_CURRENT;
 

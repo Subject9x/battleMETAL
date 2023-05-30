@@ -62,7 +62,7 @@ float HELP_MENU_CHOICE;
 #define HELP_MENU_CONFIG 7
 //#define HELP_MENU_HUD 8
 
-string IMG_HELP_TITLE = "gfx/menu/help/help_title.png";
+#define IMG_HELP_TITLE "gfx/menu/help/help_title.png"
 
 //m_help functions
 void() click_help_back={

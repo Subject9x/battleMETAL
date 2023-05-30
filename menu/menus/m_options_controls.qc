@@ -56,7 +56,7 @@ entity controls_camera;
 entity controls_headlight;
 
 //controls constants
-string IMG_CONTROLS_TITLE = "gfx/menu/options/options_title.png";
+#define IMG_CONTROLS_TITLE "gfx/menu/options/options_title.png"
 
 //controls callbacks
 entity controls_mouse_sense;

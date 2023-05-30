@@ -11,7 +11,7 @@ entity load_title;
 entity load_back;
 
 //load Constants
-string IMG_LOAD_TITLE = "gfx/menu/load/load_title.png";
+#define IMG_LOAD_TITLE "gfx/menu/load/load_title.png"
 
 //"- EMPTY SAVE -" 
 

@@ -23,7 +23,7 @@ entity credits_title;
 entity credits_back;
 
 //credits constants
-string IMG_CREDITS_TITLE = "gfx/menu/help/credits_title.png";
+#define IMG_CREDITS_TITLE "gfx/menu/help/credits_title.png"
 
 //credits callbacks
 void() click_credits_back={

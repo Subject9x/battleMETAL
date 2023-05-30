@@ -13,8 +13,8 @@ Overview:
 */
 float() ai_can_spawn={
 
-  if( self.netname ){
-    self.netname = strzone(self.netname);
+  if( self.netname && strlen(self.netname) > 0 ){
+    cacheGlobalString(self.netname, self.netname)
   }
 
   if( self.nextVecChoice < 1 ){

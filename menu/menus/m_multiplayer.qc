@@ -14,7 +14,7 @@ entity multi_joingame;
 entity multi_back;
 
 //MultiplayerConstants
-string IMG_MULTI_TITLE   = "gfx/menu/multi/multi_title.png";
+#define IMG_MULTI_TITLE "gfx/menu/multi/multi_title.png"
 
 //Multiplayer callbacks
 void() click_multi_back={

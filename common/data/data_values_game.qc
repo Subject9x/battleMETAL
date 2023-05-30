@@ -425,11 +425,11 @@ float AS_INT = 8;
 //============================
 //float    = 32;
 //float    = 33;
-float STAT_RAM = 34;
-float STAT_TARGET_HIT_PARTS = 35;
+#define STAT_RAM 34
+#define STAT_TARGET_HIT_PARTS 35
 //float    = 36;
 //float    = 37;
-float STAT_PLAYER_STATE = 38;
+#define STAT_PLAYER_STATE 38
 //float    = 39;
 //float    = 40;
 //float    = 41;
@@ -438,52 +438,52 @@ float STAT_PLAYER_STATE = 38;
 //float    = 44;
 //float    = 46;
 //float    = 47;
-float STAT_PLR_HITDIR = 48;
-float STAT_PLR_RETDIST = 49;
+#define STAT_PLR_HITDIR 48
+#define STAT_PLR_RETDIST 49
 //float    = 50;
 //float    = 53;
 //float    = 54;
 //float    = 55;
 //float     = 56;
 //float    = 57;
-float STAT_TARGET_HP_TORSOCENTER = 61;
-float STAT_TARGET_HP_TORSOLEFT = 62;
-float STAT_TARGET_HP_TORSORIGHT = 63;
-float STAT_TARGET_HP_ARMLEFT = 64;
-float STAT_TARGET_HP_ARMRIGHT = 65;
-float STAT_TARGET_HP_LEGS = 66;
+#define STAT_TARGET_HP_TORSOCENTER 61
+#define STAT_TARGET_HP_TORSOLEFT 62
+#define STAT_TARGET_HP_TORSORIGHT 63
+#define STAT_TARGET_HP_ARMLEFT 64
+#define STAT_TARGET_HP_ARMRIGHT 65
+#define STAT_TARGET_HP_LEGS 66
 
-float STAT_CLIENT_HP_TORSOCENTER = 67;
-float STAT_CLIENT_HP_TORSOLEFT = 68;
-float STAT_CLIENT_HP_TORSORIGHT = 69;
-float STAT_CLIENT_HP_ARMLEFT = 70;
-float STAT_CLIENT_HP_ARMRIGHT = 71;
-float STAT_CLIENT_HP_LEGS = 72;
+#define STAT_CLIENT_HP_TORSOCENTER 67
+#define STAT_CLIENT_HP_TORSOLEFT 68
+#define STAT_CLIENT_HP_TORSORIGHT 69
+#define STAT_CLIENT_HP_ARMLEFT 70
+#define STAT_CLIENT_HP_ARMRIGHT 71
+#define STAT_CLIENT_HP_LEGS 72
 //float   = 73;
 //float   = 74;
 //float   = 75;
 //float   = 76;
 //float    = 77;
 //float    = 78;
-float STAT_RAM_VALUE = 79;
+#define STAT_RAM_VALUE 79
 //float STAT_LCK_STT = 80;  //2.0.0: lock-on not timer-based anymore
 
-float STAT_WEAPON_RELOAD_1 = 81;
-float STAT_WEAPON_RELOAD_2 = 82;
-float STAT_WEAPON_RELOAD_3 = 83;
-float STAT_WEAPON_RELOAD_4 = 84;
-float STAT_WEAPON_RELOAD_5 = 85;
-float STAT_WEAPON_RELOAD_6 = 86;
-float STAT_WEAPON_RELOAD_7 = 87;
-float STAT_WEAPON_RELOAD_8 = 88;
-float STAT_WEAPON_RELOAD_9 = 89;
+#define STAT_WEAPON_RELOAD_1 81
+#define STAT_WEAPON_RELOAD_2 82
+#define STAT_WEAPON_RELOAD_3 83
+#define STAT_WEAPON_RELOAD_4 84
+#define STAT_WEAPON_RELOAD_5 85
+#define STAT_WEAPON_RELOAD_6 86
+#define STAT_WEAPON_RELOAD_7 87
+#define STAT_WEAPON_RELOAD_8 88
+#define STAT_WEAPON_RELOAD_9 89
 //float    = 90;
 
 //float    = 91;
 //float    = 100;
 //float    = 101;
 //float    = 102;
-float STAT_PLR_REP = 103; //remaining repair delta
+#define STAT_PLR_REP 103 //remaining repair delta
 //104;
 
 //============================

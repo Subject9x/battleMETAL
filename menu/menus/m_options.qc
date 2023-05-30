@@ -14,7 +14,7 @@ entity options_gameplay;
 entity options_back;
 
 //options root Constants
-string IMG_OPTION_TITLE = "gfx/menu/options/options_title.png";
+#define IMG_OPTION_TITLE "gfx/menu/options/options_title.png"
 
 //options root callbacks
 void() click_options_controls={

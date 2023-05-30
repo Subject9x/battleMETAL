@@ -6,7 +6,8 @@ Overview: new campaign, pick save slot
 */
 
 //New Game Save Slot globals
-string IMG_NEWSAVE_TITLE  = "gfx/menu/newgame/new_title.png";
+#define IMG_NEWSAVE_TITLE "gfx/menu/newgame/new_title.png"
+
 entity newsave_title;
 entity newsave_back;
 
