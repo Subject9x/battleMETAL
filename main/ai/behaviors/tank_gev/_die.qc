@@ -42,8 +42,8 @@ void() ai_wreck_gev={
     wreck.gravity = 0.33;
   }
   wreck.traileffectnum = particleeffectnum("TE_WRECK_SMOKE");
-  wreck.colormod = '0.45 0.45 0.45';
   
+  wreck.skin = 3;
   setmodel(wreck, self.legs_mdl);
   setsize(wreck, wreck.mins, wreck.maxs);
   setorigin(wreck, self.origin + (v_up * 10));

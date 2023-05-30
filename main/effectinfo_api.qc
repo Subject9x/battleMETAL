@@ -366,18 +366,16 @@ void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailn
   
   piece = spawn();
   if( piece ){
-    setmodel(piece, mdl);
-    setsize (piece, '-4 -4 -4', '4 4 4');
-    setorigin(piece, startOrg);
-      
-    piece.angles = wishAngl;
-    piece.skin = self.skin;
     piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-    
     piece.movetype = MOVETYPE_TOSS;
     piece.solid = SOLID_NOT;
     piece.frame = 0;
-    piece.colormod = '0.45 0.45 0.45';
+    piece.angles = wishAngl;
+    piece.skin = 3;
+    
+    setmodel(piece, mdl);
+    setsize (piece, '-4 -4 -4', '4 4 4');
+    setorigin(piece, startOrg);
     
     piece.traileffectnum = trailnum;
     if( wishVel != '0 0 0' ){

@@ -38,7 +38,6 @@ void() ai_wreck_vec={
   wreck.vec_size = self.vec_size;
   wreck.movetype = MOVETYPE_NONE;
   wreck.solid = SOLID_NOT;
-  wreck.colormod = '0.45 0.45 0.45';
   wreck.angles = self.angles;
   
   makevectors(wreck.angles);
@@ -46,10 +45,10 @@ void() ai_wreck_vec={
   wreckOrg = trace_endpos + (v_up * self.mins_z * -1 );
   GetAlignedSurfaceAngles(self);
   
-  
   setmodel(wreck, self.legs_mdl);
   setsize(wreck, wreck.mins, wreck.maxs);
   setorigin(wreck, wreckOrg);
+  wreck.skin = 3;
   
   
   wreck.ai_viewtime = time + 180 * (random() * 180);

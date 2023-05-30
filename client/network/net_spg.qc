@@ -12,8 +12,7 @@ Overview:
 /*
   EVENT - DEATH
 */
-void() sendevent_spg_die={  local entity weps;
-  
+void() sendevent_spg_die={
   data_vehicle_wreck();
   
   traceline(self.origin + (v_up * self.maxs_z * 0.67), self.origin + (v_up * -128), TRUE, self);

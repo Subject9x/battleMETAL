@@ -49,8 +49,8 @@ void( float dataID ) data_sync_new_vehicle={
 };
 
 void() data_vehicle_wreck_predraw={
-
-  self.colormod = '0.45 0.45 0.45';
+  
+  self.skin = 3;
   setmodel(self, self.legs_mdl);
   setsize(self, self.cache_mins, self.cache_maxs);
   self.origin = self.cacheGroundPos;

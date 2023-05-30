@@ -454,6 +454,7 @@ void() ai_wreck_mech={
   corpse = spawn();
   if(corpse){
     corpse.vec_size = self.vec_size;
+    corpse.skin = 3;
     setmodel(corpse, self.legs_mdl);
     setsize(corpse, corpse.mins, corpse.maxs);
     setorigin(corpse, self.legs_org);
@@ -468,7 +469,6 @@ void() ai_wreck_mech={
     corpse.nextthink = time + 0.1;
     
     corpse.ai_timer_breathe = time + 600;
-    corpse.colormod = '0.45 0.45 0.45';
   }
 };
 
