@@ -138,6 +138,12 @@ void() ai_ctrl_update_mechplayer={
   }
   ctrl_mech_burn_frame();
   
+  if(self.shield > 0 && time > self.shieldHitRegen ){
+    te_shields_active(self);
+  }
+  else if (time < self.shieldHitRegen ){
+    te_shields_down(self);
+  }
 };
 
 void() ctrl_updateCenterTorso={

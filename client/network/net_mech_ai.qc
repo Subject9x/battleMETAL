@@ -378,6 +378,8 @@ void() interpolate_mech_ai={
       }
     }
     if(self.cl_lod_weapon){
+      self.origin = self.rootOrigin;
+      self.angles = self.rootAngle;
       sendevent_mech_burn();
       
       if(self.weaponEnt1.data_idx){

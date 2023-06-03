@@ -98,6 +98,10 @@ void() ctrl_updateTank={
       }
     }
   }
+  
+  if(self.shield > 0){
+    te_shields_active(self);
+  }
 };
 
 float( float isNew, float changedflags ) ctrl_send_tank={

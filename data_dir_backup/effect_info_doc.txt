@@ -3,6 +3,9 @@ effect NAME				// unique desired name of the effect
 type	alphastatic/static/spark/beam/
 	rain/raindecal/snow/bubble/
 	blood/decal/entityparticle	// type of particle to spawn (defines some aspects of behavior)
+
+blend alpha/add/invmod
+
 count f					// total count of particles to create
 countabsolute f				// absolute total particles to ever create
 color h h (HEX)				// range of colors to choose from in hex RRGGBB (like HTML color tags), randomly interpolated at spawn

@@ -27,6 +27,11 @@ vector( vector startOrg ) te_apply_wind;
 
 void(vector org, float total) te_smoke;
 
+
+//passive shield effects
+void(entity e) te_shields_active;
+void(entity e) te_shields_down;
+
 //debris is kept here because clientside can't really interpolate these nicely nor handle their bounce behavior.
 void( vector org, vector angl, vector vel, float total, float debrType) te_debris;
 void( vector org, vector angl, vector vel, float total, float debrType ) te_debris_armor;

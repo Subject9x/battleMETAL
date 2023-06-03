@@ -79,14 +79,14 @@ void() building_die={
   self.enemy = world;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;
   
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
+  
   ruins = spawn();
   if( !ruins ){return;}
   
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
-  
   ruins.movetype = MOVETYPE_NONE;
-  ruins.solid = SOLID_CORPSE;
+  ruins.solid = SOLID_NOT;
   ruins.takedamage = DAMAGE_NO;
   ruins.vec_size = self.vec_size;
   

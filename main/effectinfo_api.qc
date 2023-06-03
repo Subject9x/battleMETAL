@@ -410,10 +410,30 @@ void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailn
 };
 
 
-
-
 void() te_msn_boundary={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_MSN_BOUND );
+};
+
+
+
+//passive shield effects
+void(entity e) te_shields_active={
+  
+  local vector v1, v2;
+  v1 = e.origin + randomvec2() * e.maxs_x;
+ 
+  pointparticles(particleeffectnum("TE_SHIELD_ON"), v1 , '0 0 0', 1);
+  
+};
+void(entity e) te_shields_down={
+
+  local vector v1, v2;
+  
+  v1 = randompos(e.origin + e.mins, e.origin + e.maxs); 
+  v2 = randompos(e.origin + e.mins, e.origin + e.maxs); 
+  
+  trailparticles( e, particleeffectnum("TE_SHIELD_DOWN"), v1, v2) ;
+
 };
