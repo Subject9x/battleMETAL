@@ -174,7 +174,9 @@ void( float dataID ) data_sync_new_building={
   ANIMATION - Death
 */
 void() data_building_death1={
-
+  
+  
+  
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
   
   self.think = data_building_death2;

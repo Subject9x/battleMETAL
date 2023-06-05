@@ -80,9 +80,9 @@ void() building_guard_tower={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_STEP;
   self.takedamage = DAMAGE_AIM;
-  self.model = "models/buildings/towersmall/guardtower.md3";
-  precache_model("models/buildings/towersmall/guardtower.md3");
-  setmodel(self, "models/buildings/towersmall/guardtower.md3");
+  self.model = "models/buildings/towersmall/guardtower.obj";
+  precache_model("models/buildings/towersmall/guardtower.obj");
+  setmodel(self, "models/buildings/towersmall/guardtower.obj");
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
   

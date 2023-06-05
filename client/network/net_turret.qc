@@ -131,7 +131,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.torC_angl_z = 0;
     self.v_angle = self.torC_angl;
     self.v_angle_x = self.v_angle_x * -1;
-    self.torC_angl_x = 0;
+    self.torC_angl_x = self.v_angle_x * -1;
   }
   
   //EVENT - voice chatter

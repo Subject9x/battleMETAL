@@ -526,7 +526,6 @@ void(entity item) predraw_unit_weapon={
     drawAng = T_PART_PARENT_ANGL;
   }
   
-  
   drawAng_x = drawAng_x *-1;
   
   makevectors( drawAng);
