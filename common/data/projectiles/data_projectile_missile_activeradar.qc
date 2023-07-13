@@ -217,6 +217,9 @@ void() data_projectile_missile_activeradar_touch={
         }
       }
       else{
+        if(other.data_type == DATA_BLD){
+          damage = damage + (damage * 0.33);
+        }
         t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       }
     }

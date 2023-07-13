@@ -86,7 +86,10 @@ void(entity theOther ) data_prj_mis_hit={
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      damage = damage + (damage * 0.25);
+      if(theOther.data_type == DATA_BLD){
+        damage = damage + (damage * 0.33);
+      }
+      
       HIT_LOCATION = t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
       if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
         self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
@@ -95,7 +98,7 @@ void(entity theOther ) data_prj_mis_hit={
       debris = rint(1 + random() * 3);
       te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris, 1 );
     }
-    self.targetEntId = num_for_edict(other);
+    self.targetEntId = num_for_edict(theOther);
     debris = 0;
   }
   else{

@@ -66,7 +66,7 @@ void() data_ini_missile_laserguide_={
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "models/weapons/w_lgm.md3"; 
   self.abbrev = "MLGD";
-  self.description = "+ target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+  self.description = "+ Bonus 33% damage to BUILDINGS. + target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_mlgd.png"; 
   self.itemMuzzleFlash = te_muzzle_lgm;
 #endif 

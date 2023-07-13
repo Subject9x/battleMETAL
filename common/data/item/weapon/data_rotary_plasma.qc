@@ -33,8 +33,8 @@ void() data_ini_plasma_={
   self.data_idx = UID_ITEM_rotary_plasma;
   
   self.w_clipsize = 6;
-  self.reloadRate = 2.0; //0.55
-  self.reloadMax = 2.0; //0.55
+  self.reloadRate = 0.8; //0.55
+  self.reloadMax = 3.5; //0.55
   self.energyRate = 0;
   
   self.w_range = 1800;
@@ -56,7 +56,7 @@ void() data_ini_plasma_={
   self.fire_sound = "sound/weapons/rpls_fire.ogg";
   self.model = "models/weapons/w_rpc.md3";
   self.abbrev = "RPC";
-  self.description = "+ Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
+  self.description = "+ 6rnd magazine. + semi-auto. + Will burn over time on unshielded hit. + inhibits target shield regen when burning.";
   self.icon = "gfx/ui/wep_icons/wi_rpc.png";
   self.itemMuzzleFlash = te_muzzle_rpc;
 #endif 
@@ -75,7 +75,7 @@ void() data_ini_attack_plasma_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( TRUE );
+  ctrl_weapon_updateAmmo( FALSE );
   
   ctrl_weapon_make_projectile( -1 );
   

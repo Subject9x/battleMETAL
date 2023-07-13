@@ -35,12 +35,12 @@ void() data_ini_rockets_={
   self.data_idx = UID_ITEM_rocket_launcher;  
   
   self.w_clipsize = 1;
-  self.reloadRate = 1.33; //1.25 v4.0.0-
-  self.reloadMax = 1.33; //1.25 v4.0.0-
+  self.reloadRate = 1.4; //1.25 v4.0.0-
+  self.reloadMax = 1.4; //1.25 v4.0.0-
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 50;  //55
+  self.damageValue = 40;  //55
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;
@@ -58,7 +58,7 @@ void() data_ini_rockets_={
   self.fire_sound = "sound/weapons/rckt_fire.ogg";
   self.model = "models/weapons/w_mis.md3";
   self.abbrev = "RCK";
-  self.description = "+ target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+  self.description = "+ Bonus 33% damage to BUILDINGS. + target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_rck.png";
   self.itemMuzzleFlash = te_muzzle_rck;
 #endif 

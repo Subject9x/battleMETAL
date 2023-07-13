@@ -58,7 +58,7 @@ void() data_ini_missile_activeradar_={
   self.fire_sound = "sound/weapons/arh_fire.ogg";
   self.model = "models/weapons/w_arh.md3";
   self.abbrev = "MARH";
-  self.description = "+ Requires <Active Radar> on. + Requires target acquired. + You must be facing target. + stronger against [small] targets.";
+  self.description = "+ Bonus 33% damage to BUILDINGS. + Requires <Active Radar> on. + Requires target acquired. + You must be facing target. + stronger against [small] targets.";
   self.icon = "gfx/ui/wep_icons/wi_marh.png";
   self.itemMuzzleFlash = te_muzzle_marh;
 #endif

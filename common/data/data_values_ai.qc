@@ -53,17 +53,17 @@ Overview: AI values that have been spun off from common/game
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
 //release v3.12.16
-#define AI_ARMOR_ROK 0.3
-#define AI_ARMOR_REG 0.5
-#define AI_ARMOR_VET 0.7
+#define AI_ARMOR_ROK 0.4
+#define AI_ARMOR_REG 0.6
+#define AI_ARMOR_VET 0.75
 #define AI_ARMOR_ACE 0.9
 
 //Shield Values
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
 //release v3.12.16
-#define AI_SHIELD_ROK 0.25
-#define AI_SHIELD_REG 0.45
+#define AI_SHIELD_ROK 0.33
+#define AI_SHIELD_REG 0.50
 #define AI_SHIELD_VET 0.65
 #define AI_SHIELD_ACE 0.85
 

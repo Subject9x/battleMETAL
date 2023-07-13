@@ -90,6 +90,9 @@ void() data_projectile_missile_swarm_touch={
       self.impactType = IMPACT_SHIELD;
     }
     else{
+      if(other.data_type == DATA_BLD){
+        damage = damage + (damage * 0.33);
+      }
       HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
         self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
