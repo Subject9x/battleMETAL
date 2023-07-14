@@ -163,6 +163,8 @@ Deploy points can be tailored to specific factions, and can be activated/deactiv
 .trigOnSpawn = <string> [target] - map object to fire when this is created
 */
 void() map_deploy_point_remote={
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   setmodel(self, "models/testball.md3");
   setsize( self, '-10 -10 -10', '10 10 10' ); 
   setorigin( self, self.origin );
@@ -219,7 +221,10 @@ void() map_deploy_point_coop={
     remove(self);
     return;
   }
-  
+
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+
   if( !self.coopClientId ){
     self.coopClientId = 1;
   }
