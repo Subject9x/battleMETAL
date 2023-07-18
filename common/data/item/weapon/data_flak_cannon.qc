@@ -10,10 +10,11 @@ Overview:
       low accuracy
       small AoE when shields are gone
 */
-float DAT_FLAK_SHRAP_TOTAL  = 4;
+float DAT_FLAK_SHRAP_TOTAL = 6;
+
 #ifdef SSQC
-vector DAT_FLAK_SHRAP_SPREAD  = '0.2 0.2 64';
-void() data_ini_attack_flak_;
+  vector DAT_FLAK_SHRAP_SPREAD  = '0.15 0.15 64';
+  void() data_ini_attack_flak_;
 #endif
 
 #ifdef CSQC
@@ -35,7 +36,7 @@ void() te_muzzle_flk={
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
   
-  if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
+  if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
   
     makevectors(ang);
@@ -67,9 +68,9 @@ void() data_ini_flak_cannon_={
 
   self.data_idx = UID_ITEM_flak;
   
-  self.w_clipsize = 4;
+  self.w_clipsize = 3;
   self.reloadRate = 0.15;
-  self.reloadMax = 2;
+  self.reloadMax = 3;
   self.energyRate = 0;
   
   self.w_range = 500;
@@ -90,9 +91,9 @@ void() data_ini_flak_cannon_={
   self.w_name = "Flak Cannon";
   self.fire_sound = "sound/weapons/flak_fire.ogg";
   self.model = "models/weapons/w_flk.md3";
-  self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
+  self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL * 3 / 3;
   self.abbrev = "FLAK";
-  self.description = "+ Instant-impact weapon. +4-rnd burst and 4 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
+  self.description = "+ Instant-impact weapon. + 3-rnd burst and 6 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";
   self.itemMuzzleFlash = te_muzzle_flk;
 #endif
