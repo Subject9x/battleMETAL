@@ -685,12 +685,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     }
     
     if( (changeFlags & SENDFLAG_TARGET) ){
-      self.enemy = findfloat(world, entnum, self.targetEntId);
-      if( self.enemy != world ){
-        CLIENT_target_ent = self.enemy;
-        CLIENT_stat_trg_ent_id = self.targetEntId;
-        client_event_target_new();
-      }
+      client_event_target_new();
     }
   }
 };
@@ -764,8 +759,6 @@ void( float unit_id ) client_event_mech_spawn={
   
 };
 
-
-
 /*
   Client started moving / or stopped moving, update legs.
 */
@@ -780,8 +773,31 @@ void() client_event_handle_moveChange={
 */
 void() client_event_target_new={
   local entity oSelf;
-  local entity cleanUp;
-  local entity nextEnt;
+  
+  local float notarg;
+
+  notarg = FALSE;
+
+  //check against world
+  if( self.targetEntId == num_for_edict(world)){
+    notarg = TRUE;
+  }
+
+  //check against self-player
+  if( self.targetEntId == num_for_edict(self)){
+    notarg = TRUE;
+  }
+
+  if(notarg){
+    CLIENT_target_ent = world;
+    self.enemy = world;
+    return;
+  }
+
+  self.enemy = findfloat(world, entnum, self.targetEntId);
+
+  CLIENT_target_ent = self.enemy;
+  CLIENT_stat_trg_ent_id = self.targetEntId;
   
   oSelf = self;
   self = HUD_MODEL_ARMOR_GRAPH_TARGET;

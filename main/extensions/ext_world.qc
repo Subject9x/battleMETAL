@@ -1438,3 +1438,24 @@ void() world_get_maplist={
     dprint("WORLD_MAP_LIST ", WORLD_MAP_LIST, "\n"); //debug
   }
 };
+
+
+/*
+  DEBUG - auto-win a map.
+  use: testing campaigns and keeping unlocks in logical order while skipping maps.
+*/
+void() world_debug_win={
+
+  local entity obj;
+
+  obj = findchain(classname, "map_objective");
+
+  while(obj){
+    if(obj.isActive == OBJECTIVE_ACTIVE){
+      obj.think = obj.use;
+      obj.nextthink = time;
+    }
+
+    obj = obj.chain;
+  }
+};

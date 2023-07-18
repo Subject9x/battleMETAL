@@ -146,7 +146,7 @@ void() menu_armingListener_onKeyUp={
   UI_ARMING_weaponclick = FALSE;
   UI_ARMING_hardpoint_click = FALSE;
   
-  if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
+  if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_IS_DOWN) ){
     if( UI_ARMING_item_drag.data_idx > 0 ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       hardpointId = 1;
@@ -187,9 +187,10 @@ void() menu_armingListener_onKeyUp={
               GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
               GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
               GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
+              pointsound(CLIENT_vis_org, "sound/ui/itm_loaded.ogg", 1,ATTN_NORM); 
           }
           else{
-            //TODO - play 'no' sound
+            pointsound(CLIENT_vis_org, "sound/ui/not_allow.ogg", 1,ATTN_NORM); 
             if( cvar("developer") ){
               cons_logAString("[WARN]", "Weapon invalid for hardpoint"); //INFO
             }
@@ -277,7 +278,7 @@ void() hardpointListener={
   local float weaponBitFlag;
   
   if( SELECT_MECH > FALSE){
-    if( INPUT_mouse_state == MOUSE_DOWN ){
+    if( INPUT_mouse_state == MOUSE_IS_DOWN ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       hardpointItr = 1;
       weaponBitFlag = 1;

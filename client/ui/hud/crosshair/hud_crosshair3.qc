@@ -14,55 +14,56 @@ Overview:
     CLIENT_stat_rdr_mode    - player active radar
 */
 void() hud_renderCrosshair3={
-  local float hitAlpha;
-  local float retAlpha;
-  local vector hitColor;
-  
-  local vector imgSize;
-  local vector lockSize;
   local vector hitSize;
-  
-  local vector imgCenter;
-  local vector lockCenter;
   local vector hitCenter;
   
-  imgSize = '28 28';
+  CROSSHR_IMG_SIZE = '28 28';
   
   //base image
-  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
-  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
+  CROSSHR_IMG_CENTER_x = VIEW_CTR_x - CROSSHR_IMG_SIZE_x / 2;
+  CROSSHR_IMG_CENTER_y = VIEW_CTR_y - CROSSHR_IMG_SIZE_y / 2;
   if( CLIENT_stat_trg_face ){
-    retAlpha =  max(0.5, HUD_ALPHA * 0.67);
+    CROSSHR_RET_ALPHA =  max(0.5, HUD_ALPHA * 0.67);
   }
   else{
-    retAlpha = HUD_ALPHA;
+    CROSSHR_RET_ALPHA = HUD_ALPHA;
   }
-  drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, retAlpha, DRAWFLAG_NORMAL);  
+  drawpic(CROSSHR_IMG_CENTER, "gfx/hud/ret/crosshair3.png", CROSSHR_IMG_SIZE, HUD_COLOR_DEF, CROSSHR_RET_ALPHA, DRAWFLAG_NORMAL);  
   
   if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
     hitSize = '27 27';
     hitCenter_x = VIEW_CTR_x - hitSize_x / 2;
     hitCenter_y = VIEW_CTR_y - hitSize_y / 2;
     if(CLIENT_target_shield > 0){
-      hitColor = CLR_DEF_ARM_OK;
-      hitAlpha = 1;
+      CROSSHR_HIT_CLR = CLR_DEF_ARM_OK;
+      CROSSHR_HIT_ALPHA = 1;
     }
     else{
-      hitColor = hitColor + '0.8 0.8 0.8';
-      hitAlpha = 1;
+      CROSSHR_HIT_CLR = CROSSHR_HIT_CLR + '0.8 0.8 0.8';
+      CROSSHR_HIT_ALPHA = 1;
     }
-    drawpic(hitCenter, "gfx/hud/ret/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+    drawpic(hitCenter, "gfx/hud/ret/crosshair3_hit.png", hitSize, CROSSHR_HIT_CLR, CROSSHR_HIT_ALPHA, DRAWFLAG_NORMAL);
   }
   //lock on indicators  
-  if( CLIENT_stat_trg_ent_id == 0 ){
-    return;
+  CROSSHR_HAS_LOCK = FALSE;
+  if( CLIENT_target_ent != world ){
+    if( CLIENT_stat_rdr_mode ){
+      if( CLIENT_stat_trg_face >= 270 || CLIENT_stat_trg_face <= 45){
+        CROSSHR_HAS_LOCK = TRUE;
+      }
+    }
   }
-  if( (CLIENT_stat_trg_face > 270 || CLIENT_stat_trg_face < 45) && CLIENT_stat_rdr_mode ){
-    lockSize = '34 34';
-    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
-    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+  
+  if( CROSSHR_HAS_LOCK ){
+    CROSSHR_LOCK_SIZE = '34 34';
+    CROSSHR_LOCK_CENTER_x = VIEW_CTR_x - CROSSHR_LOCK_SIZE_x / 2;
+    CROSSHR_LOCK_CENTER_y = VIEW_CTR_y - CROSSHR_LOCK_SIZE_y / 2;
     
     CROSSHAIR_ANGLE_LOCK = anglemod(CROSSHAIR_ANGLE_LOCK + (frametime * 75));
-    drawrotpic(lockCenter + lockSize * 0.5, "gfx/hud/ret/crosshair3_lock.png", lockSize, lockSize / 2, CROSSHAIR_ANGLE_LOCK, CLR_DEF_RET_HASLOCK, max(0.5, HUD_ALPHA * 0.67), DRAWFLAG_NORMAL);
+    drawrotpic(CROSSHR_LOCK_CENTER + CROSSHR_LOCK_SIZE * 0.5, "gfx/hud/ret/crosshair3_lock.png", CROSSHR_LOCK_SIZE, CROSSHR_LOCK_SIZE / 2, CROSSHAIR_ANGLE_LOCK, CLR_DEF_RET_HASLOCK, max(0.5, HUD_ALPHA * 0.67), DRAWFLAG_NORMAL);
   }
+  CROSSHR_HAS_LOCK = FALSE;
+  CROSSHR_HIT_CLR = '1.0 1.0 1.0';
+  CROSSHR_HIT_ALPHA = HUD_ALPHA;
+  CROSSHR_RET_ALPHA = HUD_ALPHA;
 };

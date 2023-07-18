@@ -10,6 +10,15 @@ float CROSSHAIR_ANGLE; //if rotating graphics are desired.
 float CROSSHAIR_ANGLE_HIT; //if rotating graphics are desired.
 float CROSSHAIR_ANGLE_LOCK; //if rotating graphics are desired.
 
+//cross hair globals to reduce hud_render func footprints.
+vector CROSSHR_IMG_CENTER;
+vector CROSSHR_LOCK_CENTER;
+float CROSSHR_HAS_LOCK;
+vector CROSSHR_HIT_CLR;
+float CROSSHR_HIT_ALPHA;
+float CROSSHR_RET_ALPHA;
+vector CROSSHR_IMG_SIZE;
+vector CROSSHR_LOCK_SIZE;
 
 void() hud_renderCrosshairDisabled;
 void() hud_renderCrosshairs;

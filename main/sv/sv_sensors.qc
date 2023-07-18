@@ -10,22 +10,6 @@ Overview:
 */
 
 /*
-  ignore faction, players are allowed to target anyone.
-*/
-float(entity t) player_valid_target={
-  if( !t ){
-    return FALSE;
-  }
-  if( t != self ){
-    if( (t.flags & (FL_UNIT|FL_MONSTER)) && (t.deadflag == DEAD_NO) ){
-      return t.canTarget;
-    }
-  }
-  return FALSE;
-};
-
-
-/*
   This function is called when a Player goes to acquire a target.
   usually via impulse keybind. 
 */
@@ -47,37 +31,47 @@ void() sv_getTarget={
   }
   traceline(viewOfs, viewOfs + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   
-  if( player_valid_target(trace_ent) ){
-    if( trace_ent == self.enemy ){
-      //already have this target.
+  if( !trace_ent || trace_ent == self){
+    return;
+  }
+  if( (trace_ent.flags & (FL_UNIT|FL_MONSTER)) && (trace_ent.deadflag == DEAD_NO) ){
+    if( !trace_ent.canTarget ){
       return;
     }
-    self.enemy = trace_ent;
-    if( (self.enemy.flags & FL_CLIENT) ){
-      targName = self.enemy.netname;
-    }
-    else{
-      targName = self.enemy.vec_name;
-    }
-    self.targetEntId = num_for_edict(self.enemy);
-    
-    //2.0.0: lock-on not timer-based anymore
-    /*self.lock_timer = 0;  //make sure to reset the timer
-    self.targLockState = 0;
-    if(self.stat_rdr_mode){
-      self.lock_timer = time + self.w_firetime;
-    }
-    else{
-      self.lock_timer = time + (self.w_firetime * 1.75);
-    }
-    if( self.enemy.trigOnTarget ){
-      trigger_event( self.enemy, self.trigOnTarget );
-    }
-    else{
-      trigger_event( self, self.trigOnTarget );
-    }*/
-    self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
   }
+
+  if( trace_ent == self.enemy ){
+    //already have this target.
+    return;
+  }
+  self.enemy = trace_ent;
+  if( (self.enemy.flags & FL_CLIENT) ){
+    targName = self.enemy.netname;
+  }
+  else{
+    targName = self.enemy.vec_name;
+  }
+  self.targetEntId = num_for_edict(self.enemy);
+  
+  //2.0.0: lock-on not timer-based anymore
+  /*self.lock_timer = 0;  //make sure to reset the timer
+  self.targLockState = 0;
+  if(self.stat_rdr_mode){
+    self.lock_timer = time + self.w_firetime;
+  }
+  else{
+    self.lock_timer = time + (self.w_firetime * 1.75);
+  }
+  if( self.enemy.trigOnTarget ){
+    trigger_event( self.enemy, self.trigOnTarget );
+  }
+  else{
+    trigger_event( self, self.trigOnTarget );
+  }*/
+  self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
+
+  cons_logAFloat("hork", num_for_edict(self.enemy));  //debug
+  
 };
 
 /*

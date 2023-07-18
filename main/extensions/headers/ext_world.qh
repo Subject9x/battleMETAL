@@ -122,3 +122,4 @@ void( string targName ) world_debug_targ;
 entity() world_deathmatch_random_spawn;
 string WORLD_MAP_LIST;
 void() world_get_maplist; //TDM/DM network games use this list.
+void() world_debug_win;

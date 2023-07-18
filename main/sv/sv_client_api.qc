@@ -269,6 +269,11 @@ void(string str) SV_ParseClientCommand={
     world_debug_targ( argv(1) );
     return;
   }
+  if( cmdCall == "dbgwin"){
+    argc = tokenize(str);
+    world_debug_win();
+    return;
+  }
   clientcommand(self, str);
 };
 
@@ -281,6 +286,7 @@ called when a player connects to a server
 */
 void() ClientConnect = {
   local string response;
+  
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     WriteChar(MSG_ALL, SVC_PRINT);
     response = infoadd(response, RSP_SRC, SV_PRINT);

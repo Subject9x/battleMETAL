@@ -84,7 +84,6 @@ void() player_makeMech={
         self.energyRate = self.energyRate * 0.9;
         break;
       default:
-        self.energyMax = self.energyMax * 1;
         break;
     }
   }
@@ -99,9 +98,10 @@ void() player_makeMech={
   
   droptofloor();
   
+  self.targetEntId = 0;
   self.new_color = TRUE;
   self.effects = self.effects | EF_NODEPTHTEST;
-  self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR);
+  self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR | SENDFLAG_TARGET);
 };
 
 void() player_unmakeMech={

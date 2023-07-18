@@ -14,14 +14,15 @@ void() SetChangeParms={
 	}
 
 // remove items
-	self.items = self.items - (self.items & 
-	(IT_KEY1 | IT_KEY2 | IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
+	//self.items = self.items - (self.items & (IT_KEY1 | IT_KEY2 | IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
+	self.items = 0;
 	
 // cap super health
-	if (self.health > 100)
+	/*if (self.health > 100)
 		self.health = 100;
 	if (self.health < 50)
-		self.health = 50;
+		self.health = 50;*/
+	self.health = 1;
     
 	parm1 = self.faction;
 	parm2 = 0;  //score
@@ -39,7 +40,7 @@ void() SetChangeParms={
   
 };
 void() SetNewParms={
-  parm1 = 0;  //faction
+  	parm1 = 0;  //faction
 	parm2 = 0;  //score
 	parm3 = 0;  //previous Mission Status
 	parm4 = 0;  //previous mech

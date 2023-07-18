@@ -246,7 +246,6 @@ void(entity ent, vector pnt) util_chekPointToHitDir={
   local float hitAngle, sideAngle;
   local vector normVec;
 
-  
   makevectors(ent.v_angle);
   normVec = normalize(pnt - ent.origin);
   hitAngle = normVec * v_forward;
@@ -274,7 +273,6 @@ void(entity ent, vector pnt) util_chekPointToHitDir={
   else if( hitAngle < -0.75 ){
     ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_BK;
   }
- 
 };
 
 

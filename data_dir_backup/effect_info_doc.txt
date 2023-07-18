@@ -6,6 +6,12 @@ type	alphastatic/static/spark/beam/
 
 blend alpha/add/invmod
 
+orientation
+    billboard : always turned to viewer
+    oriented : ignores viewwer, turned to velocity
+    beam : facing viewer on 2 axises, stretched from origin to origin + velocity
+    spark : facing viewer on 2 axises, stretched (based on velocity) 
+
 count f					// total count of particles to create
 countabsolute f				// absolute total particles to ever create
 color h h (HEX)				// range of colors to choose from in hex RRGGBB (like HTML color tags), randomly interpolated at spawn

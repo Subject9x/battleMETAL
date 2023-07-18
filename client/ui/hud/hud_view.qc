@@ -873,9 +873,6 @@ void() data_hud_frame={
   //various elements that would get in the way.
   //these funcs can be moved out of this check as desired.
   if( !HUD_ZOOM_ACTIVE ){
-    //repair sits above all
-    hud_render_vip_overlay();
-    
     if(CLIENT_repair_value > 0){
       hud_renderRepairValue();
     }
@@ -897,6 +894,7 @@ void() data_hud_frame={
   }
   if( HUD_TACMAP_ON || HUD_SCORES_ON ){
     hud_renderNavOverlay();
+    hud_render_vip_overlay();
     //only loop clients once per hud frame
   }
   for( player = findchainflags(flags, FL_CLIENT); player != world; player = player.chain){
