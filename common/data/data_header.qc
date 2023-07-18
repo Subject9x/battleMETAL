@@ -105,44 +105,46 @@ void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
 
 void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjustAngleVec, float newHardPointSizeVal ) data_ini_unitHardpoint_={
   local entity item;
-  local entity notItem;
-  if( self.hardpoint_cnt < 10){
-    #ifdef SSQC
-    item = spawn();
-    weaponList.w_slot = item;
-    notItem = self;
-    self = item;
-      self.data_idx = 0;
-      self.w_group = self.w_group | weaponBit;
-      self.partParentId = parentPartID;
-      self.compOffset = pointOffsetVec;
-      self.w_adj_ang = adjustAngleVec;
-      self.owner = notItem;
-      self.hardpointSize = newHardPointSizeVal;
-    self = notItem;
-    weaponList = item;
-    #endif
-    
-    #ifdef CSQC
-      if( (self.classname == "UI_ITEM") ){
-        item = spawn();
-        weaponList.w_slot = item;
-        notItem = self;
-        self = item;
-          self.data_idx = 0;
-          self.w_group = self.w_group | weaponBit;
-          self.partParentId = parentPartID;
-          self.compOffset = pointOffsetVec;
-          self.w_adj_ang = adjustAngleVec;
-          self.owner = notItem;
-          self.hardpointSize = newHardPointSizeVal;
-        self = notItem;
-        weaponList = item;
-      }
-    #endif
-    
-    self.hardpoint_cnt = self.hardpoint_cnt + 1;
+  local entity this;
+  
+  if( self.hardpoint_cnt > 9){
+    return;
   }
+  #ifdef SSQC
+  item = spawn();
+  weaponList.w_slot = item;
+  this = self;
+  self = item;
+    self.data_idx = 0;
+    self.w_group = self.w_group | weaponBit;
+    self.partParentId = parentPartID;
+    self.compOffset = pointOffsetVec;
+    self.w_adj_ang = adjustAngleVec;
+    self.owner = this;
+    self.hardpointSize = newHardPointSizeVal;
+  self = this;
+  weaponList = item;
+  #endif
+  
+  #ifdef CSQC
+    if( (self.classname == "UI_ITEM") ){
+      item = spawn();
+      weaponList.w_slot = item;
+      this = self;
+      self = item;
+        self.data_idx = 0;
+        self.w_group = self.w_group | weaponBit;
+        self.partParentId = parentPartID;
+        self.compOffset = pointOffsetVec;
+        self.w_adj_ang = adjustAngleVec;
+        self.owner = this;
+        self.hardpointSize = newHardPointSizeVal;
+      self = this;
+      weaponList = item;
+    }
+  #endif
+  
+  self.hardpoint_cnt = self.hardpoint_cnt + 1;
 };
 
 /*

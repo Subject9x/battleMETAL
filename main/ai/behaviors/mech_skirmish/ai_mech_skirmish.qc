@@ -28,6 +28,7 @@ void() ai_mech_skirmish={
   
   self.th_pain = ai_react_generic;
   self.th_die = ai_mech_sk_die;
+  self.touch = ai_touch;
   
   self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check
   self.ai_findPath = TRUE;

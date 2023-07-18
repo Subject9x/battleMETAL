@@ -237,15 +237,17 @@ float( entity targ ) ai_check_vis={
     spot2 = targ.hitOffset;
   }
   else{
-    spot2 = targ.origin + '0 0 3';
+    spot2 = targ.origin + [0, 0, targ.maxs_z * 0.5];
   }
   contentBuffer = self.dphitcontentsmask;
   self.dphitcontentsmask = 0;
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_OPAQUE | DPCONTENTS_SKY);
   
-  traceline (spot1, spot2, MOVE_NORMAL, self);
+  //traceline (spot1, spot2, , self);
   
-  self.dphitcontentsmask = fabs(contentBuffer);
+  tracebox(spot2, '-2 -2 -2', '2 2 2', spot1, MOVE_NORMAL, self); 
+
+  self.dphitcontentsmask = 0 | fabs(contentBuffer);
 
   //case: los crossed content - ported q1
   if ( trace_inopen && trace_inwater ){
@@ -258,14 +260,12 @@ float( entity targ ) ai_check_vis={
   }
   
   //case: los length is 1.0, ie a clear line
-  if ( trace_fraction == 1.0 ){
+  if ( trace_fraction >= 1.0 ){
     return VIS_FRAC;
   }
   
   //case: los hit a friendly entity, who is blocking los
   if( trace_ent.faction == self.faction ){
-    //friend_blocker = trace_ent;
-    //friend_blocker_dist = vlen(friend_blocker.origin - spot1);
     return VIS_FRN;
   }
   

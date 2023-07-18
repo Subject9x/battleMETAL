@@ -36,19 +36,24 @@ void() SV_PlayerPhysics =
 	if (self.punchangle != '0 0 0')
 	{
 		f = vlen(self.punchangle) - 10 * frametime;
-		if (f > 0)
+		if (f > 0){
 			self.punchangle = normalize(self.punchangle) * f;
-		else
+		}
+		else{
 			self.punchangle = '0 0 0';
+		}
 	}
 
 	if (self.punchvector != '0 0 0')
 	{
 		f = vlen(self.punchvector) - 30 * frametime;
-		if (f > 0)
+		if (f > 0){
 			self.punchvector = normalize(self.punchvector) * f;
-		else
+		}
+		else{
 			self.punchvector = '0 0 0';
+		}
+			
 	}
 
 	// if dead, behave differently
@@ -90,8 +95,9 @@ void() SV_PlayerPhysics =
 		if (time >= self.teleport_time)
 		{
 			f = wishspeed - (self.velocity * wishdir);
-			if (f > 0)
+			if (f > 0){
 				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
+			}
 		}
 	}
 	else if (self.waterlevel >= 2)
@@ -114,8 +120,9 @@ void() SV_PlayerPhysics =
 
 		// water acceleration
 		f = wishspeed - (self.velocity * wishdir);
-		if (f > 0)
+		if (f > 0){
 			self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
+		}
 	}
 	else if (time < self.ladder_time)
 	{

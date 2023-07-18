@@ -65,7 +65,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   //if( time > trg.shieldHitRegen ){} //commenting out no-op
   if( time < trg.shieldHitDelay ){
     //stack
-    trg.shieldHitDelay = trg.shieldHitDelay + 0.1;
+    trg.shieldHitDelay = trg.shieldHitDelay + 0.5;  //up from 0.1
   }
   //================================================
   
@@ -83,9 +83,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
         //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       }
       attacker.timer_hittarg = time + 0.2;
-      if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
-        attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
-      }
+      attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }
   }
                         
@@ -99,9 +97,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
       }
       if( attacker.faction != self.faction ){
         if( self.ai_rank > AI_RANK_REG ){
-          if( self.shield <= (self.shieldMax / 2) ){
-            ai_call_for_help(attacker);
-          }
+          ai_call_for_help(attacker);
         }
       }
       self = notTarg;
@@ -367,10 +363,20 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
 float(vector point, entity trgUnit) t_find_part={
   local float partId;
   local float radi;
-  
+  local float bit;
+  local entity wep;
+
   partId = M_UNIT;
   radi = vlen(trgUnit.torC_hitOffset - point);
-    
+  
+  wep = trgUnit.w_slot;
+  while(wep){
+    if( vlen(wep.origin - point) < radi ){
+      partId = wep.partParentId;
+    }
+    wep = wep.w_slot;
+  }
+
   if( vlen(trgUnit.armL_hitOffset - point ) < radi ){
     partId = M_ARM_LEFT;
     radi = vlen(point - trgUnit.armL_hitOffset);
@@ -387,7 +393,7 @@ float(vector point, entity trgUnit) t_find_part={
     partId = M_TOR_RIGHT;
     radi = vlen(point - trgUnit.torR_hitOffset);
   }
-  
+
   if( (trgUnit.criticalHits & partId) ){
     if( partId == M_ARM_LEFT ){
       if( (trgUnit.criticalHits & M_TOR_LEFT) ){

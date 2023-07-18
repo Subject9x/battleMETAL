@@ -38,12 +38,10 @@ void() ai_frame_update={
     }
     if( time > self.posFadeTimer ){
       self.posFadeTimer = time + POSITION_FADE_TIME;
-      self.position3 = self.position2;
       self.position2 = self.position1;
       self.position1 = self.origin;
     }
   }
-  
 };
 
 /*
@@ -163,7 +161,7 @@ void() ai_state_brawler_frame={
           //go to last reported position
           self.ai_timer_checkTargFade = time + (1 + (self.ai_rank * 2));
           switch(self.ai_rank){
-            case AI_RANK_REG:
+            default:
               self.ai_fadePos = self.enemy.position2;
               break;
             case AI_RANK_VET:
@@ -172,11 +170,8 @@ void() ai_state_brawler_frame={
             case AI_RANK_ACE:
               self.ai_fadePos = self.enemy.origin;
               break;
-            default:
-              self.ai_fadePos = self.enemy.position3;
-              break;
           }
-          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.5, self.data_speed_forward * 0.8 );
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.67, self.data_speed_forward * 0.85 );
         }
         self.enemy = world;
       }
@@ -192,7 +187,7 @@ void() ai_state_brawler_frame={
           ai_face_targ_fade();
         }
         else{
-          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.5, self.data_speed_forward * 0.8 );
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.67, self.data_speed_forward * 0.85 );
         }
       }
       else{

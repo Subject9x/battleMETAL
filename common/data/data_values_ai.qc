@@ -43,8 +43,8 @@ Overview: AI values that have been spun off from common/game
 #define AI_VOICE_TIME 32
 
 //this works to balance AI mech stats vs player mech stats.
-#define AI_ENERGY_RATE 0.5
-#define AI_ENERGY_RATE_HARD 0.75
+#define AI_ENERGY_RATE 0.67
+#define AI_ENERGY_RATE_HARD 0.85
 
 #define AI_SHIELD_RATE 0.7
 #define AI_SHIELD_RATE_HARD 0.9
@@ -53,18 +53,18 @@ Overview: AI values that have been spun off from common/game
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
 //release v3.12.16
-#define AI_ARMOR_ROK 0.4
-#define AI_ARMOR_REG 0.6
-#define AI_ARMOR_VET 0.75
-#define AI_ARMOR_ACE 0.9
+#define AI_ARMOR_ROK 0.67
+#define AI_ARMOR_REG 0.75
+#define AI_ARMOR_VET 0.85
+#define AI_ARMOR_ACE 1.0
 
 //Shield Values
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
 //release v3.12.16
-#define AI_SHIELD_ROK 0.33
-#define AI_SHIELD_REG 0.50
-#define AI_SHIELD_VET 0.65
+#define AI_SHIELD_ROK 0.45
+#define AI_SHIELD_REG 0.55
+#define AI_SHIELD_VET 0.7
 #define AI_SHIELD_ACE 0.85
 
 //AI TH_REACT cooldown
@@ -105,7 +105,7 @@ Overview: AI values that have been spun off from common/game
 //Field of View as normalized dot product
 // 0.0 ~ 90d from center
 //these are multipliers
-#define AI_FOV_ROK 0.50
+#define AI_FOV_ROK 0.45
 #define AI_FOV_REG 0.35
 #define AI_FOV_VET 0.2
 #define AI_FOV_ACE 0
@@ -130,10 +130,10 @@ Overview: AI values that have been spun off from common/game
 #define AI_YAW_ACE 1.15
 
 //attack chances
-#define AI_ATTACK_ROK 0.125
-#define AI_ATTACK_REG 0.1
-#define AI_ATTACK_VET 0.067
-#define AI_ATTACK_ACE 0.033
+#define AI_ATTACK_ROK 0.1
+#define AI_ATTACK_REG 0.075
+#define AI_ATTACK_VET 0.050
+#define AI_ATTACK_ACE 0.025
 
 //WEAPON TWEAKS - AI thinks are every 0.01 game tic, so weapon reload need to be ratio'd down to that scale.
 #define AI_WEAPON_RPS_MOD 1500
@@ -196,7 +196,7 @@ Overview: AI values that have been spun off from common/game
 #define AI_PAUSE_TIME_ACE 10
 
 //COMBAT PAUSE WAIT
-#define AI_PAUSE_WAIT_ROK 5
-#define AI_PAUSE_WAIT_REG 4
+#define AI_PAUSE_WAIT_ROK 4
+#define AI_PAUSE_WAIT_REG 3
 #define AI_PAUSE_WAIT_VET 2
 #define AI_PAUSE_WAIT_ACE 1

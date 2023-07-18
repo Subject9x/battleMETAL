@@ -81,7 +81,7 @@ float input_sequence;
 .float posFadeTimer;  //breadcrumbs for the AI....
 .vector position1;
 .vector position2;
-.vector position3;
+//.vector position3;
 
 .float new_color;
 .float last_color;

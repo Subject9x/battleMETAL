@@ -312,7 +312,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
 };
 
 void() ai_unit_make_trigger={
-  self.spawnflags = self.spawnflags - TRIGGER_ME;
+  self.spawnflags = self.spawnflags - (self.spawnflags & TRIGGER_ME);
   self.use = SUB_Null;  //triggered
   self.think = self.unit_ini;
   self.nextthink = time + self.wait + (random() * 1);

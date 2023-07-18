@@ -236,7 +236,7 @@ void() PlayerPostThink = {
   
   if( time > self.posFadeTimer ){
     self.posFadeTimer = time + POSITION_FADE_TIME;
-    self.position3 = self.position2;
+    //self.position3 = self.position2;
     self.position2 = self.position1;
     self.position1 = self.origin;
   }

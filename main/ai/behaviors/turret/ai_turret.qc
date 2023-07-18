@@ -29,7 +29,7 @@ void() ai_turret={
   
   self.ai_unit_update = ctrl_updateTank;
   
-  self.position3 = self.origin;
+  //self.position3 = self.origin;
   self.position2 = self.origin;
   self.position1 = self.origin;
 

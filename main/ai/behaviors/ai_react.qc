@@ -35,6 +35,7 @@ void(entity newAttacker) ai_react_generic={
   if( newAttacker == self.enemy ){
     return;
   }
+
   //AI currently has target
   vischeck = ai_check_vis(self.enemy);
   if( (self.enemy.flags & FL_CLIENT) ){
@@ -48,7 +49,7 @@ void(entity newAttacker) ai_react_generic={
     }
   }
   
-  self.ai_react_buffer = time + self.ai_react_time * 3.75;
+  self.ai_react_buffer = time + self.ai_react_time * 2.5;
   
   self.enemy = newAttacker;
 };
