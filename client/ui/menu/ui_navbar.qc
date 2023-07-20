@@ -341,12 +341,19 @@ void() ui_navbutton_launch_click={
       CLIENT_stat_rdr_mode = CLIENT_stat_rdr_mode_prev = 1; //go active radar on spawn;      
       CLIENT_radar_range = MECH_DATA_RAD * 2; //go active on spawn
       
-      CLIENT_health_center_prev = CLIENT_health_center = MECH_DATA_HPCT;
-      CLIENT_health_legs_prev = CLIENT_health_legs = MECH_DATA_HPLG;
-      CLIENT_health_torso_left_prev = CLIENT_health_torso_left = MECH_DATA_HPST;
-      CLIENT_health_torso_right_prev = CLIENT_health_torso_right = MECH_DATA_HPST;
-      CLIENT_health_arm_left_prev = CLIENT_health_arm_left = MECH_DATA_HPAR;
-      CLIENT_health_arm_right_prev = CLIENT_health_arm_right = MECH_DATA_HPAR; 
+      CLIENT_health_center_prev = CLIENT_health_center;
+      CLIENT_health_legs_prev = CLIENT_health_legs;
+      CLIENT_health_torso_left_prev = CLIENT_health_torso_left;
+      CLIENT_health_torso_right_prev = CLIENT_health_torso_right;
+      CLIENT_health_arm_left_prev = CLIENT_health_arm_left ;
+      CLIENT_health_arm_right_prev = CLIENT_health_arm_right; 
+      //chunky
+      CLIENT_health_center = MECH_DATA_HPCT;
+      CLIENT_health_legs = MECH_DATA_HPLG;
+      CLIENT_health_torso_left = MECH_DATA_HPST;
+      CLIENT_health_torso_right = MECH_DATA_HPST;
+      CLIENT_health_arm_left = MECH_DATA_HPAR;
+      CLIENT_health_arm_right = MECH_DATA_HPAR; 
       
       cl_set_hud_vars(UI_HANGAR_DATA_mech, turboTotalPerc);
       

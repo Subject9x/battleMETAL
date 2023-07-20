@@ -14,18 +14,18 @@ float UNLOCKED_MECHS_TOTAL;
   vector HANGAR_HELP_HARDPOINT_LIST;
 
 //DISPLAY CONSTANT
-  float DISP_MAX_FSPEED = 225;
-  float DISP_MAX_SSPEED = 200;
-  float DISP_MAX_BSPEED = 175;
-  float DISP_MAX_ENE = 1500;
-  float DISP_MAX_ENE_RATE = 5;
-  float DISP_MAX_SHIELD = 700;
-  float DISP_MAX_SHIELD_RATE = 5;
-  float DISP_MAX_ARM_CT = 1200;
-  float DISP_MAX_ARM_ST = 1300;
-  float DISP_MAX_ARM_AR = 1200;
-  float DISP_MAX_ARM_LG = 1500;
-  float DISP_MAX_RAD_RANGE = 2000;
+  #define DISP_MAX_FSPEED 225
+  #define DISP_MAX_SSPEED 200
+  #define DISP_MAX_BSPEED 175
+  #define DISP_MAX_ENE 1500
+  #define DISP_MAX_ENE_RATE 5
+  #define DISP_MAX_SHIELD 700
+  #define DISP_MAX_SHIELD_RATE 5
+  #define DISP_MAX_ARM_CT 1200
+  #define DISP_MAX_ARM_ST 1300
+  #define DISP_MAX_ARM_AR 1200
+  #define DISP_MAX_ARM_LG 1500
+  #define DISP_MAX_RAD_RANGE 2000
   
 //might as well go wild with the globals
   float MECHLIST_LIGHT_ARR[GAME_TOTAL_MECHS];
