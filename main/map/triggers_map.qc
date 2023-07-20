@@ -293,3 +293,130 @@ void() func_destructible={
   
   self.th_die = func_destruct_die_dbg;
 };
+
+
+#define SPAWNFLAG_TRIG_SHIELD 2
+#define SPAWNFLAG_TRIG_ENRGY 4
+#define SPAWNFLAG_TRIG_RADAR 8
+#define SPAWNFLAG_VAL_LESS 16
+#define SPAWNFLAG_VAL_MORE 32
+#define SPAWNFLAG_VAL_EQL 64
+#define SPAWNFLAG_DEAL_FEEDBACK 128
+
+
+void() trigger_stat_touch=
+{
+	local float fire;
+	local float perc;
+
+	if(!(other.flags & FL_CLIENT)){
+		return;
+	}
+	
+	fire = FALSE;
+
+	if((self.spawnflags & SPAWNFLAG_TRIG_SHIELD)){
+		perc = other.shield / other.shieldMax;
+
+		if((self.spawnflags & SPAWNFLAG_VAL_LESS)){
+			if(perc < self.shield){
+				fire = TRUE;
+			}
+		}
+		else if((self.spawnflags & SPAWNFLAG_VAL_MORE)){
+			if(perc > self.shield){
+				fire = TRUE;
+			}
+		}
+		else if((self.spawnflags & SPAWNFLAG_VAL_EQL)){
+			if(perc >= self.shield - 0.05 && perc <= self.shield + 0.05){
+				fire = TRUE;
+			}
+		}
+	}
+
+	if((self.spawnflags & SPAWNFLAG_TRIG_ENRGY)){
+		perc = other.energy / other.energyMax;
+		if((self.spawnflags & SPAWNFLAG_VAL_LESS)){
+			if(perc < self.energy){
+				fire = TRUE;
+			}
+		}
+		else if((self.spawnflags & SPAWNFLAG_VAL_MORE)){
+			if(perc > self.energy){
+				fire = TRUE;
+			}
+		}
+		else if((self.spawnflags & SPAWNFLAG_VAL_EQL)){
+			if(perc >= self.energy - 0.05 && perc <= self.energy + 0.05){
+				fire = TRUE;
+			}
+		}
+	}
+	
+	if((self.spawnflags & SPAWNFLAG_TRIG_RADAR)){	
+		if((self.spawnflags & SPAWNFLAG_VAL_EQL)){
+			if(self.stat_rdr_mode == other.stat_rdr_mode){
+				fire = TRUE;
+			}
+		}
+		else{
+			if(self.stat_rdr_mode != other.stat_rdr_mode){
+				fire = TRUE;
+			}
+		}
+	}
+
+	if(fire){
+		if((self.spawnflags & SPAWNFLAG_DEAL_FEEDBACK)){
+			if((self.spawnflags & SPAWNFLAG_TRIG_ENRGY)){
+				other.energy = max(0, other.energy - (self.energy * other.energyMax));
+			}
+			if((self.spawnflags & SPAWNFLAG_TRIG_SHIELD)){
+				t_damage_shield(other, world, world, self.shield * other.shieldMax, other.origin, FALSE); 
+			}
+		}
+
+		self.solid = SOLID_NOT;
+		SUB_UseTargets();
+		remove(self);
+		return;
+	}
+	centerprint(other, strcat(self.abbrev, "\n"));
+};
+
+/*
+
+*/
+void() trigger_on_stat=
+{
+	InitTrigger();
+
+	self.touch = trigger_stat_touch;
+	
+	if(!self.target || strlen(self.target) <= 0){
+		if(!self.killtarget || strlen(self.killtarget) <= 0){
+			objerror("missing target for trigger.\n");
+			remove(self);
+			return;
+		}
+	}
+
+	if((self.spawnflags & SPAWNFLAG_TRIG_SHIELD)){
+		if(!self.shield){
+			self.shield = 1.0;
+		}
+		else{
+			self.shield = self.shield / 100;
+		}
+	}
+
+	if((self.spawnflags & SPAWNFLAG_TRIG_ENRGY)){
+		if(!self.energy){
+			self.energy = 1.0;
+		}
+		else{
+			self.energy = self.energy / 100;
+		}
+	}
+};

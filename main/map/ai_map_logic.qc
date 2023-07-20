@@ -542,9 +542,7 @@ void() ai_change_faction_use={
       e.faction = self.faction;
       e.enemy = world;  //dump targets because they might be invalid.
       e.oldenemy = world;
-      if( e.data_type == DATA_BLD ){
-        e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
-      }
+      e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
       e = e.chain;
     }
   }

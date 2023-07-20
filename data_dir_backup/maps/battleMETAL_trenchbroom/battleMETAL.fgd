@@ -415,7 +415,6 @@ the mission area if player stays inside this bounds. usually pair this will a ki
   ]
 ]
 
-
 @SolidClass base(BaseTrigger, Angle) = trigger_once : "Variable sized trigger. Triggers once, then removes itself.  You must set the key 'target' to the name of another object in the level that has a matching
 'targetname'.  If 'health' is set, the trigger must be killed to activate.
 If notouch is set, the trigger is only fired by other entities, not by touching.
@@ -559,6 +558,37 @@ After the timer expires, it will fire all of it's targets and remove itself." [
   ]
 ]
 
+
+@SolidClass base(BaseTrigger) = trigger_on_stat : "Checks the value of a specific client stat on-touch. Variable sized trigger. Triggers once, then removes itself.  You must set the key 'target' to the name of another object in the level that has a matching
+'targetname'.  If 'health' is set, the trigger must be killed to activate.
+if 'killtarget' is set, any objects that have a matching 'target' will be removed when the trigger is fired.
+if 'angle' is set, the trigger will only fire when someone is facing the direction of the angle.  Use '360' for an angle of 0." [
+  health(integer) : "if set, trigger must be killed to fire." : 0
+  killtarget(string) : "kill these targetnames."
+  message(string) : "send a message."
+  energy(integer) : "Energy % value to check." : 0
+  shield(integer) : "Shield % value to check." : 0
+  abbrev(string) : "hint message"
+  stat_rdr_mode(choices) : "Radar mode" : 0 = [
+    0 : "Passive Radar"
+    1 : "Active Radar"
+  ]
+  sounds(choices) : "SFX" : 1 = [
+    1 : "secret"
+    2 : "beep beep"
+    3 : "large switch"
+    4 : "?"
+  ]
+  spawnflags(Flags) = [
+    2 : "Stat: Shield" : 0
+    4 : "Stat: Energy" : 0
+    8 : "Stat: Radar mode" : 0
+    16 : "Less Than" : 0
+    32 : "More Than" : 0
+    64 : "Equals" : 0
+    128 : "Feedback Dmg" : 0
+  ]  
+]
 //---------------------------------------------------------------------------------------------------------------------
 
 
