@@ -1,0 +1,32 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o3m3/o3m3.tga'
+  'name'  : 'Operation Datablock'
+  'display' : 'Pain Monopoly'
+  'type'  : 'Offensive'
+  'points' : '1'
+  'sector' : 'ARK-Province'
+  'location' : 'Habitable Sector 8'
+  'time' : '01;Y?;0xE3;02'
+  'brief' : 'Invader troop movements hint that they are scouring old archive and factory complexes for some kind of intel. | | PSC calculation systems were not equipped to function this far into the mission, and are slowing down to assess new data. | | You, DEAD_HAND, will be part of a raiding force to throw the enemy off-balance. They currently hold one of our old manufacturing complexes, you will clear the area. | | Follow-up DEAD_HAND combat groups will raze the sector to the ground.'
+  'intel' : 'One of the last remaining armies of the enemy has gathered here. | | PSC counts at least 15 METALs and more are mustering at the complex. | | You will be sent in with a large force of DEAD_HANDS to put this army into the ground. | | let none survive.'
+  'objtotal' : '3'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Reach Entrance to Storage-Deeps Facility 1 at (OMEGA).'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy surface power core near (IOTA).'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy last supply base and command center. (RHO)'
+}

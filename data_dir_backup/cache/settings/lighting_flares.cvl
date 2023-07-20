@@ -9,6 +9,7 @@ r_hdr_glowintensity 1
 r_hdr_scenebrightness 0.25
 gl_flashblend 1
 r_shadow_gloss 0
+r_shadow_glossexponent 4
 r_shadow_realtime_dlight 1
 r_shadow_realtime_dlight_shadows 0
 r_shadow_realtime_world 1

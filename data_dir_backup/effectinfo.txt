@@ -15,7 +15,7 @@
 
   //TE_ESR_MUZZLE - LONG SPARKS
     effect TE_ESR_MUZZLE
-    count 1
+    count 0.5
     type spark
     blend alpha
     color 0x00BFFF 0xA9F5F2
@@ -33,7 +33,7 @@
    
   //TE_ESR_MUZZLE - SPARK PUFFS
     effect TE_ESR_MUZZLE
-    count 1.5
+    count 0.5
     type spark
     blend alpha
     color 0x81DAF5 0xA9D0F5
@@ -3575,3 +3575,80 @@ velocitymultiplier 2
   velocitymultiplier 1
   trailspacing 8
 //================================================
+
+//CRYSTAL HAZARD BEAM==================================
+
+  //TE_CRYS_MUZZLE - LONG SPARKS
+    effect TE_CRYS_MUZZLE
+    count 0.5
+    type spark
+    blend alpha
+    color 0x00BFFF 0xA9F5F2
+    tex 34 34
+    //size 0.2 0.55
+    size 0.01 0.05
+    alpha 256 512 400
+    time 1 2
+    originjitter 0.25 0.25 0.25
+    velocityoffset 10 10 10
+    velocityjitter 45 45 45
+    velocitymultiplier 0
+    stretchfactor 3
+    airfriction 10
+   
+  //TE_CRYS_MUZZLE - LIGHT
+    effect TE_CRYS_MUZZLE
+    countabsolute 1
+    lightradius 100
+    lightradiusfade 250
+    lightcolor 0.2 0.99 0.8
+    lightshadow 0
+    
+  //TE_CRYS_RAIL - MAIN RAIL
+    //effect TE_CRYS_RAIL
+    //type beam
+    //blend add
+    //orientation beam
+    //color 0x00FF80 0x80FF80
+    //tex 60 60
+    //size 2 2
+    //alpha 256 450 2048
+    //bounce -1
+    //notunderwater
+    //originjitter 2 2 2
+    //velocityjitter 2 2 2
+  
+  //TE_CRYS_RAIL - RAIL PARTICLES
+    effect TE_CRYS_RAIL
+    count 1
+    type static
+    color 0x5cd6d6 0xc2f0f0
+    tex 48 55
+    size 1.0 2.0
+    sizeincrease 0.33
+    alpha 512 512 1024
+    originjitter 2 4 1
+    velocityjitter 16 16 16
+    velocitymultiplier 4
+    notunderwater
+    trailspacing 12
+    bounce -1
+  
+  //TE_CRYS_IMPACT_SHIELD - LIGHTNING FRAG
+    //effect TE_CRYS_IMPACT_SHIELD
+    //count 1
+    //type spark
+    //blend alpha
+    //color 0x08298A 0x8181F7
+    //tex 43 45
+    //size 1 2
+    //alpha 256 512 180
+    //time 1 2
+    //originjitter 0.25 0.25 0.25
+    //velocityoffset 5 5 5
+    //velocityjitter 25 25 25
+    //velocitymultiplier 40
+    //stretchfactor 2
+    //airfriction 4
+    //bounce 4  
+//==========================================

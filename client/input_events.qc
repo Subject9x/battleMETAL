@@ -271,7 +271,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   if( inputEventType == INPUT_EVENT_KEYDOWN ){
     if(scanx == K_MOUSE1){
       INPUT_mouse_state_prev = INPUT_mouse_state;
-      INPUT_mouse_state = MOUSE_DOWN;
+      INPUT_mouse_state = MOUSE_IS_DOWN;
       
       if( MENU_ACTIVE ){
         if( cvar("gamemode") == GAMEMODE_LORE ){
@@ -365,12 +365,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   When player is 'dragging' the mouse 
 */
 void() handle_input_drag={
-  if( INPUT_mouse_state == MOUSE_DOWN ){
+  if( INPUT_mouse_state == MOUSE_IS_DOWN ){
     if( MOUSE_drag_timer < MOUSE_drag_max ){
       MOUSE_drag_timer = MOUSE_drag_timer + MOUSE_drag_rate;
     }
     if( MOUSE_drag_timer >= MOUSE_drag_max){
-      INPUT_mouse_state_prev = MOUSE_DOWN;
+      INPUT_mouse_state_prev = MOUSE_IS_DOWN;
       INPUT_mouse_state = MOUSE_DRAG;
       switch( CLIENT_MENU_menu_choice ){
         case MENU_HANGAR_ACTIVE:

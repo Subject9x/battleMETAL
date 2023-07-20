@@ -72,7 +72,7 @@ float INPUT_EVENT_MOUSE_POS = 3;
 
 float INPUT_mouse_state;  //set by handle_input();
 float INPUT_mouse_state_prev;
-float MOUSE_DOWN = TRUE; 
+float MOUSE_IS_DOWN = TRUE; 
 float MOUSE_UP = FALSE;
 float MOUSE_DRAG = 2;
 

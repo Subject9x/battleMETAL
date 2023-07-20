@@ -3,7 +3,6 @@
 //img stored in data/maps/
   'img' : 'training_move/training_move.png'
   'name'  : 'Training Refresher'
-  'display' : 'How to Move'
   'type'  : 'Trainer'
   'points' : '1'
   'objtotal' : '1'

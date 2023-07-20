@@ -5,10 +5,11 @@ r_coronas 1
 r_bloom 0
 r_fxaa 2
 r_glsl_postprocess 0
-r_hdr_glowintensity 2
+r_hdr_glowintensity 1
 r_hdr_scenebrightness 0.5
 gl_flashblend 0
 r_shadow_gloss 1
+r_shadow_glossexponent 8
 r_shadow_realtime_dlight 1
 r_shadow_realtime_dlight_shadows 0
 r_shadow_realtime_world 1

@@ -1,0 +1,32 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o3m4/o3m4.tga'
+  'name'  : 'Operation Datablock'
+  'display' : 'The Hollow Mountain'
+  'type'  : 'Offensive'
+  'points' : '1'
+  'sector' : 'ARK-Province'
+  'location' : 'Habitable Sector 3'
+  'time' : '08;26;11;09'
+  'brief' : 'DEAD_HAND, the enemy has unfortunately discovered an entry point into our logistical transport network. | | They gained access to the server sysem with DNA legacy IDs, but PSC cannot locate any living or dead officer that would have granted them entry. PSC battle computers are locking up due in part to this intel conundrum and the enemy has pushed their advantage. | | The surviving leaders are making a play to blast their way to PSC central cores, a desperate move.''
+  'intel' : 'Active combat zone, PSC forces already engaged with hostile units across the sector front. | | Enemy is dug-in on a perpendicular line to the direction of the complex entrance. | | PSC re-routing as many units as possible for defense but you will be on-site as the emergency secondary reserves. | | Expect heavy combat against a hardened opponent and arm thyself appropriately. | | Good luck.'
+  'objtotal' : '3'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Reach Entrance to Storage-Deeps Facility 1 at (OMEGA).'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy surface power core near (IOTA).'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy last supply base and command center. (RHO)'
+}

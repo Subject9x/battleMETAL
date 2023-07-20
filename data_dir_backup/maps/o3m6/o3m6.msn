@@ -1,0 +1,37 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o3m6/o3m6.tga'
+  'name'  : 'Err-node link flatline'
+  'display' : ''
+  'type'  : '0x3EFL'
+  'points' : '1'
+  'sector' : '---..&->'
+  'location' : 'DWORD_x46'
+  'time' : 'HH;mM;sss..'
+  'brief' : 'Operations have been completed, DEAD_HAND. The ghosts of our people have exacted their vengance. | PSC reports enemy transmissions down to only 2% of total readings at the time of activation. Survivor groups are small and cannot survive cut off and fleeing into the empty wastelands. | | The time now is of closure, to complete '
+  'intel' : 'PSC will now shutdown'
+  'objtotal' : '4'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy last DEAD_HAND cryo-statis chambers at (PHI).'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Deguass power cores at (OMICRON) with your shield generator.'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Destroy remaining DEAD_HAND template <METALS>.'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Shutdown main PSC computer cores by any means necessary.'
+}

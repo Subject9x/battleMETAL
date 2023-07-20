@@ -101,6 +101,9 @@ sound/misc/menu1.wav
 sound/misc/menu2.wav
 sound/misc/menu3.wav
 
+sound/ui/not_allow.ogg
+sound/ui/itm_loaded.ogg
+
 sound/demon/dland2.wav
 
 sound/fire/debris1.ogg

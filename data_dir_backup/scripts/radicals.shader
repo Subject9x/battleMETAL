@@ -191,7 +191,6 @@ models/fx/explosions/te_missile_explode
   deformVertexes wave 3 sin 0 .75 0 1.0
   {
       map models/fx/explosions/te_missile_explode.tga
-      tcMod turb 0 0.25 0 0.25
       tcMod rotate 15
       rgbGen vertex
   }
@@ -208,10 +207,9 @@ models/fx/debris1/skin_debris1
   dpNoShadow
   surfaceparm nolightmap
 		{
-				map models/fx/debris1/skin_debris1.tga
-				tcMod turb 0 0.25 0 0.25
-				tcMod rotate 15
-				rgbGen lightingDiffuse
+      map models/fx/debris1/skin_debris1.tga
+      tcMod turb 0 0.25 0 0.25
+      rgbGen lightingDiffuse
 		}
     {
       map $lightmap
@@ -225,10 +223,9 @@ models/fx/debris2/skin_debris2
   dpNoShadow
   surfaceparm nolightmap
 		{
-				map models/fx/debris1/skin_debris1.tga
-				tcMod turb 0 0.25 0 0.25
-				tcMod rotate 15
-				rgbGen lightingDiffuse
+      map models/fx/debris1/skin_debris1.tga
+      tcMod turb 0 0.25 0 0.25
+      rgbGen lightingDiffuse
 		}
     {
       map $lightmap
@@ -242,10 +239,9 @@ models/fx/debris3/skin_debris3
   dpNoShadow
   surfaceparm nolightmap
 		{
-				map models/fx/debris1/skin_debris1.tga
-				tcMod turb 0 0.25 0 0.25
-				tcMod rotate 15
-				rgbGen lightingDiffuse
+      map models/fx/debris1/skin_debris1.tga
+      tcMod turb 0 0.25 0 0.25
+      rgbGen lightingDiffuse
 		}
     {
       map $lightmap

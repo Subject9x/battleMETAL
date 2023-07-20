@@ -1,16 +1,15 @@
 //mission info section
 {
-//img stored in data/map_scripts/
-  'img' : 'o3m1/o3m1.png'
-  'name'  : 'Err-node link flatline'
-  'display' : 'End of Empire'
-  'type'  : '&53?ACK'
+  'img' : 'o3m2/o3m2.tga'
+  'name'  : 'Operation Datablock'
+  'display' : 'Broken Upon the Wheel'
+  'type'  : 'Offensive'
   'points' : '1'
-  'sector' : '---..&->'
-  'location' : 'DWORD_x46'
-  'time' : 'HH;mM;sss..'
-  'brief' : '-BROADCAST DETECTED- | I don`t know if this will reach you but broadcasting on all frequencies anyway. | | The monsters are chasing me through the complex. I`ve dug in with my bodyguards but its only a matter of time before we`re overrun. | | What records I found... WE made these nightmares... | | After dismantling the parliament, both MILITAR and Survest groups agreed that if the planet wasn`t theirs to control then no one gets it. | | Our forefathers built a mutually-assured destruction system that could survive long after they were overthrown. | | This complex is but one of many built across the planet and buried. Volunteers signed on to become man-machine revenants, fed the belief that this was the necessary cost of patriotism.... | | What they failed to account for was our civil war. | | Bloodline or Corporation, Survest or MILITAR, There is no stopping this storm. The power of fear has doomed us all.... | | <SIGNAL LOST>'
-  'intel' : 'Intel + MARH missiles are not advised. + Allied Repair Facilities cannot be confirmed, but stay alert. + Map not found in database or is corrupted. | !ALERT! Connection with primary Perimetra System Control node network lost! | | activating localized PSC sub-node on <this> DEAD_HAND. | | /processing/ | | !ALERT! node has sustained critical damage and may not be functioning properly. | | Enemy invasion force has penetrated one of our primary facilities, compromising our mission. | You, DEAD_HAND must deny the enemy use of this complex. | '
+  'sector' : 'ARK-Province'
+  'location' : 'Mining Sector 8W'
+  'time' : '23;45;01;07'
+  'brief' : 'Alert! | | Enemy disposition indicates they are becoming aware of our subterranean deployment systems! | | Somehow the enemy has guess that exploring older mining regions might grant them access to our vital underground infrastructure. | Your job here is to disabuse them of this notion. PSC is working to figure out how much the enemy might be aware of our base locations. Only 63% of DEAD_HAND facilities activated but system projections should account for at lest 85% core bases still hidden...'
+  'intel' : 'DEAD_HAND now has access to almost the full arsenal. | | PSC trusts you to outfit as needed for mission success. | | Area consists of deep mining trenches and sharp hills. | | Enemy forces spread amongst factory zones. | | Based on language-model analysis of hostile comms, enemy morale is barely holding together. Will to fight is focused around heavier METAL units reinforcing all other enemy groups. | | Eliminating all MONITOR class METALS should shatter cohesion of enemy forces in this operation. | | '
   'objtotal' : '3'
   'anim' : ''
 }
@@ -18,15 +17,15 @@
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : 'Destroy ALL [Power Plants] at (RHO).'
+  'objdesc' : 'Eliminate all <MONITOR> class metals in the target area.'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Pursue enemy force by reaching (OMICRON).'
+  'objdesc' : 'Clear hilltop of enemy armor units at (GAMMA).'
 }
 {
   'objid' : '3'
   'objtype': 'secondary'
-  'objdesc' : 'Obliterate Enemy-controlled Archives at (ALPHA)'
+  'objdesc' : 'Keep Repair Bays functional for entire mission.'
 }

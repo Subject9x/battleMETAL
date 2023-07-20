@@ -23,3 +23,5 @@ void() wiki_handleFrame;
 void() wiki_mainListener;
 
 
+void() w_main_i;
+void() w_main_d;

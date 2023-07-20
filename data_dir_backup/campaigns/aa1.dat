@@ -30,5 +30,7 @@ o3m1:o3m2|none
 o3m2:o3m3|none
 o3m3:o3m4|none
 o3m4:o3m5|none
-o3m5:outro|none
-outro:menu|none
+o3m5:o3m6|none
+o3m6:anim4|none
+anim4:credits|none
+credits:menu|none

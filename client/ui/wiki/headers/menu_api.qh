@@ -1,0 +1,133 @@
+/*
+  battleMETAL
+  author: Peter Roohr
+  date: 04/13/2018
+  overview: header for menu_api
+*/
+
+//API GLOBALS
+entity null_entity;
+//Main Menu Globals
+vector MENU_ORG;  //'root' menu origin and size, if this was more OO, then this is the 'parent' 
+vector MENU_SIZE;
+vector MENU_CTR;
+vector VIEW_MPOS;
+
+//MENU GLOBALS
+float MOUSE_DOWN;
+float DRAW_MOUSE;
+float M_STATE;
+entity MOUSE_TARGET;
+float SUB_MENU; //can only really do 1 sub menu at a time, so
+
+float MOUSE_DOWN_COUNT;
+
+float RESO_CHANGE;
+
+entity TEXTFIELD_TARGET;
+entity KEYBIND_TARGET;
+float UI_INPUT_ACTIVE;  //buffer to track textfields
+float UI_INPUT_FILTER_MAX = 111;
+float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
+float UI_KEYBIND_ACTIVE;
+
+
+// UI fields
+.string label;
+.float selected;
+.float menuId;
+.string image1;
+.float drawme;
+//.void() predraw;
+.void(entity myself) draw;
+.void(entity myself) isclick;  //internal, runs when clicked, if onClick() defined, then will execute within
+.void(entity myself) ischange;
+.void() onClick;
+//.void() onRollOver;
+.void() onChange;
+.string command;
+.float rolledover;
+.float align;
+.float alpha;
+.vector color;
+.vector select_color;
+.float data_bind;  //used in lists
+.float len; //used if needed to track char len of entity.
+.string data_text;
+.float subid; //sub menu, used sparingly
+.vector size; //used to size elements
+.vector drawSize; //computed from .size
+.vector drawOrg; //actual org after adjusting to pixel size
+.entity targ;
+.float fontId;
+
+
+//new stuff
+void() menu_ini_txtfilter;
+//void() menu_ini_keyfilter;
+void(float menu_id) menu_clear_items;
+float(float keynr, float uiFlags) menu_textfilter_validate;
+void(float keynr, float ascii) menu_do_textfield;
+void(float keynr, float ascii) menu_do_keybind;
+void(string bind_cmd) menu_keybind_change;
+//string(float keynr) menu_keybind_get;
+vector(string comd) menu_keybind_keyfor;
+string(float val) menu_float_bool;
+
+//void() render_predraw;
+void(entity btn) render_btn;
+void(entity btn) render_btn_txt;
+void(entity btn) render_chkbox;
+void(entity lbl) render_lbl_img;
+void(entity lbl) render_lbl_text;
+void(entity pnl) render_txt_pnl;
+
+void(entity txt) render_textfield;
+void(entity txt) render_bindfield;
+
+entity() btn_new_blank;
+entity() new_ui_elm;
+entity(vector org, vector siz, string lbl, vector clr, float algn, float menu_id, float alph, float flgs) lbl_text;
+entity(vector org, vector siz, string img1, vector clr, float algn, float menu_id, float alph, float flgs) lbl_img;
+entity(vector org, vector siz, string img1, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_img_callback;
+entity(vector org, vector siz, float algn, float menu_id, void() click, vector clr, vector checkColor, float alph, float flgs) btn_check_callback;
+entity(vector org, vector siz, string txt, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_text_callback;
+entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
+
+entity(vector org, vector siz, float charlen, void()  onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_textfield;
+entity(vector org, vector siz, void() onchange, string lblText, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
+
+entity(vector org, vector siz, string txt, vector clr, float algn, float menu_id, float alph, float flgs) text_panel;
+
+void() m_sys_doclick; //called by all menus to process widget clicks
+void() btn_noclick={};  //simple null function
+void(entity myself) btn_isclick;
+void(entity myself) txtfld_isclick;
+void(entity myself) txtfld_ischange;
+
+void(entity myself) bindfld_isclick;
+void(entity myself) bindfld_ischange;
+
+void() btn_onClick_runCommand;
+
+//smaht menu alignments
+void(vector mOrg, vector mSize) menu_parent_setup;
+vector( float y ) menu_parent_center_width;
+vector( float x ) menu_parent_center_height;
+
+void(string filename) menu_execute_cvar_list={
+  local float f;
+	local string ln;
+  f = fopen(filename, FILE_READ);
+	if (f != -1){
+		ln = fgets(f); 
+		while(ln != ""){ 
+			if(strstrofs(ln, "//",0) == -1){
+        tokenizebyseparator(ln, " ");
+        cvar_set(argv(0), argv(1));
+			}
+			ln = fgets(f);
+		}
+    fclose(f);    
+	} 
+};

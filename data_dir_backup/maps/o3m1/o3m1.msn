@@ -1,32 +1,37 @@
 //mission info section
 {
 //img stored in data/map_scripts/
-  'img' : 'o3m1/o3m1.png'
-  'name'  : 'Operation Datablock'
-  'display' : 'The Hollow Mountain'
-  'type'  : 'Offensive'
+  'img' : 'o3m1/o3m1.tga'
+  'name'  : 'Operation Undertow'
+  'display' : 'We are the guns'
+  'type'  : 'Siege'
   'points' : '1'
   'sector' : 'ARK-Province'
   'location' : 'Habitable Sector 3'
-  'time' : '08;26;11;09'
-  'brief' : '-COMM INTERCEPT- | [I.Varaci] I see them! bring in our last reserves now! | | [L.Gavir] My forces are holding for the moment, what`s the sit-rep on getting the Starport facilities back online? | | [I.Varaci] Total loss, no surface-to-orbit ships left intact and the landing gantries are a shambles. | | [L.Gavir] Our only choice then is to fall back to that `mountain` complex. | | [I.Varaci] agreed, say again? that can`t be right, Gavir - COMSCAN is detecting another wave of these monsters coming in. | | [L.Gavir] We don`t have the numbers anymore, I have one last gamble. Varaci can you take command of all our remaining strength? We may be able to stop the attack if we send a strike team into the complex near the Starport. | | [I.Varaci] Survest to the end, eh? You people always thought your noble birth purchased heroism. We don`t have options anymore, do what you must to end this madness! | | [L.Gavir] I will return, just hold on! | | <TRANSMISSION LOST>'
-  'intel' : 'We have pursued the surviving hostile forces into the remnants of the habitable zone of the planet. | | PSC has tracked TARGET[Gavir] into one of our primary command-and-control nodes. | | You must pursue him into the Facility and eliminate him before he is able to cripple the operation. | | The rest of the DEAD_HANDS are mopping up what is left of the enemy forces. | | May vengeance guide your hand.'
-  'objtotal' : '3'
+  'time' : '02;15;05;38'
+  'brief' : 'PSC reports largest groups of remaining enemy combatants have formed up in the ruins of the Habitable Zone. | | This was once the region where our people thrived, now despoiled by enemy action. | | Invaders have created a front-line in the small city of Fulsen and dug in at the city walls. | You will be part of the first-wave to assault the line but we are counting on your ingenuity to breach the walls and bring down the gates.'
+  'intel' : 'Enemy has retreated from <GLACIAN EDGE> sector to <ARK-PROVINCE>. | Sensors indicate Sector is mostly bombed-out and irradiated after limited nuclear exchange. | We have decided to lay siege to the front-line city before us. You will be deployed to sabotage the defenses, ideally by infiltrating behind enemy lines.'
+  'objtotal' : '5'
   'anim' : ''
 }
 // objectives section
 {
   'objid' : '1'
-  'objtype': 'primary'
-  'objdesc' : 'Reach Entrance to Storage-Deeps Facility 1 at (OMEGA).'
+  'objtype': 'secondary'
+  'objdesc' : 'Reach outflow tunnel before enemy seals it at (LAMBDA) in [30] seconds.'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Destroy surface power core near (IOTA).'
+  'objdesc' : 'Destroy <HANGARS> and <REPAIR BAYS> at (EPSILON).'
 }
 {
   'objid' : '3'
   'objtype': 'primary'
-  'objdesc' : 'Destroy last supply base and command center. (RHO)'
+  'objdesc' : 'Cripple turret control <RADAR POST> at (IOTA) and (THETA).'
+}
+{
+  'objid' : '4'
+  'objtype': 'secondary'
+  'objdesc' : 'Eliminate reserve <METAL> garrison at (EPSILON).'
 }

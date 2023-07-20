@@ -18,6 +18,7 @@ entity main_camp;
 entity main_training;
 entity main_options;
 entity main_multi;
+entity main_wiki;
 entity main_help;
 entity main_credits;
 entity main_quit;
@@ -25,12 +26,11 @@ entity main_quit;
 entity main_player_options; //link to player options during network play
 
 //Main Menu Constants
-string IMG_MULTI_PLAYERSETUP   = "gfx/menu/multi/multi_playersetup.png";
-string IMG_MAIN_TITLE  = "gfx/menu/main/main_title.png";
-string IMG_MAIN_PAUSE  = "gfx/pause.png";
-string IMG_MAIN_LBL    = "gfx/menu/main/main_label.png";
-
-string IMG_MAIN_LEAVE = "gfx/menu/quit_mission.png";
+#define IMG_MULTI_PLAYERSETUP "gfx/menu/multi/multi_playersetup.png"
+#define IMG_MAIN_TITLE "gfx/menu/main/main_title.png"
+#define IMG_MAIN_PAUSE "gfx/pause.png"
+#define IMG_MAIN_LBL "gfx/menu/main/main_label.png"
+#define IMG_MAIN_LEAVE "gfx/menu/quit_mission.png"
 
 string IMG_TITLE;
 //string IMG_QUIT;
@@ -54,6 +54,19 @@ void() click_main_multi={
   menu_clear_items(M_STATE);
   M_STATE = M_MULTI;
   m_multi_f();
+};
+
+void() click_main_wiki={
+  menu_clear_items(M_STATE);
+  cvar_set("sv_public", "-2");
+  cvar_set("deathmatch", "0");
+  cvar_set("teamplay", "0");
+  cvar_set("coop", "0");
+  cvar_set("sv_serverflags", "0");  //accounts for player-hosted servers rather than using dedicated hosting.
+  localcmd("maxplayers 1;\n");
+  cvar_set("cl_newgameplus", "0");
+  cvar_set("gamemode", ftos(GAMEMODE_LORE));
+  localcmd("map archives.bsp\n");
 };
 
 void() click_main_quit={
@@ -154,10 +167,13 @@ void() m_main_i={
     orgOptions = MENU_ORG + menu_parent_center_width(149);
     orgHelp = MENU_ORG + menu_parent_center_width(169);
     
-    main_credits = btn_text_callback(MENU_ORG + menu_parent_center_width(189), '16 16', "CREDITS", VIEW_CTX, M_MAIN, click_main_credits, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_wiki = btn_text_callback(MENU_ORG + menu_parent_center_width(189), '16 16', "ARCHIVES", VIEW_CTX, M_MAIN, click_main_wiki, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_wiki.fontId = FONT_NUM_XOLONIUM_BOLD;
+    
+    main_credits = btn_text_callback(MENU_ORG + menu_parent_center_width(209), '16 16', "CREDITS", VIEW_CTX, M_MAIN, click_main_credits, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_credits.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    orgQuit = MENU_ORG + menu_parent_center_width(209);
+    orgQuit = MENU_ORG + menu_parent_center_width(239);
     
   }
   

@@ -153,6 +153,7 @@ util/headers/input_events.qh
   ui/menu/headers/ui_rebind.qh
   
   ui/wiki/headers/m_wiki.qh
+  ui/wiki/headers/menu_api.qh
 //================
 
 ../common/data/data_system.qc
@@ -224,7 +225,9 @@ ui/hud/crosshair/hud_crosshair4.qc
 
 
 //Wiki menu================
+  ui/wiki/menu_api.qc
   ui/wiki/m_wiki.qc
+  ui/wiki/w_main.qc
 //============================
 
 //EFFECTS================
