@@ -69,9 +69,6 @@ void() sv_getTarget={
     trigger_event( self, self.trigOnTarget );
   }*/
   self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
-
-  cons_logAFloat("hork", num_for_edict(self.enemy));  //debug
-  
 };
 
 /*

@@ -143,6 +143,10 @@ void( float isNew, float changeFlags) sendent_handle_gev={
       snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }
   }
+
+  if( (changeFlags & SENDFLAG_FACTION)){
+    self.faction = ReadByte();
+  }
   
   //HANDLE EVENT - Shield explode
   if( self.shield > 100 && (prevShield <= 100 && prevShield != 0) ){

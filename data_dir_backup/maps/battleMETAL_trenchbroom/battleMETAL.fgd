@@ -79,6 +79,7 @@
 @BaseClass base(Target, Targetname, SkillFlagsEngine, MapKeyFlag) = BaseHazard [
   data_lifetime(integer) : "time to live" : 0
   wait(integer) : "reactivate delay" : 0
+  count(float) : "damage interval" : "1.0"
   spawnflags(Flags) = [
     1 : "Start Off" : 0
     2 : "Lifetime" : 0
@@ -701,8 +702,7 @@ firing off .trigOnAttack when the .count is reached.
   ]
 ]
 
-@PointClass base(AINode) size(-16 -16 -16, 16 16 16) = ai_change_faction : "changes the faction field of the targeted objects to THIS faction." [
-  group(string) : "matches target.group value."
+@PointClass base(AINode, Target) size(-16 -16 -16, 16 16 16) = ai_change_faction : "changes the faction field of the targeted objects to THIS faction." [
   wait(float) : "wait time after Delay-Flag" : "1.0"
   spawnflags(Flags) = [
     1 : "Start Off" : 0
@@ -747,42 +747,33 @@ that unit's stats using the ai_stats.qc functions. This is useful for adjusting 
 @BaseClass base(BaseHazard) color(0.8 0.45 0.25) = BaseHazardRad []
 
 @PointClass base(BaseHazardRad) size(-18 -18 0, 18 18 20) = map_hazard_rad_small : "Inflicts ARMOR damage on any unit that touches it every rand*self.count seconds." [
-  damageValue(integer) : "Energy drain amount per tic" : 1
-  count(float) : "tic interval" : "0.5"
+  damageValue(integer) : "Armor drain amount per tic" : 3
 ]
 @PointClass base(BaseHazardRad) size(-40 -40 0, 40 40 25) = map_hazard_rad_medium : "Inflicts ARMOR damage on any unit that touches it every rand*self.count seconds." [
-  damageValue(integer) : "Energy drainamount per tic" : 2
-  count(float) : "tic interval" : "0.4"
+  damageValue(integer) : "Armor drainamount per tic" : 6
 ]
 @PointClass base(BaseHazardRad) size(-48 -48 0, 48 48 30) = map_hazard_rad_large : "Inflicts ARMOR damage on any unit that touches it every rand*self.count seconds." [
-  damageValue(integer) : "Energy drain amount per tic" : 3
-  count(float) : "tic interval" : "0.3"
+  damageValue(integer) : "Armor drain amount per tic" : 9
 ]
 
 @PointClass base(BaseHazardQuantum) size(-25 -25 0, 25 25 30) = map_hazard_quant_small : "Inflicts ENERGY damage on any unit that touches it every rand*self.count seconds." [
   damageValue(integer) : "Energy drain amount per tic" : 3
-  count(float) : "tic interval" : "0.6"
 ]
 @PointClass base(BaseHazardQuantum) size(-35 -35 0, 35 35 45) = map_hazard_quant_medium : "Inflicts ENERGY damage on any unit that touches it every rand*self.count seconds." [
   damageValue(integer) : "Energy drainamount per tic" : 4
-  count(float) : "tic interval" : "0.5"
 ]
 @PointClass base(BaseHazardQuantum) size(-45 -45 0, 45 45 56) = map_hazard_quant_large : "Inflicts ENERGY damage on any unit that touches it every rand*self.count seconds." [
   damageValue(integer) : "Energy drain amount per tic" : 5
-  count(float) : "tic interval" : "0.3"
 ]
 
 @PointClass base(BaseHazardCrystal) size(-20 -20 0, 20 20 25) = map_hazard_crys_small : "Inflicts SHIELD damage on any unit that touches it every rand*self.count seconds." [
-  damageValue(integer) : "Shield damage amount per tic" : 2
-  count(float) : "tic interval" : "0.5"
+  damageValue(integer) : "Shield damage amount per tic" : 1
 ]
 @PointClass base(BaseHazardCrystal) size(-30 -30 0, 30 30 40) = map_hazard_crys_medium : "Inflicts SHIELD damage on any unit that touches it every rand*self.count seconds." [
-  damageValue(integer) : "Shield damage amount per tic" : 4
-  count(float) : "tic interval" : "0.4"
+  damageValue(integer) : "Shield damage amount per tic" : 2
 ]
 @PointClass base(BaseHazardCrystal) size(-40 -40 0, 40 40 52) = map_hazard_crys_large : "Inflicts SHIELD damage on any unit that touches it every rand*self.count seconds." [
-  damageValue(integer) : "Shield damage amount per tic" : 6
-  count(float) : "tic interval" : "0.2"
+  damageValue(integer) : "Shield damage amount per tic" : 3
 ]
 //=============================================
 

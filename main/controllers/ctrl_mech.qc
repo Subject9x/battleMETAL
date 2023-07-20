@@ -632,6 +632,11 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
+
+  if( (changedflags & SENDFLAG_FACTION)){
+    WriteByte(MSG_ENTITY, self.faction);
+  }
+
   self.shieldHitFlag = 0;
   return TRUE;
 };

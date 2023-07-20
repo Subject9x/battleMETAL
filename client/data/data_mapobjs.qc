@@ -294,10 +294,9 @@ void() hazard_rad_think={
       te_field_rad(partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
     }
     
-    if(MENU_PROG_OFF){
-      
-      te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 176, FALSE, 5); 
-    }
+    //if(MENU_PROG_OFF){
+    // te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 176, FALSE, 5); 
+    //}
   }
   if( self.isActive ){
     if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 3) ){
@@ -305,7 +304,7 @@ void() hazard_rad_think={
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 2;
     }
     self.think = hazard_rad_think;
-    self.nextthink = servertime + (random() * (self.wait * 2));
+    self.nextthink = servertime + 2 + (random() * (self.wait * 10) * frametime);
   }
 };
 

@@ -168,7 +168,6 @@ void() misc_build_die1={
 };
 
 void() model_misc_building_die={
-    cons_logAFloat("model_misc_building_die!?", self.deadflag);  //debug
   local vector xOrg;
   xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
   xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);

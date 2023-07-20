@@ -536,28 +536,17 @@ void() ai_change_faction_use={
     self.nextthink = time + self.delay;
     return;
   }
-  if(self.group){
-    e = findchain(group, self.group);
-    while(e){
-      e.faction = self.faction;
-      e.enemy = world;  //dump targets because they might be invalid.
-      e.oldenemy = world;
-      e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
-      e = e.chain;
+  e = findchain(targetname, self.target);
+  while(e){
+    if((e.flags & FL_UNIT) || e.data_type = DATA_BLD){
+      if(e.deadflag == DEAD_NO){
+        e.enemy = world;
+        e.oldenemy = world;
+        e.faction = self.faction;
+        e.SendFlags = e.SendFlags | (SENDFLAG_FACTION | SENDFLAG_TARGET);
+      }
     }
-  }
-  if(self.target){
-    e = world;
-    do{
-      e = find(e, targetname, self.target);
-      if (!e){
-        return;
-      }
-      e.faction = self.faction;
-      if( e.data_type == DATA_BLD ){
-        e.SendFlags = e.SendFlags | SENDFLAG_FACTION;
-      }
-    } while ( 1 );
+    e = e.chain;
   }
   if( (self.spawnflags & 2) ){
     self.think = SUB_Remove;
@@ -613,9 +602,21 @@ REMOVE_ONUSE 2: removed after its first use.
 DELAY 4: wait after fire before execution
 */
 void() ai_change_faction={
+
+  if(!self.target || strlen(self.target) <= 0){
+    objerror("missing target for this.\n");
+    remove(self);
+    return;
+  }
+
+  if(!self.faction){
+    self.faction = FACTION_ALL;
+  }
+
+
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-  
+
   util_MapDeveloperMarker();
   util_DeveloperNodeMark();
   
@@ -632,7 +633,7 @@ void() ai_change_faction={
   if((self.spawnflags & SPAWNFLAG_ON_MAPSTART) ){
     activator = find(world, classname, "player");
     self.think = self.use;
-    self.nextthink = time + 1.0;
+    self.nextthink = time + 3.0;
   }
 };
 

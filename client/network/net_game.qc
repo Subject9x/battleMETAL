@@ -49,7 +49,6 @@ void() receive_ent_bindData={
   prevFaction = CLIENT_faction;
   CLIENT_faction = rint(stof(getplayerkeyvalue(player_localentnum - 1, "colors")));
   if( prevFaction != CLIENT_faction ){
-    cons_logAFloat("receive_ent_bindData faction change?", CLIENT_faction); //debug
     menu_update_colors( CLIENT_faction );
     cl_set_faction( CLIENT_faction );
   }

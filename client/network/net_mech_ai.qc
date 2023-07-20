@@ -249,6 +249,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }
   }
+
+  if( (changeFlags & SENDFLAG_FACTION)){
+    self.faction = ReadByte();
+  }
   
   if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
     sendevent_mech_ai_die();

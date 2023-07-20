@@ -165,6 +165,11 @@ float( float isNew, float changedflags ) ctrl_send_tank={
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
+  if( (changedflags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.faction );
+  }
+
+
   self.shieldHitFlag = 0;
   return TRUE;
 };
@@ -224,6 +229,9 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     if( !(changedflags & SENDFLAG_NEWENT) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
+  }
+  if( (changedflags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.faction );
   }
   self.shieldHitFlag = 0;
   return TRUE;
@@ -289,6 +297,9 @@ float( float isNew, float changedflags ) ctrl_send_gev={
     if( !(changedflags & SENDFLAG_NEWENT) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
+  }
+  if( (changedflags & SENDFLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.faction );
   }
   
   self.shieldHitFlag = 0;

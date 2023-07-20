@@ -143,8 +143,6 @@ void() predraw_building_msc={
   
   if( self.cl_lod_unit ){
     setmodel(self, self.model);
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
     addentity(self);
   }
 };

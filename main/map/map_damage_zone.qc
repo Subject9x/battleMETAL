@@ -27,7 +27,6 @@ void() map_hazard_ping={
   
   if( self.isActive ){
     self.nextthink = time + (random() * self.wait);
-    return;
   }
 };
 
@@ -64,12 +63,15 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
     self.effects = self.effects | EF_NODEPTHTEST;
   }
   
+  self.reloadRate = defWait * 0.5;
+
   self.data_type = DATA_MAP_DMG;
   self.model = "models/testball.md3";
   setmodel( self, self.model );
   self.think = map_hazard_ping;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 1.0;
   self.angles_y = anglemod( (random() * 180) + (random() * 180) );
+  self.angles_x = anglemod( crandom() * 5);
 };
 
 void() map_damage_zone_rad_think={
@@ -77,24 +79,23 @@ void() map_damage_zone_rad_think={
   local vector mechHit;
   
   if( self.isActive ){
-    for( unit = nextent(world); unit != world; unit = nextent(unit) ){
-      if( !(unit.flags & FL_UNIT) ){
-        continue;
+    unit = findradius(self.view_ofs, self.maxs_x);
+    while(unit){
+      if(unit.deadflag == DEAD_NO){
+        if((unit.flags & FL_UNIT)){
+          if( unit.data_type == DATA_MECH ){
+            mechHit = unit.origin + randompos(unit.maxs, unit.mins);
+            t_damage(unit, self, world, self.damageValue, mechHit, '0 0 0');
+          }
+          else{
+            t_damage(unit, self, world, self.damageValue, unit.origin, '0 0 0');  
+          }
+          if( (unit.flags & FL_CLIENT) ){
+            self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+          }
+        }
       }
-      if( vlen(unit.origin - self.origin) > (self.maxs_x * 3) ){
-        continue;
-      }
-      if( unit.data_type == DATA_MECH ){
-        mechHit = randomvec() * unit.maxs_x;
-        mechHit = unit.origin + mechHit;
-        t_damage(unit, self, world, self.damageValue, mechHit, '0 0 0');
-      }
-      else{
-        t_damage(unit, self, world, self.damageValue, unit.origin, '0 0 0');  
-      }
-      if( (unit.flags & FL_CLIENT) ){
-        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      }
+      unit = unit.chain;
     }
   }
   
@@ -106,23 +107,35 @@ void() map_damage_zone_rad_think={
     }
   }
   self.think = map_damage_zone_rad_think;
-  self.nextthink = time + (random() * self.wait);
+  self.nextthink = time + self.reloadRate + (random() * self.wait);
 };
+
+
 void() map_damage_zone_crs_think={
   local entity unit;
+  local vector org;
+  local vector hit;
   
   if( self.isActive ){
-    for( unit = nextent(world); unit != world; unit = nextent(unit) ){
-      if( !(unit.flags & FL_UNIT) ){
-        continue;
+    unit = findradius(self.view_ofs, self.maxs_x * 3);
+    while(unit){
+      if((unit.flags & FL_UNIT)){
+        if(unit.shield > 0){
+
+          t_damage_shield(unit, self, world, self.damageValue, unit.origin, TRUE);
+
+          org = self.view_ofs + randompos(self.maxs, self.mins);
+          hit = unit.origin + randompos(unit.maxs, unit.mins);
+
+          trailparticles( unit, particleeffectnum("TE_CRYS_RAIL"), org, hit );
+          pointparticles(particleeffectnum("TE_CRYS_MUZZLE"), org, normalize(hit - org) * 10, 2);
+
+          if( (unit.flags & FL_CLIENT) ){
+            self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+          }
+        }
       }
-      if( vlen(unit.origin - self.origin) > (self.maxs_x * 4) ){
-        continue;
-      }
-      t_damage_shield(unit, self, world, self.damageValue, unit.origin, (self.vec_size > 1) );  
-      if( (unit.flags & FL_CLIENT) ){
-        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      }
+      unit = unit.chain;
     }
   }
   
@@ -134,29 +147,27 @@ void() map_damage_zone_crs_think={
     }
   }
   self.think = map_damage_zone_crs_think;
-  self.nextthink = time + (random() * self.wait);
+  self.nextthink = time + self.reloadRate + (random() * self.wait);
 };
+
 void() map_damage_zone_qtm_think={
   local entity unit;
   
   if( self.isActive ){
-    for( unit = nextent(world); unit != world; unit = nextent(unit) ){
-      if( !(unit.flags & FL_UNIT) ){
-        continue;
+    unit = findradius(self.view_ofs, self.maxs_x);
+    while(unit){
+      if((unit.flags & FL_UNIT)){
+        if(unit.deadflag == DEAD_NO){
+          if(unit.energy > 0){
+
+            unit.energy = max(0, unit.energy - self.damageValue);
+            if( (unit.flags & FL_CLIENT) ){
+              self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+            }
+          }
+        }
       }
-      if( vlen(unit.origin - self.origin) > (self.maxs_x * 4) ){
-        continue;
-      }
-      if( unit.energy <= 0 ){
-        continue;
-      }
-      unit.energy = unit.energy - self.damageValue;
-      if( unit.energy < 0 ){
-        unit.energy = 0;
-      }
-      if( (unit.flags & FL_CLIENT) ){
-        self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-      }
+      unit = unit.chain;
     }
   }
   
@@ -168,102 +179,62 @@ void() map_damage_zone_qtm_think={
     }
   }
   self.think = map_damage_zone_qtm_think;
-  self.nextthink = time + (random() * self.wait);
+  self.nextthink = time + self.reloadRate + (random() * self.wait);
 };
 
-
-/*QUAKED map_hazard_rad_small (0.8 0.45 0.25) (-18 -18 0) (18 18 20) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
-
-damageValue = 1
-wait = 0.3
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = <float> 
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-.alpha = <float> - alpha level on model of ent
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_rad_small={
   self.data_idx = 1;
   self.damageType = 1;
+
+  if(!self.damageValue){
+    self.damageValue = 3.0;
+  }
+
+  if(!self.count){
+    self.count = 2.0;
+  }
   
   map_damage_zone_ini(1, map_damage_zone_rad_think, self.damageValue, self.count);
 
   setsize( self, '-18 -18 0', '18 18 20' );
   setorigin( self, self.origin );
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-/*QUAKED map_hazard_rad_medium (0.8 0.45 0.25) (-40 -40 0) (40 40 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
 
-damageValue = 2
-wait = 0.25
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = 0.67 <DEFAULT>
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_rad_medium={
   self.data_idx = 2;
   self.damageType = 1;
-  
+
+  if(!self.damageValue){
+    self.damageValue = 6.0;
+  }
+
+  if(!self.count){
+    self.count = 1.5;
+  }
   map_damage_zone_ini(2, map_damage_zone_rad_think, self.damageValue, self.count);
 
   setsize( self, '-40 -40 0', '40 40 25' );
   setorigin( self, self.origin );
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-/*QUAKED map_hazard_rad_large (0.8 0.45 0.25) (-48 -48 0) (48 48 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts ARMOR damage on any unit that touches it every rand*0.3 seconds.
 
-damageValue = 3
-wait = 0.3
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = 0.79 <DEFAULT>
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_rad_large={
   self.data_idx = 3;
   self.damageType = 1;
-  
+
+  if(!self.damageValue){
+    self.damageValue = 9.0;
+  }
+
+  if(!self.count){
+    self.count = 1.0;
+  }
   map_damage_zone_ini(3, map_damage_zone_rad_think, self.damageValue, self.count);
   
   setsize( self, '-48 -48 0', '48 48 30' );
   setorigin( self, self.origin );
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
 //=================================================================================================
 
@@ -286,32 +257,18 @@ void() map_hazard_crys_die={
   self.nextthink = time + 0.1;
 };
 
-/*QUAKED map_hazard_crys_small (0.25 0.45 0.8) (-20 -20 0) (20 20 25) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
-
-damageValue = 1
-wait = 0.3
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = <float> 
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-.alpha = <float> - alpha level on model of ent
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_crys_small={
   self.data_idx = 1;
   self.damageType = 2;
   
+  if(!self.damageValue){
+    self.damageValue = 1.0;
+  }
+
+  if(!self.count){
+    self.count = 2.0;
+  }
+
   map_damage_zone_ini(1, map_damage_zone_crs_think, self.damageValue, self.count);
 
   setsize( self, '-20 -20 0', '20 20 25' );
@@ -324,33 +281,21 @@ void() map_hazard_crys_small={
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.th_die = map_hazard_crys_die;
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-/*QUAKED map_hazard_crys_medium (0.25 0.45 0.8) (-30 -30 0) (30 30 40) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
-
-damageValue = 2
-wait = 0.25
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = 0.67 <DEFAULT>
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_crys_medium={
   self.data_idx = 2;
   self.damageType = 2;
   
+  
+  if(!self.damageValue){
+    self.damageValue = 2.0;
+  }
+  
+  if(!self.count){
+    self.count = 1.5;
+  }
+
   map_damage_zone_ini(2, map_damage_zone_crs_think, self.damageValue, self.count);
 
   setsize( self, '-30 -30 0', '30 30 40' );
@@ -363,33 +308,18 @@ void() map_hazard_crys_medium={
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.th_die = map_hazard_crys_die;
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-/*QUAKED map_hazard_crys_large (0.25 0.45 0.8) (-40 -40 0) (40 40 52) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
 
-damageValue = 3
-wait = 0.2
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = 0.79 <DEFAULT>
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_crys_large={
   self.data_idx = 3;
   self.damageType = 2;
   
+  
+  if(!self.damageValue){
+    self.damageValue = 3.0;
+  }
+
   map_damage_zone_ini(3, map_damage_zone_crs_think, self.damageValue, self.count);
   
   setsize( self, '-40 -40 0', '40 40 52' );
@@ -402,98 +332,65 @@ void() map_hazard_crys_large={
   self.takedamage = DAMAGE_AIM;
   self.deadflag = DEAD_NO;
   self.th_die = map_hazard_crys_die;
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-//=================================================================================================
-/*QUAKED map_hazard_quant_small (0.8 0.25 0.8) (-25 -25 0) (25 25 30) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts SHIELD damage on any unit that touches it every rand*0.3 seconds.
 
-damageValue = 1
-wait = 0.3
-alpha = 1
-
--------- KEYS -------- 
-.damageValue = <float> 
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-.alpha = <float> - alpha level on model of ent
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_quant_small={
   self.data_idx = 1;
   self.damageType = 3;
   
+  
+  if(!self.damageValue){
+    self.damageValue = 3.0;
+  }
+  
+  if(!self.count){
+    self.count = 0.5;
+  }
   map_damage_zone_ini(1, map_damage_zone_qtm_think, self.damageValue, self.count);
 
   setsize( self, '-25 -25 0', '25 25 30' );
   setorigin( self, self.origin );
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-/*QUAKED map_hazard_quant_medium (0.8 0.25 0.8) (-35 -35 0) (35 35 45) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts SHIELD damage on any unit that touches it every rand*0.25 seconds.
 
-damageValue = 2
-wait = 0.25
-alpha = 1
 
--------- KEYS -------- 
-.damageValue = 0.67 <DEFAULT>
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_quant_medium={
   self.data_idx = 2;
   self.damageType = 3;
   
+  
+  if(!self.damageValue){
+    self.damageValue = 5;
+  }
+  
+  if(!self.count){
+    self.count = 0.5;
+  }
   map_damage_zone_ini(2, map_damage_zone_qtm_think, self.damageValue, self.count);
 
   setsize( self, '-35 -35 0', '35 35 45' );
   setorigin( self, self.origin );
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
-/*QUAKED map_hazard_quant_large (0.8 0.25 0.8) (-45 -45 0) (45 45 56) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - IS_MAPKEY -
-Inflicts SHIELD damage on any unit that touches it every rand*0.2 seconds.
 
-damageValue = 3
-wait = 0.2
-alpha = 1
 
--------- KEYS -------- 
-.damageValue = 0.79 <DEFAULT>
-.targetname = <string> [targetname] - make triggerable
-.data_lifetime = <float> - time to live, use with spawnflags[LIFETIME]
-.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-
--------- SPAWNFLAGS -------- 
-START_OFF 1: START_OFF - only activated by trigger
-LIFETIME 2: lifetime
-REACTIVATE 4: reactivate after countdown
-REMOVE_FIRSTUSE 8: remove after first countdown
-REMOVE_ONTOUCH 16: remove on first touch
-ACTIVE_ONTOUCH 32: activate on-touch
-IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-*/
 void() map_hazard_quant_large={
   self.data_idx = 3;
   self.damageType = 3;
   
+  
+  if(!self.damageValue){
+    self.damageValue = 7;
+  }
+  
+  if(!self.count){
+    self.count = 0.5;
+  }
+
   map_damage_zone_ini(3, map_damage_zone_qtm_think, self.damageValue, self.count);
   
   setsize( self, '-45 -45 0', '45 45 56' );
   setorigin( self, self.origin );
+  self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
 };
