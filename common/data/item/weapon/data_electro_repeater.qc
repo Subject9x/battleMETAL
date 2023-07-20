@@ -127,7 +127,7 @@ void() te_muzzle_esr={
     if(impactStyle == IMPACT_ARMOR){
         pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
     }
-    else if(impactStyle == IMPACT_DIRT){
+    if(impactStyle == IMPACT_DIRT){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
       pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
     }
@@ -144,7 +144,7 @@ void() data_ini_electro_repeater_={
   self.energyRate = 5;
   
   self.w_range = 1000;
-  self.damageValue = 10;
+  self.damageValue = 8; //10
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
@@ -162,7 +162,7 @@ void() data_ini_electro_repeater_={
   self.fire_sound = "sound/weapons/esr_fire.ogg";
   self.model = "models/weapons/w_esr.md3";
   self.abbrev = "ESR";
-  self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage split when target is <shielded>";
+  self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage reduced by 50% against <shields>";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
   self.itemMuzzleFlash = te_muzzle_esr;
 #endif
@@ -187,7 +187,6 @@ void() data_ini_electro_repeater_={
 
 #ifdef SSQC
 void() data_ini_attack_electro_repeater_={
-  local float damage;
   
   if( self.owner.energy <= self.energyRate ){
     self.wepReloadState = RELOADING;
@@ -227,13 +226,11 @@ void() data_ini_attack_electro_repeater_={
     return;
   }
   if( trace_ent.takedamage ){
-    damage = self.damageValue; 
     if( trace_ent.shield > 0 ){
-      damage = damage * 0.67;
-      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, FALSE);
+      t_damage_shield(trace_ent, self, self.owner, self.damageValue * 0.5, FIRE_ENDPOINT, FALSE);
     }
     else{
-      HIT_LOCATION = t_damage(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, '0 0 0');
+      HIT_LOCATION = t_damage(trace_ent, self, self.owner, self.damageValue, FIRE_ENDPOINT, '0 0 0');
       if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
         self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }
