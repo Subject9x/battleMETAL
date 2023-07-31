@@ -492,6 +492,15 @@ void( string name ) client_event_mission_name={
   local float noNewLine;
   local float nameLen;
   
+  if(strlen(name) <= 0 || !name){
+    MISSION_NAME_ON = FALSE;
+    MISSION_NAME_START = time + MISSION_NAME_TIME;
+    MISSION_NAME_STATE = 0;
+    MISSION_NAME_ALPHA = 0;
+    MISSION_NAME_COLOR = CLR_DEF_RED;
+    return;
+  }
+
   MISSION_NAME_ON = TRUE;
   MISSION_NAME_START = time + MISSION_NAME_TIME;
   MISSION_NAME_STATE = 1;
