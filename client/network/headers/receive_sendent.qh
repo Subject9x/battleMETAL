@@ -11,6 +11,11 @@ float dbg_time; //used for filtering debug to once every few seconds.
 
 //DEBUG GLOBALS
 
+float PVS_FRAC1;
+float PVS_FRAC2;
+float PVS_FRAC3;
+float PVS_FAIL;
+
 vector DEBUG_PREDRAW_ORIGIN;
 vector DEBUG_PREDRAW_ROOTORG;
 

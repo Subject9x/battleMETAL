@@ -134,10 +134,22 @@ void( float isNew, float changeFlags ) sendent_handle_terrain={
 
 void() predraw_building_msc={
   
+  PVS_FAIL = TRUE;
   traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
-  
+  PVS_FRAC1 = trace_fraction;
+
+  traceline([self.absmax_x, self.absmax_y, self.absmax_z], CLIENT_vis_org, FALSE, self);
+  PVS_FRAC2 = trace_fraction;
+
+  traceline([self.absmin_x, self.absmin_y, self.absmax_z], CLIENT_vis_org, FALSE, self);
+  PVS_FRAC3 = trace_fraction;
+
+  if((PVS_FRAC1 == 1.0) || (PVS_FRAC2  == 1.0) || (PVS_FRAC3  == 1.0)){
+    PVS_FAIL = FALSE;
+  }
+
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+  if( PVS_FAIL || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
     self.cl_lod_unit = FALSE;
   }
   
