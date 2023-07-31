@@ -44,6 +44,11 @@ void( ) FRIK_FILE_precaches =
 		}
     fclose(f);                                          // when the while loop is over (no lines left in file) close file with the handle f    
 	} 
+
+  //for some reason was still getting complaints about these.
+  precache_model("models/fx/debris2/mdl_debris_2.md3");
+  precache_model("models/fx/debris1/mdl_debris_1.md3");
+  precache_model("models/fx/debris3/mdl_debris_3.md3");
 };
 //=======================
 /*QUAKED worldspawn (0 0 0) ?

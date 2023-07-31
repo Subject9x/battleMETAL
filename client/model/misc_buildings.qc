@@ -59,13 +59,13 @@ void() model_misc_building_ruins_set={
 
   switch(self.vec_size){
     case 2:
-      setmodel( self, "models/map/ruins/ruin_medium.md3");
+      setmodel( self, "models/map/ruins/ruin_medium.obj");
       break;
     case 3:
-      setmodel( self, "models/map/ruins/ruin_large.md3");
+      setmodel( self, "models/map/ruins/ruin_large.obj");
       break;
     default:
-      setmodel( self, "models/map/ruins/ruin_small.md3");
+      setmodel( self, "models/map/ruins/ruin_small.obj");
       break;
   }
   

@@ -47,6 +47,10 @@ void() dynamic_precache =
 };
 
 void() cs_precache={
+  precache_model("models/map/ruins/ruin_medium.obj");
+  precache_model("models/map/ruins/ruin_large.obj");
+  precache_model("models/map/ruins/ruin_small.obj");
+
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret/ret_pip_hrz.png", 0);
   HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret/ret_pip_vrt.png", 0);
   HUT_RET_LOK = precache_pic("gfx/hud/ret/ret_lock.png", 0);
