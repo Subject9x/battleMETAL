@@ -100,8 +100,8 @@ void() PlayerPreThink = {
   
   if( (self.unitModFlags & MOD_HAS_RAMSHOCKS)){
     if( !self.button8 ){
-      if( self.moveState > 0 ){
-        self.moveState = 0;
+      if( self.moveState > MOVE_STAND ){
+        self.moveState = MOVE_STAND;
         if( time > self.ramCharge ){
           self.ramAngle_y = self.v_angle_y;
         }
@@ -273,9 +273,11 @@ void() PlayerPostThink = {
       if( self.moveState > MOVE_NORM ){
         if(self.movement_x > 0 && self.movement_y == 0 ){
           if( self.energy > (self.energyMax * 0.15)){
-            if( self.ramUp < self.ramUpMax ){
-              self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
-            }   
+            if( !(self.criticalHits & M_LEGS) ){
+              if( self.ramUp < self.ramUpMax ){
+                self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
+              } 
+            }  
           }   
         }
         else{

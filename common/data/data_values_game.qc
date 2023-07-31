@@ -147,8 +147,8 @@ float TEAM_MILITAR_TOTAL;
 #define PLAYER_ACTIVE        12  // Client is controlling mech, and may move/fire freely.
 #define PLAYER_SPRINT_ON     13
 
-#define MOVE_STAND      0
-#define MOVE_DEAD       1  //
+#define MOVE_DEAD       0  //
+#define MOVE_STAND      1
 #define MOVE_NORM       2  //normal walking without +button8
 #define MOVE_SPRINT     3  // Client has engaged the 'sprint' 
 #define MOVE_RAM_ON     4

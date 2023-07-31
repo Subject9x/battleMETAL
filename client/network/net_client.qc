@@ -373,8 +373,8 @@ void() client_predraw={
   self.origin = self.rootOrigin;
   setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
-  self.alpha = 0.01;
-  self.scale = 0.01;
+  self.alpha = 1.0;
+  self.scale = 1.0;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_client={
@@ -910,7 +910,7 @@ void() client_event_critical={
       if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
         te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       }
-      if( (self.critBits & M_LEGS) ){
+      if( (self.critBits & M_LEGS) && !(self.criticalHits & M_LEGS) ){
         te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       }
     }

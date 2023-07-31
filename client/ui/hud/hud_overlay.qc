@@ -296,7 +296,7 @@ void() hud_model_cockpit_draw_frame={
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_forward *  (self.hud_StrutsOffset_z));
   HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up *  (self.hud_StrutsOffset_y + self.cameraOffset_y));
   
-  if( self.moveState > MOVE_STAND ){
+  if( self.moveState != MOVE_STAND ){
     HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
     
     local vector vel;

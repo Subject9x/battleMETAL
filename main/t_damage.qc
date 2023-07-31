@@ -170,10 +170,16 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
             }
             break;
           case M_LEGS:
-            dmgTrg.legs_hp = max(0, dmgTrg.legs_hp - dmgAmt);
-            if(dmgTrg.legs_hp <= 0){
-              dmgTrg.legs_hp = 0;
-              dmgTrg.critBuffer = dmgTrg.critBuffer | M_LEGS;
+            if((dmgTrg.criticalHits & M_LEGS)){
+              //legs already crit.
+              dmgTrg.health = dmgTrg.health - dmgAmt;
+            }
+            else{
+              dmgTrg.legs_hp = max(0, dmgTrg.legs_hp - dmgAmt);
+              if(dmgTrg.legs_hp <= 0){
+                dmgTrg.legs_hp = 0;
+                dmgTrg.critBuffer = dmgTrg.critBuffer | M_LEGS;
+              }
             }
             break;
           default:

@@ -33,7 +33,7 @@ void() ai_frame_update={
     if( (self.flags&FL_TURRET) ){
       ai_turret_control();
     }
-    if( self.legs_hp ){
+    if( self.legs_mdl ){
       ai_leg_control();
     }
     if( time > self.posFadeTimer ){

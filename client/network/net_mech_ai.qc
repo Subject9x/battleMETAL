@@ -91,7 +91,7 @@ void( float critical ) sendevent_mech_ai_crit={
       if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (critical & M_ARM_RIGHT) ){
           te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       }
-      if( (critical & M_LEGS) ){
+      if( (critical & M_LEGS) && !(self.criticalHits & M_LEGS)){
         te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
       }
     }
@@ -141,7 +141,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
     self.moveState = ReadByte();
-    if(self.moveState > 0 ){
+    if(self.moveState != MOVE_STAND ){
       self.ai_dir = 1;
     }
     else{

@@ -111,7 +111,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       CLIENT_vis_org =  CLIENT_server_ent.rootOrigin + (v_up * CLIENT_server_ent.cameraOffset_y);
       
       //viewbob
-      if( CLIENT_server_ent.moveState > 0 ){
+      if( CLIENT_server_ent.moveState != MOVE_STAND ){
         CLIENT_vis_org = CLIENT_vis_org + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
       }
       

@@ -21,7 +21,7 @@ void() predraw_legs={
   self.legs_angl = [0, self.legDir, 0];
   
   //self.legs_angl_y = self.legDir;
-  if( self.moveState != 0 ){
+  if( self.moveState != MOVE_STAND ){
     if( self.moveState == MOVE_NORM ){
       runMode = self.legMoveRate;
     }
