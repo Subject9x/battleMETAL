@@ -126,6 +126,26 @@ void() input_key_impulse_headlight_toggle={
     hud_event_enqueue( HUD_EVENT_HEADLIGHT_ON, 1) ;
   }
 };
+
+void() input_key_impulse_hud_player3d_toggle={
+  if(HUD_PLAYER_3D == TRUE){
+    HUD_PLAYER_3D = FALSE;
+  }
+  else{
+    HUD_PLAYER_3D = TRUE;
+  }
+};
+
+void() input_key_impulse_hud_targ3d_toggle={
+  if(HUD_TARGET_3D == TRUE){
+    HUD_TARGET_3D = FALSE;
+  }
+  else{
+    HUD_TARGET_3D = TRUE;
+  }
+};
+
+
     /*else if( strstrofs(findkeysforcommand("impulse 7", 0), ftos(scanx),0) != -1 ){
       //INPUT - player wants target
       return FALSE; //we pass the event to the server for correct player aiming.

@@ -96,17 +96,17 @@ string HUD_TAGS[22];
   float HUD_WARN_ON;
   float HUD_WARN_DIR;
   float HUD_WARN_MARK;
-  float HUD_WARN_TIME = 2;
-  
+  #define HUD_WARN_TIME 2
+
   float HUD_WARN_ENV_ON;
   float HUD_WARN_ENV_MARK;
-  float HUD_WARN_ENV_TIME = 1;
+  #define HUD_WARN_ENV_TIME 1
   float HUD_WARN_ENV_TYPES;
   vector HUD_WARN_ENV_ORG;
   
   float HUD_INFO_ON;
   float HUD_INFO_MARK;
-  float HUD_INFO_TIME = 1;
+  #define HUD_INFO_TIME 1
   vector HUD_INFO_ORG;
   vector HUD_INFO_SIZE;
   string HUD_INFO_MSG;
@@ -131,7 +131,7 @@ string HUD_TAGS[22];
   float HUD_SHIELD_FLASH_ON;
   float HUD_SHIELD_FLASH_TIME;
   float HUD_SHIELD_FLASH;
-  float HUD_SHIELD_FLASH_RATE = 0.15;
+  #define HUD_SHIELD_FLASH_RATE 0.15
   
   float HUD_ZOOM_ACTIVE;
   float HUD_EXTERNAL_CAM_ACTIVE;
@@ -139,6 +139,9 @@ string HUD_TAGS[22];
   
   float HUD_HEADLIGHT_ACTIVE;
   
+  float HUD_PLAYER_3D;
+  float HUD_TARGET_3D;
+
   #define HUD_SPRINT_ON "[EVASION ON]"
   #define HUD_SPRINT_OFF "!- EVASION OFFLINE -!"
   #define HUD_SPRINT_RAM "[RAM-SHOCKS READY]"
@@ -187,7 +190,6 @@ float HUD_PITCH_MAX;
 #define HUD_MECH_LEG "gfx/hud/hud_mech_leg.tga"
 
 #define HUD_VEC_TRG  "gfx/hud/hud_vec_arm.tga"
-
 #define HUD_BUILD_TRG "gfx/hud/hud_build_arm.tga"
 
 #define HUD_HAZ_SHOCK "gfx/hud/hud_icon_shock.tga"
@@ -231,8 +233,15 @@ void(vector pos, float algn, float val) hud_renderReticleRange;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient, vector mColor) hud_renderShield;
 void(vector pos, float algn, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, vector mColor) hud_renderEnergy;
 void(vector grpCtr, vector pos, float val, vector mSize, string imgPiece, float thatTarget, float partFlag) hud_renderArmorMeter;
-void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraph;
-void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorGraphModel; 
+
+void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorMech;
+void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorMech3D;
+void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorPlayer3D;
+
+
+
+
+
 void(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(entity blip, float plrFaction, float radRange ) hud_renderRadarContact;
 void(vector navOrg, float navState, float radRange ) hud_renderRadarNav;
@@ -240,9 +249,9 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
 void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus2;
 void(vector pos, vector imgSz, float algn, float w_bit) hud_renderWeapon;
 void(vector pos, vector imgSz, float algn, float w_bit) hud_renderWeapon2;
-void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis, float targFaction) hud_renderShieldOverlay;
+void(entity targetEnt, float algn, float val, vector mSize, float meterAxis) hud_renderShieldOverlay;
 void() hud_render_vip_overlay;
-void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay;
+void(entity targetEnt) hud_renderTargetOverlay;
 void(vector pos, float algn, float flag) hud_render_missionClock;
 void() hud_renderNavOverlay;
 void(vector vorg, float algn, vector siz, float val, float lFlag, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorBuilding;
@@ -281,15 +290,9 @@ void() data_hud_external;
 //3D HUD Model fun
 void() hud_model_cockpit_ini;
 void() hud_model_armor_player_ini;
-void() hud_armor_model_target_ini_mech;
-void() hud_armor_model_target_ini_vehicle;
-void() hud_armor_model_target_ini_building;
 void() hud_model_cockpit_draw_frame;
 void() hud_armor_model_target_cleanup;
-void( entity srcEnt, entity dstEnt) hud_model_armor_config;
 vector(vector partOffset, vector rootOrg) hud_model_armor_part_frame;
-void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_player_frame;
-void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_target_frame;
 
 
 //inspired by original inFront function

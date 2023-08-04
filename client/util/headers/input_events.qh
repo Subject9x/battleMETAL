@@ -23,5 +23,7 @@ void() input_key_impulse_hud_zoom;
 void() input_key_impulse_hud_radar_toggle;
 void() input_key_impulse_hud_chase_toggle;
 void() input_key_impulse_headlight_toggle;
+void() input_key_impulse_hud_player3d_toggle;
+void() input_key_impulse_hud_targ3d_toggle;
 
 void(float event) input_key_chat_event;

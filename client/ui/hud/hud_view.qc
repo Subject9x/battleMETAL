@@ -7,49 +7,6 @@ mod: 07/19/2019
 Overview:
   Implementation of HUD functions.
 */
-/*
-  RENDER CROSSHAIRS - UNIVERSAL
-*/
-void() hud_renderCrosshairs={
-  //convergence
-  local vector spr_h, hitclr;
-  local vector acc_left, acc_right, acc_up, acc_dn;
-  local vector drift;
-  
-  drift = [8 * CLIENT_accuracy, 8 * CLIENT_accuracy];
-  
-  acc_left = VIEW_CTR - '11 1.5';
-  acc_left_x = acc_left_x - drift_x;
-  
-  acc_right = VIEW_CTR + '1 -1.5';
-  acc_right_x = acc_right_x + drift_x;
-  
-  acc_up = VIEW_CTR - '1.5 11';
-  acc_up_y = acc_up_y - drift_y;
-  
-  acc_dn = VIEW_CTR + spr_h + '-1.5 1';
-  acc_dn_y = acc_dn_y + drift_y;
-  
-  gui_renderTintImage(TRUE, acc_left, HUT_RET_PIP_HRZ, '10 3', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  gui_renderTintImage(TRUE, acc_right, HUT_RET_PIP_HRZ, '10 3', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  
-  gui_renderTintImage(TRUE, acc_up, HUT_RET_PIP_VRT, '3 10', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  gui_renderTintImage(TRUE, acc_dn, HUT_RET_PIP_VRT, '3 10', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  
-  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
-    hitclr = CLR_DEF_GRAY_H;
-    if(CLIENT_target_shield > 0){
-      hitclr = CLR_DEF_SHD_HALF;
-    }
-    gui_renderTintImage(TRUE, (VIEW_CTR - '24 24'), HUD_RET_HIT, '48 48', hitclr, HUD_ALPHA, 0);
-  }
-  
-  if( CLIENT_stat_lock_state ){
-    if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270) ){
-      gui_renderTintImage(TRUE, VIEW_CTR - '16 16', HUT_RET_LOK, '32 32', CLR_DEF_RET_HASLOCK, HUD_ALPHA, 0);
-    }
-  }
-};
 
 /*
   RENDER TORSO PITCH INDICATOR
@@ -370,7 +327,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
       if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
         wepState = CLR_DEF_WEP_LOWENG;
       }
-      if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+      if( CLIENT_target_ent.data_idx != 0 && CLIENT_target_dist > theWeapon.w_range ){
         wepState = CLR_DEF_ARM_DED;
       }
     }
@@ -438,7 +395,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
       if( HUD_ENERGY_ACTUAL < theWeapon.energyRate ){
         wepState = CLR_DEF_WEP_LOWENG;
       }
-      if( CLIENT_stat_trg_dataidx != 0 && CLIENT_target_dist > theWeapon.w_range ){
+      if( CLIENT_target_ent.data_idx != 0 && CLIENT_target_dist > theWeapon.w_range ){
         wepState = CLR_DEF_ARM_DED;
       }
     }
@@ -822,14 +779,15 @@ void() data_hud_frame={
   if( HUD_EXTERNAL_CAM_ACTIVE ){
     data_hud_external();
   }
+
   menu_chat_render_frame( [UI_MAX_x - 250, UI_ORG_y],'262 144',10);
   
   if( CLIENT_target_ent.data_idx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270)){
-    hud_renderTargetOverlay(CLIENT_target_ent.rootOrigin, CLIENT_vis_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
+    hud_renderTargetOverlay(CLIENT_target_ent);
     
     //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
     if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.0){
-      hud_renderShieldOverlay(CLIENT_target_ent.origin, CLIENT_vis_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H, CLIENT_target_faction);
+      hud_renderShieldOverlay(CLIENT_target_ent, 0, CLIENT_target_shield, '64 6', AXIS_H);
     }
   }
 
@@ -842,7 +800,7 @@ void() data_hud_frame={
     //hud_lock_frame();
     CLIENT_stat_lock_state = FALSE;
     if( HUD_LOCK_FLAG ){
-      if( CLIENT_stat_trg_dataidx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270) ){
+      if( CLIENT_target_ent.data_idx > 0 && (CLIENT_stat_trg_face < 45 || CLIENT_stat_trg_face > 270) ){
         CLIENT_stat_lock_state = TRUE;
       }
     }
@@ -865,7 +823,7 @@ void() data_hud_frame={
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
   if( CLIENT_target_ent != world ){
-    hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
+    hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_ent.faction, CLIENT_target_datatype);
   }
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
@@ -883,7 +841,6 @@ void() data_hud_frame={
     if( HUD_INFO_ON == TRUE ){
       hud_render_info();
     }
-    
   }
   
   if( HUD_TACMAP_ON ){
@@ -998,7 +955,7 @@ void() data_hud_fps_cam={
   local vector color2;
   
   hasTarget = FALSE;
-  if( CLIENT_stat_trg_dataidx > 0 && CLIENT_target_ent.entnum != 0){
+  if( CLIENT_target_ent.data_idx > 0 && CLIENT_target_ent.entnum != 0){
     hasTarget = TRUE;
   }
   
@@ -1026,7 +983,12 @@ void() data_hud_fps_cam={
           lalign = UI_DATA_LABEL_ALIGN[uid];
           lblofs = UI_DATA_LABEL_OFS[uid];
           color2 = UI_DATA_COLOR2[uid];
-          hud_renderArmorGraph(porg, vsize, algn, lalign, lblofs, color2, FALSE);
+          if(HUD_PLAYER_3D == TRUE){
+            hud_renderArmorPlayer3D(porg, vsize, algn, lalign, lblofs, color2);
+          }
+          else{
+            hud_renderArmorMech(porg, vsize, algn, lalign, lblofs, color2, FALSE);
+          }
         }
         break;
       case HUD_UID_SHIELD_PLAYER: 
@@ -1050,16 +1012,21 @@ void() data_hud_fps_cam={
               lalign = UI_DATA_LABEL_ALIGN[uid];
               lblofs = UI_DATA_LABEL_OFS[uid];
               color2 = UI_DATA_COLOR2[uid];
-              hud_renderArmorGraph(porg, vsize, algn, lalign, lblofs, color2, TRUE);
+              if(HUD_TARGET_3D == TRUE){
+                hud_renderArmorMech3D(porg, vsize, algn, lalign, lblofs, color2);
+              }
+              else{
+                hud_renderArmorMech(porg, vsize, algn, lalign, lblofs, color2, TRUE);
+              }
             }
           }
         }
         break;
       case HUD_UID_SHIELD_TARGET: 
-        if( HUD_ZOOM_ACTIVE == FALSE && CLIENT_stat_trg_dataidx != 0){
+        if( HUD_ZOOM_ACTIVE == FALSE && CLIENT_target_ent.data_idx != 0){
           //func call optimization
           if( CLIENT_target_shield <= 100.0 && CLIENT_target_shield >= 0.0 ){
-            hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+            hud_data_renderTarget_Shield( uid, CLIENT_target_ent.data_idx );
           }
         }
         break;
@@ -1128,7 +1095,7 @@ void() data_hud_fps_cam={
           if( hasTarget ){
             porg = UI_DATA_POS[uid]; 
             algn = UI_DATA_ALIGN[uid];
-            hud_renderTargetRange(porg, CLIENT_target_origin, CLIENT_vis_org, algn);
+            hud_renderTargetRange(porg, CLIENT_target_ent.origin, CLIENT_vis_org, algn);
           }
         }
         break;
@@ -1143,7 +1110,7 @@ void() data_hud_fps_cam={
               lalign = UI_DATA_LABEL_ALIGN[uid];
               lblofs = UI_DATA_LABEL_OFS[uid];
               color2 = UI_DATA_COLOR2[uid];
-              hud_renderArmorVehicle(porg, algn, vsize, CLIENT_stat_trg_ct_hp, lflag, lalign, lblofs, color2);
+              hud_renderArmorVehicle(porg, algn, vsize, CLIENT_target_ent.health/CLIENT_target_ent.max_health * 100, lflag, lalign, lblofs, color2);
             }
           }
         }
@@ -1159,7 +1126,7 @@ void() data_hud_fps_cam={
               lalign = UI_DATA_LABEL_ALIGN[uid];
               lblofs = UI_DATA_LABEL_OFS[uid];
               color2 = UI_DATA_COLOR2[uid];
-              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp, lflag, lalign,  lblofs, color2);
+              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_target_ent.health/CLIENT_target_ent.max_health * 100, lflag, lalign,  lblofs, color2);
             }
           }
         }
@@ -1194,3 +1161,7 @@ void() data_hud_fps_cam={
     uid = uid + 1;
   }
 };
+
+
+
+

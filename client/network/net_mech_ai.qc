@@ -166,6 +166,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
   }
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.clientServerNum = fabs(rint(ReadLong()));
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();
@@ -289,145 +290,160 @@ void() interpolate_mech_ai={
   self.rootOrigin = self.origin;
   self.rootAngle = self.angles;
   
-  traceline(self.origin, CLIENT_vis_org, FALSE, self);
+  local float hitcontent;
+  hitcontent = CLIENT_server_ent.dphitcontentsmask;
+
+  PVS_FAIL = FALSE;
+  CLIENT_server_ent.dphitcontentsmask = 0 | PVS_HITCONTENT;
+  traceline(self.rootOrigin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
+  PVS_FRAC1 = trace_fraction;
+
+  traceline([self.absmax_x, self.absmax_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
+  PVS_FRAC2 = trace_fraction;
+
+  traceline([self.absmin_x , self.absmin_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
+  PVS_FRAC3 = trace_fraction;
+
+  CLIENT_server_ent.dphitcontentsmask = hitcontent;
   
+  if((PVS_FRAC1 < 0.9) && (PVS_FRAC2 < 0.9) && (PVS_FRAC3 < 0.9)){
+    PVS_FAIL = TRUE;
+  }
+
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if(  PVS_FAIL || vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
+
+  if(!self.cl_lod_unit){
+    self.mins = self.cache_mins;
+    self.maxs = self.cache_maxs;
+    return;
+  }
+  self.cl_lod_weapon = TRUE;
+  if( vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE / 2 ){
+    self.cl_lod_weapon = FALSE;
+  }
   
-  if(self.cl_lod_unit){
-    self.cl_lod_weapon = TRUE;
-    if( vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE / 2 ){
-      self.cl_lod_weapon = FALSE;
-    }
-    self.alpha = 1.0;
-    self.scale = 1.0;
-    self.renderflags = 0;
-    
-    makevectors(self.rootAngle);
-    
-    self.legs_org = self.rootOrigin + (v_right * self.legs_compOffset_x) + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y);
-    predraw_legs();
-    
-    if( !(self.criticalHits & M_TOR_CENTER) ){
-      self.torC_org = predraw_unit_part(self.torC_compOffset); 
-      if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-        self.torC_angl_x = self.torC_angl_x * -1;
-      }
-      self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
-      setmodel(self, self.torC_mdl);
-      self.angles = self.torC_angl;
-      self.origin = self.torC_org;
-      addentity(self);
-    }
-    makevectors(self.torC_angl);
-    if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-      if( !(self.criticalHits & M_TOR_LEFT) ){
-        self.torL_org = predraw_unit_part(self.torL_compOffset); 
-        self.torL_angl = self.torC_angl;
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
-           self.torL_angl_x = self.torL_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
-        setmodel(self, self.torL_mdl);
-        self.angles = self.torL_angl;
-        self.origin = self.torL_org;
-        addentity(self);
-      }
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-      if( !(self.criticalHits & M_TOR_RIGHT) ){
-        self.torR_org = predraw_unit_part(self.torR_compOffset); 
-        self.torR_angl = self.torC_angl;
-        if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
-           self.torR_angl_x = self.torR_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
-        setmodel(self, self.torR_mdl);
-        self.angles = self.torR_angl;
-        self.origin = self.torR_org;
-        addentity(self);
-      }
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-      if( !(self.criticalHits & M_ARM_LEFT) ){
-        self.armL_org = predraw_unit_part(self.armL_compOffset); 
-        self.armL_angl = self.torC_angl;
-        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
-          self.armL_angl_x = self.armL_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
-        setmodel(self, self.armL_mdl);
-        self.angles = self.armL_angl;
-        self.origin = self.armL_org;
-        addentity(self);
-      }
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-      if( !(self.criticalHits & M_ARM_RIGHT) ){
-        self.armR_org = predraw_unit_part(self.armR_compOffset); 
-        self.armR_angl = self.torC_angl;
-        if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
-          self.armR_angl_x = self.armR_angl_x * -1;
-        }
-        self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
-        setmodel(self, self.armR_mdl);
-        self.angles = self.armR_angl;
-        self.origin = self.armR_org;
-        addentity(self);
-      }
-    }
-    if(self.cl_lod_weapon){
-      self.origin = self.rootOrigin;
-      self.angles = self.rootAngle;
-      sendevent_mech_burn();
+  makevectors([0, self.angles_y, self.angles_z]);
       
-      if(self.weaponEnt1.data_idx){
-        predraw_unit_weapon(self.weaponEnt1);
+  setsize(self, self.cache_mins, self.cache_maxs);
+  self.renderflags = 0;
+  self.legs_org = self.rootOrigin + (v_right * self.legs_compOffset_x) + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y);
+  predraw_legs();
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  
+  self.torC_org = predraw_unit_part(self.torC_compOffset); 
+  if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+    self.torC_angl_x = self.torC_angl_x * -1;
+  }
+  self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
+  setmodel(self, self.torC_mdl);
+  self.angles = self.torC_angl;
+  self.origin = self.torC_org;
+  addentity(self);
+
+  makevectors(self.torC_angl);
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+    if( !(self.criticalHits & M_TOR_LEFT) ){
+      self.torL_org = predraw_unit_part(self.torL_compOffset); 
+      self.torL_angl = self.torC_angl;
+      if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
+          self.torL_angl_x = self.torL_angl_x * -1;
       }
-      if(self.weaponEnt2.data_idx){
-        predraw_unit_weapon(self.weaponEnt2);
-      }
-      if(self.weaponEnt3.data_idx){
-        predraw_unit_weapon(self.weaponEnt3);
-      }
-      if(self.weaponEnt4.data_idx){
-        predraw_unit_weapon(self.weaponEnt4);
-      }
-      if(self.weaponEnt5.data_idx){
-        predraw_unit_weapon(self.weaponEnt5);
-      }
-      if(self.weaponEnt6.data_idx){
-        predraw_unit_weapon(self.weaponEnt6);
-      }
-      if(self.weaponEnt7.data_idx){
-        predraw_unit_weapon(self.weaponEnt7);
-      }
-      if(self.weaponEnt8.data_idx){
-        predraw_unit_weapon(self.weaponEnt8);
-      }
-      if(self.weaponEnt9.data_idx){
-        predraw_unit_weapon(self.weaponEnt9);
-      }
+      self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
+      setmodel(self, self.torL_mdl);
+      self.angles = self.torL_angl;
+      self.origin = self.torL_org;
+      addentity(self);
     }
   }
   
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+    if( !(self.criticalHits & M_TOR_RIGHT) ){
+      self.torR_org = predraw_unit_part(self.torR_compOffset); 
+      self.torR_angl = self.torC_angl;
+      if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
+          self.torR_angl_x = self.torR_angl_x * -1;
+      }
+      self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
+      setmodel(self, self.torR_mdl);
+      self.angles = self.torR_angl;
+      self.origin = self.torR_org;
+      addentity(self);
+    }
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+    if( !(self.criticalHits & M_ARM_LEFT) ){
+      self.armL_org = predraw_unit_part(self.armL_compOffset); 
+      self.armL_angl = self.torC_angl;
+      if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
+        self.armL_angl_x = self.armL_angl_x * -1;
+      }
+      self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
+      setmodel(self, self.armL_mdl);
+      self.angles = self.armL_angl;
+      self.origin = self.armL_org;
+      addentity(self);
+    }
+  }
+  
+  if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+    if( !(self.criticalHits & M_ARM_RIGHT) ){
+      self.armR_org = predraw_unit_part(self.armR_compOffset); 
+      self.armR_angl = self.torC_angl;
+      if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
+        self.armR_angl_x = self.armR_angl_x * -1;
+      }
+      self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
+      setmodel(self, self.armR_mdl);
+      self.angles = self.armR_angl;
+      self.origin = self.armR_org;
+      addentity(self);
+    }
+  }
+  if(self.cl_lod_weapon){
+    self.origin = self.rootOrigin;
+    self.angles = self.rootAngle;
+    sendevent_mech_burn();
+    
+    if(self.weaponEnt1.data_idx){
+      predraw_unit_weapon(self.weaponEnt1);
+    }
+    if(self.weaponEnt2.data_idx){
+      predraw_unit_weapon(self.weaponEnt2);
+    }
+    if(self.weaponEnt3.data_idx){
+      predraw_unit_weapon(self.weaponEnt3);
+    }
+    if(self.weaponEnt4.data_idx){
+      predraw_unit_weapon(self.weaponEnt4);
+    }
+    if(self.weaponEnt5.data_idx){
+      predraw_unit_weapon(self.weaponEnt5);
+    }
+    if(self.weaponEnt6.data_idx){
+      predraw_unit_weapon(self.weaponEnt6);
+    }
+    if(self.weaponEnt7.data_idx){
+      predraw_unit_weapon(self.weaponEnt7);
+    }
+    if(self.weaponEnt8.data_idx){
+      predraw_unit_weapon(self.weaponEnt8);
+    }
+    if(self.weaponEnt9.data_idx){
+      predraw_unit_weapon(self.weaponEnt9);
+    }
+  }
+  self.mins = self.cache_mins;
+  self.maxs = self.cache_maxs;
   self.origin = self.rootOrigin;
+  setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
-  setsize(self, self.cache_mins, self.cache_maxs);
-  setorigin(self, self.origin);
-  //self.renderflags = 0 | RF_EXTERNALMODEL;
-  //self.alpha = 0.0;
-  //self.scale = 0.1;
-  //addentity(self);
-  self.renderflags = 0;
   self.alpha = 1.0;
   self.scale = 1.0;
-  
 };
 
 void() predraw_mech_ai={

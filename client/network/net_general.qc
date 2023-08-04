@@ -167,6 +167,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   prevDeadflag = self.deadflag;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.clientServerNum = ReadLong();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();

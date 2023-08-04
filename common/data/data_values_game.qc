@@ -372,20 +372,6 @@ float AS_INT = 8;
 
 .float stat_target_shield;
 
-.float stat_target_hp_torsoCenter;
-.float stat_target_hp_torsoLeft;
-.float stat_target_hp_torsoRight;
-.float stat_target_hp_armLeft;
-.float stat_target_hp_armRight;
-.float stat_target_hp_legs;
-
-.float stat_client_hp_torsoCenter;
-.float stat_client_hp_torsoLeft;
-.float stat_client_hp_torsoRight;
-.float stat_client_hp_armLeft;
-.float stat_client_hp_armRight;
-.float stat_client_hp_legs;
-
 .float targetEntId;
 .float targetEntIdPrev;
 .float stat_trg_dataidx;
@@ -446,19 +432,19 @@ float AS_INT = 8;
 //float    = 55;
 //float     = 56;
 //float    = 57;
-#define STAT_TARGET_HP_TORSOCENTER 61
-#define STAT_TARGET_HP_TORSOLEFT 62
-#define STAT_TARGET_HP_TORSORIGHT 63
-#define STAT_TARGET_HP_ARMLEFT 64
-#define STAT_TARGET_HP_ARMRIGHT 65
-#define STAT_TARGET_HP_LEGS 66
+//float   = 61;
+//float   = 62;
+//float   = 63;
+//float   = 64;
+//float   = 65;
+//float   =  66;
 
-#define STAT_CLIENT_HP_TORSOCENTER 67
-#define STAT_CLIENT_HP_TORSOLEFT 68
-#define STAT_CLIENT_HP_TORSORIGHT 69
-#define STAT_CLIENT_HP_ARMLEFT 70
-#define STAT_CLIENT_HP_ARMRIGHT 71
-#define STAT_CLIENT_HP_LEGS 72
+//float   = 67;
+//float   = 68;
+//float   = 69;
+//float   = 70;
+//float   = 71;
+//float   = 72;
 //float   = 73;
 //float   = 74;
 //float   = 75;

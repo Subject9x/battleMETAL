@@ -91,9 +91,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
   prevBurn = 0 | self.burnBits;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.clientServerNum = fabs(rint(ReadLong()));
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+
+    self.rootOrigin = self.origin;
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -122,6 +125,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+
+    self.rootOrigin = self.origin;
     
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
@@ -162,6 +167,8 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
+    self.health = ReadByte() / 100 * self.max_health;
+
   }
   
   //rider for desired stat changes
@@ -280,22 +287,28 @@ void() predraw_building={
   
   self.rootOrigin = self.origin;
 
-  PVS_FAIL = TRUE;
-  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
+  local float hitcontent;
+  hitcontent = CLIENT_server_ent.dphitcontentsmask;
+
+  PVS_FAIL = FALSE;
+  CLIENT_server_ent.dphitcontentsmask = 0 | PVS_HITCONTENT;
+  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
   PVS_FRAC1 = trace_fraction;
 
-  traceline([self.absmax_x, self.absmax_y, self.absmax_z], CLIENT_vis_org, FALSE, self);
+  traceline([self.absmax_x, self.absmax_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
   PVS_FRAC2 = trace_fraction;
 
-  traceline([self.absmin_x, self.absmin_y, self.absmax_z], CLIENT_vis_org, FALSE, self);
+  traceline([self.absmin_x , self.absmin_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
   PVS_FRAC3 = trace_fraction;
 
-  if((PVS_FRAC1 >= 0.9) || (PVS_FRAC2 >= 0.9) || (PVS_FRAC3 >= 0.9)){
-    PVS_FAIL = FALSE;
+  CLIENT_server_ent.dphitcontentsmask = hitcontent;
+  
+  if((PVS_FRAC1 < 0.9) && (PVS_FRAC2 < 0.9) && (PVS_FRAC3 < 0.9)){
+    PVS_FAIL = TRUE;
   }
 
   self.cl_lod_unit = TRUE;
-  if( PVS_FAIL || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE * 2){
+  if(  PVS_FAIL || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
   

@@ -236,12 +236,12 @@ void() SV_PlayerPhysics =
    		local vector sprintMove;
 		makevectors(self.v_angle_y * '0 1 0');
 		if( self.button8 ){
-		sprintMove = v_forward * (self.movement_x * self.data_speed_accel);
-		sprintMove = sprintMove + v_right * (self.movement_y * self.data_speed_accel);
-		wishvel = sprintMove;
+			sprintMove = v_forward * (self.movement_x * self.data_speed_accel);
+			sprintMove = sprintMove + v_right * (self.movement_y * self.data_speed_accel);
+			wishvel = sprintMove;
 		}
 		else{
-		wishvel = v_forward * self.movement_x + v_right * self.movement_y;
+			wishvel = v_forward * self.movement_x + v_right * self.movement_y;
 		}
 		// friction
 		if (self.velocity_x || self.velocity_y)

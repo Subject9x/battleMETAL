@@ -33,13 +33,10 @@ void() building_ruin_smoke={
     }
   }
   
-  if( time > self.ai_viewtime ){
-    self.think = SUB_Null;
-  }
-  else{
+  if( time < self.ai_viewtime ){
     self.think = building_ruin_smoke;
+    self.nextthink = time + 0.1;
   }
-  self.nextthink = time + 0.1;
 };
 
 
@@ -80,7 +77,7 @@ void() building_die={
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;
   
   self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.1;
   
   ruins = spawn();
   if( !ruins ){return;}
@@ -160,6 +157,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   
   
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -222,6 +220,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100);
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){
@@ -248,6 +247,7 @@ float( float isNew, float changedflags ) ctrl_send_building={
   //=================
   
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -320,6 +320,7 @@ float( float isNew, float changedflags ) ctrl_send_building={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100);
   }
   
   if( (changedflags & SENDFLAG_EXDATA) ){

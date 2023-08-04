@@ -36,25 +36,6 @@ void() client_push_player_info={
       self.stat_client_shield = myShield;
     }
     
-    self.stat_client_hp_torsoCenter = csqc_updateCompStat(self.health, self.max_health);
-    
-    if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-      self.stat_client_hp_torsoLeft = csqc_updateCompStat(self.torL_hp, self.torL_hpMax);
-    }
-    if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-      self.stat_client_hp_torsoRight = csqc_updateCompStat(self.torR_hp, self.torR_hpMax);
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-      self.stat_client_hp_armLeft = csqc_updateCompStat(self.armL_hp, self.armL_hpMax);
-    }
-    
-    if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-      self.stat_client_hp_armRight = csqc_updateCompStat(self.armR_hp, self.armR_hpMax);
-    }
-    
-    self.stat_client_hp_legs = csqc_updateCompStat(self.legs_hp, self.legs_hpMax);
-    
     if( self.targetEntId != 0 ){
       //this is silly but precludes forcing the csqc to know the target's max shields
       if( (self.enemy.unitModFlags & MOD_HAS_SHIELD) ){
@@ -75,28 +56,7 @@ void() client_push_player_info={
         
         self.stat_target_shield = targShield;
       }
-      self.stat_target_hp_torsoCenter = csqc_updateCompStat(self.enemy.health, self.enemy.max_health);
-      if( (self.enemy.unitModFlags & MOD_HAS_TOR_L) ){
-        self.stat_target_hp_torsoLeft = csqc_updateCompStat(self.enemy.torL_hp, self.enemy.torL_hpMax);
-      }
-      if( (self.enemy.unitModFlags & MOD_HAS_TOR_R) ){
-        self.stat_target_hp_torsoRight = csqc_updateCompStat(self.enemy.torR_hp, self.enemy.torR_hpMax);
-      }
-      if( (self.enemy.unitModFlags & MOD_HAS_ARM_L) ){
-        self.stat_target_hp_armLeft = csqc_updateCompStat(self.enemy.armL_hp, self.enemy.armL_hpMax);
-      }
-      if( (self.enemy.unitModFlags & MOD_HAS_ARM_R) ){
-        self.stat_target_hp_armRight = csqc_updateCompStat(self.enemy.armR_hp, self.enemy.armR_hpMax);
-      }
-      self.stat_target_hp_legs = csqc_updateCompStat(self.enemy.legs_hp, self.enemy.legs_hpMax);
-    }
-    else{
-      self.stat_target_hp_torsoCenter = 0;
-      self.stat_target_hp_torsoLeft = 0;
-      self.stat_target_hp_torsoRight = 0;
-      self.stat_target_hp_armLeft = 0;
-      self.stat_target_hp_armRight = 0;
-      self.stat_target_hp_legs = 0;
+
     }
   }
 };

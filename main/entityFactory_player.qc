@@ -119,20 +119,6 @@ void() player_unmakeMech={
   self.stat_client_energy = 1;
   self.stat_client_shield = 1;
   
-  self.stat_target_hp_torsoCenter = 0;
-  self.stat_target_hp_torsoLeft = 0;
-  self.stat_target_hp_torsoRight = 0;
-  self.stat_target_hp_armLeft = 0;
-  self.stat_target_hp_armRight = 0;
-  self.stat_target_hp_legs = 0;
-
-  self.stat_client_hp_torsoCenter = 1;
-  self.stat_client_hp_torsoLeft = 1;
-  self.stat_client_hp_torsoRight = 1;
-  self.stat_client_hp_armLeft = 1;
-  self.stat_client_hp_armRight = 1;
-  self.stat_client_hp_legs = 1;
-  
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;

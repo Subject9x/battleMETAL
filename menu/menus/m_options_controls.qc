@@ -24,6 +24,8 @@ entity controls_fire_group4;
 entity controsl_select_fire_group;
 entity controsl_select_fire_chain;
 entity controls_open_bind_menu;
+entity controls_togl_player3d;
+entity controls_togl_targ3d;
 
 /*entity controls_fire_group;
 entity controls_group_next;
@@ -209,6 +211,13 @@ void() txt_control_bind_camera={
 void() txt_control_bind_headlight={
   menu_keybind_change ("impulse 32");
 };
+void() txt_control_bind_togl_player3d={
+  menu_keybind_change ("impulse 33");
+};
+void() txt_control_bind_tolg_targ3d={
+  menu_keybind_change ("impulse 34");
+};
+
 
 
 
@@ -284,6 +293,11 @@ void(vector rootOfs) controls_ini_combat={
 
   controls_open_bind_menu = inp_keybindfield(rootOfs + '56 170', '14 14', txt_control_bind_group_menu, "Toggle Weapon Bind Menu:  " , "impulse 31", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
+  controls_togl_player3d = inp_keybindfield(rootOfs + '56 192', '14 14', txt_control_bind_togl_player3d, "Toggle 3d Player Armor:  " , "impulse 33", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_togl_targ3d = inp_keybindfield(rootOfs + '56 214', '14 14', txt_control_bind_tolg_targ3d, "Toggle 3d target armor:  " , "impulse 34", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  
   //2.0.0 - mechwarrior-style controls aren't really needed anymore.
   //controls_fire_group = inp_keybindfield('11 119', '14 14 0', txt_control_bind_fire, "Fire Select Group:  ", "+attack", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   

@@ -360,29 +360,6 @@ void() hud_model_cockpit_draw_frame={
 };
 
 /*
-  HUD MODEL stuff
-*/
-void( entity srcEnt, entity dstEnt) hud_model_armor_config={
-  if(srcEnt.model){
-    dstEnt.model = srcEnt.model;
-    setmodel(dstEnt, dstEnt.model);
-    dstEnt.model = "";
-  }
-  
-  dstEnt.colormod = '0 1.5 0';
-  dstEnt.alpha = 1.0;
-  dstEnt.effects = 0| EF_FULLBRIGHT | EF_NOSHADOW;
-  dstEnt.compOffset_x = srcEnt.compOffset_x; 
-  dstEnt.compOffset_y = srcEnt.compOffset_y; 
-  dstEnt.compOffset_z = srcEnt.compOffset_z; 
-  dstEnt.partParentId = srcEnt.partParentId;
-  dstEnt.solid = SOLID_NOT;
-  dstEnt.takedamage = DAMAGE_NO;
-  dstEnt.movetype = MOVETYPE_NONE;
-  dstEnt.drawmask = 0;
-};
-
-/*
   called in receive_sendent_player.qc
     SCOPE[
       self = player mech entity.
@@ -424,81 +401,164 @@ void() hud_model_armor_player_ini={
   
 };
 
-/*  
-  Draw player mech as 3D Model with armor coloring.
-*/
-void(vector vueOrg, float hpCt, float hpLt, float hpRt, float hpLa, float hpRa, float hpLg ) hud_armor_model_player_frame={
+void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorPlayer3D={
+  local vector panelOrg;
+  local vector viewOrg;
+
+  local vector backOrg;
+  local vector backSize;
+  local vector backColor;
+  local float ct, lt, rt, la, ra, lg;
+
+  local entity hudEnt;
+  local float zTotal;
+  local float zBias;
+  local float zHalf;
+  local float xHalf;
+
   local vector mOffset;
   local vector prevAngl;
+
+  panelOrg = gui_calcAlign(vorg, algn);
+  backColor = CLR_DEF_IIF_FRIEND;
+   
+  if( lblSize != '0 0 0'){
+    backSize_x = ceil(lblSize_x / 16) * 16;
+    backSize_y = ceil(lblSize_y / 16) * 16;
+    backOrg = gui_calcAlignBiased(vSize, lblSize, lalgn, panelOrg, '0.9 0.9'); 
+  }
+  else{
+    backSize_x = (ceil(vSize_x / 16)) * 16;
+    backSize_y = (ceil(vSize_y / 16) + 1) * 16;
+    backOrg_x = backOrg_x - 8;
+    backOrg_y = backOrg_y - 8;
+    backOrg = backOrg + gui_calcAlignCustom(lblOfs, lalgn, panelOrg);
+  }
   
-  if(!HUD_MODEL_ARMOR_GRAPH_PLAYER){
-    return;
-  }
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = vueOrg;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.rootOrigin = vueOrg;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir = anglemod(HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir + frametime*33);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = [0, HUD_MODEL_ARMOR_GRAPH_PLAYER.ai_dir, 0];
-  prevAngl = HUD_MODEL_ARMOR_GRAPH_PLAYER.angles;
-  makevectors(HUD_MODEL_ARMOR_GRAPH_PLAYER.angles);
-  
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.effects = HUD_MODEL_ARMOR_GRAPH_PLAYER.effects | EF_FULLBRIGHT | EF_NOSHADOW;
-  
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_compOffset, vueOrg);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_angl = [CLIENT_server_ent.torC_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod = gui_getColorForArmor(hpCt) * 2;
-  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_mdl);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_org;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.torC_angl;
-  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
-  
-  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_TOR_L) ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_compOffset, vueOrg);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_angl   = [CLIENT_server_ent.torL_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];  
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod   = gui_getColorForArmor(hpLt) * 2;
-    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_mdl);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_org;
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.torL_angl;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
-  }
-  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_TOR_R) ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_compOffset, vueOrg);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_angl = [CLIENT_server_ent.torR_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod  = gui_getColorForArmor(hpRt) * 2;  
-    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_mdl);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_org;
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.torR_angl;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
-  }
-  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_ARM_L) ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_compOffset, vueOrg);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_angl     = [CLIENT_server_ent.armL_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod    = gui_getColorForArmor(hpLa) * 2;
-    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_mdl);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_org;
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.armL_angl;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
-  }
-  if( (HUD_MODEL_ARMOR_GRAPH_PLAYER.unitModFlags & MOD_HAS_ARM_R) ){
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_compOffset, vueOrg);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_angl    = [CLIENT_server_ent.armR_angl_x, HUD_MODEL_ARMOR_GRAPH_PLAYER.angles_y, 0];
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod    = gui_getColorForArmor(hpRa) * 2;
-    setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_mdl);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_org;
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = HUD_MODEL_ARMOR_GRAPH_PLAYER.armR_angl;
-    addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
-    HUD_MODEL_ARMOR_GRAPH_PLAYER.angles = prevAngl;
-  }
+  gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
+
+  clearscene();
+    ct = CLIENT_server_ent.torC_hp / CLIENT_server_ent.torC_hpMax * 100;
+    lt = CLIENT_server_ent.torL_hp / CLIENT_server_ent.torL_hpMax * 100;
+    rt = CLIENT_server_ent.torR_hp / CLIENT_server_ent.torR_hpMax * 100;
+    la = CLIENT_server_ent.armL_hp / CLIENT_server_ent.armL_hpMax * 100;
+    ra = CLIENT_server_ent.armR_hp / CLIENT_server_ent.armR_hpMax * 100;
+    lg = CLIENT_server_ent.legs_hp / CLIENT_server_ent.legs_hpMax * 100;
+
+    hudEnt = HUD_MODEL_ARMOR_GRAPH_PLAYER;
+
+    if(ENT_SERVER_INFO.uiViewBoxOrg != '0 0 0'){
+      viewOrg = ENT_SERVER_INFO.uiViewBoxOrg;
+    }
+    else{
+      viewOrg = CLIENT_vis_org;
+    }
+    hudEnt.maxs_z = max(hudEnt.maxs_z, 24); //test
     
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_org = hud_model_armor_part_frame(HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_compOffset, vueOrg);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_angl        = HUD_MODEL_ARMOR_GRAPH_PLAYER.angles;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.frame = CLIENT_server_ent.legs_frame;
-  setmodel(HUD_MODEL_ARMOR_GRAPH_PLAYER, HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_mdl);
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.colormod = gui_getColorForArmor(hpLg) * 2;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.origin = HUD_MODEL_ARMOR_GRAPH_PLAYER.legs_org;
-  HUD_MODEL_ARMOR_GRAPH_PLAYER.effects = HUD_MODEL_ARMOR_GRAPH_PLAYER.effects | EF_FULLBRIGHT | EF_NOSHADOW;
-  addentity(HUD_MODEL_ARMOR_GRAPH_PLAYER);
-};
+    zBias = (hudEnt.mins_z - hudEnt.maxs_z)/2 - hudEnt.mins_z;
+    zTotal = ((hudEnt.mins_z * -1) + hudEnt.maxs_z) / 2;
+    zHalf = ((hudEnt.mins_z * -1) + hudEnt.maxs_z) / 2;
+    xHalf = hudEnt.maxs_x * 1.5;
+    
+    makevectors('30 0 0');
+    setproperty(VF_ORIGIN, viewOrg + (v_forward * -100 - xHalf) - (v_right * xHalf) + (v_up * (zHalf * 0.9)));	//look towards it.
+    setproperty(VF_ANGLES, '30 0 0');
+    setproperty(VF_MIN, vtodpp([panelOrg_x, panelOrg_y, 0]) );
+    setproperty(VF_SIZE, vtodpp([vSize_x, vSize_y, 0]) );
+    //set an explicit fov. this thing had better be square. DP doesn't support VF_AFOV
+    setproperty(VF_FOV, [zTotal, atan(vSize_y/(vSize_x/tan(zTotal/360*6.28))) * 360/6.28, 0]); 
+
+    setproperty(VF_DRAWENGINESBAR, FALSE);
+    setproperty(VF_DRAWWORLD, FALSE);
+    setproperty(VF_DRAWCROSSHAIR, FALSE);
+    
+    setproperty(VF_FOG_DENSITY, 0.0);
+    setproperty(VF_FOG_ALPHA, 0.0);
+    setproperty(VF_FOG_COLOR, '0 0 0');
+    setproperty(VF_FOG_START, 0.0);
+    setproperty(VF_FOG_HEIGHT, 0.0);
+    setproperty(VF_FOG_FADEDEPTH, 0.0);
+    setproperty(VF_MAINVIEW, FALSE);
+    
+    if(HUD_MODEL_ARMOR_GRAPH_PLAYER){
+      hudEnt.origin = viewOrg;
+      hudEnt.rootOrigin = viewOrg;
+      hudEnt.ai_dir = anglemod(hudEnt.ai_dir + frametime*33);
+      hudEnt.angles = [0, hudEnt.ai_dir, 0];
+      prevAngl = hudEnt.angles;
+      makevectors(hudEnt.angles);
+      
+      hudEnt.effects = hudEnt.effects | EF_FULLBRIGHT | EF_NOSHADOW;
+      
+      hudEnt.torC_org = hud_model_armor_part_frame(hudEnt.torC_compOffset, viewOrg);
+      hudEnt.torC_angl = [CLIENT_server_ent.torC_angl_x, hudEnt.angles_y, 0];
+      hudEnt.colormod = gui_getColorForArmor(ct) * 2;
+      setmodel(hudEnt, hudEnt.torC_mdl);
+      hudEnt.origin = hudEnt.torC_org;
+      hudEnt.angles = hudEnt.torC_angl;
+      addentity(hudEnt);
+      hudEnt.angles = prevAngl;
+      
+      if( (hudEnt.unitModFlags & MOD_HAS_TOR_L) ){
+        hudEnt.torL_org = hud_model_armor_part_frame(hudEnt.torL_compOffset, viewOrg);
+        hudEnt.torL_angl   = [CLIENT_server_ent.torL_angl_x, hudEnt.angles_y, 0];  
+        hudEnt.colormod   = gui_getColorForArmor(lt) * 2;
+        setmodel(hudEnt, hudEnt.torL_mdl);
+        hudEnt.origin = hudEnt.torL_org;
+        hudEnt.angles = hudEnt.torL_angl;
+        addentity(hudEnt);
+        hudEnt.angles = prevAngl;
+      }
+      if( (hudEnt.unitModFlags & MOD_HAS_TOR_R) ){
+        hudEnt.torR_org = hud_model_armor_part_frame(hudEnt.torR_compOffset, viewOrg);
+        hudEnt.torR_angl = [CLIENT_server_ent.torR_angl_x, hudEnt.angles_y, 0];
+        hudEnt.colormod  = gui_getColorForArmor(rt) * 2;  
+        setmodel(hudEnt, hudEnt.torR_mdl);
+        hudEnt.origin = hudEnt.torR_org;
+        hudEnt.angles = hudEnt.torR_angl;
+        addentity(hudEnt);
+        hudEnt.angles = prevAngl;
+      }
+      if( (hudEnt.unitModFlags & MOD_HAS_ARM_L) ){
+        hudEnt.armL_org = hud_model_armor_part_frame(hudEnt.armL_compOffset, viewOrg);
+        hudEnt.armL_angl     = [CLIENT_server_ent.armL_angl_x, hudEnt.angles_y, 0];
+        hudEnt.colormod    = gui_getColorForArmor(la) * 2;
+        setmodel(hudEnt, hudEnt.armL_mdl);
+        hudEnt.origin = hudEnt.armL_org;
+        hudEnt.angles = hudEnt.armL_angl;
+        addentity(hudEnt);
+        hudEnt.angles = prevAngl;
+      }
+      if( (hudEnt.unitModFlags & MOD_HAS_ARM_R) ){
+        hudEnt.armR_org = hud_model_armor_part_frame(hudEnt.armR_compOffset, viewOrg);
+        hudEnt.armR_angl    = [CLIENT_server_ent.armR_angl_x, hudEnt.angles_y, 0];
+        hudEnt.colormod    = gui_getColorForArmor(ra) * 2;
+        setmodel(hudEnt, hudEnt.armR_mdl);
+        hudEnt.origin = hudEnt.armR_org;
+        hudEnt.angles = hudEnt.armR_angl;
+        addentity(hudEnt);
+        hudEnt.angles = prevAngl;
+      }
+        
+      hudEnt.legs_org = hud_model_armor_part_frame(hudEnt.legs_compOffset, viewOrg);
+      hudEnt.legs_angl        = hudEnt.angles;
+      hudEnt.frame = CLIENT_server_ent.legs_frame;
+      setmodel(hudEnt, hudEnt.legs_mdl);
+      hudEnt.colormod = gui_getColorForArmor(lg) * 2;
+      hudEnt.origin = hudEnt.legs_org;
+      hudEnt.effects = hudEnt.effects | EF_FULLBRIGHT | EF_NOSHADOW;
+      addentity(hudEnt);
+    }
+  renderscene();
+  //WARN - must have these so that the REST of the 3D-hud stuff projects correctly!
+  setproperty(VF_ORIGIN, CLIENT_vis_org);
+  setproperty(VF_FOV, VIEW_FOV); 
+  setproperty(VF_ANGLES, input_angles);
+  setproperty(VF_MIN, '0 0 0');
+  setproperty(VF_SIZE, VIEW_ACT);
+  setproperty(VF_DRAWWORLD, TRUE);
+  setproperty(VF_MAINVIEW, TRUE);
+  //------------------------------------------------------------------------
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.mins = CLIENT_server_ent.cache_mins;
+  HUD_MODEL_ARMOR_GRAPH_PLAYER.maxs = CLIENT_server_ent.cache_maxs;
+}; 

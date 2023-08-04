@@ -51,6 +51,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   turretAng_x = 0;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.clientServerNum = fabs(rint(ReadLong()));
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -117,6 +118,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = fabs(ReadByte());
+    self.health = ReadByte() / 100 * self.max_health;
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
@@ -128,10 +130,11 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   if( (changeFlags & SENDFLAG_TURRET) ){
     self.torC_angl_x = anglemod(ReadAngle());
     self.torC_angl_y = anglemod(ReadAngle());
+    
+    self.torC_angl_x = 0; //todo zero-out or fix serverside
     self.torC_angl_z = 0;
+
     self.v_angle = self.torC_angl;
-    self.v_angle_x = self.v_angle_x * -1;
-    self.torC_angl_x = self.v_angle_x * -1;
   }
   
   //EVENT - voice chatter
@@ -210,19 +213,26 @@ void() interpolate_turret={
   interpolate_ground();
   
   self.rootOrigin = self.origin;
+  self.rootAngle = self.angles;
   
-  PVS_FAIL = TRUE;
-  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, self);
+  local float hitcontent;
+  hitcontent = CLIENT_server_ent.dphitcontentsmask;
+
+  PVS_FAIL = FALSE;
+  CLIENT_server_ent.dphitcontentsmask = 0 | PVS_HITCONTENT;
+  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
   PVS_FRAC1 = trace_fraction;
 
-  traceline([self.absmax_x, self.absmax_y, self.absmax_z], CLIENT_vis_org, FALSE, self);
+  traceline([self.absmax_x, self.absmax_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
   PVS_FRAC2 = trace_fraction;
 
-  traceline([self.absmin_x, self.absmin_y, self.absmax_z], CLIENT_vis_org, FALSE, self);
+  traceline([self.absmin_x , self.absmin_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
   PVS_FRAC3 = trace_fraction;
 
-  if((PVS_FRAC1 >= 0.9) || (PVS_FRAC2 >= 0.9) || (PVS_FRAC3 >= 0.9)){
-    PVS_FAIL = FALSE;
+  CLIENT_server_ent.dphitcontentsmask = hitcontent;
+  
+  if((PVS_FRAC1 < 0.9) && (PVS_FRAC2 < 0.9) && (PVS_FRAC3 < 0.9)){
+    PVS_FAIL = TRUE;
   }
 
   self.cl_lod_unit = TRUE;
@@ -282,8 +292,7 @@ void() interpolate_turret={
     }
   }
   self.origin = self.rootOrigin;
-  setmodel(self, self.legs_mdl);
-  setsize(self, self.cache_mins, self.cache_maxs);
+  self.angles = self.rootAngle;
 };
 
 void() predraw_turret={

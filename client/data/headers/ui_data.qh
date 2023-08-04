@@ -65,6 +65,7 @@ string ITEM2_DATA_DESC;
 vector ITEM2_DATA_UID_ORG;
 
 //functions
+void() ui_data_hud_ini_tags;
 void() ui_data_load_mechsizes;
 void() ui_data_load_hudnames;
 float(float id) ui_data_load_mech;

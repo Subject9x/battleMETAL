@@ -13,6 +13,7 @@ float( float isNew, float changeFlags ) sendent_misc_building={
   //======================
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );

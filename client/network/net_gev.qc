@@ -65,6 +65,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.clientServerNum = fabs(rint(ReadLong()));
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();
@@ -97,6 +98,7 @@ void( float isNew, float changeFlags) sendent_handle_gev={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
+    self.health = ReadByte() / 100 * self.max_health;
   }
   
   if( (changeFlags & SENDFLAG_TURRET) ){

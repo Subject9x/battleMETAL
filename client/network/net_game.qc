@@ -22,15 +22,6 @@ void() client_get_info={
   
   CLIENT_player_state_prev = CLIENT_player_state;
   CLIENT_player_deadflag_prev = CLIENT_player_deadflag;
-  
-  if( CLIENT_data_type == DATA_MECH ){
-    CLIENT_health_center_prev = CLIENT_health_center;
-    CLIENT_health_legs_prev = CLIENT_health_legs;
-    CLIENT_health_torso_left_prev = CLIENT_health_torso_left;
-    CLIENT_health_torso_right_prev = CLIENT_health_torso_right;
-    CLIENT_health_arm_left_prev = CLIENT_health_arm_left;
-    CLIENT_health_arm_right_prev = CLIENT_health_arm_right;
-  }
 };
 
 /*
@@ -64,46 +55,9 @@ void() receive_ent_bindData={
     CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
     CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
     
-    CLIENT_health_center = getstatf(STAT_CLIENT_HP_TORSOCENTER); 
-    CLIENT_health_legs = getstatf(STAT_CLIENT_HP_LEGS); 
-    CLIENT_health_torso_left = getstatf(STAT_CLIENT_HP_TORSOLEFT); 
-    CLIENT_health_torso_right = getstatf(STAT_CLIENT_HP_TORSORIGHT); 
-    CLIENT_health_arm_left = getstatf(STAT_CLIENT_HP_ARMLEFT); 
-    CLIENT_health_arm_right = getstatf(STAT_CLIENT_HP_ARMRIGHT);
-    
     //Last Frame Target info cache
-    CLIENT_target_health_prev = CLIENT_stat_trg_ct_hp;
-    
     CLIENT_target_datatype_prev = CLIENT_target_datatype;
-    
-    CLIENT_stat_trg_ct_hp = getstatf(STAT_TARGET_HP_TORSOCENTER);
-    CLIENT_stat_trg_lt_hp = getstatf(STAT_TARGET_HP_TORSOLEFT); 
-    CLIENT_stat_trg_rt_hp = getstatf(STAT_TARGET_HP_TORSORIGHT); 
-    CLIENT_stat_trg_la_hp = getstatf(STAT_TARGET_HP_ARMLEFT);
-    CLIENT_stat_trg_ra_hp = getstatf(STAT_TARGET_HP_ARMRIGHT);
-    CLIENT_stat_trg_lg_hp = getstatf(STAT_TARGET_HP_LEGS);
-    
-    //Critical hits
-    if( CLIENT_player_state == PLAYER_ACTIVE ){
-      if( CLIENT_health_torso_left <= 0 && CLIENT_health_torso_left_prev > 0 ){
-        hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
-      }
-      if( CLIENT_health_torso_right <= 0 && CLIENT_health_torso_right_prev > 0 ){
-        hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
-      }
-      if( CLIENT_health_arm_left <= 0 && CLIENT_health_arm_left_prev > 0 ){
-        hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
-      }
-      if( CLIENT_health_arm_right <= 0 && CLIENT_health_arm_right_prev > 0 ){
-        hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
-      }
-      if( CLIENT_health_legs <= 0 && CLIENT_health_legs_prev > 0 ){
-        hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
-      }
-      //if( CLIENT_health_legs > 0 && CLIENT_health_legs_prev <= 0 ){
-      //repair event
-      //}
-    }
+
     if( !(CLIENT_flags_prev & FL_NOSHOOT) && (CLIENT_flags & FL_NOSHOOT) ){
       hud_event_enqueue( HUD_EVENT_WEAPONS_OFF, 1) ;
     }
@@ -116,39 +70,27 @@ void() receive_ent_bindData={
     //Client targeting data
     CLIENT_stat_trg_ent_id_prev = CLIENT_stat_trg_ent_id;
     if( CLIENT_stat_trg_ent_id == 0){
-      CLIENT_stat_trg_dataidx = 0;
-      CLIENT_target_origin = '0 0 0';
-      CLIENT_target_faction = 0;
       CLIENT_target_shield = 0;
-      CLIENT_target_vecsize = 0;
-      CLIENT_target_size = '0 0 0';
     }
     else{
       CLIENT_stat_trg_ddflg_prev = CLIENT_stat_trg_ddflg;
       CLIENT_stat_trg_ddflg = CLIENT_target_ent.deadflag;
       if(CLIENT_stat_trg_ddflg != DEAD_NO ){
         CLIENT_target_ent = world;
-        CLIENT_stat_trg_dataidx = 0;
         CLIENT_stat_trg_face = 0;
-        CLIENT_target_size = '0 0 0';
         return;
       }
-      CLIENT_stat_trg_dataidx = CLIENT_target_ent.data_idx;
       
       CLIENT_stat_trg_face = anglemod(0 - util_checkPointAngleImpl(CLIENT_target_ent.rootOrigin, CLIENT_server_ent.rootOrigin, view_angles) );
       
       CLIENT_target_datatype_prev = CLIENT_target_datatype;
       CLIENT_target_datatype = CLIENT_target_ent.data_type;
-      CLIENT_target_faction = CLIENT_target_ent.faction;
-      CLIENT_target_origin = CLIENT_target_ent.origin;
-      CLIENT_target_vecsize = CLIENT_target_ent.vec_size;
       CLIENT_target_shield = CLIENT_target_ent.shield;
       if( CLIENT_target_shield <= 0 ){
         CLIENT_target_shield = 0;
       }
       CLIENT_target_dist_prev = CLIENT_target_dist;
       CLIENT_target_dist = vlen(CLIENT_target_ent.rootOrigin - CLIENT_server_ent.rootOrigin);
-      CLIENT_target_size = CLIENT_target_ent.maxs;
     }
     
   }

@@ -77,6 +77,8 @@ void() CSQC_Init =
   UI_OBJECTIVE_ACTIVE = FALSE;
   HUD_TACMAP_ON = FALSE;
   HUD_SCORES_ON = FALSE;
+  HUD_PLAYER_3D = TRUE;
+  HUD_TARGET_3D = TRUE;
 
   //clear out and prepare the sound queue
   i = 1;

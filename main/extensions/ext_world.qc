@@ -84,20 +84,6 @@ void() world_metal_ini={
   addstat(STAT_PLR_HITDIR, AS_FLOAT, stat_hit_dirs);
   addstat(STAT_PLR_RETDIST, AS_FLOAT, stat_ret_dist);
   
-  addstat(STAT_TARGET_HP_TORSOCENTER, AS_INT, stat_target_hp_torsoCenter);
-  addstat(STAT_TARGET_HP_TORSOLEFT, AS_INT, stat_target_hp_torsoLeft);
-  addstat(STAT_TARGET_HP_TORSORIGHT, AS_INT, stat_target_hp_torsoRight);
-  addstat(STAT_TARGET_HP_ARMLEFT, AS_INT, stat_target_hp_armLeft);
-  addstat(STAT_TARGET_HP_ARMRIGHT, AS_INT, stat_target_hp_armRight);
-  addstat(STAT_TARGET_HP_LEGS, AS_INT, stat_target_hp_legs);
-    
-  addstat(STAT_CLIENT_HP_TORSOCENTER, AS_INT, stat_client_hp_torsoCenter);
-  addstat(STAT_CLIENT_HP_TORSOLEFT, AS_INT, stat_client_hp_torsoLeft);
-  addstat(STAT_CLIENT_HP_TORSORIGHT, AS_INT, stat_client_hp_torsoRight);
-  addstat(STAT_CLIENT_HP_ARMLEFT, AS_INT, stat_client_hp_armLeft);
-  addstat(STAT_CLIENT_HP_ARMRIGHT, AS_INT, stat_client_hp_armRight);
-  addstat(STAT_CLIENT_HP_LEGS, AS_INT, stat_client_hp_legs);
-  
   addstat(STAT_WEAPON_RELOAD_1, AS_FLOAT, statWeaponReload1);
   addstat(STAT_WEAPON_RELOAD_2, AS_FLOAT, statWeaponReload2);
   addstat(STAT_WEAPON_RELOAD_3, AS_FLOAT, statWeaponReload3);

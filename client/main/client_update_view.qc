@@ -196,7 +196,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	// draw custom hud
   if(CLIENT_data_type == DATA_MECH){
     //HUD RENDER FRAME SYSTEM
-    if( CLIENT_health_center > 0 ){
+    if( CLIENT_player_state == PLAYER_ACTIVE ){
       //HUD Highlight Boxes
       hud_renderHighlight_frame();
       

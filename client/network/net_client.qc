@@ -93,7 +93,7 @@ void() client_predraw={
   local vector vOldVelocity;
   local float fOldPMoveFlags;
   
-  local vector boostLeft, boostRight, backLeft, backRight;
+  local vector boostLeft, boostRight, backLeft, backRight, vfxVel;
   /*
     Credit:
       thanks, Marco “eukara” Hladik for tutorial!
@@ -214,19 +214,17 @@ void() client_predraw={
       self.origin = self.rootOrigin;
       self.angles = self.rootAngle;
       
-      if( !(self.criticalHits & M_TOR_CENTER) ){
-        self.torC_angl = self.rootAngle;
-        self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl) + (CLIENT_mech_torC_org2 - CLIENT_mech_torC_org1) * self.lerpfrac;
-        self.torC_angl = [0, self.rootAngle_y, 0];
-        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-          self.torC_angl_x = self.rootAngle_x * -1;
-        }
-        setmodel(self, self.torC_mdl);
-        self.angles = self.torC_angl;
-        self.origin = self.torC_org;
-        self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax);
-        addentity(self);
+      self.torC_angl = self.rootAngle;
+      self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl) + (CLIENT_mech_torC_org2 - CLIENT_mech_torC_org1) * self.lerpfrac;
+      self.torC_angl = [0, self.rootAngle_y, 0];
+      if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+        self.torC_angl_x = self.rootAngle_x * -1;
       }
+      setmodel(self, self.torC_mdl);
+      self.angles = self.torC_angl;
+      self.origin = self.torC_org;
+      self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax);
+      addentity(self);
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
         self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl) + (CLIENT_mech_torL_org2 - CLIENT_mech_torL_org1) * self.lerpfrac; 
@@ -362,8 +360,11 @@ void() client_predraw={
           
           pointparticles(particleeffectnum("TE_RAM_MOVE"), boostLeft, normalize(backLeft - boostLeft) * 4, random()*4);
           pointparticles(particleeffectnum("TE_RAM_MOVE"), boostRight, normalize(backRight - boostRight) * 4, random()*4);
-          pointparticles(particleeffectnum("TE_RAM_RING"),  self.legs_org + (v_up * (self.cache_mins_z * 0.4)), '0 0 0', 1.0);
           
+          vfxVel = self.legs_org + (v_forward * 64);
+          vfxVel = normalize(vfxVel - (self.legs_org + (v_forward * -64)) );
+
+          pointparticles(particleeffectnum("TE_RAM_RING"), self.rootOrigin + (v_up * self.cache_maxs_z/2) + (v_forward * self.cache_maxs_x), vfxVel , 1);
         }
       }
     }
@@ -469,6 +470,8 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     
     if( self.data_type != DATA_POBS ){
       self.data_idx = ReadByte();
+
+
       self.next_wepn1 = ReadByte();
       self.next_wepn2 = ReadByte();
       self.next_wepn3 = ReadByte();
@@ -478,7 +481,21 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       self.next_wepn7 = ReadByte();
       self.next_wepn8 = ReadByte();
       self.next_wepn9 = ReadByte();
-      
+
+      self.torC_hpMax = ReadFloat();
+      self.torL_hpMax = ReadFloat();
+      self.torR_hpMax = ReadFloat();
+      self.armL_hpMax = ReadFloat();
+      self.armR_hpMax = ReadFloat();
+      self.legs_hpMax = ReadFloat();
+
+      self.torC_hp = self.torC_hpMax;
+      self.torL_hp = self.torL_hpMax;
+      self.torR_hp = self.torR_hpMax;
+      self.armL_hp = self.armL_hpMax;
+      self.armR_hp = self.armR_hpMax;
+      self.legs_hp = self.legs_hpMax;
+
       if( self.prevDataType == DATA_POBS ){
         //genuine spawn event.
         if( self.clientServerNum = player_localentnum ){
@@ -794,8 +811,7 @@ void() client_event_target_new={
     return;
   }
 
-  self.enemy = findfloat(world, entnum, self.targetEntId);
-
+  self.enemy = findfloat(world, clientServerNum, self.targetEntId);
   CLIENT_target_ent = self.enemy;
   CLIENT_stat_trg_ent_id = self.targetEntId;
   
@@ -803,10 +819,10 @@ void() client_event_target_new={
   self = HUD_MODEL_ARMOR_GRAPH_TARGET;
     self.data_idx = CLIENT_target_ent.data_idx;
     self.data_type = CLIENT_target_ent.data_type;
-    self.flags = self.flags - (self.flags & FL_MONSTER) - (self.flags & FL_UNIT); //ensures that player radar and regular addentity() calls don't pick this up.
+    self.flags = CLIENT_target_ent.flags - (CLIENT_target_ent.flags & FL_MONSTER) - (CLIENT_target_ent.flags & FL_UNIT); //ensures that player radar and regular addentity() calls don't pick this up.
     self.unitModFlags = 0 | CLIENT_target_ent.unitModFlags;
-    self.mins = CLIENT_target_ent.mins;
-    self.maxs = CLIENT_target_ent.maxs;
+    self.cache_mins = CLIENT_target_ent.cache_mins;
+    self.cache_maxs = CLIENT_target_ent.cache_maxs;
     self.skin = 0;
     self.solid = SOLID_NOT;
     self.movetype = MOVETYPE_NONE;
@@ -893,6 +909,13 @@ void(float repairValue) client_event_repair={
   EVENT - CRITICAL =====================================
 */
 void() client_event_critical={  
+  local float isPlayer;
+
+  isPlayer = FALSE;
+  if(self == CLIENT_server_ent){
+    isPlayer = TRUE;
+  }
+
   if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
     
     traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
@@ -900,18 +923,33 @@ void() client_event_critical={
     if( trace_ent != world || trace_fraction == 1.0){
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
         te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
+        }
       }
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (self.critBits & M_TOR_RIGHT) ){
         te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
+        }
       }
       if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (self.critBits & M_ARM_LEFT) ){
         te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
+        }
       }
       if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
         te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
+        }
       }
       if( (self.critBits & M_LEGS) && !(self.criticalHits & M_LEGS) ){
         te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
+        }
       }
     }
   }

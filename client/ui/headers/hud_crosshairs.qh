@@ -21,7 +21,6 @@ vector CROSSHR_IMG_SIZE;
 vector CROSSHR_LOCK_SIZE;
 
 void() hud_renderCrosshairDisabled;
-void() hud_renderCrosshairs;
 
 void() hud_renderCrosshair1;
 void() hud_renderCrosshair2;

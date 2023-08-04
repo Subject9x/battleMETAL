@@ -358,43 +358,43 @@ void() ctrl_mech_critical_hits={
   maxsAdj = '0 0 0';
 
   legSoak = FALSE;
-  if( (self.critBuffer & M_ARM_LEFT) ){
+  if( (self.critBuffer & M_ARM_LEFT) && !(self.criticalHits & M_ARM_LEFT)){
     te_vehicle_chunk( self.armL_mdl, self.armL_org, '0 0 0', self.armL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
-    minsAdj = minsAdj - '-1 -1 0';
-    maxsAdj = maxsAdj + '-1 -1 0';
+    minsAdj = minsAdj + [self.mins_x * -0.05, self.mins_y * -0.05, 0];
+    maxsAdj = maxsAdj - [self.maxs_x * 0.05, self.maxs_y * 0.05, 0];
   }
 
-  if( (self.critBuffer & M_ARM_RIGHT) ){
+  if( (self.critBuffer & M_ARM_RIGHT) && !(self.criticalHits & M_ARM_RIGHT)){
     te_vehicle_chunk(  self.armR_mdl, self.armR_org, '0 0 0', self.armR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
     self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
-    minsAdj = minsAdj - '-1 -1 0';
-    maxsAdj = maxsAdj + '-1 -1 0';
+    minsAdj = minsAdj + [self.mins_x * -0.05, self.mins_y * -0.05, 0];
+    maxsAdj = maxsAdj - [self.maxs_x * 0.05, self.maxs_y * 0.05, 0];
   }
-  if( (self.critBuffer & M_TOR_LEFT) ){
+  if( (self.critBuffer & M_TOR_LEFT) && !(self.criticalHits & M_TOR_LEFT)){
     if( (self.unitModFlags & MOD_HAS_SHIELD) ){
       self.shieldMax = self.shieldMax * 0.5;
     }
     te_vehicle_chunk(  self.torL_mdl, self.torL_org, '0 0 0', self.torL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
-    minsAdj = minsAdj - '-2 -2 0';
-    maxsAdj = maxsAdj + '-2 -2 0';
+    minsAdj = minsAdj + [self.mins_x * -0.1, self.mins_y * -0.1, 0];
+    maxsAdj = maxsAdj - [self.maxs_x * 0.1, self.maxs_y * 0.1, 0];
   }
-  if( (self.critBuffer & M_TOR_RIGHT) ){
+  if( (self.critBuffer & M_TOR_RIGHT) && !(self.criticalHits & M_TOR_RIGHT)){
     if( (self.unitModFlags & MOD_HAS_SHIELD) ){
       self.shieldMax = self.shieldMax * 0.5;
     }
     te_vehicle_chunk(  self.torR_mdl, self.torR_org, '0 0 0', self.torR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
     self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
-    minsAdj = minsAdj - '-2 -2 0';
-    maxsAdj = maxsAdj + '-2 -2 0';
+    minsAdj = minsAdj + [self.mins_x * -0.1, self.mins_y * -0.1, 0];
+    maxsAdj = maxsAdj - [self.maxs_x * 0.1, self.maxs_y * 0.1, 0];
   }
   
   self.mins = self.mins + minsAdj;
   self.maxs = self.maxs + maxsAdj;
 
   setsize(self, self.mins, self.maxs);
-  force_retouch = 2;
+  setorigin(self, self.origin);
 
   item = self.w_slot;
   while(item){
@@ -487,26 +487,14 @@ void() ctrl_player_mech_touch={
     return;
   }
   
-  /*if( other.data_type != DATA_VEHC ){
-
-    self.ramCharge = time;
-    self.ramCool = time + self.ramUp;
-    self.velocity = '0 0 0';
-    return;
-  }*/
-
-
   makevectors ( self.ramAngle );
   vec = normalize (self.origin - other.origin);
   dot = vec * v_forward;
   
 	if( dot < 0.6 ){
-    cons_logAFloat("RAMMAGE - V", vlen(self.velocity)); //debug
-    cons_logAFloat("RAMMAGE - V / frac", vlen(self.velocity) * 0.15); //debug
-    
     mid = vlen(self.origin - other.origin) * 0.5;
     vec = self.legs_org + (v_forward * mid);
-    rammage = vlen(self.velocity) * (self.vec_size  / 4);
+    rammage = vlen(self.velocity) * 0.1;
 
     if( other.shield <= 0 )
     {
@@ -525,14 +513,28 @@ void() ctrl_player_mech_touch={
       else
       {
         t_damage_shield(other, self, self, rammage, vec, TRUE);
-        t_damage(self, other, other, other.shield * 0.25, vec, self.velocity * -0.1);
+        t_damage(self, other, other, other.shield * 0.1, vec, self.velocity * -0.1);
       }
     }
+
+    if(other.data_type == DATA_VEHC){
+      self.velocity_x = self.velocity_x * 0.85;
+      self.velocity_y = self.velocity_y * 0.85;
+    }
+    else{
+      self.ramCharge = time;
+      self.ramCool = time + self.ramUp;
+      self.velocity_x = self.velocity_x * 0.65;
+      self.velocity_y = self.velocity_y * 0.65;
+      return;
+    }
+
     return;
   }  
 
-  if( dead.deadflag < DEAD_NO ){
-    self.velocity_z = other.maxs_z * 1.33;
+  if( other.deadflag < DEAD_NO && other.data_type == DATA_VEHC){
+    self.velocity_x = self.velocity_x * 0.75;
+    self.velocity_y = self.velocity_y * 0.75;
     self.ramCharge = time;
     self.ramCool = time + self.ramUp / 2;
     return;
@@ -577,6 +579,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   }
   
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );

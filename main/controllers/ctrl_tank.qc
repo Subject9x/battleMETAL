@@ -124,6 +124,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   }
   
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -139,6 +140,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100);
   }
   
   if( (changedflags & SENDFLAG_TURRET) ){
@@ -194,6 +196,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   }
   
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -209,6 +212,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100);
   }
   
   if( (changedflags & SENDFLAG_CRIT) ){
@@ -257,6 +261,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   }
   
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -272,6 +277,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
+    WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100);
   }
   
   if( (changedflags & SENDFLAG_TURRET) ){

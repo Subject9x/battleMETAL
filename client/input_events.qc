@@ -236,6 +236,14 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         input_key_impulse_headlight_toggle();
         return FALSE;
       }
+      if( strstrofs(findkeysforcommand("impulse 33", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_player3d_toggle();
+        return TRUE;
+      }
+      if( strstrofs(findkeysforcommand("impulse 34", 0), ftos(scanx),0) != -1 ){
+        input_key_impulse_hud_targ3d_toggle();
+        return TRUE;
+      }
     }
     //---------------------------------------------------------------
   }

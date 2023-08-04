@@ -53,6 +53,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - NEW ENTITY
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    self.clientServerNum = fabs(rint(ReadLong()));
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();
@@ -84,6 +85,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
+    self.health = ReadByte() / 100 * self.max_health;
   }
   
   //EVENT - TURRET ROTATES
@@ -180,12 +182,37 @@ void() interpolate_tank={
   chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
   self.originNext = chasOrg;
   
-  traceline(self.origin, CLIENT_vis_org, FALSE, self);
+  // traceline(self.origin, CLIENT_vis_org, FALSE, self);
   
+  local float hitcontent;
+  hitcontent = CLIENT_server_ent.dphitcontentsmask;
+
+  PVS_FAIL = FALSE;
+  CLIENT_server_ent.dphitcontentsmask = 0 | PVS_HITCONTENT;
+  traceline(self.origin + [0,0, self.maxs_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
+  PVS_FRAC1 = trace_fraction;
+
+  traceline([self.absmax_x, self.absmax_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
+  PVS_FRAC2 = trace_fraction;
+
+  traceline([self.absmin_x , self.absmin_y , self.absmax_z], CLIENT_vis_org, FALSE, CLIENT_server_ent);
+  PVS_FRAC3 = trace_fraction;
+
+  CLIENT_server_ent.dphitcontentsmask = hitcontent;
+  
+  if((PVS_FRAC1 < 0.9) && (PVS_FRAC2 < 0.9) && (PVS_FRAC3 < 0.9)){
+    PVS_FAIL = TRUE;
+  }
+
   self.cl_lod_unit = TRUE;
-  if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if(  PVS_FAIL || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
+
+  // self.cl_lod_unit = TRUE;
+  // if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  //   self.cl_lod_unit = FALSE;
+  // }
   
   if( self.cl_lod_unit ){
     self.cl_lod_weapon = TRUE;
@@ -254,7 +281,6 @@ void() interpolate_tank={
   setsize(self, self.cache_mins, self.cache_maxs);
   setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
-  
 };
 
 void() predraw_tank={
