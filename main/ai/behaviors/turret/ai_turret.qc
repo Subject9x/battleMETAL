@@ -38,20 +38,22 @@ void() ai_turret={
 };
 
 void() ai_turret_touch={
-  local float touch_front;
   
+  if( time < self.ai_react_buffer ){
+    return;
+  }
   if( other.faction != self.faction ){
-    if( !ai_valid_target(self.enemy) ){
-      self.oldenemy = self.enemy;
-      self.enemy = other;
-      return; 
+    if( ai_valid_target(self.enemy)){
+      if((self.enemy.flags & FL_CLIENT)){
+        if(ai_check_vis(self.enemy) == VIS_FRAC){
+          self.ai_react_buffer = time + (self.ai_react_time * 2);
+          return;
+        }
+      }
     }
-    touch_front = ai_check_targ_infront( other, self.ai_fov, TRUE);
-    if( touch_front ){
-      self.oldenemy = self.enemy;
-      self.enemy = other;
-      return;
-    }
+    self.oldenemy = self.enemy;
+    self.enemy = other;
+    self.ai_react_buffer = time + (self.ai_react_time * 1.5);
   }
 };
 

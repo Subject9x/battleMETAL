@@ -246,20 +246,25 @@ void() interpolate_turret={
       self.cl_lod_weapon = FALSE;
     }
     
+
     setmodel(self, self.legs_mdl);
-    setsize(self, self.cache_mins, self.cache_maxs);
     self.skin = 0;
     self.angles = self.rootAngle;
     addentity(self);
+    self.origin = self.rootOrigin;
+    self.angles = self.rootAngle;
+    
     
     makevectors(self.angles);
     self.torC_org =  self.rootOrigin + (v_right * self.torC_compOffset_x) + (v_forward * self.torC_compOffset_z) + (v_up * self.torC_compOffset_y);
+    setmodel(self, self.torC_mdl);
     self.origin = self.torC_org;
     self.angles = self.torC_angl;
-    setmodel(self, self.torC_mdl);
     self.skin = 0;
     addentity(self);
-    
+    self.origin = self.rootOrigin;
+    self.angles = self.rootAngle;
+    setsize(self, self.cache_mins, self.cache_maxs);
     
     if(self.cl_lod_weapon && self.deadflag == DEAD_NO){
       if(self.weaponEnt1.data_idx){
@@ -290,9 +295,11 @@ void() interpolate_turret={
         predraw_unit_weapon(self.weaponEnt9);
       }
     }
+    self.origin = self.rootOrigin;
+    self.angles = self.rootAngle;
+    self.mins = self.cache_mins;
+    self.maxs = self.cache_maxs;
   }
-  self.origin = self.rootOrigin;
-  self.angles = self.rootAngle;
 };
 
 void() predraw_turret={

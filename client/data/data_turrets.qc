@@ -43,6 +43,7 @@ void( float dataID ) data_sync_new_turret={
   setmodel(self, self.legs_mdl);
   self.mins = self.cache_mins;
   self.maxs = self.cache_maxs;
+  setsize(self, self.mins, self.maxs);
   setorigin( self, self.origin );
   
   makevectors(self.angles);

@@ -409,6 +409,12 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     self.clientLocalNum = fabs(self.clientServerNum - 1);
     //cons_logAFloat("CS - RECEIVE - player.entnum/clientServerNum", self.clientServerNum); //debug
     //cons_logAFloat("CS - LOCAL - player_localentnum", player_localentnum); //debug
+    
+    self.deadflag = ReadByte();
+    if( self.deadflag != DEAD_NO ){
+      handle_existing_crits(fabs(rint(ReadLong())));
+      handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
+    }
   }
   
   /* EVENT - Send client.flags total value*/

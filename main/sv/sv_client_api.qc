@@ -33,6 +33,17 @@ float( float isNew, float changeFlags ) send_client={
   /*EVENT - Client is new to receiver */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     //WriteByte( MSG_ENTITY, num_for_edict(self) ); //Game capped at 16 max players, client will always be 0-15
+    //WriteLong( MSG_ENTITY, self.criticalHits);  //sync clients-copies to server-state.
+    WriteByte( MSG_ENTITY, self.deadflag);
+    if( self.deadflag != DEAD_NO ){
+      WriteLong( MSG_ENTITY,   self.criticalHits );
+      WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
+      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+    }
   }
   
   /* EVENT - Send client.flags total value*/
@@ -148,7 +159,7 @@ float( float isNew, float changeFlags ) send_client={
     if( (changeFlags & SENDFLAG_IMPACT) ){
       WriteByte( MSG_ENTITY, self.shieldHitFlag); 
       if( self.shieldHitFlag == 0 ){
-        WriteByte( MSG_ENTITY, (self.torC_hp / self.torC_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
         WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
         WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
         WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );

@@ -670,6 +670,21 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
   }
 };
 
+
+void(float isnew, float ct, float lt, float rt, float la, float ra, float lg) handle_existing_hp={
+  self.torC_hp = ct / 100 * self.torC_hpMax;
+  self.torL_hp = lt / 100 * self.torL_hpMax;
+  self.torR_hp = rt / 100 * self.torR_hpMax;
+  self.armL_hp = la / 100 * self.armL_hpMax;
+  self.armR_hp = ra / 100 * self.armR_hpMax;
+  self.legs_hp = lg / 100 * self.legs_hpMax;
+};
+void(float isnew, float existCrits) handle_existing_crits={
+  if(existCrits != 0){
+    self.criticalHits = self.criticalHits | existCrits;
+  }
+};
+
 /*
   SendEntity - Map Objects ====================================
   5.0.0

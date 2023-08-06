@@ -123,6 +123,7 @@ void() sendevent_mech_burn={
     te_mech_crit( self.legs_org + '0 0 -10', '0 0 10');
   }
 };
+
 /*
   SendEntity - MECH AI =====================================
 */
@@ -132,7 +133,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local float prevShield;
   local float prevDeadFlag;
   local float voiceId;
-  
+
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
   
@@ -176,7 +177,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     
     self.deadflag = ReadByte();
     if( self.deadflag != DEAD_NO ){
-      self.criticalHits = fabs(rint(ReadLong()));
+      handle_existing_crits(fabs(rint(ReadLong())));
+      handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
     }
   }
   
