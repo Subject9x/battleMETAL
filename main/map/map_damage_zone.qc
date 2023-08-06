@@ -19,7 +19,6 @@ Overview:
     ACTIVE_ONTOUCH 32: activate on-touch
     IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
-
 void() map_hazard_ping={
   self.SendEntity = send_damage_zone;
   self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
@@ -30,7 +29,7 @@ void() map_hazard_ping={
   }
 };
 
-void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_ini={
+void(float entSize, void() thFunc, float defDmg, float defWait, string modelName) map_damage_zone_ini={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   self.vec_size = entSize;
@@ -59,17 +58,34 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
     self.damageValue = defDmg;
   }
   
-  if( (self.spawnflags & IS_MAPKEY) ){
-    self.effects = self.effects | EF_NODEPTHTEST;
-  }
-  
   self.reloadRate = defWait * 0.5;
 
   self.data_type = DATA_MAP_DMG;
-  self.model = "models/testball.md3";
-  setmodel( self, self.model );
-  self.think = map_hazard_ping;
-  self.nextthink = time + 1.0;
+  
+  if( (self.spawnflags & IS_MAPKEY) ){
+    setmodel( self, "models/testball.md3" );
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+
+    self.effects = self.effects | EF_NODEPTHTEST;
+    self.think = map_hazard_ping;
+    self.nextthink = time + 1.0;
+  }
+  else{
+    setmodel( self, modelName );
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+
+    self.think = self.th_walk;
+  
+    if( self.isActive ){
+      self.nextthink = time + (random() * self.wait);
+    }
+  }
+  
+
+
+
   self.angles_y = anglemod( (random() * 180) + (random() * 180) );
   self.angles_x = anglemod( crandom() * 5);
 };
@@ -77,8 +93,26 @@ void(float entSize, void() thFunc, float defDmg, float defWait) map_damage_zone_
 void() map_damage_zone_rad_think={
   local entity unit;
   local vector mechHit;
+  local vector partclPoint;
+  local vector adj;
+  local vector rando;
   
   if( self.isActive ){
+    if(random() > 0.9){
+      makevectors(self.angles);  
+      
+      adj = self.origin;
+      adj = adj + (v_up * (self.maxs_z * 0.15));
+      
+      rando = randomvec();
+      partclPoint = self.origin;
+      partclPoint = partclPoint + (v_up * (self.maxs_z * 0.5));
+      partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
+      partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
+    
+      pointparticles( particleeffectnum("TE_FIELD_RAD"), partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
+    }
+    
     unit = findradius(self.view_ofs, self.maxs_x);
     while(unit){
       if(unit.deadflag == DEAD_NO){
@@ -115,8 +149,27 @@ void() map_damage_zone_crs_think={
   local entity unit;
   local vector org;
   local vector hit;
+
+  local vector partclPoint;
+  local vector adj;
+  local vector rando;
+  
   
   if( self.isActive ){
+    if( random() > 0.9){
+      makevectors(self.angles);  
+      
+      adj = self.origin;
+      adj = adj + (v_up * (self.maxs_z * 0.15));
+      
+      rando = randomvec();
+      partclPoint = self.origin;
+      partclPoint = partclPoint + (v_up * (self.maxs_z * 0.5));
+      partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
+      partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
+      pointparticles(particleeffectnum("TE_FIELD_MINERAL"), partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
+    }
+
     unit = findradius(self.view_ofs, self.maxs_x * 3);
     while(unit){
       if((unit.flags & FL_UNIT)){
@@ -152,8 +205,30 @@ void() map_damage_zone_crs_think={
 
 void() map_damage_zone_qtm_think={
   local entity unit;
+  local vector partclPoint;
+  local vector adj;
+  local vector rando;
+  local vector v;
   
-  if( self.isActive ){
+  
+  if( self.isActive ){ 
+    if( random() > 0.9){
+      makevectors(self.angles);  
+      
+      adj = self.origin;
+      adj = adj + (v_up * (self.maxs_z * 0.15));
+      
+      rando = randomvec();
+      partclPoint = self.origin;
+      partclPoint = partclPoint + (v_up * (self.maxs_z * 0.5));
+      partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
+      partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
+  
+      pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), partclPoint, normalize( v - partclPoint ), 1);
+      pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), partclPoint, normalize( v - partclPoint ) * 30, 1);
+      trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), partclPoint, v);
+    }
+
     unit = findradius(self.view_ofs, self.maxs_x);
     while(unit){
       if((unit.flags & FL_UNIT)){
@@ -194,7 +269,7 @@ void() map_hazard_rad_small={
     self.count = 2.0;
   }
   
-  map_damage_zone_ini(1, map_damage_zone_rad_think, self.damageValue, self.count);
+  map_damage_zone_ini(1, map_damage_zone_rad_think, self.damageValue, self.count, "models/map/rads/rad_base_sm.obj");
 
   setsize( self, '-18 -18 0', '18 18 20' );
   setorigin( self, self.origin );
@@ -212,7 +287,7 @@ void() map_hazard_rad_medium={
   if(!self.count){
     self.count = 1.5;
   }
-  map_damage_zone_ini(2, map_damage_zone_rad_think, self.damageValue, self.count);
+  map_damage_zone_ini(2, map_damage_zone_rad_think, self.damageValue, self.count, "models/map/rads/rad_base_md.obj");
 
   setsize( self, '-40 -40 0', '40 40 25' );
   setorigin( self, self.origin );
@@ -230,7 +305,7 @@ void() map_hazard_rad_large={
   if(!self.count){
     self.count = 1.0;
   }
-  map_damage_zone_ini(3, map_damage_zone_rad_think, self.damageValue, self.count);
+  map_damage_zone_ini(3, map_damage_zone_rad_think, self.damageValue, self.count, "models/map/rads/rad_base_lg.obj");
   
   setsize( self, '-48 -48 0', '48 48 30' );
   setorigin( self, self.origin );
@@ -269,7 +344,7 @@ void() map_hazard_crys_small={
     self.count = 2.0;
   }
 
-  map_damage_zone_ini(1, map_damage_zone_crs_think, self.damageValue, self.count);
+  map_damage_zone_ini(1, map_damage_zone_crs_think, self.damageValue, self.count, "models/map/rads/min_base_sm.obj");
 
   setsize( self, '-20 -20 0', '20 20 25' );
   setorigin( self, self.origin );
@@ -296,7 +371,7 @@ void() map_hazard_crys_medium={
     self.count = 1.5;
   }
 
-  map_damage_zone_ini(2, map_damage_zone_crs_think, self.damageValue, self.count);
+  map_damage_zone_ini(2, map_damage_zone_crs_think, self.damageValue, self.count, "models/map/rads/min_base_md.obj");
 
   setsize( self, '-30 -30 0', '30 30 40' );
   setorigin( self, self.origin );
@@ -320,7 +395,7 @@ void() map_hazard_crys_large={
     self.damageValue = 3.0;
   }
 
-  map_damage_zone_ini(3, map_damage_zone_crs_think, self.damageValue, self.count);
+  map_damage_zone_ini(3, map_damage_zone_crs_think, self.damageValue, self.count, "models/map/rads/min_base_lg.obj");
   
   setsize( self, '-40 -40 0', '40 40 52' );
   setorigin( self, self.origin );
@@ -347,8 +422,10 @@ void() map_hazard_quant_small={
   if(!self.count){
     self.count = 0.5;
   }
-  map_damage_zone_ini(1, map_damage_zone_qtm_think, self.damageValue, self.count);
+  map_damage_zone_ini(1, map_damage_zone_qtm_think, self.damageValue, self.count, "models/map/rads/qtm_base_sm.obj");
 
+  
+  self.effects = self.effects | EF_DOUBLESIDED | EF_NOSHADOW;
   setsize( self, '-25 -25 0', '25 25 30' );
   setorigin( self, self.origin );
   self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
@@ -367,8 +444,9 @@ void() map_hazard_quant_medium={
   if(!self.count){
     self.count = 0.5;
   }
-  map_damage_zone_ini(2, map_damage_zone_qtm_think, self.damageValue, self.count);
+  map_damage_zone_ini(2, map_damage_zone_qtm_think, self.damageValue, self.count, "models/map/rads/qtm_base_md.obj");
 
+  self.effects = self.effects | EF_DOUBLESIDED | EF_NOSHADOW;
   setsize( self, '-35 -35 0', '35 35 45' );
   setorigin( self, self.origin );
   self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
@@ -388,8 +466,9 @@ void() map_hazard_quant_large={
     self.count = 0.5;
   }
 
-  map_damage_zone_ini(3, map_damage_zone_qtm_think, self.damageValue, self.count);
+  map_damage_zone_ini(3, map_damage_zone_qtm_think, self.damageValue, self.count, "models/map/rads/qtm_base_lg.obj");
   
+  self.effects = self.effects | EF_DOUBLESIDED | EF_NOSHADOW;
   setsize( self, '-45 -45 0', '45 45 56' );
   setorigin( self, self.origin );
   self.view_ofs = self.origin + [0, 0, self.maxs_z / 2];
