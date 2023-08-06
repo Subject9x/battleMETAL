@@ -352,6 +352,7 @@ void() ui_navbutton_launch_click={
       cl_send_infostring( (INFO_FLAG_MECH | CLIENT_weapon_state | INFO_FLAG_SPAWN | INFO_FLAG_DEPLOY | INFO_FLAG_SPAWN | INFO_FLAG_COLOR) );
       
       cl_set_chase();
+      CLIENT_data_type = DATA_MECH;
       
       if( HUD_EXTERNAL_CAM_ACTIVE ){
         ui_data_load_hud( HUD_EXTERNAL_CAM_DATA );

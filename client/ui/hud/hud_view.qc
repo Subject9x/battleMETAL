@@ -1126,7 +1126,12 @@ void() data_hud_fps_cam={
               lalign = UI_DATA_LABEL_ALIGN[uid];
               lblofs = UI_DATA_LABEL_OFS[uid];
               color2 = UI_DATA_COLOR2[uid];
-              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_target_ent.health/CLIENT_target_ent.max_health * 100, lflag, lalign,  lblofs, color2);
+              if((CLIENT_target_ent.flags & FL_TURRET)){
+                hud_renderArmorVehicle(porg, algn, vsize, CLIENT_target_ent.health/CLIENT_target_ent.max_health * 100, lflag, lalign, lblofs, color2);
+              }
+              else{
+                hud_renderArmorBuilding(porg, algn, vsize, CLIENT_target_ent.health/CLIENT_target_ent.max_health * 100, lflag, lalign,  lblofs, color2);
+              }
             }
           }
         }
