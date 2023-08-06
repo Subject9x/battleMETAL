@@ -2239,7 +2239,7 @@
   //TE_SHIELD_HIT_HIGH - BLUE LIGHT
   effect TE_SHIELD_HIT_HIGH
   countabsolute 1
-  lightradius 50
+  lightradius 25
   lightradiusfade 100
   lightcolor 0 1 1
   lightshadow 0
@@ -3529,9 +3529,9 @@ velocitymultiplier 2
   color 0x01dfbc 0x81f5dc
   tex 32 32
   size 1 2
-  sizeincrease 250
-  alpha 128 256 450
-  velocityjitter 0 0 1	// must be set to this !!
+  sizeincrease 150
+  alpha 128 256 512
+  velocityjitter 1 1 1	// must be set to this !!
   orientation oriented	// must be set to this !!
   rotate 0 10 -20 20
 
