@@ -51,6 +51,7 @@ void() data_ini_matok_={
   self.data_speed_strafe = 155.0;
   self.data_speed_backward = 80.0;
   self.data_speed_accel = 1.45;
+  self.data_speed_decel = 0.05;
   self.ramUpMax = 1.5;
   self.ramCooldown = 3;
 #ifdef CSQC

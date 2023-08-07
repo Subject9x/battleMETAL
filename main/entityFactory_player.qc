@@ -95,9 +95,12 @@ void() player_makeMech={
   self.damageValue = 0;
   self.critBits = 0;
   self.canTarget = TRUE;
+  if( self.data_speed_decel == 0){
+    self.data_speed_decel = cvar("sv_stopspeed");
+  }
   
   droptofloor();
-  
+
   self.targetEntId = 0;
   self.new_color = TRUE;
   self.effects = self.effects | EF_NODEPTHTEST;

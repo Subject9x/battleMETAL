@@ -292,31 +292,31 @@ void() client_predraw={
         if(self.cl_lod_weapon){
           client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
         
-          if(self.weaponEnt1.data_idx){
+          if(self.weaponEnt1.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt1);
           }
-          if(self.weaponEnt2.data_idx){
+          if(self.weaponEnt2.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt2);
           }
-          if(self.weaponEnt3.data_idx){
+          if(self.weaponEnt3.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt3);
           }
-          if(self.weaponEnt4.data_idx){
+          if(self.weaponEnt4.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt4);
           }
-          if(self.weaponEnt5.data_idx){
+          if(self.weaponEnt5.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt5);
           }
-          if(self.weaponEnt6.data_idx){
+          if(self.weaponEnt6.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt6);
           }
-          if(self.weaponEnt7.data_idx){
+          if(self.weaponEnt7.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt7);
           }
-          if(self.weaponEnt8.data_idx){
+          if(self.weaponEnt8.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt8);
           }
-          if(self.weaponEnt9.data_idx){
+          if(self.weaponEnt9.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt9);
           }
         }
@@ -374,10 +374,7 @@ void() client_predraw={
   self.mins = self.cache_mins;
   self.maxs = self.cache_maxs;
   self.origin = self.rootOrigin;
-  setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
-  self.alpha = 1.0;
-  self.scale = 1.0;
 };
 
 void( float isNew, float changeFlags ) sendent_handle_client={
@@ -453,6 +450,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     self.legDir = ReadAngle();
     self.ai_dir = ReadFloat();
   }
+  
   if( (changeFlags & SENDFLAG_VELOCITY) ){
     self.velocity_x = ReadFloat();
     self.velocity_y = ReadFloat();

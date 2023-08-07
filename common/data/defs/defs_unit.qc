@@ -51,6 +51,7 @@ Overview:
 .float data_speed_strafe; //side strafe speed
 .float data_speed_backward; //backward speed
 .float data_speed_accel;	//cl_speedkey acceleration factor
+.float data_speed_decel;  //override sv_stopspeed for units.
 
 //subcomponents decomposed to field vars, reduce entity management
 .string torC_mdl;

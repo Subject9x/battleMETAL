@@ -108,7 +108,7 @@ void() ai_state_lurker_frame={
         if( !ai_check_scan( self.stat_rdr_mode ) ){
           if( self.tether == TETHER_PATROL ){
             if( self.patrolNode ){
-              ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.75 );
+              ai_nodegraph_patrol_frame( self.data_speed_strafe, self.data_speed_forward * 0.7 );
             }
             else{
               self.tether = TETHER_NONE;
@@ -171,7 +171,7 @@ void() ai_state_brawler_frame={
               self.ai_fadePos = self.enemy.origin;
               break;
           }
-          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.75, self.data_speed_forward * 0.9 );
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.75, self.data_speed_forward * 0.85 );
         }
         self.enemy = world;
       }

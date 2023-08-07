@@ -53,6 +53,7 @@ void() data_ini_warden_={
   self.data_speed_strafe = 165.0;
   self.data_speed_backward = 165.0;
   self.data_speed_accel = 1.33;
+  self.data_speed_decel = 0.1;
   self.ramUpMax = 3;
   self.ramCooldown = 8;
 #ifdef CSQC

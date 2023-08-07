@@ -250,7 +250,7 @@ void() SV_PlayerPhysics =
 			v_z = 0;
 			f = vlen(v);
 			if (f < sv_stopspeed){
-				f = 1 - frametime * (sv_stopspeed / f) * sv_friction;
+				f = 1 - frametime * (self.data_speed_decel / f) * sv_friction;
 			}
 			else{
 				f = 1 - frametime * sv_friction;
