@@ -21,6 +21,18 @@ models/map/plats/plat_small.obj
 models/map/plats/plat_medium.obj
 models/map/plats/plat_large.obj
 
+models/map/rads/min_base_sm.obj
+models/map/rads/min_base_md.obj
+models/map/rads/min_base_lg.obj
+
+models/map/rads/rad_base_sm.obj
+models/map/rads/rad_base_md.obj
+models/map/rads/rad_base_lg.obj
+
+models/map/rads/qtm_base_sm.obj
+models/map/rads/qtm_base_md.obj
+models/map/rads/qtm_base_lg.obj
+
 //Balaket
 //Matok
 //Monitor
