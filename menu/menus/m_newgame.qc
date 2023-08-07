@@ -221,8 +221,9 @@ void(vector labelOrg) newmgame_text_ace={
   drawstring(thisOrg, "AWAKE, IRON.", '14 14 0', '1 1 0.1', 1, 0);
   drawstring(thisOrg + '0 16', "+ AI mechs equal your own.", '14 14 0', '1 1 0.1', 1, 0);
   drawstring(thisOrg + '0 32', "+ AI accuracy is higher.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + '0 48', "+ Additional mission objectives.", '14 14 0', '1 1 0.1', 1, 0);
-  drawstring(thisOrg + '0 64', "+ can't get enough of battleMETAL's quirks.", '14 14 0', '1 1 0.1', 1, 0);
+  drawstring(thisOrg + '0 48', "+ can't get enough of battleMETAL's quirks.", '14 14 0', '1 1 0.1', 1, 0);
+  //drawstring(thisOrg + '0 64', "+ Additional mission objectives.", '14 14 0', '1 1 0.1', 1, 0); //never got this working - Subject9x 7/31/2023
+  
   
   drawfont = drawfont_prev;
 };
@@ -353,7 +354,7 @@ void() m_newg_d={
           drawfont = FONT_NUM_ROBOT_REGULAR;
             drawstring(MENU_ORG + '150 40', strcat("Author: ", CAMP_AUTH[widget.data_bind]), '12 12', '1 1 1', 1, 0);
           drawfont = FONT_NUM_ROBOT_LIGHT;
-            gui_wrapText(MENU_ORG + '150 54', '350 300', CAMP_DESC[widget.data_bind], '14 14', '1 1 0.1', 1);
+            gui_wrapText(MENU_ORG + '150 54', '280 400', CAMP_DESC[widget.data_bind], '14 14', '1 1 0.1', 1);
           drawfont = drawfont_prev;
         }
       }
