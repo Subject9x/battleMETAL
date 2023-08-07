@@ -52,7 +52,7 @@ void() data_ini_sapper_={
   self.data_speed_strafe = 105.0;
   self.data_speed_backward = 100.0;
   self.data_speed_accel = 2.25;
-  self.data_speed_decel = 0.075;
+  self.data_speed_decel = 50;
   self.ramUpMax = 1.75;
   self.ramCooldown = 3;
 #ifdef CSQC
