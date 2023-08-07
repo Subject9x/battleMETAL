@@ -82,9 +82,9 @@ void() predraw_missile={
   interpolate_origin();
   interpolate_angle();
   
-  traceline(self.origin, CLIENT_vis_org, FALSE, self);
+  traceline(self.origin, CLIENT_vis_org, TRUE, self);
   
-  if(trace_fraction != 1.0 ){
+  if(trace_fraction < 0.9){
     return;
   }
   
@@ -96,17 +96,15 @@ void() predraw_missile={
     return;
   }
   
-  if( self.predraw_projectile ){
-    self.predraw_projectile();
-  }
+  
+  setmodel(self, self.model);
   if( self.data_postinit ){
     self.traileffectnum = self.data_traileff;
   }
-  
-  setmodel(self, self.model);
+  if( self.predraw_projectile ){
+    self.predraw_projectile();
+  }
   addentity(self);
-  
-  
 };
 
 void() predraw_plasma={
