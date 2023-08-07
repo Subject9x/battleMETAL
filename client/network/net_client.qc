@@ -103,29 +103,31 @@ void() client_predraw={
     vOldOrigin = self.origin;
     vOldVelocity = self.velocity;
     fOldPMoveFlags = self.pmove_flags;
-    for ( frameItr = servercommandframe + 1; frameItr < clientcommandframe; frameItr++ ) {
-      flSuccess = getinputstate( frameItr );
-
-      if ( flSuccess == FALSE ) {
-          continue;
+    if(!MENU_PROG_OFF){
+      for ( frameItr = servercommandframe + 1; frameItr < clientcommandframe; frameItr++ ) {
+        flSuccess = getinputstate( frameItr );
+  
+        if ( flSuccess == FALSE ) {
+            continue;
+        }
+  
+        // Partial frames are the worst
+        if ( input_timelength == 0 ) {
+            break;
+        }
+        //runstandardplayerphysics( self );
+        CS_PlayerPhysics();
       }
-
-      // Partial frames are the worst
-      if ( input_timelength == 0 ) {
-          break;
-      }
-      //runstandardplayerphysics( self );
-      CS_PlayerPhysics();
+      vPlayerOrigin = [ self.origin_x, self.origin_y, vPlayerOriginOld_z ];
+      vPlayerVelocity = self.velocity;
+  
+      // Time to roll back
+      self.origin = vOldOrigin;
+      setorigin( self, self.origin );
+      self.velocity = vOldVelocity;
+      self.pmove_flags = fOldPMoveFlags;
+      self.angles = input_angles;
     }
-    vPlayerOrigin = [ self.origin_x, self.origin_y, vPlayerOriginOld_z ];
-    vPlayerVelocity = self.velocity;
-
-    // Time to roll back
-    self.origin = vOldOrigin;
-    setorigin( self, self.origin );
-    self.velocity = vOldVelocity;
-    self.pmove_flags = fOldPMoveFlags;
-    self.angles = input_angles;
 
     // Set renderflag for mirrors!
     //self.renderflags = RF_EXTERNALMODEL;
