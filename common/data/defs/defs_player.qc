@@ -78,6 +78,7 @@ float input_sequence;
 .float subType;   //used by AI to delineate unit variant - Zap , gun, brawl, sniper etc
 
 #ifdef SSQC
+.float chassisDir;
 .float posFadeTimer;  //breadcrumbs for the AI....
 .vector position1;
 .vector position2;

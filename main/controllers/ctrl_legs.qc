@@ -10,13 +10,22 @@ Overview:
 */
 
 void() ctrl_updateLegs={
+  local vector yaw;
   //local float velDir, left, right;
   
-  if( self.movement_x == 0 && self.movement_y == 0 ){
+  self.legs_angl_y = self.chassisDir;
+  // if( self.movement_x == 0 && (self.velocity_x == 0 && self.velocity_y == 0) ){
+  if( self.moveState == MOVE_STAND ){
     self.legDir = LEGS_MOVE_STAND;  // animation switch -> 'stand'
   }
   else{
-    self.legs_angl_y = vectoyaw( self.velocity );
+  //   if(self.chassisDir == 0 && self.movement_x == 0){
+  //     yaw = vectoangles(self.velocity);
+  //     self.legs_angl_y = yaw_y;
+  //   }
+  //   else{
+  //     self.legs_angl_y = self.chassisDir;
+  //   }
     
     //outta time to really fix this one...<sigh>
     /*velDir = anglemod(self.v_angle_y - self.legs_angl_y);

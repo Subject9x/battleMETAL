@@ -89,9 +89,10 @@ void() PlayerPreThink = {
 		//self.flags = self.flags | FL_JUMPRELEASED;
 
 // teleporters can force a non-moving pause time	
-	if (time < self.pausetime)
+	if (time < self.pausetime){
 		self.velocity = '0 0 0';
-  
+  }
+
   //Player powering up their mech, prevent movement
   if(time < self.power_timer){
     PlayerPreThink_powerup();
@@ -103,7 +104,7 @@ void() PlayerPreThink = {
       if( self.moveState > MOVE_STAND ){
         self.moveState = MOVE_STAND;
         if( time > self.ramCharge ){
-          self.ramAngle_y = self.v_angle_y;
+          self.ramAngle_y = self.legs_angl_y;
         }
       }
     }
@@ -111,10 +112,10 @@ void() PlayerPreThink = {
   
   if( !self.button9 ){
     if( self.viewzoom < 1 ){
-      self.viewzoom = self.viewzoom + 0.25;
+      self.viewzoom = self.viewzoom + 5.0 * frametime;
     }
     else{
-      self.viewzoom = 1;
+      self.viewzoom = 1.0;
     }
   }
 };
@@ -159,17 +160,20 @@ void() PlayerPostThink = {
     PlayerPostThink_powerup();
     return;
   }
-  if( (self.movement_x || self.movement_y) ){
+
+  if( self.impulse != 0 ){
+    ImpulseCommands ();
+  }
+  
+  ButtonCommands();
+
+  if( self.movement_x != 0 || fabs(self.velocity_x) >= 15 || fabs(self.velocity_y) >= 15 ){
     self.moveState = MOVE_NORM;
   }
   else{
     self.moveState = MOVE_STAND;
   }
-  if( self.impulse ){
-    ImpulseCommands ();
-  }
-  
-  ButtonCommands();
+
   
   if(self.data_type != DATA_POBS){
     makevectors(self.angles);
@@ -229,16 +233,16 @@ void() PlayerPostThink = {
     if( self.doRadarSweep ){
       self.doRadarSweep();
     }
-  }
-// check for attack
-  self.statTargetHitParts = 0;
-  playerAttack();
-  
-  if( time > self.posFadeTimer ){
-    self.posFadeTimer = time + POSITION_FADE_TIME;
-    //self.position3 = self.position2;
-    self.position2 = self.position1;
-    self.position1 = self.origin;
+   // check for attack
+    self.statTargetHitParts = 0;
+    playerAttack();
+    
+    if( time > self.posFadeTimer ){
+      self.posFadeTimer = time + POSITION_FADE_TIME;
+      //self.position3 = self.position2;
+      self.position2 = self.position1;
+      self.position1 = self.origin;
+    }
   }
 
 // check to see if player landed and play landing sound	

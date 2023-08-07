@@ -250,8 +250,8 @@ void() ImpulseCommands ={
 */
 void() ButtonCommands={
   //action mapping: +sprint 
-  if( (self.unitModFlags & MOD_HAS_RAMSHOCKS) ){
-    if( self.button8 ){
+  if( self.button8 ){
+    if( (self.unitModFlags & MOD_HAS_RAMSHOCKS) ){
       if( self.energy > 0 && !(self.legs_flags & FL_DISARMED)){
         if( self.playerState == PLAYER_ACTIVE ){
           self.ramAngle_y = self.v_angle_y;
@@ -263,18 +263,40 @@ void() ButtonCommands={
       }
     }
   }
-  
+  //only change when NOT ramming.
+  if(time > self.ramCharge){
+      if( self.button11){
+        if(self.movement_x >= 0){
+          self.chassisDir = self.legs_angl_y + (self.yaw_speed * 20 * frametime);
+        }
+        else{
+          self.chassisDir = self.legs_angl_y - (self.yaw_speed * 20 * frametime);
+        }
+      }
+      else if( self.button12){
+        if(self.movement_x >= 0){
+          self.chassisDir = self.legs_angl_y - (self.yaw_speed * 20 * frametime);
+        }
+        else{
+          self.chassisDir = self.legs_angl_y + (self.yaw_speed * 20 * frametime);
+        }
+      }
+      else{
+        self.chassisDir = self.legs_angl_y;
+      }
+  }
+
   //action mapping: +zoom / -zoom
   if( self.button9 ){
     if( self.viewzoom > 0.25 ){
-      self.viewzoom = self.viewzoom - 0.25;
+      self.viewzoom = self.viewzoom - 6.5 * frametime;
     }
   }
   
   //action mapping: +regen
-  if( time > self.shieldHitRegen ){
-    if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-      if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    if(self.button10 && (cvar("gamemode") == GAMEMODE_CAMPAIGN) ){
+      if( time > self.shieldHitRegen ){
         if( self.energy >= (self.energyMax * 0.15) ){
           if( self.shield < self.shieldMax ){
             self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.25);
