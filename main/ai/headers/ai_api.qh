@@ -29,10 +29,22 @@ float TR_LEFT               = 5;  //Turret ideal yaw is left-side away from ai_d
 float TR_RIGHT              = 6;  //Turret ideal yaw is right-side awa from ai_dir;
 
 //VIS CONSTANTS
-float VIS_FAIL  = 0;  //complete LOS block via map, building, doodad
-float VIS_FRAC  = 1;  //LOS is solid, clear shot
-float VIS_FRN   = 2;  //A friendly is blocking the way
-float VIS_ENEMY = 3;  //a moving enemy is blocking the way.
+#define VIS_FAIL 0  //complete LOS block via map, building, doodad
+#define VIS_FRAC 1  //LOS is solid, clear shot
+#define VIS_FRN  2  //A friendly is blocking the way
+#define VIS_ENEMY 3  //a moving enemy is blocking the way.
+
+float VIS_FRAC1;
+float VIS_FRAC2;
+float VIS_FRAC3;
+float VIS_FRAC4;
+
+entity VIS_ENT1;
+entity VIS_ENT2;
+entity VIS_ENT3;
+entity VIS_ENT4;
+
+float PVS_FAIL;
 
 //GLOBALS
 entity lastNode;        //minor optimization for assigning ai_nodes for patrols by reducing lookup times.

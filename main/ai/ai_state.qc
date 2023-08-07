@@ -171,7 +171,7 @@ void() ai_state_brawler_frame={
               self.ai_fadePos = self.enemy.origin;
               break;
           }
-          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.67, self.data_speed_forward * 0.85 );
+          ai_nodegraph_frame( self.ai_fadePos, self.ai_fadePos, self.data_speed_forward * 0.75, self.data_speed_forward * 0.9 );
         }
         self.enemy = world;
       }

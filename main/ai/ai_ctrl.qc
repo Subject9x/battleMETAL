@@ -244,38 +244,59 @@ float( entity targ ) ai_check_vis={
   self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_OPAQUE | DPCONTENTS_SKY);
   
   //traceline (spot1, spot2, , self);
-  
-  tracebox(spot2, '-2 -2 -2', '2 2 2', spot1, MOVE_NORMAL, self); 
+  traceline( [targ.absmax_x, targ.absmax_y, targ.origin_z + targ.maxs_z/2], spot1, MOVE_NORMAL, self);
+  VIS_FRAC1 = trace_fraction;
+  VIS_ENT1 = trace_ent;
+
+  traceline( [targ.absmax_x, targ.absmin_y, targ.origin_z + targ.maxs_z/2], spot1, MOVE_NORMAL, self);
+  VIS_FRAC2 = trace_fraction;
+  VIS_ENT2 = trace_ent;
+
+  traceline( [targ.absmin_x, targ.absmin_y, targ.origin_z + targ.maxs_z/2], spot1, MOVE_NORMAL, self);
+  VIS_FRAC3 = trace_fraction;
+  VIS_ENT3 = trace_ent;
+
+  traceline( [targ.absmin_x, targ.absmax_y, targ.origin_z + targ.maxs_z/2], spot1, MOVE_NORMAL, self);
+  VIS_FRAC4 = trace_fraction;
+  VIS_ENT4 = trace_ent;
 
   self.dphitcontentsmask = 0 | fabs(contentBuffer);
 
-  //case: los crossed content - ported q1
-  if ( trace_inopen && trace_inwater ){
+  if( VIS_ENT1 == world && VIS_ENT2 == world  && VIS_ENT3 == world  && VIS_ENT4 == world ){
     return VIS_FAIL;  // sight line crossed contents
   }
 
-  //case: los hit desired target
-  if( trace_ent == targ ){
-    return VIS_FRAC;
+  if( VIS_FRAC1 < 0.9 && VIS_FRAC2 < 0.9  && VIS_FRAC3 < 0.9  && VIS_FRAC4 < 0.9 ){
+    return VIS_FAIL;  // sight line crossed contents
   }
+
+  //case: los crossed content - ported q1
+  // if ( trace_inopen && trace_inwater ){
+  //   return VIS_FAIL;  // sight line crossed contents
+  // }
+
+  //case: los hit desired target
+  // if( trace_ent == targ ){
+  //   return VIS_FRAC;
+  // }
   
   //case: los length is 1.0, ie a clear line
-  if ( trace_fraction >= 1.0 ){
-    return VIS_FRAC;
-  }
+  // if ( trace_fraction >= 1.0 ){
+  //   return VIS_FRAC;
+  // }
   
   //case: los hit a friendly entity, who is blocking los
-  if( trace_ent.faction == self.faction ){
-    return VIS_FRN;
-  }
+  // if( trace_ent.faction == self.faction ){
+  //   return VIS_FRN;
+  // }
   
-  if( trace_ent.faction != self.faction && trace_ent.faction > 0){
-    if(trace_ent.data_type != DATA_BLD){
-      return VIS_ENEMY;
-    }
-  }
+  // if( trace_ent.faction != self.faction && trace_ent.faction > 0){
+  //   if(trace_ent.data_type != DATA_BLD){
+  //     return VIS_ENEMY;
+  //   }
+  // }
   
-  return VIS_FAIL;
+  return VIS_FRAC;
 };
 
 /*
