@@ -350,23 +350,31 @@ void() client_predraw={
         if( self.moveState > MOVE_SPRINT ){
           makevectors(self.legs_angl);
           
-          boostLeft = boostRight = self.legs_org + (v_up * (self.cache_mins_z * 0.75));
+          boostLeft = self.legs_org + (v_up * (self.cache_mins_z * 0.75)); 
+          boostRight = self.legs_org + (v_up * (self.cache_mins_z * 0.75));
           
-          boostLeft = boostLeft + (v_right * self.cache_mins_x * 0.5);
-          boostRight = boostRight + (v_right * self.cache_maxs_x * 0.5);
+          boostLeft = self.legs_org + (v_right * self.cache_mins_x * 0.5);
+          boostRight = self.legs_org + (v_right * self.cache_maxs_x * 0.5);
           
-          backLeft = backRight = self.legs_org + (v_forward * -16) + (v_up * (self.cache_mins_z * 0.67));
+          traceline(boostLeft, boostLeft + (v_up * (self.cache_mins_z * 0.75)), TRUE, self);
+          boostLeft = trace_endpos;
+
+          traceline(boostRight, boostRight + (v_up * (self.cache_mins_z * 0.75)), TRUE, self);
+          boostRight = trace_endpos;
+
+          backLeft = boostLeft - (v_forward * 16);
+          backRight = boostRight - (v_forward * 16);
           
-          backLeft = backLeft + (v_right * self.cache_mins_x * 0.5);
-          backRight = backRight + (v_right * self.cache_maxs_x * 0.5);
-          
-          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostLeft, normalize(backLeft - boostLeft) * 4, random()*4);
-          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostRight, normalize(backRight - boostRight) * 4, random()*4);
+          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostLeft, normalize(backLeft - boostLeft) * 4, random()*2);
+          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostRight, normalize(backRight - boostRight) * 4, random()*2);
           
           vfxVel = self.legs_org + (v_forward * 64);
           vfxVel = normalize(vfxVel - (self.legs_org + (v_forward * -64)) );
 
           pointparticles(particleeffectnum("TE_RAM_RING"), self.rootOrigin + (v_up * self.cache_maxs_z/2) + (v_forward * self.cache_maxs_x), vfxVel , 1);
+
+          traceline(self.legs_org, self.legs_org + (v_up * self.cache_mins_z * 2, TRUE, self);
+          adddynamiclight2(trace_endpos + (v_up * 15), self.vec_size * 200, '0.50 2.0 1.25', 4, "", PFLAGS_NOSHADOW);
         }
       }
     }
@@ -411,7 +419,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     
     self.deadflag = ReadByte();
     if( self.deadflag != DEAD_NO ){
-      handle_existing_crits(fabs(rint(ReadLong())));
+      handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
     }
   }
