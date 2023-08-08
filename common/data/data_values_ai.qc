@@ -46,26 +46,26 @@ Overview: AI values that have been spun off from common/game
 #define AI_ENERGY_RATE 0.67
 #define AI_ENERGY_RATE_HARD 0.85
 
-#define AI_SHIELD_RATE 0.7
-#define AI_SHIELD_RATE_HARD 0.9
+#define AI_SHIELD_RATE 0.6
+#define AI_SHIELD_RATE_HARD 0.8
 
 //Armor Values
 //hp = hp * AI_ARMOR
 //AI mechs share initial stats with the player, so we have to detune them now.
 //release v3.12.16
-#define AI_ARMOR_ROK 0.67
-#define AI_ARMOR_REG 0.75
-#define AI_ARMOR_VET 0.85
-#define AI_ARMOR_ACE 1.0
+#define AI_ARMOR_ROK 0.5
+#define AI_ARMOR_REG 0.6
+#define AI_ARMOR_VET 0.7
+#define AI_ARMOR_ACE 0.8
 
 //Shield Values
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
 //release v3.12.16
-#define AI_SHIELD_ROK 0.45
-#define AI_SHIELD_REG 0.55
-#define AI_SHIELD_VET 0.7
-#define AI_SHIELD_ACE 0.85
+#define AI_SHIELD_ROK 0.4
+#define AI_SHIELD_REG 0.67
+#define AI_SHIELD_VET 0.73
+#define AI_SHIELD_ACE 0.8
 
 //AI TH_REACT cooldown
 #define AI_REACT_ROK 2
@@ -100,7 +100,7 @@ Overview: AI values that have been spun off from common/game
 #define AI_DMG_SKILL_ROK 0.8
 #define AI_DMG_SKILL_REG 0.85
 #define AI_DMG_SKILL_VET 0.9
-#define AI_DMG_SKILL_ACE 1
+#define AI_DMG_SKILL_ACE 1.0
 
 //Field of View as normalized dot product
 // 0.0 ~ 90d from center

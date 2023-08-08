@@ -21,6 +21,8 @@ entity() world_ini_serverInfo_ent={
   setmodel(eServerInfo, "models/testball.md3");
   setsize(eServerInfo, '-1 -1 -1', '1 1 1');
   setorigin(eServerInfo, world.origin);
+  eServerInfo.alpha = 0.01;
+  eServerInfo.scale = 0.01;
   
   eServerInfo.serverFlags = serverflags;
   eServerInfo.SendEntity = world_rules_sendEntity;

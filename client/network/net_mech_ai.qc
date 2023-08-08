@@ -177,7 +177,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     
     self.deadflag = ReadByte();
     if( self.deadflag != DEAD_NO ){
-      handle_existing_crits(fabs(rint(ReadLong())));
+      handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
     }
   }

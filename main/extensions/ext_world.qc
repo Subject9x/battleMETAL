@@ -125,11 +125,14 @@ void() world_metal_ini={
   MAP_UNLOCK_MECHS = world.unlockMechs;
   MAP_UNLOCK_EQUIP = world.unlockEquip;
   
-  nodegraph_edgelinker = spawn();
-  nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
-  setmodel(nodegraph_edgelinker, "models/testball.md3");
-  setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
-  setorigin(nodegraph_edgelinker, world.origin);
+  if( cvar("developer") > 0){
+    //only care about nodegraph debugging when in developer mode
+    nodegraph_edgelinker = spawn();
+    nodegraph_edgelinker.classname = strzone("nodegraph_edgelinker");
+    setmodel(nodegraph_edgelinker, "models/testball.md3");
+    setsize(nodegraph_edgelinker, nodegraph_edgelinker.mins, nodegraph_edgelinker.maxs);
+    setorigin(nodegraph_edgelinker, world.origin);
+  }
   
   world_get_maplist();
   
