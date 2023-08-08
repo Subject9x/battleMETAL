@@ -144,7 +144,7 @@ void() data_ini_electro_repeater_={
   self.energyRate = 5;
   
   self.w_range = 1000;
-  self.damageValue = 8; //10
+  self.damageValue = 10;
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;

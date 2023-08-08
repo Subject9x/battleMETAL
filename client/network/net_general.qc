@@ -291,8 +291,8 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   
   if( isNew ){
     self.deadflag = DEAD_NO;
-    self.alpha = 1;
-    self.scale = 1;
+    self.alpha = 1.0;
+    self.scale = 1.0;
     self.think = sendent_missile_think;
     self.nextthink = time + 0.005;
     self.data_postinit = FALSE;

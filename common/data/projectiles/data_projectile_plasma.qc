@@ -9,12 +9,10 @@ Overview:
 */
 
 #ifdef SSQC
-#define DATA_PROJECTILE_PLASMA_BURN_TIME 1.0
-#define DATA_PROJECTILE_PLASMA_BURN_DMG 0.5
+#define DATA_PROJECTILE_PLASMA_BURN_TIME 0.67
+#define DATA_PROJECTILE_PLASMA_BURN_DMG 5.0
 
 void() data_projectile_plasma_touch;
-void() data_projectile_plasma_burn_ini_;
-void() data_projectile_plasma_burn_th;
 void() data_projectile_plasma_think_;
 #endif
 
@@ -26,6 +24,7 @@ void() projectile_plasma_expl={
   
   if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
+    self.deadflag = DEAD_NO;  //flips the projectile render back on.
   }
   else if( self.impactType == IMPACT_SHIELD ){
     pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
@@ -50,6 +49,7 @@ void() data_projectile_ini_plasma_={
   #ifdef CSQC
     //cosmetics
     self.alpha = 0.85;
+    self.scale = 1.0;
     precache_model("models/proj/mdl_proj_rpc.md3");
     self.model = "models/proj/mdl_proj_rpc.md3";
     self.data_traileff = particleeffectnum("TE_RPC_TRAIL");
@@ -64,65 +64,66 @@ void() data_projectile_ini_plasma_={
   #endif
 };
 #ifdef SSQC
-void() data_projectile_plasma_burn_ini_={
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
-  self.alpha = 0.75;
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
-  self.impactType = IMPACT_ARMOR;
-  self.think = data_projectile_plasma_burn_th;
-  self.nextthink = time + 0.05;
-};
+
 
 void() data_projectile_plasma_burn_th={
+  if(time > self.data_lifetime){
+    remove(self);
+    return;
+  }
   if( self.enemy.deadflag > DEAD_NO ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
+    remove(self);
     return;
   }
   
   util_getPartFromName( self.partParentId, self.enemy );
+
+  if( T_PART_HP <= 0){
+    remove(self);
+    return;
+  }
+
+
+  setorigin(self, T_PART_PARENT_ORG + randomvec2() * 5);
+
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT | SENDFLAG_VELOCITY;
+  if(self.enemy.shield > 0){
+    t_damage_shield(self.enemy, self, self.owner, self.damageValue, T_PART_PARENT_ORG, FALSE);
+  }
+  else{
+    if( time > self.enemy.shieldHitRegenStart && time < self.enemy.shieldHitRegen){
+      self.enemy.shieldHitRegen = self.enemy.shieldHitRegen + 0.1;
+    }
+    t_damage(self.enemy, self, self.owner, self.damageValue * 0.1, self.origin, 0);
+  }
+
+  self.think = data_projectile_plasma_burn_th;
+  self.nextthink = time + 0.1;
+};
+
+void() data_projectile_plasma_burn_ini_={
+  self.movetype = MOVETYPE_NONE;
+  self.impactType = IMPACT_ARMOR;
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_IMPACT);
+  self.think = data_projectile_plasma_burn_th;
+  self.nextthink = time + 0.01;
+
   
+  util_getPartFromName( self.partParentId, self.enemy );
+
   if( T_PART_HP <= 0){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     return;
   }
-  
-  if( self.partParentId != M_UNIT && self.partParentId != M_LEGS){
-    makevectors(self.torC_angl);
-  }
-  else{
-    makevectors(self.angles);
-  }
-  
-  self.origin = self.enemy.origin + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z) + (v_right * T_PART_PARENT_OFFSET_x);
-  setorigin(self, self.origin);
-  if( self.last_origin != self.origin ){
-    self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-    self.last_origin = self.origin;
-  }
-  
-  t_damage_shield(self.enemy, self, self.owner, self.damageValue, T_PART_PARENT_ORG, TRUE);
-  
-  if(time > self.data_lifetime){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
-    return;
-  }
-  
-  self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
-  self.targetEntId = 0;
-  self.impactType = IMPACT_ARMOR;
 
-  self.think = data_projectile_plasma_burn_th;
-  self.nextthink = time + (random() * 0.1);
+  self.damageValue = DATA_PROJECTILE_PLASMA_BURN_DMG;
+  self.data_lifetime = time + DATA_PROJECTILE_PLASMA_BURN_TIME;
 };
 
+
 void() data_projectile_plasma_touch={
-  local float hit;
   local float damage;
-  local float proc;
   
   self.touch = SUB_Null;
   self.impactType = IMPACT_SKY;
@@ -130,44 +131,27 @@ void() data_projectile_plasma_touch={
   
   if(other.takedamage){
     damage = self.damageValue;
-    self.targetEntId = num_for_edict(other);
     if(other.shield > 0){
-      proc = FALSE;
-      if( other.shield <= (other.shieldMax * 0.1) ){
-        proc = TRUE;
-        damage = damage * 0.65;
-      }
-      else{
-        damage = damage * 0.45;
-      }
-      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, proc);
+      damage = damage * 0.45;
+      t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, FALSE);
       self.impactType = IMPACT_SHIELD;
     }
     else{
-      hit = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
+      self.partParentId = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
+      self.targetEntId = num_for_edict(other);
       self.enemy = other;
       
-      util_getPartFromName(hit, other);
-      
-      self.partParentId = hit;
-      
-      self.damageValue = DATA_PROJECTILE_PLASMA_BURN_DMG;
-      self.data_lifetime = time + DATA_PROJECTILE_PLASMA_BURN_TIME;
-      setsize(self, '-1 -1 -1', '1 1 1');
-      
-      if( hit ){
-        setorigin(self, self.origin);
-      }
-      
+      util_getPartFromName(self.partParentId, other);
+
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
-      self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
+      self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
       self.think = data_projectile_plasma_burn_ini_;
-      self.nextthink = time + 0.05;
+      self.nextthink = time + 0.01;
       self.impactType = IMPACT_ARMOR;
       
-      if( hit && !(self.owner.statTargetHitParts & hit) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | hit;
+      if( self.partParentId && !(self.owner.statTargetHitParts & self.partParentId) ){
+        self.owner.statTargetHitParts = self.owner.statTargetHitParts | self.partParentId;
       } 
       return;
     }
@@ -184,7 +168,7 @@ void() data_projectile_plasma_touch={
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
  
   self.think = ctrl_missile_lastframe;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.05;
 };
 
 void() data_projectile_plasma_think_={

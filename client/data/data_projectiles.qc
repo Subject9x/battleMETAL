@@ -84,7 +84,7 @@ void() predraw_missile={
   
   traceline(self.origin, CLIENT_vis_org, TRUE, self);
   
-  if(trace_fraction < 0.9){
+  if(trace_fraction <= 0.85){
     return;
   }
   
@@ -95,7 +95,6 @@ void() predraw_missile={
   if( self.deadflag == DEAD_DEAD){
     return;
   }
-  
   
   setmodel(self, self.model);
   if( self.data_postinit ){
@@ -109,15 +108,25 @@ void() predraw_missile={
 
 void() predraw_plasma={
   //local float tScale;
-  if( self.impactType == IMPACT_ARMOR ){
-    self.alpha = 0.33;
-    self.scale = 0.33;
+  if(self.impactType > 0){
+    if( self.impactType == IMPACT_ARMOR ){
+      self.alpha = 0.01;
+      self.scale = 0.01;
+      pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
+      self.traileffectnum = 0;
+    }
+    else if(self.impactType == IMPACT_SHIELD){
+      self.alpha = 0.33;
+      self.scale = 1.0;
+    }
+    else{
+      self.alpha = 0.85;
+      self.scale = 2.0;
+    }
   }
   else{
-    self.scale = 1.75;
-    //tScale = self.scale;
-    //self.scale = tScale + ((tScale + 0.005) - tScale)*self.lerpfrac;
-    //self.alpha = self.alpha + ((self.alpha - 0.005) - self.alpha)*self.lerpfrac;
+    self.scale = self.scale + 0.1 * frametime;
+    self.alpha = self.alpha - 0.1 * frametime;
   }
 };
 
