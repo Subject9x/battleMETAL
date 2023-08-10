@@ -70,61 +70,6 @@ void() sendevent_mech_ai_die={
 };
 
 /*
-  EVENT - CRITICAL =====================================
-*/
-void( float critical ) sendevent_mech_ai_crit={
-  
-  if( vlen(self.origin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
-    
-    traceline(self.origin, CLIENT_vis_org, TRUE, self);
-    
-    if( trace_ent != world || trace_fraction == 1.0){
-      if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (critical & M_TOR_LEFT) ){
-          te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      }
-      if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (critical & M_TOR_RIGHT) ){
-          te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      }
-      if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (critical & M_ARM_LEFT) ){
-          te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      }
-      if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (critical & M_ARM_RIGHT) ){
-          te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      }
-      if( (critical & M_LEGS) && !(self.criticalHits & M_LEGS)){
-        te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-      }
-    }
-  }
-  
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
-};
-
-void() sendevent_mech_burn={  
-  local vector offset;
-  
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.burnBits & M_TOR_LEFT) ){
-    te_mech_crit( self.torL_org, '0 0 10');
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.burnBits & M_TOR_RIGHT) ){
-    te_mech_crit( self.torR_org, '0 0 10');
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && (self.burnBits & M_ARM_LEFT) ){
-    if( !(self.critBits & M_TOR_LEFT) ){
-      te_mech_crit( self.armL_org, '0 0 10');
-    }
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && (self.burnBits & M_ARM_RIGHT) ){
-    if( !(self.critBits & M_TOR_RIGHT) ){
-      te_mech_crit( self.armR_org, '0 0 10');
-    }
-  }
-  if( (self.burnBits & M_LEGS) ){
-    te_mech_crit( self.legs_org + '0 0 -10', '0 0 10');
-  }
-};
-
-/*
   SendEntity - MECH AI =====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_mech_ai={
@@ -161,7 +106,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     self.deadflag = ReadByte();
     self.critBits = fabs(rint(ReadLong()));
     if( self.critBits != 0 ){
-      sendevent_mech_ai_crit( self.critBits );
+      sendevent_mech_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
       self.critBits = 0;
     }
@@ -207,14 +152,12 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
-    if( self.shieldHitFlag == 0 ){
-      self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
-      self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
-      self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
-      self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
-      self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
-      self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
-    }
+    self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
+    self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
+    self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
+    self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
+    self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
+    self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
@@ -235,14 +178,10 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   if( (changeFlags & SENDFLAG_CRIT) ){
     self.critBits = fabs(rint(ReadLong()));
     if( self.critBits != 0 ){
-      sendevent_mech_ai_crit( self.critBits );
+      sendevent_mech_crit( self.critBits );
       self.criticalHits = self.criticalHits | self.critBits;
       self.critBits = 0;
     }
-  }
-  
-  if( (changeFlags & SENDFLAG_BURN) ){
-    self.burnBits = fabs(rint(ReadLong()));
   }
   
   //EVENT - voice chatter
@@ -409,8 +348,8 @@ void() interpolate_mech_ai={
   if(self.cl_lod_weapon){
     self.origin = self.rootOrigin;
     self.angles = self.rootAngle;
-    sendevent_mech_burn();
-    
+    render_mech_effect_burning();
+
     if(self.weaponEnt1.data_idx){
       predraw_unit_weapon(self.weaponEnt1);
     }

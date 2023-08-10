@@ -158,14 +158,12 @@ float( float isNew, float changeFlags ) send_client={
     /* EVENT - Client has taken ranged hits. */
     if( (changeFlags & SENDFLAG_IMPACT) ){
       WriteByte( MSG_ENTITY, self.shieldHitFlag); 
-      if( self.shieldHitFlag == 0 ){
-        WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
-        WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
-        WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
-        WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
-        WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
-        WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
-      }
+      WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
+      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
     }
     
     /* EVENT - pieces of player mech is blown off */
@@ -174,11 +172,6 @@ float( float isNew, float changeFlags ) send_client={
       // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
       WriteLong( MSG_ENTITY, self.critBits );
       self.critBits = 0;
-    }
-    
-    /* EVENT - pieces of player mech are low on health and burning */
-    if( (changeFlags & SENDFLAG_BURN) ){
-      WriteLong( MSG_ENTITY, self.burnBits );
     }
     
     /* EVENT - Client has acquired a new target. */

@@ -103,12 +103,14 @@ void() building_repair_select={
       self.ai_state_next = REPAIR_STATE_COOLDOWN;
       return;
     }
-    else{
-      player = self.goalentity;
-    }
+    
+    player = self.goalentity;
+
     self.critBits = 0;
     self.attack_state = 0;
-    if(player.health < player.max_health * 0.8){
+
+    //repair priority - player center torso
+    if(player.health < player.max_health * 0.5){
       typeId = M_TOR_CENTER;
     }
     else{
@@ -194,7 +196,10 @@ void() building_repair_fixing={
   local float end_repair;
   local entity part;
   local entity altSelf;
+  local vector minsAdj;
+  local vector maxsAdj;
   
+
   if( self.reloadValue <= 0 ){
     //cut over to cooldown state;
     self.ai_state_next = REPAIR_STATE_COOLDOWN;
@@ -205,11 +210,10 @@ void() building_repair_fixing={
     self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
   }
-  else{
-    player = self.goalentity;
-  }
+
+  player = self.goalentity;
   
-  if(vlen(player.origin - self.repair_field.origin) > 48){
+  if(vlen(player.origin - self.repair_field.origin) > 64){
     //player walked away from node
     self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
@@ -228,20 +232,21 @@ void() building_repair_fixing={
   altSelf = self;
   //energ recharge freebie
   if( player.energy != player.energyMax ){
-    player.energy = player.energy + (player.energyRate * 0.85);
+    player.energy = player.energy + (player.energyRate * 2);
     if( player.energy >= player.energyMax ){
       player.energy = player.energyMax;
     }
   }
   
   end_repair = FALSE;
+  self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   
   //fix 'client' / aka CT
   if( self.critBits == M_TOR_CENTER ){
     //part is not critical'd, repair as normal.
     player.health = player.health + self.reloadRate;
     self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
-    if( player.health >= player.max_health ){
+    if( player.health > player.max_health ){
       end_repair = TRUE;
       player.health = player.max_health;
     }
@@ -252,7 +257,7 @@ void() building_repair_fixing={
     
       case M_LEGS:
         player.legs_hp = player.legs_hp + self.reloadRate;
-        if( player.legs_hp >= player.legs_hpMax ){
+        if( player.legs_hp > player.legs_hpMax ){
           player.legs_hp = player.legs_hpMax;
           end_repair = TRUE;
         }
@@ -260,7 +265,7 @@ void() building_repair_fixing={
         
       case M_TOR_LEFT:
         player.torL_hp = player.torL_hp + self.reloadRate;
-        if( player.torL_hp >= player.torL_hpMax ){
+        if( player.torL_hp > player.torL_hpMax ){
           player.torL_hp = player.torL_hpMax;
           end_repair = TRUE;
         }
@@ -268,7 +273,7 @@ void() building_repair_fixing={
         
       case M_TOR_RIGHT:
         player.torR_hp = player.torR_hp + self.reloadRate;
-        if( player.torR_hp >= player.torR_hpMax ){
+        if( player.torR_hp > player.torR_hpMax ){
           player.torR_hp = player.torR_hpMax;
           end_repair = TRUE;
         }
@@ -276,7 +281,7 @@ void() building_repair_fixing={
         
       case M_ARM_LEFT:
         player.armL_hp = player.armL_hp + self.reloadRate;
-        if( player.armL_hp >= player.armL_hpMax ){
+        if( player.armL_hp > player.armL_hpMax ){
           player.armL_hp = player.armL_hpMax;
           end_repair = TRUE;
         }
@@ -284,7 +289,7 @@ void() building_repair_fixing={
         
       case M_ARM_RIGHT:
         player.armR_hp = player.armR_hp + self.reloadRate;
-        if( player.armR_hp >= player.armR_hpMax ){
+        if( player.armR_hp > player.armR_hpMax ){
           player.armR_hp = player.armR_hpMax;
           end_repair = TRUE;
         }
@@ -294,9 +299,32 @@ void() building_repair_fixing={
     if( (player.criticalHits & self.critBits) && self.attack_state){
       self.attack_state = FALSE;
       player.critBits = player.critBits | (M_REPAIR | self.critBits);
-      player.SendFlags = player.SendFlags | SENDFLAG_CRIT | SENDFLAG_IMPACT;
+      player.SendFlags = player.SendFlags | SENDFLAG_CRIT;
       player.criticalHits = player.criticalHits - (player.criticalHits & self.critBits);
       part = player.w_slot;
+
+      //restore hit box size
+      minsAdj = '0 0 0';
+      maxsAdj = '0 0 0';
+
+      if( (self.critBits & M_ARM_LEFT) || (self.critBits & M_ARM_RIGHT)){
+        minsAdj = minsAdj - [player.cache_mins_x * -0.05, player.cache_mins_y * -0.05, 0];
+        maxsAdj = maxsAdj + [player.cache_maxs_x * 0.05, player.cache_maxs_y * 0.05, 0];
+      }
+      else if( (self.critBits & M_ARM_LEFT) || (self.critBits & M_ARM_RIGHT) ){
+        if( (player.unitModFlags & MOD_HAS_SHIELD) ){
+          player.shieldMax = player.cache_shieldMax * 0.25;
+        }
+        minsAdj = minsAdj - [player.cache_mins_x * -0.1, player.cache_mins_y * -0.1, 0];
+        maxsAdj = maxsAdj + [player.cache_maxs_x * 0.1, player.cache_maxs_y * 0.1, 0];
+      }
+      
+      player.mins = player.mins + minsAdj;
+      player.maxs = player.maxs + maxsAdj;
+
+      setsize(player, player.mins, player.maxs);
+      setorigin(player, player.origin);
+      //_______________________________________________________________
       while( part != world ){
         if( part.partParentId == self.critBits && part.deadflag != DEAD_NO ){
           part.deadflag = DEAD_NO;
@@ -310,31 +338,16 @@ void() building_repair_fixing={
         }
         part = part.w_slot;
       }
-      //repair shield/side torso debuff
-      if( self.critBits == M_TOR_LEFT ) {
-        if( player.torL_hp > player.torL_hpMax * 0.5){
-          player.shieldMax = player.shieldMax * 0.5;
-        }
-      }
-      else if( self.critBits == M_TOR_RIGHT ){
-        if( player.torR_hp > player.torR_hpMax * 0.5){
-          player.shieldMax = player.shieldMax * 0.5;
-        }
-      }
       if( self.critBits == M_LEGS ){
         player.data_speed_forward = player.cache_speed_fwd;
         player.data_speed_backward = player.cache_speed_back;
         player.data_speed_strafe = player.cache_speed_sid;
       }
-    }
-    
+    } 
   }
   player.stat_plr_rep = (self.reloadValue / self.reloadMax) * 100;
   
   if(end_repair){
-  
-    player.burnBits = player.burnBits - (player.burnBits & self.critBits);
-    player.SendFlags = player.SendFlags | SENDFLAG_BURN | SENDFLAG_IMPACT;
     self.ai_state_next = REPAIR_STATE_START;
   }
 };
@@ -390,14 +403,14 @@ void() building_repair_cooldown={
     else{
       self.ai_movedist = time + 35;
     }
-    
-    self.repair_field.touch = building_repair_touch;
-    self.repair_field.solid = SOLID_TRIGGER;
-    setorigin(self.repair_field, self.repair_field.origin);
   }
   building_repair_recharge_frame();
   if( time > self.ai_movedist ){
     self.ai_state_next = REPAIR_STATE_IDLE;
+    self.repair_field.touch = building_repair_touch;
+    self.repair_field.solid = SOLID_TRIGGER;
+    setsize(self.repair_field, '-8 -8 -16', '8 8 16');
+    setorigin(self.repair_field, self.repair_field.origin);
   }
 };
 
@@ -415,21 +428,24 @@ void() building_repair_touch;
 
 
 void() building_repair_state={
+
+  //making sure this gets spawned in. - delay think / building settle
   if(!self.repair_field){
-    self.repair_field = spawn(); //making sure this gets spawned in.
+    self.repair_field = spawn(); 
     self.repair_field.movetype = MOVETYPE_NONE;
-    self.repair_field.solid = SOLID_BBOX;
+    self.repair_field.solid = SOLID_TRIGGER;
     self.repair_field.touch = building_repair_touch;
     self.repair_field.owner = self;
     makevectors(self.angles);
-    self.repair_field.origin = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
+    self.torC_org = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
     setsize(self.repair_field, '-8 -8 -16', '8 8 16');
-    setorigin( self.repair_field,  self.repair_field.origin);
+    setorigin( self.repair_field,  self.torC_org);
   }
   else{
     makevectors(self.angles);
-    self.repair_field.origin = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
-    setorigin( self.repair_field,  self.repair_field.origin);
+    self.torC_org = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
+    setsize(self.repair_field, '-8 -8 -16', '8 8 16');
+    setorigin( self.repair_field,  self.torC_org);
   }
   
   
@@ -519,6 +535,10 @@ void() repair_bay_dlights={
 void() sendevent_repair_beam={
   local vector partOfs;
   local vector beamEnd;
+  local vector end1;
+  local vector end2;
+  local vector end3;
+  local vector end4;
   
   particleDraw = vlen(CLIENT_vis_org - self.rootOrigin);
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2 ){  
@@ -550,13 +570,34 @@ void() sendevent_repair_beam={
     }
     beamEnd = partOfs;
     
-    beamEnd_x = beamEnd_x + (crandom() * 2);
-    beamEnd_y = beamEnd_y + (crandom() * 2);
-    beamEnd_z = beamEnd_z + (crandom() * 2);
+    beamEnd = beamEnd + (randomvec2() * 5);
+    end1 = beamEnd + (randomvec2() * 5);
+    end2 = beamEnd + (randomvec2() * 5);
+    end3 = beamEnd + (randomvec2() * 5);
+    end4 = beamEnd + (randomvec2() * 5);
     
-    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( beamEnd - self.compOffset ) * 2, 1);
-    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), beamEnd, normalize( self.compOffset - beamEnd ) * -2, 1);
-    trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, beamEnd);
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.compOffset, normalize( beamEnd - self.compOffset ) * 1.25, 0.5);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), beamEnd, normalize( self.compOffset - beamEnd ) * -1.25, 0.5);
+    trailparticles( self, particleeffectnum("TE_REPAIR_RAIL"), self.compOffset, beamEnd);
+
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.torR_org, normalize( end4 - self.torR_org ) * 1.25, 0.5);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), end4, normalize( self.torR_org - end4 ) * -1.25, 0.5);
+    trailparticles( self, particleeffectnum("TE_REPAIR_RAIL"), self.torR_org, end4);
+
+    
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.torL_org, normalize( end1 - self.torL_org ) * 1.25, 0.5);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), end1, normalize( self.torL_org - end1 ) * -1.25, 0.5);
+    trailparticles( self, particleeffectnum("TE_REPAIR_RAIL"), self.torL_org, end1);
+
+    
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.armL_org, normalize( end2 - self.armL_org ) * 1.25, 0.5);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), end2, normalize( self.armL_org - end2 ) * -1.25, 0.5);
+    trailparticles( self, particleeffectnum("TE_REPAIR_RAIL"), self.armL_org, end2);
+
+    
+    pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), self.armR_org, normalize( end3 - self.armR_org ) * 1.25, 0.5);
+    pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), end3, normalize( self.armR_org - end3 ) * -1.25, 0.5);
+    trailparticles( self, particleeffectnum("TE_REPAIR_RAIL"), self.armR_org, end3);
   }
 };
 void() repair_bay_active={
@@ -643,7 +684,12 @@ void() building_repair_bay={
   makevectors(self.angles);
   self.render_dlights = repair_bay_dlights;
   self.w_firetime = 0;
-  self.compOffset = self.origin + (v_up * 40) + (v_forward * -16);
+  self.compOffset = self.origin + (v_up * 48) + (v_forward * -16);
+  self.torR_org = self.origin + (v_up * 48) + (v_forward * -12) + (v_right * 32);
+  self.torL_org = self.origin + (v_up * 48) + (v_forward * -12) + (v_right * -32);
+  self.armL_org = self.origin + (v_up * 48) + (v_forward * -20) + (v_right * -32);
+  self.armR_org = self.origin + (v_up * 48) + (v_forward * -24) + (v_right * 32);
+
   self.compAltOffset = self.origin;
   self.th_walk = repair_bay_active;
 #endif
@@ -690,19 +736,7 @@ void() building_repair_bay={
     self.SendEntity = ctrl_send_building;
     self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
   }
-  
-  self.repair_field = spawn();
-  if(self.repair_field){
-    self.repair_field.movetype = MOVETYPE_NONE;
-    self.repair_field.solid = SOLID_TRIGGER;
-    self.repair_field.touch = building_repair_touch;
-    self.repair_field.owner = self;
-    makevectors(self.angles);
-    self.repair_field.origin = self.origin + (v_up * self.maxs_y * 0.33) + (v_forward * -8);
-    setsize(self.repair_field, '-8 -8 -16', '8 8 16');
-    setorigin( self.repair_field,  self.repair_field.origin);
-  }
-  
+    
   self.ai_state_next = REPAIR_STATE_IDLE;
   self.building_delay_think = building_repair_state;
   self.think = building_bbox_settle;

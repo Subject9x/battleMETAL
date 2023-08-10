@@ -176,9 +176,28 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( self.data_idx == UI_BUILDING_repair_bay ){
       self.burstRate = ReadByte();
       self.critBits = fabs(rint(ReadLong()));
+      
       if(self.critBits != FALSE ){
         self.targetEntId = ReadLong();
         self.enemy = findfloat( world, entnum, self.targetEntId );
+        if( self.critBits == M_TOR_CENTER ){
+          self.enemy.torC_hp = ReadByte() / 100 * self.enemy.torC_hpMax;
+        }
+        else if( self.critBits == M_TOR_LEFT ){
+          self.enemy.torL_hp = ReadByte() / 100 * self.enemy.torL_hpMax;
+        }
+        else if( self.critBits == M_TOR_RIGHT ){
+          self.enemy.torR_hp = ReadByte() / 100 * self.enemy.torR_hpMax;
+        }
+        else if( self.critBits == M_ARM_LEFT ){
+          self.enemy.armL_hp = ReadByte() / 100 * self.enemy.armL_hpMax;
+        }
+        else if( self.critBits == M_ARM_RIGHT ){
+          self.enemy.armR_hp = ReadByte() / 100 * self.enemy.armR_hpMax;
+        }
+        else if( self.critBits == M_LEGS ){
+          self.enemy.legs_hp = ReadByte() / 100 * self.enemy.legs_hpMax;
+        }
       }
       else{
         self.enemy = world;

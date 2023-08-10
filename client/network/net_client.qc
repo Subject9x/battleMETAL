@@ -14,11 +14,6 @@ void(float unitId) client_event_mech_spawn;
 void() client_event_target_new;
 void() client_event_handle_moveChange;
 void() client_event_handle_faction;
-void() client_event_burn;
-void() client_event_critical;
-
-void(float repairValue) client_event_repair;
-
 
 float() remove_client={
   if( self.unit_legs && !wasfreed(self.unit_legs) ){
@@ -290,8 +285,9 @@ void() client_predraw={
       }
       if(self.deadflag == DEAD_NO){
         if(self.cl_lod_weapon){
-          client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
-        
+          //client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
+          render_mech_effect_burning();
+
           if(self.weaponEnt1.data_idx > 0){
             predraw_unit_weapon(self.weaponEnt1);
           }
@@ -322,19 +318,17 @@ void() client_predraw={
         }
         if(self.entnum == player_localentnum){
           hud_model_cockpit_draw_frame(); //debug
-          if( self.deadflag == DEAD_NO ){
-            //apparently when menu running, these just get STACCCCCCKED and murder framerate.
-            if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
-              self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
-              particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
-              if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-                adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
-              }
+          //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+          if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
+            self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+            particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
+            if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+              adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
             }
           }
         }
         else{
-          if(self.headlight && MENU_PROG_OFF && self.deadflag == DEAD_NO){
+          if(self.headlight && MENU_PROG_OFF){
             self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
             particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
             if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
@@ -373,12 +367,15 @@ void() client_predraw={
 
           pointparticles(particleeffectnum("TE_RAM_RING"), self.rootOrigin + (v_up * self.cache_maxs_z/2) + (v_forward * self.cache_maxs_x), vfxVel , 1);
 
-          traceline(self.legs_org, self.legs_org + (v_up * self.cache_mins_z * 2, TRUE, self);
+          traceline(self.legs_org, self.legs_org + (v_up * self.cache_mins_z * 2), TRUE, self);
           adddynamiclight2(trace_endpos + (v_up * 15), self.vec_size * 200, '0.50 2.0 1.25', 4, "", PFLAGS_NOSHADOW);
         }
       }
     }
   }
+  self.origin = self.torC_org;
+  self.angles = self.angles;
+  setmodel(self, "models/testball.md3");
   self.mins = self.cache_mins;
   self.maxs = self.cache_maxs;
   self.origin = self.rootOrigin;
@@ -394,7 +391,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   
   //state frame delta
   lastFlags = self.flags;
-  self.prevburnBits = self.burnBits;
   self.prevShield = self.shield;
   self.prevkills = self.kills;
   self.prevFaction = self.faction;
@@ -565,24 +561,17 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     /* EVENT - Client has taken ranged hits. */
     if( (changeFlags & SENDFLAG_IMPACT) ){
       self.shieldHitFlag = ReadByte();
-      if( self.shieldHitFlag == 0 ){
-        self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
-        self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
-        self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
-        self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
-        self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
-        self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
-      }
+      self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
+      self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
+      self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
+      self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
+      self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
+      self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
     }
     
     /* EVENT - pieces of player mech is blown off */
     if( (changeFlags & SENDFLAG_CRIT) ){
       self.critBits = fabs(rint(ReadLong()));
-    }
-    
-    /* EVENT - pieces of player mech are low on health and burning */
-    if( (changeFlags & SENDFLAG_BURN) ){
-      self.burnBits = fabs(rint(ReadLong()));
     }
     
     /* EVENT - Client has acquired a new target. */
@@ -672,10 +661,9 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       if( (self.critBits & M_REPAIR) ){
         self.critBits = self.critBits - (self.critBits & M_REPAIR);
         self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
-        client_event_repair(self.critBits);
       }
       else{
-        client_event_critical();
+        sendevent_mech_crit();
         self.criticalHits = self.criticalHits | self.critBits;
       }
       self.critBits = 0;
@@ -866,110 +854,6 @@ void() client_event_handle_faction={
   }
 };
 
-
-/*
-  HANDLE EVENT - player mech pieces are dying
-*/
-void() client_event_burn={
-  
-  if( (self.burnBits & M_TOR_LEFT) && !(self.criticalHits & M_TOR_LEFT) ){
-    te_mech_crit( self.torL_org , '0 0 10');
-  }
-  if( (self.burnBits & M_TOR_RIGHT) && !(self.criticalHits & M_TOR_RIGHT) ){
-    te_mech_crit( self.torR_org , '0 0 10');
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && (self.burnBits & M_ARM_LEFT) ){
-    if( !(self.criticalHits & M_TOR_LEFT) ){
-      te_mech_crit( self.armL_org , '0 0 10');
-    }
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && (self.burnBits & M_ARM_RIGHT) ){
-    if( !(self.criticalHits & M_TOR_RIGHT) ){
-      te_mech_crit( self.armR_org , '0 0 10');
-    }
-  }
-  if( (self.burnBits & M_LEGS) ){
-    te_mech_crit( self.legs_org , '0 0 10');
-  }
-};
-
-/*
-  HANDLE EVENT - player mech pieces are being repair
-*/
-void(float repairValue) client_event_repair={
-  if( (repairValue & M_TOR_CENTER) ){
-    self.burnBits = self.burnBits - (self.burnBits & M_TOR_CENTER);
-  }
-  if(  (self.unitModFlags & MOD_HAS_TOR_L) && (repairValue & M_TOR_LEFT) ){
-    self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
-  }
-  if(  (self.unitModFlags & MOD_HAS_TOR_R) && (repairValue & M_TOR_RIGHT) ){
-    self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
-  }
-  if(  (self.unitModFlags & MOD_HAS_ARM_L) && (repairValue & M_ARM_LEFT) ){
-    self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
-  }
-  if(  (self.unitModFlags & MOD_HAS_ARM_R) && (repairValue & M_ARM_RIGHT) ){
-    self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
-  }
-  
-  if(self.clientServerNum != player_localentnum){
-    return;
-  }
-  //FIX ME - weapons being repaired.
-};
-
-/*
-  EVENT - CRITICAL =====================================
-*/
-void() client_event_critical={  
-  local float isPlayer;
-
-  isPlayer = FALSE;
-  if(self == CLIENT_server_ent){
-    isPlayer = TRUE;
-  }
-
-  if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
-    
-    traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
-    
-    if( trace_ent != world || trace_fraction == 1.0){
-      if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
-        te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
-          hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
-        }
-      }
-      if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (self.critBits & M_TOR_RIGHT) ){
-        te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
-          hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
-        }
-      }
-      if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (self.critBits & M_ARM_LEFT) ){
-        te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
-          hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
-        }
-      }
-      if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
-        te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
-          hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
-        }
-      }
-      if( (self.critBits & M_LEGS) && !(self.criticalHits & M_LEGS) ){
-        te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
-          hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
-        }
-      }
-    }
-  }
-  
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
-};
 
 /*
   Updates a player's Weapon reload value.

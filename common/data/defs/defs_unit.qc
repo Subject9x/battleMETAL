@@ -11,6 +11,10 @@ Overview:
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
+
+.vector cache_mins;
+.vector cache_maxs;
+
 .float shieldHitDelay;  //when shield > 
 .float shieldHitDelayStart;  //when shield > 
 .float shieldHitRegen;  //cool down before shield recharge begins
@@ -36,6 +40,7 @@ Overview:
 .float energyRate;    //how much energy built per frame
 .float shield;        //current amount of shields
 .float shieldMax;     //max shields
+.float cache_shieldMax; //stored for reference.
 .float shieldRate;    //shield recharge rate
 .float shieldRateMod; //field for modules, a bonus percentage
 .float startupDelay; //time in game seconds for unit to activate after spawn.
@@ -239,8 +244,6 @@ Overview:
 .float legs_movestate;
 .float legs_nextthink;
 
-.vector cache_mins;
-.vector cache_maxs;
 
 .entity weaponEnt1;
 .entity weaponEnt2;

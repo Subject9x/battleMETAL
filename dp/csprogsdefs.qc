@@ -1751,6 +1751,32 @@ vector(vector m1, vector m2) randompos =
 	return  v;
 };
 
+vector() randomvec2 =
+{
+	local vector v;
+	v_x = random() - 0.5; // scale doesn't matter because it's normalized
+	v_y = random() - 0.5;
+	v_z = random() - 0.5;
+	v = normalize(v);
+	return(v);
+};
+
+vector() randomdirvec =
+{
+	local vector v;
+	do
+	{
+		do
+		{
+			v_x = random() - 0.5;
+			v_y = random() - 0.5;
+			v_z = random() - 0.5;
+		}
+		while (vlen(v) > 0.25);
+	}
+	while (vlen(v) < 0.1);
+	return normalize(v);
+};
 void() SUB_Null={};
 void() SUB_Remove={
   remove(self);

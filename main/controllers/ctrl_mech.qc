@@ -69,8 +69,6 @@ void() ctrl_update_mechplayer={
     
     self.critBuffer = 0;
   }
-  
-  ctrl_mech_burn_frame();
 };
 
 void() ai_ctrl_update_mechplayer={
@@ -137,7 +135,6 @@ void() ai_ctrl_update_mechplayer={
     self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
     self.critBuffer = 0;
   }
-  ctrl_mech_burn_frame();
   
   if(self.shield > 0 && time > self.shieldHitRegen ){
     te_shields_active(self);
@@ -360,34 +357,30 @@ void() ctrl_mech_critical_hits={
   legSoak = FALSE;
   if( (self.critBuffer & M_ARM_LEFT) && !(self.criticalHits & M_ARM_LEFT)){
     te_vehicle_chunk( self.armL_mdl, self.armL_org, '0 0 0', self.armL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
-    self.burnBits = self.burnBits - (self.burnBits & M_ARM_LEFT);
-    minsAdj = minsAdj + [self.mins_x * -0.05, self.mins_y * -0.05, 0];
-    maxsAdj = maxsAdj - [self.maxs_x * 0.05, self.maxs_y * 0.05, 0];
+    minsAdj = minsAdj + [self.cache_mins_x * -0.05, self.cache_mins_y * -0.05, 0];
+    maxsAdj = maxsAdj - [self.cache_maxs_x * 0.05, self.cache_maxs_y * 0.05, 0];
   }
 
   if( (self.critBuffer & M_ARM_RIGHT) && !(self.criticalHits & M_ARM_RIGHT)){
     te_vehicle_chunk(  self.armR_mdl, self.armR_org, '0 0 0', self.armR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
-    self.burnBits = self.burnBits - (self.burnBits & M_ARM_RIGHT);
-    minsAdj = minsAdj + [self.mins_x * -0.05, self.mins_y * -0.05, 0];
-    maxsAdj = maxsAdj - [self.maxs_x * 0.05, self.maxs_y * 0.05, 0];
+    minsAdj = minsAdj + [self.cache_mins_x * -0.05, self.cache_mins_y * -0.05, 0];
+    maxsAdj = maxsAdj - [self.cache_maxs_x * 0.05, self.cache_maxs_y * 0.05, 0];
   }
   if( (self.critBuffer & M_TOR_LEFT) && !(self.criticalHits & M_TOR_LEFT)){
     if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-      self.shieldMax = self.shieldMax * 0.5;
+      self.shieldMax = self.cache_shieldMax * 0.25;
     }
     te_vehicle_chunk(  self.torL_mdl, self.torL_org, '0 0 0', self.torL_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
-    self.burnBits = self.burnBits - (self.burnBits & M_TOR_LEFT);
-    minsAdj = minsAdj + [self.mins_x * -0.1, self.mins_y * -0.1, 0];
-    maxsAdj = maxsAdj - [self.maxs_x * 0.1, self.maxs_y * 0.1, 0];
+    minsAdj = minsAdj + [self.cache_mins_x * -0.1, self.cache_mins_y * -0.1, 0];
+    maxsAdj = maxsAdj - [self.cache_maxs_x * 0.1, self.cache_maxs_y * 0.1, 0];
   }
   if( (self.critBuffer & M_TOR_RIGHT) && !(self.criticalHits & M_TOR_RIGHT)){
     if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-      self.shieldMax = self.shieldMax * 0.5;
+      self.shieldMax = self.cache_shieldMax * 0.25;
     }
     te_vehicle_chunk(  self.torR_mdl, self.torR_org, '0 0 0', self.torR_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.owner.vec_size / 10) + 0.25 );
-    self.burnBits = self.burnBits - (self.burnBits & M_TOR_RIGHT);
-    minsAdj = minsAdj + [self.mins_x * -0.1, self.mins_y * -0.1, 0];
-    maxsAdj = maxsAdj - [self.maxs_x * 0.1, self.maxs_y * 0.1, 0];
+    minsAdj = minsAdj + [self.cache_mins_x * -0.1, self.cache_mins_y * -0.1, 0];
+    maxsAdj = maxsAdj - [self.cache_maxs_x * 0.1, self.cache_maxs_y * 0.1, 0];
   }
   
   self.mins = self.mins + minsAdj;
@@ -440,32 +433,6 @@ void() ctrl_mech_critical_hits={
   }
 };
 
-void() ctrl_mech_burn_frame={
-
-  if( !(self.criticalHits & M_ARM_LEFT) && !(self.burnBits & M_ARM_LEFT) && (self.unitModFlags & MOD_HAS_ARM_L) ){
-    if( self.armL_hp < self.armL_hpMax * 0.67 ){
-      self.burnBits = self.burnBits | M_ARM_LEFT;
-    }
-  }
-  if( !(self.criticalHits & M_ARM_RIGHT) && !(self.burnBits & M_ARM_RIGHT) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-    if( self.armR_hp < self.armR_hpMax * 0.67 ){
-      self.burnBits = self.burnBits | M_ARM_RIGHT;
-    }
-  }
-  if( !(self.criticalHits & M_TOR_LEFT) && !(self.burnBits & M_ARM_RIGHT) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-    if( self.armR_hp < self.armR_hpMax * 0.5 ){
-      self.burnBits = self.burnBits | M_ARM_RIGHT;
-    }
-  }
-  if( !(self.criticalHits & M_LEGS) ){
-    if( self.legs_hp < self.legs_hpMax * 0.5 ){
-      self.burnBits = self.burnBits | M_LEGS;
-    }
-  }
-  if( self.health < self.max_health * 0.33 ){
-    self.burnBits = self.burnBits | M_TOR_CENTER;
-  }
-};
 
 void() ctrl_player_mech_touch={
   local float dot;
@@ -605,14 +572,12 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
-    if( self.shieldHitFlag == 0 ){
-      WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
-      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
-    }
+    WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
+    WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+    WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+    WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+    WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+    WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){
@@ -632,10 +597,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
   }
-  
-  if( (changedflags & SENDFLAG_BURN) ){
-    WriteLong( MSG_ENTITY, self.burnBits );
-  }
+
   if( (changedflags & SENDFLAG_VOICE) ){
     if( !(changedflags & SENDFLAG_NEWENT) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );

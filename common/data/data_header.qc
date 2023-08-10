@@ -23,13 +23,10 @@ entity weaponList;  //used by data functions to populate weapon lists for units
 
 //just some syntactic sugar wrappings
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_center_={
-  #ifdef SSQC
-    self.torC_hp = self.torC_hpMax = healthMax;
-  #endif
-  
+  self.torC_hp = healthMax;
   self.torC_hpMax = healthMax;
-  self.torC_mdl = pathToModel;
   
+  self.torC_mdl = pathToModel;
   self.torC_parentId = M_UNIT;
   self.torC_compOffset = offsetOrigin;
   self.torC_compAltOffset = altOffset;

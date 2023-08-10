@@ -101,6 +101,8 @@ void() player_makeMech={
   
   droptofloor();
 
+  self.cache_mins = self.mins;
+  self.cache_maxs = self.maxs;
   self.targetEntId = 0;
   self.new_color = TRUE;
   self.effects = self.effects | EF_NODEPTHTEST;

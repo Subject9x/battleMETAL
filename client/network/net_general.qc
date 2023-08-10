@@ -601,6 +601,50 @@ void(entity item) predraw_unit_weapon_tank={
   addentity(item);
 };
 
+void() render_mech_effect_burning={
+
+  
+  local vector spark;
+  local vector windVel;
+
+  windVel = '0 0 10'; 
+  //ideally you've makevectors before this....
+
+  if( !(self.criticalHits & M_ARM_LEFT) && (self.unitModFlags & MOD_HAS_ARM_L) ){
+    if( self.armL_hp < self.armL_hpMax * 0.67 ){
+      spark = self.armL_org + (v_up * 10);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.armL_org, normalize( spark - self.armL_org) * (windVel_z/2), 1.0);
+    }
+  }
+  if( !(self.criticalHits & M_ARM_RIGHT) && (self.unitModFlags & MOD_HAS_ARM_R) ){
+    if( self.armR_hp < self.armR_hpMax * 0.67 ){
+      spark = self.armR_org + (v_up * 10);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.armR_org, normalize( spark - self.armR_org) * (windVel_z/2), 1.0);
+    }
+  }
+  if( !(self.criticalHits & M_TOR_LEFT) && (self.unitModFlags & MOD_HAS_TOR_L) ){
+    if( self.armR_hp < self.armR_hpMax * 0.5 ){
+      spark = self.torL_org + (v_up * 10);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.torL_org, normalize( spark - self.torL_org) * (windVel_z/2), 1.0);
+    }
+  }
+  if( !(self.criticalHits & M_TOR_RIGHT) && (self.unitModFlags & MOD_HAS_TOR_R) ){
+    if( self.torR_hp < self.torR_hpMax * 0.5 ){
+      spark = self.torR_org + (v_up * 10);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.torR_org, normalize( spark - self.torR_org) * (windVel_z/2), 1.0);
+    }
+  }
+  if( !(self.criticalHits & M_LEGS) ){
+    if( self.legs_hp < self.legs_hpMax * 0.5 ){
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.legs_org, normalize( spark - self.legs_org) * (windVel_z/2), 1.0);
+    }
+  }
+  if( self.torC_hp < self.torC_hpMax * 0.33 ){
+    spark = self.torC_org + (v_up * 10);
+    pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.torC_org, normalize( spark - self.torC_org) * (windVel_z/2), 1.0);
+  }
+};
+
 
 entity(float weaponId) sendent_get_weapon={
   switch(weaponId){
@@ -630,31 +674,6 @@ entity(float weaponId) sendent_get_weapon={
 
 
 /*
-  HANDLE EVENT - player mech parts destroyed
-*/
-void( float criticalBits ) sendevent_player_critical={
-
-  if( (self.unitModFlags & MOD_HAS_TOR_L) && (criticalBits & M_TOR_LEFT) ){
-    te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) && (criticalBits & M_TOR_RIGHT) ){
-    te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) && (criticalBits & M_ARM_LEFT) ){
-    te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) && (criticalBits & M_ARM_RIGHT) ){
-    te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-  }
-  if( (criticalBits & M_LEGS) ){
-    te_missile_explode( self.legs_org, self.vec_size * 1.25, '0.9 0.75 0.45', 0.01 ) ;
-  }
-  if(self.clientServerNum != player_localentnum){
-    return;
-  }
-};
-
-/*
   HANDLE EVENT - Player Critical notifying everyone
 */
 void( float playerEntId, float playerCritFlags ) client_handle_crit={
@@ -665,7 +684,7 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
   if( playerMech ){
     nonSelf = self;
     self = playerMech;
-      sendevent_player_critical(playerCritFlags);
+      sendevent_mech_crit(playerCritFlags);
     self = nonSelf;
   }
 };
@@ -679,11 +698,67 @@ void(float isnew, float ct, float lt, float rt, float la, float ra, float lg) ha
   self.armR_hp = ra / 100 * self.armR_hpMax;
   self.legs_hp = lg / 100 * self.legs_hpMax;
 };
+
 void(float isnew, float existCrits) handle_existing_crits={
   if(existCrits != 0){
     self.criticalHits = self.criticalHits | existCrits;
   }
 };
+
+
+/*
+  EVENT - CRITICAL =====================================
+*/
+void( float critical ) sendevent_mech_crit={
+    
+  local float isPlayer;
+
+  isPlayer = FALSE;
+  if(self == CLIENT_server_ent){
+    isPlayer = TRUE;
+  }
+
+  if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
+    
+    traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
+    
+    if( trace_ent != world || trace_fraction == 1.0){
+      if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
+        te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
+        }
+      }
+      if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (self.critBits & M_TOR_RIGHT) ){
+        te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
+        }
+      }
+      if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (self.critBits & M_ARM_LEFT) ){
+        te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
+        }
+      }
+      if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
+        te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
+        }
+      }
+      if( (self.critBits & M_LEGS) && !(self.criticalHits & M_LEGS) ){
+        te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        if(isPlayer){
+          hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
+        }
+      }
+    }
+  }
+  
+  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
+};
+
 
 /*
   SendEntity - Map Objects ====================================

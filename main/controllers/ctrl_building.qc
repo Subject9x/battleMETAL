@@ -329,6 +329,24 @@ float( float isNew, float changedflags ) ctrl_send_building={
       WriteLong( MSG_ENTITY, self.critBits);  //send the partTypeId value to the client
       if( self.critBits != FALSE ){
         WriteLong( MSG_ENTITY, num_for_edict(self.goalentity) );
+        if( self.critBits == M_TOR_CENTER ){
+          WriteByte( MSG_ENTITY, (self.goalentity.health / self.goalentity.max_health) * 100 );
+        }
+        else if( self.critBits == M_TOR_LEFT ){
+          WriteByte( MSG_ENTITY, (self.goalentity.torL_hp / self.goalentity.torL_hpMax) * 100 );
+        }
+        else if( self.critBits == M_TOR_RIGHT ){
+          WriteByte( MSG_ENTITY, (self.goalentity.torR_hp / self.goalentity.torR_hpMax) * 100 );
+        }
+        else if( self.critBits == M_ARM_LEFT ){
+          WriteByte( MSG_ENTITY, (self.goalentity.armL_hp / self.goalentity.armL_hpMax) * 100 );
+        }
+        else if( self.critBits == M_ARM_RIGHT ){
+          WriteByte( MSG_ENTITY, (self.goalentity.armR_hp / self.goalentity.armR_hpMax) * 100 );
+        }
+        else if( self.critBits == M_LEGS ){
+          WriteByte( MSG_ENTITY, (self.goalentity.legs_hp / self.goalentity.legs_hpMax) * 100 );
+        }
       }
     }
     if( self.data_idx == UI_BUILDING_radar ){

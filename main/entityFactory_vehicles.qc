@@ -155,6 +155,9 @@ void() build_mech_unit={
   self.cache_speed_sid = self.data_speed_strafe;
   self.cache_speed_back = self.data_speed_backward;
   
+  self.cache_shieldMax = self.shieldMax;
+  self.cache_maxs = self.maxs;
+  self.cache_mins = self.mins;
   
   //-> sub out to making specific bots.
   if( !(self.flags & FL_CLIENT) ){
