@@ -110,7 +110,7 @@ void() building_repair_select={
     self.attack_state = 0;
 
     //repair priority - player center torso
-    if(player.health < player.max_health * 0.5){
+    if(player.health < player.max_health * 0.67){
       typeId = M_TOR_CENTER;
     }
     else{
@@ -136,20 +136,23 @@ void() building_repair_select={
       }
       else{
         //then find most-damaged part
-        if( player.legs_hp < player.legs_hpMax * 0.75 ){
+        if( player.legs_hp < player.legs_hpMax * lowHP ){
           typeId = M_LEGS;
         }
-        else if( player.torL_hp < player.torL_hpMax * 0.85) {
+        else if( player.torL_hp < player.torL_hpMax * lowHP) {
           typeId = M_TOR_LEFT;
         }
-        else if( player.torR_hp < player.torR_hpMax * 0.85) {
+        else if( player.torR_hp < player.torR_hpMax * lowHP) {
           typeId = M_TOR_RIGHT;
         }
-        else if( player.armL_hp < player.armL_hpMax * 0.5) {
+        else if( player.armL_hp < player.armL_hpMax * lowHP) {
           typeId = M_TOR_LEFT;
         }
-        else if( player.armR_hp < player.armR_hpMax * 0.5) {
+        else if( player.armR_hp < player.armR_hpMax * lowHP) {
           typeId = M_TOR_RIGHT;
+        }
+        else if(player.health < player.max_health * lowHP){
+          typeId = M_TOR_CENTER; //make sure to finish fixing the CT!
         }
         else{
           if( (player.armR_hp < player.armR_hpMax) && player.armR_hp < player.armL_hp ){
@@ -172,7 +175,7 @@ void() building_repair_select={
     self.critBits = typeId;
     if( self.critBits == 0 ){
       //nothing to actually repair;
-      self.ai_state_next = REPAIR_STATE_IDLE;
+      self.ai_state_next = REPAIR_STATE_COOLDOWN;
       self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
       return;
     }
@@ -372,6 +375,7 @@ void() building_repair_idle={
         self.ladder_entity = world;
       }
     }
+    
     return;
   }
   building_repair_recharge_frame();
@@ -395,19 +399,15 @@ void() building_repair_cooldown={
       self.ladder_entity = world;
     }
     if( skill < SKILL_VET ){
-      self.ai_movedist = time + 15;
-    }
-    else if( skill == SKILL_VET ){
-      self.ai_movedist = time + 25;
+      self.ai_movedist = time + 5;
     }
     else{
-      self.ai_movedist = time + 35;
+      self.ai_movedist = time + 7;
     }
   }
   building_repair_recharge_frame();
   if( time > self.ai_movedist ){
     self.ai_state_next = REPAIR_STATE_IDLE;
-    self.repair_field.touch = building_repair_touch;
     self.repair_field.solid = SOLID_TRIGGER;
     setsize(self.repair_field, '-8 -8 -16', '8 8 16');
     setorigin(self.repair_field, self.repair_field.origin);
@@ -429,22 +429,19 @@ void() building_repair_touch;
 
 void() building_repair_state={
 
+  makevectors(self.angles);
+  self.torC_org = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
   //making sure this gets spawned in. - delay think / building settle
-  if(!self.repair_field){
+  if( self.repair_field == world){
     self.repair_field = spawn(); 
     self.repair_field.movetype = MOVETYPE_NONE;
     self.repair_field.solid = SOLID_TRIGGER;
     self.repair_field.touch = building_repair_touch;
     self.repair_field.owner = self;
-    makevectors(self.angles);
-    self.torC_org = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
     setsize(self.repair_field, '-8 -8 -16', '8 8 16');
     setorigin( self.repair_field,  self.torC_org);
   }
   else{
-    makevectors(self.angles);
-    self.torC_org = self.origin + (v_up * self.maxs_y / 2) + (v_forward * -8);
-    setsize(self.repair_field, '-8 -8 -16', '8 8 16');
     setorigin( self.repair_field,  self.torC_org);
   }
   
@@ -684,11 +681,11 @@ void() building_repair_bay={
   makevectors(self.angles);
   self.render_dlights = repair_bay_dlights;
   self.w_firetime = 0;
-  self.compOffset = self.origin + (v_up * 48) + (v_forward * -16);
-  self.torR_org = self.origin + (v_up * 48) + (v_forward * -12) + (v_right * 32);
-  self.torL_org = self.origin + (v_up * 48) + (v_forward * -12) + (v_right * -32);
-  self.armL_org = self.origin + (v_up * 48) + (v_forward * -20) + (v_right * -32);
-  self.armR_org = self.origin + (v_up * 48) + (v_forward * -24) + (v_right * 32);
+  self.compOffset = self.origin + (v_up * 52) + (v_forward * -16);
+  self.torR_org = self.origin + (v_up * 52) + (v_forward * -8) + (v_right * 34);
+  self.torL_org = self.origin + (v_up * 52) + (v_forward * -8) + (v_right * -34);
+  self.armL_org = self.origin + (v_up * 52) + (v_forward * -20) + (v_right * -34);
+  self.armR_org = self.origin + (v_up * 52) + (v_forward * -20) + (v_right * 34);
 
   self.compAltOffset = self.origin;
   self.th_walk = repair_bay_active;
@@ -752,19 +749,19 @@ void() building_repair_touch={
   if( self.owner.goalentity != world ){
     return;
   }
+  if(other.faction != self.owner.faction){
+    //TODO -> repair bay will 'attack' by deconstructing your mech >:|
+    return;
+  }
   if(util_getMechHpAverage(other) >= 1){
+    self.owner.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
   }
   if( self.owner.ai_state != REPAIR_STATE_IDLE ){
     //repair either already has a client, or is cooling off
     return;
   }
-  if(other.faction != self.owner.faction){
-    //TODO -> repair bay will 'attack' by deconstructing your mech >:|
-    return;
-  }
   
-  self.touch = SUB_Null;
   self.solid = SOLID_NOT;
   
   self.owner.goalentity = other;
