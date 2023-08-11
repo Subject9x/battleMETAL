@@ -1599,15 +1599,16 @@
     type smoke
     blend alpha
     color 0x00FF00 0xACFA58
-    tex 48 56
-    size 2 3
-    sizeincrease 0.5
-    alpha 96 128 256
+    //tex 48 56
+    tex 0 7
+    size 1 2
+    sizeincrease 2
+    alpha 150 200 96
     gravity 0.004
     originjitter 0.25 0.25 0.25
     velocityjitter 0.7 0.7 0.7
-    velocitymultiplier -0.001
-    trailspacing 24
+    velocitymultiplier -0.004
+    trailspacing 32
     
   //TE_RPC_TRAIL - GREEN LIGHT
     effect TE_RPC_TRAIL
@@ -1629,7 +1630,6 @@
     size 1 2
     sizeincrease 4
     alpha 256 512 768
-    time 0.76 1
     gravity 0.0085
     originjitter 0.5 0.5 0
     velocityjitter 2 2 2
@@ -1641,12 +1641,11 @@
     blend alpha
     color 0x40FF00 0xF7F8E0
     tex 48 56
-    size 2 3
-    sizeincrease 4
-    alpha 256 512 768
-    time 0.76 1
-    gravity -0.075
-    originjitter 0.5 0.5 0
+    size 0.5 1
+    sizeincrease 1.5
+    alpha 128 256 768
+    gravity -0.067
+    originjitter 1.0 1.0 1.0
     velocityjitter 2 2 2
     
   //TE_RPC_HIT - GREEN SMOKE RISE ON HIT
@@ -1666,12 +1665,11 @@
     blend alpha
     color 0x40FF00 0xF7F8E0
     tex 48 56
-    size 2 3
+    size 1 2
     sizeincrease 4
-    alpha 256 512 768
-    time 1 1.25
+    alpha 64 128 256
     gravity -0.05
-    originjitter 0.5 0.5 00.5
+    originjitter 1.0 1.0 1.0
     velocityjitter 2 2 2
   
   //TE_RPC_BURN - GREEN FALLING BLEED
@@ -1682,12 +1680,11 @@
     color 0x40FF00 0xF7F8E0
     tex 35 35
     size 0.2 0.3
-    alpha 256 512 768
-    time 1 1.25
-    gravity 0.075
+    alpha 256 512 1024
+    gravity 0.09
     originjitter 0.5 0.5 00.5
     velocityjitter 2 2 2
-    stretchfactor 4
+    stretchfactor 3
   
   //TE_RPC_BURN - GREEN LIGHT
     effect TE_RPC_BURN 
@@ -1718,6 +1715,20 @@
     size 3 4
     alpha 512 768 0
     originjitter 5 0 0
+    
+    //TE_RPC_HIT_DIRT - GREEN RISING SMOKE
+    effect TE_RPC_HIT_DIRT
+    count 2
+    type smoke
+    blend alpha
+    color 0x40FF00 0xF7F8E0
+    tex 48 56
+    size 1 2
+    sizeincrease 2
+    alpha 64 128 256
+    gravity 0.025
+    originjitter 1.0 1.0 1.0
+    velocityjitter 2 2 2
     
 //==========================================
 
