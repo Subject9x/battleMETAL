@@ -42,7 +42,7 @@ void() data_ini_equip_heatsink_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "HTSNK";
-    self.description = "| Reduce Energy cost by 15% for + EMP. + Ion Coil. + Particle Cannon.";
+    self.description = "| Reduce Energy cost by 15% for + EMP. + Ion Coil. + Particle Cannon. | + ESR recharge rate reduced by 25%.";
     self.icon = "gfx/ui/wep_icons/eqp_htsnk.png";
   #endif
   
@@ -64,6 +64,9 @@ void() heatsink_upgrade_={
       wep.energyRateCache = wep.energyRate;
       wep.energyRate = wep.energyRate - (wep.energyRateCache * 0.15); //use energyRateCache to make they can be stacked properly
     }
+    else if( wep.data_idx == UID_ITEM_electro_repeater){
+      wep.reloadMax = wep.reloadMax * 0.67;
+    }
     wep = wep.w_slot;
   }
 };
@@ -75,6 +78,9 @@ void() heatsink_remove_={
   for(hid = 0; hid < self.owner.hardpoint_cnt; hid = hid + 1){
     if( wep.data_idx == UID_ITEM_emp || wep.data_idx == UID_ITEM_particle_cannon || wep.data_idx == UID_ITEM_ion_coil ){
       wep.energyRate = wep.energyRateCache;
+    }
+    else if( wep.data_idx == UID_ITEM_electro_repeater){
+      wep.reloadMax = wep.reloadMaxCache;
     }
     wep = wep.w_slot;
   }

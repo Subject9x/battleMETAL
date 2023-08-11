@@ -20,18 +20,18 @@ void() projectile_qbit_expl={
   }
   if( self.impactType == IMPACT_SHIELD ){
     pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, normalize(self.origin - self.origin1) * 2, 1);
+    return;
   }
-  else if( self.impactType == IMPACT_ARMOR ){
+  if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, normalize(self.origin - self.origin1) * 2, 1);
+    return;
   }
-  else{
-    //dirt
-    pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, '0 0 0', 1);
-    self.angles = vectoangles(self.velocity);
-    makevectors(self.angles);
-    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
-    pointparticles(PTC_HIT_DIRT_ENE_LRG, trace_endpos, trace_plane_normal * -1, 1);
-  }
+  //dirt
+  pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, '0 0 0', 1);
+  self.angles = vectoangles(self.velocity);
+  makevectors(self.angles);
+  traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+  pointparticles(PTC_HIT_DIRT_ENE_LRG, trace_endpos, trace_plane_normal * -1, 1);
 };
 #endif
 
@@ -40,6 +40,7 @@ void() data_projectile_ini_quantum_bit_={
   self.data_velocity = 1700; //time = distance/speed
   self.data_lifetime = 0.87;
   
+  self.effects = self.effects | EF_FULLBRIGHT | EF_NOSHADOW;
   #ifdef CSQC
     //cosmetics
     precache_model("models/proj/mdl_proj_qrfl.md3");
@@ -54,12 +55,18 @@ void() data_projectile_ini_quantum_bit_={
   #ifdef SSQC
     self.touch = data_projectile_ini_quantum_bit_touch_;
     self.think = data_projectile_quantum_bit_th;
-    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 
 #ifdef SSQC
 void() data_projectile_quantum_bit_th={
+  if( time > self.data_lifetime ){
+    self.velocity = '0 0 0';
+    remove(self);
+    return;
+  }
+  
   self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;
   if( self.last_origin != self.origin ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
@@ -68,12 +75,6 @@ void() data_projectile_quantum_bit_th={
   
   self.think = data_projectile_quantum_bit_th;
   self.nextthink = time + 0.025;
-  
-  if( time > self.data_lifetime ){
-    self.velocity = '0 0 0';
-    remove(self);
-    return;
-  }
 }
 
 
@@ -146,6 +147,9 @@ void() data_projectile_ini_quantum_bit_touch_={
         self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       }
       self.impactType = IMPACT_ARMOR;
+      if(other.energy){
+        other.energy = max(0, other.energy - (other.energyMax * 0.025));
+      }
     }
     self.targetEntId = num_for_edict(other);
   }

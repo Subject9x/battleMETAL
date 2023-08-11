@@ -9,8 +9,9 @@ Overview:
 */
 
 #ifdef SSQC
-#define DATA_PROJECTILE_PLASMA_BURN_TIME 0.67
-#define DATA_PROJECTILE_PLASMA_BURN_DMG 5.0
+#define DATA_PROJECTILE_PLASMA_BURN_TIME 0.75
+#define DATA_PROJECTILE_PLASMA_BURN_DMG 3.0
+//was 5.0
 
 void() data_projectile_plasma_touch;
 void() data_projectile_plasma_think_;
@@ -24,32 +25,33 @@ void() projectile_plasma_expl={
   
   if( self.impactType == IMPACT_ARMOR ){
     pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
-    self.deadflag = DEAD_NO;  //flips the projectile render back on.
+    self.deadflag = DEAD_NO;  //flips the projectile render back on.'
+    return;
   }
-  else if( self.impactType == IMPACT_SHIELD ){
+  if( self.impactType == IMPACT_SHIELD ){
     pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+    return;
   }
-  else if( self.impactType == IMPACT_DIRT ){
-    self.angles = vectoangles(self.velocity);
-    makevectors(self.angles);
-    traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
-    pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
-    pointparticles( particleeffectnum("TE_RPC_HIT_DIRT"), trace_endpos, trace_plane_normal * -1, 1);
-  
-  }
+  self.angles = vectoangles(self.velocity);
+  makevectors(self.angles);
+  traceline(self.origin - (v_forward * 2), self.origin, MOVE_WORLDONLY, self);
+  pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+  pointparticles( particleeffectnum("TE_RPC_HIT_DIRT"), trace_endpos, trace_plane_normal * -1, 1);
 };
 #endif
 
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  self.data_velocity = 1200;  //vel = Range / lifetime || vel * lifetime = Range / lifetime * lifetime
+  //self.data_velocity = 1200;  //vel = Range / lifetime || vel * lifetime = Range / lifetime * lifetime
+  self.data_velocity = 1400;  //toss velocity
   self.data_lifetime = 1.5;
   self.scale = 1.25;
   
+  self.effects = self.effects | EF_FULLBRIGHT | EF_NOSHADOW;
   #ifdef CSQC
     //cosmetics
-    self.alpha = 0.85;
-    self.scale = 1.0;
+    self.alpha = 0.75;
+    self.scale = 1.5;
     precache_model("models/proj/mdl_proj_rpc.md3");
     self.model = "models/proj/mdl_proj_rpc.md3";
     self.data_traileff = particleeffectnum("TE_RPC_TRAIL");
@@ -60,7 +62,7 @@ void() data_projectile_ini_plasma_={
   #ifdef SSQC
     self.touch = data_projectile_plasma_touch;
     self.think = data_projectile_plasma_think_;
-    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 #ifdef SSQC
@@ -138,16 +140,16 @@ void() data_projectile_plasma_touch={
     }
     else{
       self.partParentId = t_damage(other, self, self.owner, damage, self.origin, '0 0 0');
-      self.targetEntId = num_for_edict(other);
-      self.enemy = other;
-      
-      util_getPartFromName(self.partParentId, other);
+      if(self.count){
+        self.targetEntId = num_for_edict(other);
+        self.enemy = other;
+        self.think = data_projectile_plasma_burn_ini_;
+        self.nextthink = time + 0.01;
+      }
 
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
       self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_IMPACT;
-      self.think = data_projectile_plasma_burn_ini_;
-      self.nextthink = time + 0.01;
       self.impactType = IMPACT_ARMOR;
       
       if( self.partParentId && !(self.owner.statTargetHitParts & self.partParentId) ){
@@ -168,7 +170,7 @@ void() data_projectile_plasma_touch={
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT | SENDFLAG_MOVE;
  
   self.think = ctrl_missile_lastframe;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_plasma_think_={

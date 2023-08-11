@@ -50,11 +50,11 @@ void() data_projectile_ini_missile_laserguide_={
   self.data_velocity = 2200;
   self.data_lifetime = 1.1;
   
+  self.effects = self.effects | EF_NOSHADOW | EF_FULLBRIGHT;
   #ifdef CSQC
     //cosmetics
     precache_model("models/proj/mdl_proj_lgm.md3");
     self.model = "models/proj/mdl_proj_lgm.md3";
-    self.effects = EF_NOSHADOW | EF_FULLBRIGHT;
     self.modelflags = 0;
     self.data_traileff = particleeffectnum("TE_LGM_TRAIL");
     self.pcl_explode = projectile_mlg_expl;
@@ -64,7 +64,7 @@ void() data_projectile_ini_missile_laserguide_={
   #ifdef SSQC
     self.touch = data_projectile_missile_laserguide_touch;
     self.think = data_projectile_missile_laserguide_think;
-    self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
+    self.effects = self.effects | EF_LOWPRECISION;
   #endif
 };
 #ifdef SSQC
@@ -85,7 +85,7 @@ void() data_projectile_missile_laserguide_touch={
     }
     else{
       if(other.data_type == DATA_BLD){
-        damage = damage + (damage * 0.33);
+        damage = damage + (damage * 2);
       }
       HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
       if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){

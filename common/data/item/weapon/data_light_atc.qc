@@ -66,7 +66,6 @@ void() data_ini_light_atc_={
 
   self.data_idx = UID_ITEM_light_autocannon;
   
-  
   if( (self.owner.flags & FL_CLIENT) ){
     self.w_clipsize = 1;
     self.reloadRate = 0.3;
@@ -75,9 +74,9 @@ void() data_ini_light_atc_={
   }
   else{
     self.w_clipsize = 3;
-    self.reloadRate = 0.12;
-    self.reloadMax = 1.5;
-    self.damageValue = 10.0;
+    self.reloadRate = 0.5;
+    self.reloadMax = 1.0;
+    self.damageValue = 3.0;
   }
   
   self.energyRate = 0;

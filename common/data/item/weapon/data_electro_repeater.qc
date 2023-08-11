@@ -35,7 +35,7 @@ float ESR_MAX_RATE = 0.09;  //count3
 float ESR_RATE_UP = 0.003;   //count3 - was 65
 float ESR_RATE_DN = 0.01;   //count3
 
-float ESR_SPREAD_UP = 1.25; //1.15
+float ESR_SPREAD_UP = 1.15; //1.15
 float ESR_SPREAD_DN = 0.9;  //0.95
 
 void() weapon_esr_think={
@@ -144,13 +144,13 @@ void() data_ini_electro_repeater_={
   self.energyRate = 5;
   
   self.w_range = 1000;
-  self.damageValue = 10;
+  self.damageValue = 12;  //10
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
   self.equipSize = ENE2;
 
-  self.spreadDefault = '0.015 0.015 0';
+  self.spreadDefault = '0.1 0.1 0';
   self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   
@@ -168,6 +168,7 @@ void() data_ini_electro_repeater_={
 #endif
 
 #ifdef SSQC
+  self.reloadMaxCache = 4;
   self.w_isburst = FALSE;
   if( (self.owner.flags & FL_MONSTER) ){
     self.reloadMax = 1;

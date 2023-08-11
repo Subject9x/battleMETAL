@@ -73,7 +73,7 @@ void() data_ini_quantum_={
   self.fire_sound = "sound/weapons/qrfl_fire.ogg";
   self.model = "models/weapons/w_qrf.md3";
   self.abbrev = "QRF";
-  self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets.";
+  self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets. + small amount of Energy damage to target.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   self.itemMuzzleFlash = te_muzzle_qrf;
 #endif 
