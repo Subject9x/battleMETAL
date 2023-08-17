@@ -663,7 +663,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
         self.criticalHits = self.criticalHits - (self.criticalHits & self.critBits);
       }
       else{
-        sendevent_mech_crit();
+        sendevent_mech_crit(self.critBits);
         self.criticalHits = self.criticalHits | self.critBits;
       }
       self.critBits = 0;

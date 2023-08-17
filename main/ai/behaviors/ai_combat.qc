@@ -26,9 +26,13 @@ void() ai_ranged_attack={
   if( (self.flags & FL_TURRET) ){
     //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
     self.v_angle = self.torC_angl;
-    diff = vectoangles( self.enemy.origin - self.cameraOrigin);
-    self.v_angle_x = diff_x;
+    diff = vectoangles( self.enemy.origin - self.torC_org);
   }
+  else{
+    diff = vectoangles( self.enemy.origin - self.cameraOrigin);
+  }
+  self.v_angle_x = anglemod(self.v_angle_x +  diff_x);
+
   
   for( wep_chain = self.w_slot; wep_chain.owner == self; wep_chain = wep_chain.w_slot){
     if(self.button0){
@@ -70,11 +74,9 @@ void() ai_ranged_attack={
     }
   }
   if( fired > 0 ){
-    if( (self.enemy.flags & FL_CLIENT) ){
-      if( self.trigOnAttack ){
-        trigger_event( self.enemy, self.trigOnAttack );
-        self.target = "";
-      }
+    if( self.trigOnAttack ){
+      trigger_event( self.enemy, self.trigOnAttack );
+      self.trigOnAttack = "";
     }
   }
   if( blockShot >= fired ){
