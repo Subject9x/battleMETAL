@@ -109,12 +109,13 @@ void() building_repair_select={
     self.critBits = 0;
     self.attack_state = 0;
 
+    typeId = 0;
     //repair priority - player center torso
     if(player.health < player.max_health * 0.67){
       typeId = M_TOR_CENTER;
     }
     else{
-      lowHP = 99.99;
+      lowHP = 0.99;
       if( player.criticalHits > 0 ){
         //prioritize blown off sections first
         if( (player.criticalHits & M_LEGS) ){
@@ -139,6 +140,9 @@ void() building_repair_select={
         if( player.legs_hp < player.legs_hpMax * lowHP ){
           typeId = M_LEGS;
         }
+        else if(player.health < player.max_health * lowHP){
+          typeId = M_TOR_CENTER; //make sure to finish fixing the CT!
+        }
         else if( player.torL_hp < player.torL_hpMax * lowHP) {
           typeId = M_TOR_LEFT;
         }
@@ -146,26 +150,35 @@ void() building_repair_select={
           typeId = M_TOR_RIGHT;
         }
         else if( player.armL_hp < player.armL_hpMax * lowHP) {
-          typeId = M_TOR_LEFT;
+          typeId = M_ARM_LEFT;
         }
         else if( player.armR_hp < player.armR_hpMax * lowHP) {
-          typeId = M_TOR_RIGHT;
-        }
-        else if(player.health < player.max_health * lowHP){
-          typeId = M_TOR_CENTER; //make sure to finish fixing the CT!
+          typeId = M_ARM_RIGHT;
         }
         else{
-          if( (player.armR_hp < player.armR_hpMax) && player.armR_hp < player.armL_hp ){
+          if(player.health < player.max_health * lowHP){
+            typeId = M_TOR_CENTER; //make sure to finish fixing the CT!
+          }
+          else if( player.legs_hp != player.legs_hpMax){
+            typeId = M_LEGS;
+          }
+          else if( player.torL_hp != player.torL_hpMax && player.torL_hp < player.torR_hp){
+            typeId = M_TOR_LEFT; 
+          }
+          else if( player.torR_hp != player.torR_hpMax && player.torR_hp < player.torL_hp){
+            typeId = M_TOR_RIGHT; 
+          }
+          else if( player.armR_hp != player.armR_hpMax && player.armR_hp < player.armL_hp ){
             typeId = M_ARM_RIGHT;
           }
-          else if( (player.armL_hp < player.armL_hpMax) && player.armL_hp < player.armR_hp ){
+          else if( player.armL_hp != player.armL_hpMax && player.armL_hp < player.armR_hp ){
             typeId = M_ARM_LEFT;
           }
           else{
-            if( player.armR_hp < player.armL_hpMax ){
+            if( player.armR_hp != player.armR_hpMax ){
               typeId = M_ARM_RIGHT;
             }
-            else if( player.armL_hp < player.armL_hpMax ){
+            else if( player.armL_hp != player.armL_hpMax ){
               typeId = M_ARM_LEFT;
             }
           }
@@ -173,7 +186,7 @@ void() building_repair_select={
       }
     }
     self.critBits = typeId;
-    if( self.critBits == 0 ){
+    if( self.critBits == FALSE ){
       //nothing to actually repair;
       self.ai_state_next = REPAIR_STATE_COOLDOWN;
       self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
@@ -216,7 +229,7 @@ void() building_repair_fixing={
 
   player = self.goalentity;
   
-  if(vlen(player.origin - self.repair_field.origin) > 64){
+  if(vlen(player.origin - self.repair_field.origin) > 56){
     //player walked away from node
     self.ai_state_next = REPAIR_STATE_COOLDOWN;
     return;
@@ -244,23 +257,23 @@ void() building_repair_fixing={
   end_repair = FALSE;
   self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
   
+  self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
+
   //fix 'client' / aka CT
   if( self.critBits == M_TOR_CENTER ){
     //part is not critical'd, repair as normal.
     player.health = player.health + self.reloadRate;
-    self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
-    if( player.health > player.max_health ){
+    if( player.health >= player.max_health ){
       end_repair = TRUE;
       player.health = player.max_health;
     }
   }
   else{
-    self.reloadValue = self.reloadValue - ( (self.reloadRate / 2) * (player.vec_size * 1.25));
     switch(self.critBits){
     
       case M_LEGS:
         player.legs_hp = player.legs_hp + self.reloadRate;
-        if( player.legs_hp > player.legs_hpMax ){
+        if( player.legs_hp >= player.legs_hpMax ){
           player.legs_hp = player.legs_hpMax;
           end_repair = TRUE;
         }
@@ -268,7 +281,7 @@ void() building_repair_fixing={
         
       case M_TOR_LEFT:
         player.torL_hp = player.torL_hp + self.reloadRate;
-        if( player.torL_hp > player.torL_hpMax ){
+        if( player.torL_hp >= player.torL_hpMax ){
           player.torL_hp = player.torL_hpMax;
           end_repair = TRUE;
         }
@@ -276,7 +289,7 @@ void() building_repair_fixing={
         
       case M_TOR_RIGHT:
         player.torR_hp = player.torR_hp + self.reloadRate;
-        if( player.torR_hp > player.torR_hpMax ){
+        if( player.torR_hp >= player.torR_hpMax ){
           player.torR_hp = player.torR_hpMax;
           end_repair = TRUE;
         }
@@ -284,7 +297,7 @@ void() building_repair_fixing={
         
       case M_ARM_LEFT:
         player.armL_hp = player.armL_hp + self.reloadRate;
-        if( player.armL_hp > player.armL_hpMax ){
+        if( player.armL_hp >= player.armL_hpMax ){
           player.armL_hp = player.armL_hpMax;
           end_repair = TRUE;
         }
@@ -292,7 +305,7 @@ void() building_repair_fixing={
         
       case M_ARM_RIGHT:
         player.armR_hp = player.armR_hp + self.reloadRate;
-        if( player.armR_hp > player.armR_hpMax ){
+        if( player.armR_hp >= player.armR_hpMax ){
           player.armR_hp = player.armR_hpMax;
           end_repair = TRUE;
         }
@@ -350,8 +363,9 @@ void() building_repair_fixing={
   }
   player.stat_plr_rep = (self.reloadValue / self.reloadMax) * 100;
   
-  if(end_repair){
+  if(end_repair == TRUE){
     self.ai_state_next = REPAIR_STATE_START;
+    end_repair = FALSE;
   }
 };
 

@@ -35,7 +35,8 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_right_={
   #ifdef SSQC
-    self.torR_hp = self.torR_hpMax = healthMax;
+    self.torR_hp = healthMax;
+    self.torR_hpMax = healthMax;
   #endif
 
   self.torR_hpMax = healthMax;
@@ -49,7 +50,8 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_left_={
   #ifdef SSQC
-    self.torL_hp = self.torL_hpMax = healthMax;
+    self.torL_hp =  healthMax;
+    self.torL_hpMax = healthMax;
   #endif
   self.torL_hpMax = healthMax;
   self.torL_mdl = pathToModel;
@@ -61,7 +63,8 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_left_={
   #ifdef SSQC
-    self.armL_hp = self.armL_hpMax = healthMax;
+    self.armL_hp = healthMax;
+    self.armL_hpMax = healthMax;
   #endif
   self.armL_hpMax = healthMax;
   self.armL_mdl = pathToModel;
@@ -73,7 +76,8 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_right_={
   #ifdef SSQC
-    self.armR_hp = self.armR_hpMax = healthMax;
+    self.armR_hp = healthMax;
+    self.armR_hpMax = healthMax;
   #endif
   
   self.armR_hpMax = healthMax;
@@ -85,11 +89,10 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
-  #ifdef SSQC
-    self.legs_hp = self.legs_hpMax = healthMax;
-  #endif
+
   
   //compatability for server-side corpse ents.
+  self.legs_hp = healthMax;
   self.legs_hpMax = healthMax;
   self.legs_mdl = pathToModel;
   precache_model(pathToModel);
