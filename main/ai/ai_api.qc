@@ -115,7 +115,7 @@ float(entity t) ai_valid_target={
   if( t.faction == self.faction){
     return FALSE;
   }
-  if( (t.flags & FL_UNIT) ){
+  if( t.takedamage == DAMAGE_AIM ){
     return t.canTarget;
   }
   return FALSE;

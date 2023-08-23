@@ -154,14 +154,23 @@ void() ctrl_updateCenterTorso={
     makevectors(self.v_angle);
     if(self.chaseActive){
       laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
-      traceline(self.origin, laserOrg, TRUE, self);
+      TRACE_HIT_TEMP = self.dphitcontentsmask;
+      self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
+        traceline(self.origin, laserOrg, TRUE, self);
+      self.dphitcontentsmask = TRACE_HIT_TEMP;
+
       laserOrg = trace_endpos;
     }
     else{
       laserOrg = self.cameraOrigin;
     }
     laserHit = laserOrg + (v_forward * 10000);
-    traceline(laserOrg, laserHit, FALSE, self);
+
+    TRACE_HIT_TEMP = self.dphitcontentsmask;
+    self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
+      traceline(laserOrg, laserHit, FALSE, self);
+    self.dphitcontentsmask = TRACE_HIT_TEMP;
+
     self.laser_sight_org = trace_endpos;
     self.laser_sight_timer = time + 0.05;
   }

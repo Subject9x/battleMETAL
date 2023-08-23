@@ -79,19 +79,13 @@ void() data_ini_attack_missile_activeradar_={
   local entity hold;
   
   canFire = FALSE;
-  
-  if( self.w_isburst == TRUE ){
-    canFire = TRUE;
-  }
-  else{
-    if( ai_valid_target(self.owner.enemy) ){
-      hold = self;
-      self = hold.owner;
-      if( util_checkPointAngleImpl(self.enemy.origin) && self.stat_rdr_mode == TRUE){
-        canFire = TRUE;
-      }
-      self = hold;
+  if( ai_valid_target(self.owner.enemy) ){
+    hold = self;
+    self = hold.owner;
+    if( util_checkPointAngleImpl(self.enemy.origin) && self.stat_rdr_mode == TRUE){
+      canFire = TRUE;
     }
+    self = hold;
   }
   
   if( canFire ){

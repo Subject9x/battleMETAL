@@ -401,8 +401,12 @@ void() building_repair_idle={
 void() building_repair_cooldown={
   if( self.ai_state == REPAIR_STATE_COOLDOWN && self.ai_state_last != REPAIR_STATE_COOLDOWN ){
     self.moveState = FALSE;
-    building_repair_allowGuns(TRUE);
-    client_send_event_repairs( self.goalentity, FALSE );
+
+    if(self.ladder_entity != world){
+      building_repair_allowGuns(TRUE);
+      client_send_event_repairs( self.goalentity, FALSE );
+    }
+
     self.goalentity.stat_plr_rep = -1;
     self.critBits = 0;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;

@@ -168,7 +168,10 @@ vector( vector viewAngle, float idealRange ) util_applySpreadToTrace={
   //acc_y = acc_y * crandom();
   //direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
   
-  traceline (FIRE_ORIGIN, FIRE_ORIGIN + wepAim*idealRange, FALSE, self.owner);
+  TRACE_HIT_TEMP = self.dphitcontentsmask;
+  self.owner.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
+    traceline (FIRE_ORIGIN, FIRE_ORIGIN + wepAim*idealRange, FALSE, self.owner);
+  self.owner.dphitcontentsmask = TRACE_HIT_TEMP;
   
   return trace_endpos;
 };

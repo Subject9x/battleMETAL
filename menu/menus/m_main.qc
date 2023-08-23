@@ -14,6 +14,7 @@ on how to use menu.dat.
 entity main_title;
 entity main_label;
 entity main_leave;
+entity main_restart;
 entity main_camp;
 entity main_training;
 entity main_options;
@@ -92,6 +93,15 @@ void() click_main_credits={
   m_credits_f();
 };
 
+void() click_main_restart={
+  menu_clear_items(M_STATE);
+  M_STATE = M_MAIN;
+  MAIN_MISSION = FALSE;
+  m_main_f();
+  menu_exit_togame();
+  localcmd("restart;\n");
+};
+
 void() click_main_leave={
   menu_clear_items(M_STATE);
   M_STATE = M_MAIN;
@@ -141,6 +151,9 @@ void() m_main_i={
     
     orgHelp = MENU_ORG + menu_parent_center_width(83);
     
+    main_restart = btn_text_callback(MENU_ORG + menu_parent_center_width(102), '16 16', "RESTART MISSION", VIEW_CTX, M_MAIN, click_main_restart, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
+    main_restart.fontId = FONT_NUM_XOLONIUM_BOLD;
+
     main_leave = btn_text_callback(MENU_ORG + menu_parent_center_width(121), '16 16', "LEAVE", VIEW_CTX, M_MAIN, click_main_leave, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
     main_leave.fontId = FONT_NUM_XOLONIUM_BOLD;
     
@@ -167,13 +180,13 @@ void() m_main_i={
     orgOptions = MENU_ORG + menu_parent_center_width(149);
     orgHelp = MENU_ORG + menu_parent_center_width(169);
     
-    main_wiki = btn_text_callback(MENU_ORG + menu_parent_center_width(189), '16 16', "ARCHIVES", VIEW_CTX, M_MAIN, click_main_wiki, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-    main_wiki.fontId = FONT_NUM_XOLONIUM_BOLD;
+    //main_wiki = btn_text_callback(MENU_ORG + menu_parent_center_width(189), '16 16', "ARCHIVES", VIEW_CTX, M_MAIN, click_main_wiki, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    //main_wiki.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    main_credits = btn_text_callback(MENU_ORG + menu_parent_center_width(209), '16 16', "CREDITS", VIEW_CTX, M_MAIN, click_main_credits, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_credits = btn_text_callback(MENU_ORG + menu_parent_center_width(189), '16 16', "CREDITS", VIEW_CTX, M_MAIN, click_main_credits, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_credits.fontId = FONT_NUM_XOLONIUM_BOLD;
     
-    orgQuit = MENU_ORG + menu_parent_center_width(239);
+    orgQuit = MENU_ORG + menu_parent_center_width(209);
     
   }
   

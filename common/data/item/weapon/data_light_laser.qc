@@ -35,7 +35,7 @@ void() te_muzzle_las={
   }
   
   
-  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
+  trailparticles( self, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
