@@ -453,12 +453,8 @@ void() te_shield_hit_predraw={
 };
 
 void() te_shield_hit_th={
-  if(self.owner.clientServerNum == player_localentnum){
-    self.origin = CLIENT_vis_org;
-  }
-  else{
-    self.origin = self.owner.origin;
-  }
+
+  self.origin = self.owner.origin;
   
   if( self.alpha < 0.01 ){
     self.owner.shieldHitFlag = FALSE;
@@ -488,7 +484,6 @@ void() te_shield_hit={
       return;
     }
   }
-  
   
   hitTime = 0.4;
   
