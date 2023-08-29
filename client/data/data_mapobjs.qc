@@ -299,7 +299,7 @@ void() hazard_rad_think={
     //}
   }
   if( self.isActive ){
-    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 3) ){
+    if( vlen(CLIENT_server_ent.origin - self.origin) <= (self.maxs_x * 3) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 2;
     }
@@ -335,7 +335,7 @@ void() hazard_crs_think={
   //te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 244, FALSE, 15); 
    
   if( self.isActive ){
-    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(CLIENT_server_ent.origin - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 1;
     }
@@ -372,7 +372,7 @@ void() hazard_quant_think={
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
   
   if( self.isActive ){
-    if( vlen(CLIENT_vis_org - self.origin) <= (self.maxs_x * 4) ){
+    if( vlen(CLIENT_server_ent.origin - self.origin) <= (self.maxs_x * 4) ){
       client_event_environment();
       HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 4;
     }
