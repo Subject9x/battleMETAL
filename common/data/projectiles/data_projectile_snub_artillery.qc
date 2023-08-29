@@ -80,6 +80,7 @@ void() data_projectile_snub_artillery_th={
 void() data_projectile_snub_artillery_touch_={
   local float debris;
   local float damage;
+  local float part2;
   
   self.solid = SOLID_NOT;
   self.touch = SUB_Null;
@@ -101,6 +102,30 @@ void() data_projectile_snub_artillery_touch_={
     }
     else{
       HIT_LOCATION = t_damage(other, self, self.owner, self.damageValue, self.origin, '0 0 0');
+
+      part2 = FALSE;
+      if(other.health > 1 && other.data_type == DATA_MECH){
+        if( HIT_LOCATION == M_TOR_LEFT ){
+          part2 = M_TOR_CENTER;
+        }
+        if( HIT_LOCATION == M_TOR_RIGHT ){
+          part2 = M_TOR_CENTER;
+        }
+        if( HIT_LOCATION == M_ARM_LEFT ){
+          part2 = M_TOR_LEFT;
+        }
+        if( HIT_LOCATION == M_ARM_RIGHT ){
+          part2 = M_TOR_RIGHT;
+        }
+        if(part2){
+          util_getPartFromName(part2, other); 
+          if( T_PART_HP > 0){
+            t_damage(other, self, self.owner, self.damageValue * 0.33, T_PART_PARENT_ORG, '0 0 0');
+          }
+        }
+      }
+      
+
       if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
         self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
       } 
