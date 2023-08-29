@@ -129,7 +129,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   
   if( isNew ){
     if( self.deadflag == DEAD_NO ){
-      cacheGlobalString(self.netname, newName )
+      if(newName != "none"){
+        cacheGlobalString(self.netname, newName )
+      }
       self.think = mech_ai_think;
       self.nextthink = time + 0.01;
       data_sync_new_mech_ai( self.data_idx );

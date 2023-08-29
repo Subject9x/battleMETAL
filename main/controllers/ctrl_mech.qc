@@ -471,6 +471,10 @@ void() ctrl_player_mech_touch={
     mid = vlen(self.origin - other.origin) * 0.5;
     vec = self.legs_org + (v_forward * mid);
     rammage = vlen(self.velocity) * 0.1;
+    
+    if((other.flags & FL_MONSTER)){
+      other.ramAngle = normalize(self.velocity) * 100;
+    }
 
     if( other.shield <= 0 )
     {
@@ -504,7 +508,6 @@ void() ctrl_player_mech_touch={
       self.velocity_y = self.velocity_y * 0.65;
       return;
     }
-
     return;
   }  
 
@@ -561,7 +564,13 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, self.faction );
     WriteByte( MSG_ENTITY, (self.spawnflags & MUTE_ME) );
     WriteChar( MSG_ENTITY, self.subType );
-    WriteString( MSG_ENTITY, self.netname );
+    if( strlen(self.netname) > 0 || self.netname){
+      WriteString( MSG_ENTITY, self.netname );
+    }
+    else{
+      WriteString( MSG_ENTITY, "none" );
+    }
+    
     WriteByte( MSG_ENTITY, self.deadflag );
     
     if( self.deadflag != DEAD_NO ){
