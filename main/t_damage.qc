@@ -514,6 +514,9 @@ void(entity targ, entity attacker) killed={
         self.enemy.botKills = self.enemy.botKills + 1;
       }
       killed_monsters = killed_monsters + 1;
+      if( self.data_type == DATA_VEHC && self.ramAngle ){
+        self.deadflag = DEAD_RAMMED;
+      }
     }
     if( (self.flags & FL_CLIENT) && (attacker.flags & FL_CLIENT) ){
       //deathmatch edge-case

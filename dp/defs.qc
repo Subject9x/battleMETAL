@@ -286,6 +286,7 @@ float	DEAD_DYING				= 1;
 float	DEAD_DEAD				= 2;
 float	DEAD_RESPAWNABLE		= 3;
 float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
+float   DEAD_RAMMED				= 5;	//died from ramming
 
 // takedamage values
 float	DAMAGE_NO				= 0;

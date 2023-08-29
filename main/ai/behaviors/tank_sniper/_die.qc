@@ -10,7 +10,7 @@ Overview: ai unit
 void() ai_vec_dest_die={
   local entity w_chain;
   
-  if( self.deadflag > DEAD_NO ){
+  if( self.deadflag > DEAD_NO  && self.deadflag != DEAD_RAMMED){
     return; //double play prevention
   }
   
@@ -34,6 +34,8 @@ void() ai_vec_dest_die={
     te_vehicle_chunk( self.torC_mdl, self.torC_org, '0 0 0', self.torC_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
   }
   
+  ai_wreck_vec();
+  
   self.enemy = world;
   self.th_pain = ai_NULL_pain;
   self.th_missile = ai_NULL_missile;
@@ -44,7 +46,6 @@ void() ai_vec_dest_die={
   
   ai_nodegraph_clear_locks();
   
-  ai_wreck_vec();
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
   self.think = SUB_Remove;

@@ -35,21 +35,35 @@ void() ai_wreck_vec={
   
   if(!wreck){return;}
   
-  wreck.vec_size = self.vec_size;
-  wreck.movetype = MOVETYPE_NONE;
-  wreck.solid = SOLID_NOT;
+  
   wreck.angles = self.angles;
-  
-  makevectors(wreck.angles);
-  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
-  wreckOrg = trace_endpos + (v_up * self.mins_z * -1 );
-  GetAlignedSurfaceAngles(self);
-  
+  wreck.vec_size = self.vec_size;
+  wreck.flags = self.flags;
+  if(self.deadflag == DEAD_RAMMED){
+    wreck.movetype = MOVETYPE_BOUNCE;
+    wreck.solid = SOLID_CORPSE;
+    wreck.velocity = normalize(self.ramAngle) * 300 ;
+    wreck.velocity_z = wreck.velocity_z + 300;
+    wreck.flags = wreck.flags - (wreck.flags & FL_ONGROUND);
+    wreckOrg = self.origin + '0 0 2';
+    wreck.gravity = 0.75;
+    wreck.avelocity_x = crandom() * 50;
+    wreck.avelocity_y = crandom() * 150; 
+    wreck.avelocity_z = crandom() * 200;
+  }
+  else{
+    wreck.movetype = MOVETYPE_NONE;
+    wreck.solid = SOLID_NOT;
+    makevectors(wreck.angles);
+    traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
+    wreckOrg = trace_endpos + (v_up * self.mins_z * -1 );
+    GetAlignedSurfaceAngles(self);
+  }
+
   setmodel(wreck, self.legs_mdl);
   setsize(wreck, wreck.mins, wreck.maxs);
   setorigin(wreck, wreckOrg);
   wreck.skin = 3;
-  
   
   wreck.ai_viewtime = time + 180 * (random() * 180);
   wreck.ai_action_time = time + 180;
@@ -58,10 +72,12 @@ void() ai_wreck_vec={
   wreck.nextthink = time + 0.1;
 };
 
+
+
 void() ai_tank_sk_die={
   local entity w_chain;
   
-  if( self.deadflag > DEAD_NO ){
+  if( self.deadflag > DEAD_NO && self.deadflag != DEAD_RAMMED){
     return; //double play prevention
   }
   
@@ -85,6 +101,8 @@ void() ai_tank_sk_die={
     te_vehicle_chunk( self.torC_mdl, self.torC_org, '0 0 0', self.torC_angl, particleeffectnum("TE_DEBRIS_TRAIL_MED"), 30, (self.vec_size / 10) + 0.25 );
   }
   
+  ai_wreck_vec();
+
   self.enemy = world;
   self.th_pain = ai_NULL_pain;
   self.th_missile = ai_NULL_missile;
@@ -94,8 +112,6 @@ void() ai_tank_sk_die={
   self.attack_state = -1;
   
   ai_nodegraph_clear_locks();
-  
-  ai_wreck_vec();
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
   self.think = SUB_Remove;
