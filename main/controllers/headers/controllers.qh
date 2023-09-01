@@ -13,10 +13,8 @@ Overview:
 void() ctrl_unit_update_frame;
 
 void() ctrl_unit_clean_wgroups;
-void() ctrl_unit_cleanup_player;
 void(entity unitPiece) ctrl_unit_remove_piece;
 void(entity comp) ctrl_unit_part_death;
-void(entity unitCam) ctrl_unit_remove_cam;
 
 //Mech entity controllers
 void() ctrl_mech_die_player;

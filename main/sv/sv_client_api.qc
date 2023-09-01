@@ -587,7 +587,7 @@ void() ClientDisconnect = {
   if(self.data_type == DATA_MECH){
     ctrl_mech_die_player();
     player_unmakeMech();
-    ctrl_unit_cleanup_player();
+    ctrl_weapon_remove_all();
   }
   //update client numbers
   CLIENTS = CLIENTS - 1;

@@ -528,7 +528,7 @@ void() sv_endServer={
           if( (self.data_type == DATA_MECH) && (self.playerState > PLAYER_ANIM_STOP) ){
             ctrl_unit_clean_wgroups();
             client_push_player_info();
-            ctrl_unit_cleanup_player();
+            ctrl_weapon_remove_all();
             player_unmakeMech();
             player_makeObserver();
           }

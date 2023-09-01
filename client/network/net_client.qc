@@ -283,6 +283,10 @@ void() client_predraw={
           addentity(self);
         }
       }
+      //cockpit draw needs to be distinct because its always on, even in-death.
+      if(self.entnum == player_localentnum){
+        hud_model_cockpit_draw_frame(); //debug
+      }
       if(self.deadflag == DEAD_NO){
         if(self.cl_lod_weapon){
           //client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
@@ -317,7 +321,6 @@ void() client_predraw={
           }
         }
         if(self.entnum == player_localentnum){
-          hud_model_cockpit_draw_frame(); //debug
           //apparently when menu running, these just get STACCCCCCKED and murder framerate.
           if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
             self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;

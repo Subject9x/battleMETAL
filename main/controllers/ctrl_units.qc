@@ -21,15 +21,6 @@ void() ctrl_unit_clean_wgroups={
 };
 
 /*
-  Garbage collection on truly dead unit,
-  one-way execution, use carefully.
-*/
-void() ctrl_unit_cleanup_player={
-  //FIX ME - cleanups flatten to just weapon removal.
-  ctrl_weapon_remove_all();
-};
-
-/*
   Call's unit sub-piece's th_die() function but does not remove!
 */
 void( entity comp ) ctrl_unit_part_death={
@@ -53,14 +44,6 @@ void(entity unitPiece) ctrl_unit_remove_piece={
   if( (unitPiece.owner == self) && unitPiece.partTypeId ){
     remove(unitPiece);
   }
-};
-
-/*
-  Deals with removing a player camera from the server.
-*/
-void(entity unitCam) ctrl_unit_remove_cam={
-  self.weaponmodel = self.weaponmodel;
-  self.weaponframe = 0;
 };
 
 /*

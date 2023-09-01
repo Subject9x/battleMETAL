@@ -173,5 +173,10 @@ void() player_unmakeMech={
   if( self.particleCube != world){
     remove(self.particleCube);
   }
-  ctrl_unit_clean_wgroups();
+  
+  self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.w_group4 = 0;
+  self.currentWeaponGroup = 0;
 };

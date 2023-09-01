@@ -432,12 +432,13 @@ self.th_die()
 ============
 */
 
-void() PlayerDie={
-	if( self.deadflag ){
-		bprint("warning: PlayerDie called twice\n");
-		return;
-	}
-  self.playerState = PLAYER_DEAD;
+void() PlayerDie;
+void() PlayerDie2;
+void() PlayerDie3;
+void() PlayerDie4;
+void() PlayerDie5;
+
+void() PlayerDie1={
   ctrl_unit_clean_wgroups();
   ctrl_mech_die_player();
   
@@ -456,22 +457,86 @@ void() PlayerDie={
   self.solid = SOLID_CORPSE;
   
   if( self.moveState != MOVE_STAND ){
+    self.flags = self.flags - (self.flags & FL_ONGROUND);
     if (self.velocity_z < 10){
       self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
     }
   }
-  self.velocity = '0 0 0';
-  self.avelocity = '0 0 0';
   
+  self.think = PlayerDie2;
+  self.nextthink = time + 0.1;
+};
+
+void() PlayerDie2={
+  te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
+
+  self.think = PlayerDie3;
+  self.nextthink = time + 0.1;
+};
+
+void() PlayerDie3={
+  te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
+
+  self.think = PlayerDie4;
+  self.nextthink = time + 0.1;
+};
+
+void() PlayerDie4={
+  te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
+  self.think = PlayerDie5;
+  self.nextthink = time + 0.1;
+};
+
+void() PlayerDie5={
+  te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
+
+  self.playerState = PLAYER_DEAD;
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
-void() PlayerDieEnd={
-  self.movetype = MOVETYPE_NONE;
+
+void() PlayerDie={
+	if( self.deadflag != DEAD_NO ){
+		bprint("warning: PlayerDie called twice\n");
+		return;
+	}
+  self.deadflag = DEAD_DYING;
+  // ctrl_unit_clean_wgroups();
+  // ctrl_mech_die_player();
   
+  // client_push_player_info();
+  // client_push_mapobjects();
+  // client_send_campaign_end_data( self );
+  
+  // self.damageValue = 0;
+  // self.critBits = 0;
+  // self.last_crit = 0;
+  // self.targetEntId = 0;
+  // self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
+  
+  // self.effects = 0;
+  // self.deadflag = DEAD_DYING;
+  // self.solid = SOLID_CORPSE;
+  
+  // if( self.moveState != MOVE_STAND ){
+  //   self.flags = self.flags - (self.flags & FL_ONGROUND);
+  //   if (self.velocity_z < 10){
+  //     self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
+  //   }
+  // }
+  
+  self.think = PlayerDie1;
+  self.nextthink = time + 0.1;
+  //self.think = PlayerDieEnd;
+  //self.nextthink = time + GAME_TIME_TO_DEBRIEF;
+};
+
+
+
+void() PlayerDieEnd={
   self.playerState = PLAYER_DEBRIEF;
-  ctrl_unit_cleanup_player();
+  ctrl_weapon_remove_all();
   player_unmakeMech();
   
   self.think = PlayerDead;
@@ -538,8 +603,8 @@ void() PlayerDieNetwork={
     time + GAME_TIME_TO_DEBRIEF
 */
 void() PlayerDieNetworkEnd={
-  
-  ctrl_unit_cleanup_player();
+
+  ctrl_weapon_remove_all();
   player_unmakeMech();
   player_makeObserver();
  
