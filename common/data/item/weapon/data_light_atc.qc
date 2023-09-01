@@ -80,10 +80,7 @@ void() data_ini_light_atc_={
   }
   
   self.energyRate = 0;
-  self.w_range = 3200;
-  
-  self.damageValue = 4.33;
-  
+  self.w_range = 3200;  
   self.damageType = DMG_BAL;
   self.techLevel = 1;
   self.equipSize = BAL1;
@@ -103,6 +100,10 @@ void() data_ini_light_atc_={
   self.model = "models/weapons/w_atc.md3";
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.itemMuzzleFlash = te_muzzle_latc;
+  self.w_clipsize = 1;
+  self.reloadRate = 0.3;
+  self.reloadMax = 0.3;
+  self.damageValue = 5;
 #endif
 
 #ifdef SSQC  

@@ -71,6 +71,10 @@ void() data_ini_plasma_={
   self.description = "+ semi-auto. + 30% chance burn over time on unshielded hit. + inhibits target shield regen when burning.";
   self.icon = "gfx/ui/wep_icons/wi_rpc.png";
   self.itemMuzzleFlash = te_muzzle_rpc;
+  self.w_clipsize = 2;
+  self.reloadRate = 0.4;
+  self.reloadMax = 1.0;
+  self.damageValue = 5.0;
 #endif 
 
 #ifdef SSQC
