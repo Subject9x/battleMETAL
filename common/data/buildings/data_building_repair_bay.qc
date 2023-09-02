@@ -667,7 +667,7 @@ void() building_repair_bay={
   }
   
   if( !self.energyRate ){
-    self.energyRate = 0.67;
+    self.energyRate = 0.85;
   }
   
   if( !self.shield ){
@@ -692,7 +692,7 @@ void() building_repair_bay={
   }
 
   if( !self.reloadRate ){
-    self.reloadRate = 3.5;
+    self.reloadRate = 2.75;
   }
 
 #ifdef CSQC
