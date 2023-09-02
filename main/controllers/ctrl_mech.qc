@@ -122,7 +122,6 @@ void() ai_ctrl_update_mechplayer={
   }
   
   if(self.critBuffer > 0){
-    
     if( (self.critBuffer & M_TOR_LEFT) && !(self.criticalHits & M_ARM_LEFT) ){
       self.critBuffer = self.critBuffer | M_ARM_LEFT;
     }
@@ -133,6 +132,7 @@ void() ai_ctrl_update_mechplayer={
     ctrl_mech_critical_hits();
     self.critBits = 0 | self.critBuffer;
     self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+    self.criticalHits = self.criticalHits | self.critBuffer;
     self.critBuffer = 0;
   }
   
@@ -612,7 +612,6 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     //placed here for just-in-time calculation
     // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
     WriteLong( MSG_ENTITY,  self.critBits );
-    self.criticalHits = self.criticalHits | self.critBits;
     self.critBits = 0;
   }
 
