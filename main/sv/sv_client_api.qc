@@ -353,12 +353,10 @@ void() ClientConnect = {
   
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
   
-  self.stat_trg_dataidx = -1;
   self.stat_target_shield = -1;
   self.stat_trg_ddflg = -1;
   self.stat_trg_dist = -1;
-  self.stat_trg_faction = -1;
-  
+  self.stat_env_warn = 0;
   self.radar_range = 0;
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
@@ -392,7 +390,6 @@ void() ClientConnect = {
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
   self.stat_plr_rep = -1;
-  self.stat_target_name = "";
   
   self.clientcolors = FACTION_PSC;  //faction tracker for network.
   
@@ -641,7 +638,7 @@ void() PutClientInServer_Campaign={
     savefile_load( world.itemOverride );
   }
   
-  self.movetype = MOVETYPE_WALK;
+  self.movetype = MOVETYPE_NONE;
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;
@@ -700,7 +697,7 @@ void() PutClientInServer_Coop={
   self.th_die = PlayerDieNetwork;
   mapfile_coop_load();
   
-  self.movetype = MOVETYPE_PUSH;
+  self.movetype = MOVETYPE_NONE;
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;

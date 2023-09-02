@@ -75,6 +75,7 @@ void() world_metal_ini={
   world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
+  addstat(STAT_ENV_WARN, AS_FLOAT, stat_env_warn);
   addstat(STAT_RAM, AS_INT, ramUp);
   
   addstat(STAT_TARGET_HIT_PARTS, AS_FLOAT, statTargetHitParts);

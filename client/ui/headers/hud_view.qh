@@ -157,6 +157,13 @@ string HUD_TAGS[22];
   vector HUD_OFFSET_LAST;
   vector HUD_OFFSET_ORG;*/
   
+  vector HUD_STRUT_COLOR;
+  vector HUD_STRUT_COLOR2;
+  vector HUD_STRUT_COLOR_TARG;
+  float HUD_STRUT_COLOR_TIME;
+  float HUD_STRUT_COLOR_TIME2;
+  float HUD_STRUT_COLOR_TIME_NEXT;
+
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -263,8 +270,8 @@ void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, float algn) hud_renderTargetName;
 void() hud_renderRepairValue;
-void(float warnOn, float warnDir) hud_render_warningBounds;
-void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
+void(float warnDir) hud_render_warningBounds;
+void(vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message;
 void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram;
 void( entity box ) hud_renderHighlight;

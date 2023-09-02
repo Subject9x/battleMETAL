@@ -93,6 +93,17 @@ void() receive_ent_bindData={
       CLIENT_target_dist = vlen(CLIENT_target_ent.rootOrigin - CLIENT_server_ent.rootOrigin);
     }
     
+    HUD_WARN_ENV_ON = 0 | getstati(STAT_ENV_WARN);
+
+    if( HUD_WARN_ENV_ON == 0 ){
+      if(time > HUD_WARN_ENV_MARK){
+        HUD_WARN_ENV_TYPES = 0;
+      }
+    }
+    else{
+      HUD_WARN_ENV_TYPES = 0 | HUD_WARN_ENV_ON;
+      HUD_WARN_ENV_MARK = time + HUD_WARN_ENV_TIME;
+    }
   }
 };
 
@@ -344,15 +355,6 @@ void() client_event_boundary={
   if( HUD_WARN_ON ){
     if( servertime > HUD_WARN_MARK ){
       HUD_WARN_MARK = servertime + HUD_WARN_TIME;
-    }
-  }
-};
-
-void() client_event_environment={
-  HUD_WARN_ENV_ON = TRUE;
-  if( HUD_WARN_ENV_ON ){
-    if( servertime > HUD_WARN_ENV_MARK ){
-      HUD_WARN_ENV_MARK = servertime + HUD_WARN_ENV_TIME;
     }
   }
 };

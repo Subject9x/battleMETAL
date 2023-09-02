@@ -89,11 +89,8 @@ void() sv_updateTargetInfo={
     self.targetEntId = 0;
     if( self.targetEntIdPrev != 0){
       self.targetEntIdPrev = 0;
-      self.stat_trg_dataidx = 0;
       self.stat_trg_dist = 0;
-      self.stat_trg_faction = 0;
       self.targLockState = 0;
-      self.stat_target_name = "";
       self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
       //self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS)); //2.0.0: lock-on not timer-based anymore
     }
@@ -130,18 +127,12 @@ void() sv_updateTargetInfo={
     self.enemy = world;
     self.targetEntId = 0;
     self.targetEntIdPrev = 0;
-    self.stat_trg_dataidx = 0;
     self.stat_trg_dist = 0;
-    self.stat_trg_faction = 0;
-    self.stat_target_name = "";
     self.SendFlags = self.SendFlags | SENDFLAG_TARGET;
     //self.targLockState = self.targLockState - (self.targLockState & (LOCK_TARG_START | LOCK_TARG_HAS)); //2.0.0: lock-on not timer-based anymore
     return;
   }
   
-  self.stat_trg_dataidx = self.enemy.data_idx;
-  self.stat_trg_dataType = self.enemy.data_type;
-  self.stat_trg_faction = self.enemy.faction;
   self.stat_trg_ddflg = self.enemy.deadflag;
   self.stat_trg_dist = dst;
   

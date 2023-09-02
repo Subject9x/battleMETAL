@@ -274,6 +274,11 @@ void() hud_model_cockpit_draw_frame={
   
   local float cacheEffects;
   local float cacheRenderFlags;
+
+  local vector vel;
+  local float aimdir;
+
+  local float lerp;
   
   if( self.chaseActive ){
     return;
@@ -299,8 +304,6 @@ void() hud_model_cockpit_draw_frame={
   if( self.moveState != MOVE_STAND ){
     HUD_MODEL_STRUTS_origin = HUD_MODEL_STRUTS_origin + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
     
-    local vector vel;
-    local float aimdir;
     
     vel = vectoangles(self.velocity);
     aimdir = anglemod(view_angles_y - vel_y );
@@ -325,12 +328,42 @@ void() hud_model_cockpit_draw_frame={
   self.alpha = 1.0;
   self.scale = 1.0;
   self.renderflags = 0;
-  self.effects = 0 | EF_NOSHADOW;
-  self.colormod = CLR_DEF_WHITE;
+
+  if(self.torC_hp <= self.torC_hpMax * 0.5){
+    if( time > HUD_STRUT_COLOR_TIME ){
+      if(HUD_STRUT_COLOR == CLR_DEF_RED * 3){
+        HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+      }
+      else{
+        HUD_STRUT_COLOR = CLR_DEF_RED * 3;
+      }
+      HUD_STRUT_COLOR_TIME = time + 10 * frametime;
+    }
+  }
+  else if((self.criticalHits & M_TOR_LEFT) || (self.criticalHits & M_TOR_RIGHT)){
+    if( time > HUD_STRUT_COLOR_TIME ){
+      if(HUD_STRUT_COLOR == CLR_HUD_ORANGE * 3){
+        HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+      }
+      else{
+        HUD_STRUT_COLOR = CLR_HUD_ORANGE * 3;
+      }
+      HUD_STRUT_COLOR_TIME = time + 20 * frametime;
+    }
+  }
+  else{
+    HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+  }
+  self.colormod = HUD_STRUT_COLOR;
   
   setmodel(self, self.weaponmodel);
   self.origin = HUD_MODEL_STRUTS_origin;
   
+  self.effects = 0 | EF_NOSHADOW;
+  if(self.torC_hp <= self.torC_hpMax * 0.5){
+    self.effects = self.effects | EF_RED;
+  }
+
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     self.angles = self.fixAngle;
   }
@@ -353,6 +386,7 @@ void() hud_model_cockpit_draw_frame={
   self.angles = [45, view_angles_y, 0];
   self.origin = HUD_MODEL_CONSOLE_origin;
   addentity(self);
+
   self.origin = self.rootOrigin;
   self.angles = self.rootAngle;
   

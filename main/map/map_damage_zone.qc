@@ -126,6 +126,7 @@ void() map_damage_zone_rad_think={
           }
           if( (unit.flags & FL_CLIENT) ){
             self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+            unit.stat_env_warn = unit.stat_env_warn | 2;
           }
         }
       }
@@ -185,6 +186,7 @@ void() map_damage_zone_crs_think={
 
           if( (unit.flags & FL_CLIENT) ){
             self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+            unit.stat_env_warn = unit.stat_env_warn | 1;
           }
         }
       }
@@ -234,10 +236,10 @@ void() map_damage_zone_qtm_think={
       if((unit.flags & FL_UNIT)){
         if(unit.deadflag == DEAD_NO){
           if(unit.energy > 0){
-
             unit.energy = max(0, unit.energy - self.damageValue);
             if( (unit.flags & FL_CLIENT) ){
               self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
+              unit.stat_env_warn = unit.stat_env_warn | 4;
             }
           }
         }

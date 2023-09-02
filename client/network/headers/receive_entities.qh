@@ -33,7 +33,6 @@ void() client_get_info;
 void() client_get_hud_highlight;
 
 void() client_event_boundary;
-void() client_event_environment;
 void( string name ) client_event_mission_name;
 void() client_event_mission_name_frame;
 void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) client_event_info_box;

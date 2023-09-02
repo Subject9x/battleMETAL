@@ -130,12 +130,10 @@ void() player_unmakeMech={
   self.w_group4 = 0;
   self.aState = 0;  //used to track selected weapon group WHEN player uses fire-single-group mode
   
-  self.stat_trg_dataidx = 0;
   self.stat_target_shield = 0;
   self.stat_trg_ddflg = 0;
   self.stat_trg_dist = 0;
   self.stat_trg_face = 0;
-  self.stat_trg_faction = 0;
   
   self.radar_range = 0;
   self.was_hit = FALSE;
@@ -166,7 +164,6 @@ void() player_unmakeMech={
   self.repair_request = 0;
   self.enemy = world; //explicit assignment here
   self.stat_plr_rep = 0;
-  self.stat_target_name = "";
   self.critBits = 0;
   self.damageValue = 0;
   

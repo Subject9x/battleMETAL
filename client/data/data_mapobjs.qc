@@ -299,10 +299,6 @@ void() hazard_rad_think={
     //}
   }
   if( self.isActive ){
-    if( vlen(CLIENT_server_ent.origin - self.origin) <= (self.maxs_x * 3) ){
-      client_event_environment();
-      HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 2;
-    }
     self.think = hazard_rad_think;
     self.nextthink = servertime + 2 + (random() * (self.wait * 10) * frametime);
   }
@@ -335,10 +331,6 @@ void() hazard_crs_think={
   //te_particlecube( adj + self.mins, adj + self.maxs,  normalize((self.origin + (v_up * 10)) - self.origin) * 1, 1, 244, FALSE, 15); 
    
   if( self.isActive ){
-    if( vlen(CLIENT_server_ent.origin - self.origin) <= (self.maxs_x * 4) ){
-      client_event_environment();
-      HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 1;
-    }
     self.think = hazard_crs_think;
     self.nextthink = servertime + (random() * (self.wait * 2));
   }
@@ -372,10 +364,6 @@ void() hazard_quant_think={
   //te_particlecube( adj + self.mins, adj + self.maxs, '0 0 0', random() * 4, 128, FALSE, 2); 
   
   if( self.isActive ){
-    if( vlen(CLIENT_server_ent.origin - self.origin) <= (self.maxs_x * 4) ){
-      client_event_environment();
-      HUD_WARN_ENV_TYPES = HUD_WARN_ENV_TYPES | 4;
-    }
     self.think = hazard_quant_think;
     self.nextthink = servertime + (random() * (1 + self.wait * 2));
   }

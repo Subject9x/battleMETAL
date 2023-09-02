@@ -448,7 +448,7 @@ void() hud_renderRepairValue={
   drawfont = drawfont_prev;
 };
 
-void(float warnOn, float warnDir) hud_render_warningBounds={
+void(float warnDir) hud_render_warningBounds={
   local vector warnPos;
   local vector warnArrowPos;
   local vector warnImgSize;
@@ -506,31 +506,26 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
 /*
   RENDER ENVIRONMENT HAZARD 
 */
-void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
+void(vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
   local vector anchorOrg;
   local vector shockOrg;
   local vector radOrg;
   local vector quantOrg;
+
+  anchorOrg = orgCenter;
   
-  if( time < HUD_WARN_ENV_MARK ){
-    anchorOrg = orgCenter;
-    
-    if( (dmgTypes & 1) ){
-      shockOrg = gui_calcAlignCustom('48 0', (VIEW_LFT | VIEW_TOP), anchorOrg);
-      drawpic(shockOrg, HUD_HAZ_SHOCK, '32 32', CLR_DEF_IIF_FRIEND_BLD, 0.9, 0);
-    }
-    if( (dmgTypes & 2) ){
-      radOrg = gui_calcAlignCustom('-16 0', (VIEW_CTX | VIEW_TOP), anchorOrg);
-      drawpic(radOrg, HUD_HAZ_RAD, '32 32', CLR_DEF_ARM_THREEQ, 0.9, 0);
-      
-    }
-    if( (dmgTypes & 4) ){
-      quantOrg = gui_calcAlignCustom('48 0', (VIEW_RGT | VIEW_TOP), anchorOrg);
-      drawpic(quantOrg, HUD_HAZ_QUANT, '32 32', CLR_HUD_PURPLE * 1.25, 0.9, 0);
-    }
+  if( (dmgTypes & 1) ){
+    shockOrg = gui_calcAlignCustom('48 0', (VIEW_LFT | VIEW_TOP), anchorOrg);
+    drawpic(shockOrg, HUD_HAZ_SHOCK, '32 32', CLR_DEF_IIF_FRIEND_BLD, 0.9, 0);
   }
-  else{
-    HUD_WARN_ENV_TYPES = 0;
+  if( (dmgTypes & 2) ){
+    radOrg = gui_calcAlignCustom('-16 0', (VIEW_CTX | VIEW_TOP), anchorOrg);
+    drawpic(radOrg, HUD_HAZ_RAD, '32 32', CLR_DEF_ARM_THREEQ, 0.9, 0);
+    
+  }
+  if( (dmgTypes & 4) ){
+    quantOrg = gui_calcAlignCustom('48 0', (VIEW_RGT | VIEW_TOP), anchorOrg);
+    drawpic(quantOrg, HUD_HAZ_QUANT, '32 32', CLR_HUD_PURPLE * 1.25, 0.9, 0);
   }
 };
 
@@ -834,8 +829,13 @@ void() data_hud_frame={
     if(CLIENT_repair_value > 0){
       hud_renderRepairValue();
     }
-    hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
-    hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + HUD_WARN_ENV_ORG, HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
+    if( HUD_WARN_ON ){
+      hud_render_warningBounds( HUD_WARN_DIR );
+    }
+    if( time < HUD_WARN_ENV_MARK ){
+      hud_render_warningEnvironment( VIEW_CTR + HUD_WARN_ENV_ORG, HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
+    }
+    
     hud_event_frame();
     
     if( HUD_INFO_ON == TRUE ){

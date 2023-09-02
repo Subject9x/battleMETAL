@@ -40,6 +40,7 @@ called before running player input frame
 ============
 */
 void() PlayerPreThink = {
+  self.stat_env_warn = 0; // zero-out
   self.attackFlag = 0;
   //keep losses up-to-date
   client_update_losses();
@@ -357,8 +358,8 @@ void() PlayerPostThink = {
       //cons_logAVector("view trace_normal", util_trace_norm_angle()); //debug
     //}
   }
-  //========================================  
-  
+  //======================================== 
+
   self.last_origin = self.origin; //used for SENDFLAG_MOVE delta
   self.last_angle = self.angles;
   self.last_velocity = self.velocity;
