@@ -78,6 +78,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     }
     self.subType = ReadChar();
     self.deadflag = ReadByte();
+    if(self.deadflag == DEAD_NO){
+      self.health = ReadByte() / 100 * self.max_health;
+    }
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){

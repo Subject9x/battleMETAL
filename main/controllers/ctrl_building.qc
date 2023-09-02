@@ -190,6 +190,9 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     }
     WriteChar( MSG_ENTITY, self.subType );
     WriteByte( MSG_ENTITY, self.deadflag );
+    if(self.deadflag == DEAD_NO){
+      WriteByte( MSG_ENTITY, self.health / self.max_health * 100);
+    }
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
