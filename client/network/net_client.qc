@@ -220,7 +220,7 @@ void() client_predraw={
       setmodel(self, self.torC_mdl);
       self.angles = self.torC_angl;
       self.origin = self.torC_org;
-      self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax);
+      self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax) * 2;
       addentity(self);
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
@@ -231,7 +231,7 @@ void() client_predraw={
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
              self.torL_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / self.armL_hpMax);
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / self.armL_hpMax) * 2;
           setmodel(self, self.torL_mdl);
           self.angles = self.torL_angl;
           self.origin = self.torL_org;
@@ -246,7 +246,7 @@ void() client_predraw={
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
              self.torR_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / self.torR_hpMax);
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / self.torR_hpMax) * 2;
           setmodel(self, self.torR_mdl);
           self.angles = self.torR_angl;
           self.origin = self.torR_org;
@@ -261,7 +261,7 @@ void() client_predraw={
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
             self.armL_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / self.armL_hpMax);
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / self.armL_hpMax)  * 2;
           setmodel(self, self.armL_mdl);
           self.angles = self.armL_angl;
           self.origin = self.armL_org;
@@ -276,7 +276,7 @@ void() client_predraw={
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
             self.armR_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / self.armR_hpMax);
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / self.armR_hpMax)  * 2;
           setmodel(self, self.armR_mdl);
           self.angles = self.armR_angl;
           self.origin = self.armR_org;

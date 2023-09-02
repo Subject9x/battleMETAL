@@ -281,7 +281,7 @@ void() interpolate_mech_ai={
   if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
     self.torC_angl_x = self.torC_angl_x * -1;
   }
-  self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax);
+  self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax) * 2;
   setmodel(self, self.torC_mdl);
   self.angles = self.torC_angl;
   self.origin = self.torC_org;
@@ -295,7 +295,7 @@ void() interpolate_mech_ai={
       if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
           self.torL_angl_x = self.torL_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax);
+      self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax) * 2;
       setmodel(self, self.torL_mdl);
       self.angles = self.torL_angl;
       self.origin = self.torL_org;
@@ -310,7 +310,7 @@ void() interpolate_mech_ai={
       if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
           self.torR_angl_x = self.torR_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax);
+      self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax) * 2;
       setmodel(self, self.torR_mdl);
       self.angles = self.torR_angl;
       self.origin = self.torR_org;
@@ -325,7 +325,7 @@ void() interpolate_mech_ai={
       if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
         self.armL_angl_x = self.armL_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax);
+      self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax) * 2;
       setmodel(self, self.armL_mdl);
       self.angles = self.armL_angl;
       self.origin = self.armL_org;
@@ -340,7 +340,7 @@ void() interpolate_mech_ai={
       if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
         self.armR_angl_x = self.armR_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax);
+      self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax) * 2;
       setmodel(self, self.armR_mdl);
       self.angles = self.armR_angl;
       self.origin = self.armR_org;

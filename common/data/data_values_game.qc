@@ -374,11 +374,6 @@ float AS_INT = 8;
 
 .float targetEntId;
 .float targetEntIdPrev;
-.float stat_trg_dataidx;
-
-.float stat_trg_dataType;
-
-.float stat_trg_faction;
 
 .float stat_hit_dirs;
 .float stat_rdr_rng;
@@ -391,7 +386,6 @@ float AS_INT = 8;
 .float stat_ret_dist;
 
 .float stat_plr_rep;
-.string stat_target_name;
 
 .float statWeaponReload1;
 .float statWeaponReload2;
@@ -405,12 +399,14 @@ float AS_INT = 8;
 
 .float statTargetHitParts;
 
+.float stat_env_warn;
+
 #endif
 //============================
 //     ADDSTAT SLOT NUMBERS        
 //============================
 //float    = 32;
-//float    = 33;
+#define STAT_ENV_WARN 33
 #define STAT_RAM 34
 #define STAT_TARGET_HIT_PARTS 35
 //float    = 36;

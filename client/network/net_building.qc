@@ -52,7 +52,7 @@ void() sendevent_building_die={
   self.solid = SOLID_NOT; //make sure to override so that particles won't trip.
   self.scale = 1; //just in case you altered scale during other deaths anim, <cough>
   self.alpha = 1; //just in case you altered alpha during other deaths anim, <cough>
-  self.colormod = '1 1 1' * (random() * 0.5);
+  self.colormod = '1 1 1' * (random() * 0.5) * 2;
   
   switch( self.vec_size ){
     case 2:
@@ -271,15 +271,15 @@ void( float isNew, float changeFlags) sendent_handle_building={
     if( self.burnBits != prevBurn && self.burnBits != FALSE ){
       if( (self.burnBits & WEAPON1) && self.effect1 != world ){
         self.effect1 = te_building_fire_start( self );
-        self.colormod = self.colormod * 0.85;
+        self.colormod = self.colormod * 0.85 * 2;
       }
       if( (self.burnBits & WEAPON2) && self.effect2 != world ){
         self.effect2 = te_building_fire_start( self );
-        self.colormod = self.colormod * 0.75;
+        self.colormod = self.colormod * 0.75 * 2;
       }
       if( (self.burnBits & WEAPON3) && self.effect3 != world ){
         self.effect3 = te_building_fire_start( self );
-        self.colormod = self.colormod * 0.67;
+        self.colormod = self.colormod * 0.67 * 2;
       }
     }
     //HANDLE EVENT - Shield explode
@@ -333,6 +333,9 @@ void() predraw_building={
   
   if( self.cl_lod_unit ){
     self.skin = self.faction - 1;
+    if(self.burnBits == 0){
+      self.colormod = CLR_DEF_WHITE * 1.5;
+    }
     setmodel(self, self.model);
     if(self.render_dlights){
       if( vlen(self.origin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
