@@ -42,7 +42,6 @@ void() data_projectile_ini_ion_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_ion.md3");
     self.model = "models/proj/mdl_proj_ion.md3";
     self.alpha = 0.75;
     self.pcl_explode = projectile_ion_expl;
@@ -51,6 +50,7 @@ void() data_projectile_ini_ion_={
   #endif
     
   #ifdef SSQC
+    self.model = "models/testball.md3";
     self.think = data_projectile_ion_think_;
     self.touch = data_projectile_ion_touch;
     self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;

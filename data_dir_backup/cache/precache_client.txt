@@ -28,6 +28,20 @@ models/map/rads/qtm_base_sm.obj
 models/map/rads/qtm_base_md.obj
 models/map/rads/qtm_base_lg.obj
 
+//projectiles
+models/proj/mdl_proj_emp.md3
+models/proj/mdl_proj_qrfl.md3
+models/proj/mdl_proj_sfga.md3
+models/proj/mdl_proj_mis.md3
+models/proj/mdl_proj_rpc.md3
+models/proj/mdl_proj_swrm.md3
+models/proj/mdl_proj_lgm.md3
+models/proj/mdl_proj_marh.md3
+models/proj/mdl_proj_ion.md3
+
+models/fx/debris2/mdl_debris_2.md3
+models/fx/debris3/mdl_debris_3.md3
+models/fx/debris1/mdl_debris_1.md3
 
 //Balaket
 //Matok

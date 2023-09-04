@@ -47,7 +47,6 @@ void() data_projectile_ini_snub_artillery_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_sfga.md3");
     self.model = "models/proj/mdl_proj_sfga.md3";
     self.colormod =  '0.85 0.45 0.45';
     self.data_traileff = particleeffectnum("TE_SFGA_TRAIL");
@@ -57,6 +56,7 @@ void() data_projectile_ini_snub_artillery_={
   #endif
     
   #ifdef SSQC
+    self.model = "models/testball.md3";
     self.think = data_projectile_snub_artillery_th;
     self.touch = data_projectile_snub_artillery_touch_;
     self.gravity = 0.03;
@@ -151,8 +151,8 @@ void() data_projectile_snub_artillery_touch_={
     data_projectile_snub_artillery_radiusDamage();
   }
   if( debris > 0 ){
-    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, ceil(0.5 + random() * 2));
-    te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, ceil(0.5 + random() * 2) );
+    te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, min(3, rint(0.5+ (random() * 3))) );
+    te_debris_armor( self.origin, vectoangles(self.velocity), self.velocity, debris * 1.25, min(3, rint(0.5+ (random() * 3))) );
   }
   
   self.movetype = MOVETYPE_NONE;

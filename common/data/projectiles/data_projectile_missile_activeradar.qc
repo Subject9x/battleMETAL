@@ -58,7 +58,6 @@ void() data_projectile_ini_missile_active_radar_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_marh.md3");
     self.model = "models/proj/mdl_proj_marh.md3";
     self.modelflags = 0;
     self.data_traileff = particleeffectnum("TE_ARH_TRAIL");
@@ -67,6 +66,7 @@ void() data_projectile_ini_missile_active_radar_={
   #endif
   
   #ifdef SSQC
+    self.model = "models/testball.md3";
     self.think = data_projectile_missile_activeradar_delay;
     self.effects = self.effects | EF_FULLBRIGHT | EF_LOWPRECISION;
     self.ai_dir = 1.0;

@@ -43,7 +43,6 @@ void() data_projectile_ini_quantum_bit_={
   self.effects = self.effects | EF_FULLBRIGHT | EF_NOSHADOW;
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_qrfl.md3");
     self.model = "models/proj/mdl_proj_qrfl.md3";
     self.data_traileff = particleeffectnum("TE_QRFL_QBIT_TRAIL");
     self.damageType = self.damageType | EFF_SHD;
@@ -53,6 +52,7 @@ void() data_projectile_ini_quantum_bit_={
   #endif
   
   #ifdef SSQC
+    self.model = "models/testball.md3";
     self.touch = data_projectile_ini_quantum_bit_touch_;
     self.think = data_projectile_quantum_bit_th;
     self.effects = self.effects | EF_LOWPRECISION;

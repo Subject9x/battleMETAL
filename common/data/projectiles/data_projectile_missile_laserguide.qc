@@ -53,7 +53,6 @@ void() data_projectile_ini_missile_laserguide_={
   self.effects = self.effects | EF_NOSHADOW | EF_FULLBRIGHT;
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_lgm.md3");
     self.model = "models/proj/mdl_proj_lgm.md3";
     self.modelflags = 0;
     self.data_traileff = particleeffectnum("TE_LGM_TRAIL");
@@ -62,6 +61,7 @@ void() data_projectile_ini_missile_laserguide_={
   #endif 
   
   #ifdef SSQC
+    self.model = "models/testball.md3";
     self.touch = data_projectile_missile_laserguide_touch;
     self.think = data_projectile_missile_laserguide_think;
     self.effects = self.effects | EF_LOWPRECISION;

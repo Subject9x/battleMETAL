@@ -269,6 +269,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   }
   
   if( (changeFlags & SENDFLAG_VELOCITY) ){
+    self.data_idx = ReadByte();
     self.velocity_x = ReadFloat();
     self.velocity_y = ReadFloat();
     self.velocity_z = ReadFloat();
@@ -302,8 +303,8 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
     }
     else{
       data_sync_new_projectile(self.data_idx);
+      setmodel(self, self.model);
     }
-    setmodel(self, self.model);
     self.predraw = predraw_missile;
     setsize(self, '0 0 0', '0 0 0');
     setorigin(self, self.origin);

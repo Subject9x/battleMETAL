@@ -51,23 +51,20 @@ void() data_sync_new_debris={
   
   self.effects = self.effects | EF_NOSHADOW;
   switch( self.vec_size ){
+    default:
+      self.model = "models/fx/debris1/mdl_debris_1.md3";
+      setmodel(self, "models/fx/debris1/mdl_debris_1.md3");
+      self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      break;
     case 2:
-      precache_model("models/fx/debris2/mdl_debris_2.md3");
       self.model = "models/fx/debris2/mdl_debris_2.md3";
       setmodel(self, "models/fx/debris2/mdl_debris_2.md3");
       self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
-      precache_model("models/fx/debris3/mdl_debris_3.md3");
       self.model = "models/fx/debris3/mdl_debris_3.md3";
       setmodel(self, "models/fx/debris3/mdl_debris_3.md3");
       self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
-      break;
-    default:
-      precache_model("models/fx/debris1/mdl_debris_1.md3");
-      self.model = "models/fx/debris1/mdl_debris_1.md3";
-      setmodel(self, "models/fx/debris1/mdl_debris_1.md3");
-      self.data_traileff  = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
   self.angles = vectoangles(self.velocity);
@@ -96,6 +93,10 @@ void() predraw_missile={
     return;
   }
   
+  if(strlen(self.model) == 0 || !self.model){
+    return;
+  }
+
   setmodel(self, self.model);
   if( self.data_postinit ){
     self.traileffectnum = self.data_traileff;

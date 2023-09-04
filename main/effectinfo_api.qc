@@ -33,6 +33,7 @@ float( float isNew, float changedFlags ) te_send_missile={
   }
   
   if( (changedFlags & SENDFLAG_VELOCITY) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
     WriteFloat( MSG_ENTITY, self.velocity_x );
     WriteFloat( MSG_ENTITY, self.velocity_y );
     WriteFloat( MSG_ENTITY, self.velocity_z );
@@ -111,6 +112,10 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
   }
   
   switch( debrType ){
+    default:
+      debrisMdl = "models/fx/debris1/mdl_debris_1.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
+      break;
     case 2:
       debrisMdl = "models/fx/debris2/mdl_debris_2.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
@@ -118,10 +123,6 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
     case 3:
       debrisMdl = "models/fx/debris3/mdl_debris_3.md3";
       trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
-      break;
-    default:
-      debrisMdl = "models/fx/debris1/mdl_debris_1.md3";
-      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
   

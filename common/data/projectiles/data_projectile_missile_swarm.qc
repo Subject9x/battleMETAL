@@ -53,14 +53,14 @@ void() data_projectile_ini_missile_swarm_={
  
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_lgm.md3");
-    self.model = "models/proj/mdl_proj_lgm.md3";
+    self.model = "models/proj/mdl_proj_swrm.md3";
     self.data_traileff = particleeffectnum("TE_SWRM_TRAIL"); 
     self.pcl_explode = projectile_swarm_expl;
     self.scale = 1.5;
   #endif 
   
   #ifdef SSQC
+    self.model = "models/testball.md3";
     self.think = data_projectile_missile_swarm_think;
     self.touch = data_projectile_missile_swarm_touch;      
     self.gravity = 0.04;

@@ -44,7 +44,6 @@ void() data_projectile_ini_emp_={
   
   #ifdef CSQC
     //cosmetics
-    precache_model("models/proj/mdl_proj_emp.md3");
     self.model = "models/proj/mdl_proj_emp.md3";
     self.modelflags = 0;
     self.alpha = 0.75;
