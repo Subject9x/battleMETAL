@@ -228,6 +228,11 @@ void(string str) SV_ParseClientCommand={
   //SetNextMission--------------------
   if(cmdCall == "nextmission"){
     argc = tokenize(str);
+    
+    if(cvar("developer") != 0){
+      cons_logAString("nextmission", str);  //debug
+    }
+    
     client_setMission(str, argc);
     return;
   }

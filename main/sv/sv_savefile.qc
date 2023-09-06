@@ -8,10 +8,6 @@ Overview:
     to track player unlocks.
 */
 
-void(string mapNext) savefile_changemap={
-  SAVE_MAP = mapNext;
-};
-
 //functions
 void(float override) savefile_load={
   local float flannel, argc, line_tag;
@@ -44,13 +40,13 @@ void(float override) savefile_load={
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "'","'",": ",",");
       if( argv(1) == SAVE_FILE_MSN_NAME) {
-        SAVE_MAP = strzone(argv(3));
+        cacheGlobalString(SAVE_MAP, argv(3))
       }
       if( argv(1) == SAVE_FILE_MECH_LIST ){
-        SAVE_MECHS_LIST = strzone(argv(3));
+        cacheGlobalString(SAVE_MECHS_LIST, argv(3))
       }
       if( argv(1) == SAVE_FILE_ITEMS ){
-        SAVE_ITEMS_ALL = strzone(argv(3));
+        cacheGlobalString(SAVE_ITEMS_ALL, argv(3))
       }
       if( argv(1) == SAVE_FILE_NEWGAME ){
         FLAG_NEWGAME = stof(argv(3));

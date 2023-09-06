@@ -262,9 +262,5 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     SV_FRAGLIMIT = self.ruleFraglimit;
     SV_TIMELIMIT = self.ruleTimelimit;
   }
-  
-  if(CLIENT_player_state == PLAYER_CONNECT ){
-    cl_set_savepath(self.gameType, self.serverFlags );
-  }
 };
 #endif

@@ -10,7 +10,7 @@ void() menu_write_new_save={
   local string file;
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-    fputs(flannel, "// save file v2.0 for 5.0+ release\n");
+    fputs(flannel, "// save file v2.0 for 5.0+ release, don't modify order of labels!\n");
     fputs(flannel, strcat("save=", cvar_string("saveslot"), "\n"));
     fputs(flannel, strcat("mission=", CAMP_SELECT_START, "\n"));
     fputs(flannel, strcat("points=", ftos(1), "\n"));
@@ -160,7 +160,7 @@ void( float saveSlotId, string mapName, string campFile ) menu_write_patch_save=
   
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(saveSlotId), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-    fputs(flannel, "// save file v2.0 for 5.0+ release\n");
+    fputs(flannel, "// save file v2.0 for 5.0+ release, don't modify order of labels!\n");
     fputs(flannel, strcat("save=", ftos(saveSlotId), "\n"));
     fputs(flannel, strcat("mission=", mapName, "\n"));
     fputs(flannel, strcat("points=", ftos(1), "\n"));

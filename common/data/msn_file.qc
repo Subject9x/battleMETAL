@@ -11,10 +11,6 @@ void() msn_getfile={
   
   file = strcat(PATH_DATA_MAP, MAP_NAME, "/", MSN_FILENAME, ".msn");
   
-  if( cvar("developer") ){
-    cons_logAString("loading file:", file);
-  }
-  
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     MSN_FILEFOUND = TRUE;

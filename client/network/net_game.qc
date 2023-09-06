@@ -162,6 +162,8 @@ void() client_state_events={
         menu_enter( menu_connect_choice() );
         menu_chat_config(FALSE);
       }
+      //I think we can only rely on cvars at this connection stage.
+      cl_set_savepath(cvar("gamemode"), cvar("sv_serverflags") );
       return;
     }
     //------------------------------------

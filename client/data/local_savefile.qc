@@ -93,8 +93,7 @@ void() cl_load_savefile_singleMap={
 void( float serverMode, float svFlags ) cl_set_savepath={
   local string filePath;
   
-  if( cvar("sv_singlemap") && cvar_string("sv_campaign") != "" ){
-    
+  if( cvar("sv_singlemap") && (cvar_string("sv_campaign") != "" && strlen(cvar_string("sv_campaign")) > 0) ){
     cl_load_savefile_singleMap();
   }
   else{
@@ -129,15 +128,16 @@ void( float serverMode, float svFlags ) cl_set_savepath={
     
     cl_load_savefile( filePath );
   }
+  //Sort and initialize the mech_names and mech_sizes arrays here
+  //so that any UI can access this info.
+  cl_get_mechs_sort();
+
   if( serverMode == GAMEMODE_CAMPAIGN ){
     if( !(svFlags & SVFLAG_NOSAVE) ){
       cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
                                 //this is to save player progress on entering a new map, lame hack.
     }
   }
-  //Sort and initialize the mech_names and mech_sizes arrays here
-  //so that any UI can access this info.
-  cl_get_mechs_sort();
 };
 
 // all mech unlocks to same array
@@ -319,16 +319,18 @@ void() cl_savefile_save={
   
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-  fputs(flannel, "// save file v2.0 for 5.0+ release\n");
-  fputs(flannel, strcat("save=", ftos(cvar("saveslot")), "\n"));
-  fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
-  fputs(flannel, strcat("points=", ftos(1), "\n"));
-  fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
-  fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
-  fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
-  fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
-  fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
-  fclose(flannel);
+  if(flannel > -1){
+    fputs(flannel, "// save file v2.0 for 5.0+ release, don't modify order of labels!\n");
+    fputs(flannel, strcat("save=", ftos(cvar("saveslot")), "\n"));
+    fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+    fputs(flannel, strcat("points=", ftos(1), "\n"));
+    fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
+    fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
+    fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
+    fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
+    fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
+    fclose(flannel);
+  }
 }; 
 
 /*
@@ -341,18 +343,21 @@ void() cl_savefile_save={
 void() cl_savefile_save_mission={
   local float flannel;
   local string file;
-  
+
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-  fputs(flannel, "// save file v2.0 for 5.0+ release\n");
-  fputs(flannel, strcat("save=", cvar_string("saveslot"), "\n"));
-  fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
-  fputs(flannel, strcat("points=", ftos(1), "\n"));
-  fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
-  fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
-  fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
-  fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
-  fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
+  
+  if(flannel > -1){
+    fputs(flannel, "// save file v2.0 for 5.0+ release, don't modify order of labels!\n");
+    fputs(flannel, strcat("save=", ftos(cvar("saveslot")), "\n"));
+    fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+    fputs(flannel, strcat("points=", ftos(1), "\n"));
+    fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
+    fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
+    fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
+    fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
+    fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
+  }
   fclose(flannel);
 }; 
 
@@ -367,7 +372,7 @@ void() cl_savefile_default={
   
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
-  fputs(flannel, "// save file v2.0 for 5.0+ release\n");
+  fputs(flannel, "// save file v2.0 for 5.0+ release, don't modify order of labels!\n");
   fputs(flannel, strcat("save=", cvar_string("saveslot"), "\n"));
   fputs(flannel, "mission=o1m1\n");
   if( cvar("developer") ){

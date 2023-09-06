@@ -294,12 +294,16 @@ void(string cmd, float tokens) client_setMission={
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN && !cvar("sv_singlemap") ){
     self.playerState = PLAYER_ACTIVE;
     self.view_ofs = '0 0 1';
-    if( stof(argv(1)) == MISSION_RESULT_WIN ){ 
+    if( fabs(rint(stof(argv(1)))) == MISSION_RESULT_WIN ){ 
       //mission successful, next map
       
       sv_nextmap = campaign_nextMap( cvar_string("sv_campaign"), mapname, TRUE );
       
-      savefile_changemap(sv_nextmap); //TODO - fix me
+      if(cvar("developer") > 0){
+        cons_logAString("sv_campaign", cvar_string("sv_campaign"));  //debug
+        cons_logAString("sv_nextmap", sv_nextmap);  //debug
+      }
+
       if( sv_nextmap == "" || strlen(sv_nextmap) == 0 || strstrofs(sv_nextmap, "menu", 0) != -1){
         stuffcmd(self, "disconnect;togglemenu;\n");
         return;
