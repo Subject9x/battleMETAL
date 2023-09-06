@@ -36,15 +36,15 @@ void() data_ini_plasma_={
     self.w_clipsize = 2;
     self.reloadRate = 0.4;
     self.reloadMax = 1.0;
-    self.damageValue = 5.0;
-    self.count = 0.3; //burn-chance
+    self.damageValue = 7.0;
+    self.count = 0.4; //burn-chance
   }
   else{
     self.w_clipsize = 1;
-    self.reloadRate = 1.5;
-    self.reloadMax = 1.5;
+    self.reloadRate = 1;
+    self.reloadMax = 1;
     self.damageValue = 3.0;
-    self.count = 0.1; //burn-chance
+    self.count = 0; //burn-chance
   }
 
   self.count1 = 1.0; // rotate shot pattern;
@@ -74,7 +74,7 @@ void() data_ini_plasma_={
   self.w_clipsize = 2;
   self.reloadRate = 0.4;
   self.reloadMax = 1.0;
-  self.damageValue = 5.0;
+  self.damageValue = 7.0;
 #endif 
 
 #ifdef SSQC

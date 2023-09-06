@@ -292,20 +292,30 @@
 
 
 //LASER EFFECTS==================================
+  //TE_LAS_HIT - LIGHT
+    effect TE_LAS_RAIL
+    countabsolute 1
+    lightradius 50
+    lightradiusfade 100
+    lightcolor 0.49 0.24 0.74
+    lightshadow 0
+  
   //TE_LAS_RAIL
     effect TE_LAS_RAIL
     countabsolute 1
-    type beam
+    type spark
     blend add
-    orientation billboard
-    color 0x7339AC 0x7339AC
-    tex 41 41
-    size 2 2
-    sizeincrease -1
-    alpha 512 512 650
+    orientation beam
+    //color 0x7339AC 0x7339AC
+    color 0xe1bee7 0xce93d8
+    //tex 41 41
+    tex 60 60
+    size 3 3
+    sizeincrease -0.1
+    alpha 512 512 768
     notunderwater
-    trailspacing 32
-    stretchfactor -1
+    //trailspacing 32
+    //stretchfactor 2
 
   //TE_LAS_HIT - SPARK
     effect TE_LAS_HIT
@@ -346,14 +356,6 @@
     size 1.75 2.25
     alpha 128 256 180
     time 4 8
-    
-  //TE_LAS_HIT - LIGHT
-    effect TE_LAS_RAIL
-    countabsolute 1
-    lightradius 75
-    lightradiusfade 100
-    lightcolor 0.49 0.24 0.74
-    lightshadow 0
 
   //TE_LAS_DIRT
     effect TE_LAS_DIRT
@@ -370,7 +372,7 @@
     effect TE_LAS_DIRT
     countabsolute 1
     lightradius 75
-    lightradiusfade 100
+    lightradiusfade 150
     lightcolor 0.49 0.24 0.74
     lightshadow 0
 //=====================================================
@@ -382,7 +384,7 @@
 //PAC BEAM==================================
   //TE_PAC_MUZZLE - SPARKS ACCEL
     effect TE_PAC_MUZZLE
-    count 1.5
+    count 1
     type smoke
     blend add
     orientation spark
@@ -399,7 +401,7 @@
     
   //TE_PAC_MUZZLE - SPARKS ACCEL
     effect TE_PAC_MUZZLE
-    count 4
+    count 2
     type spark
     blend alpha
     orientation spark
@@ -457,13 +459,13 @@
     velocityjitter 0 0 1 
     velocitymultiplier 0.01
     notunderwater
-    stretchfactor 4
-    trailspacing 6
+    stretchfactor 3
+    trailspacing 16
     bounce -1
   
   //TE_PAC_IMPACT_SHIELD -  YELLOW SPARKS
     effect TE_PAC_IMPACT_SHIELD
-    count 2
+    count 1
     type spark
     blend alpha
     orientation spark
@@ -476,7 +478,7 @@
     originjitter 1 1 1
     velocityjitter 15 2 2
     velocitymultiplier 2
-    stretchfactor 6
+    stretchfactor 3
     
   //TE_PAC_IMPACT_SHIELD_POINT - SHIELD SMOKE
     effect TE_PAC_IMPACT_SHIELD_POINT
@@ -528,7 +530,7 @@
   
   //TE_PAC_IMPACT_ARMOR - SLOSH 
     effect TE_PAC_IMPACT_ARMOR
-    count 2
+    count 1
     type spark
     blend alpha
     color 0xFE2E2E 0xDF7401
@@ -552,7 +554,7 @@
   
   //TE_PAC_IMPACT_GROUND - SPARKS ACCEL
     effect TE_PAC_IMPACT_GROUND
-    count 2
+    count 1
     type spark
     blend add
     orientation spark
@@ -1801,10 +1803,10 @@
   //TE_SFGA_MUZZLE - LIGHT
     effect TE_SFGA_MUZZLE
     countabsolute 1
-    lightradius 125
-    lightradiusfade 100
+    lightradius 200
+    lightradiusfade 60
     lightcolor 0.996 0.392 0.18
-    lightshadow 0
+    lightshadow 1
     notunderwater
     
   //TE_SFGA_TRAIL - SMOKE

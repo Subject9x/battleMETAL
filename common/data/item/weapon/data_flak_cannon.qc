@@ -68,13 +68,19 @@ void() data_ini_flak_cannon_={
 
   self.data_idx = UID_ITEM_flak;
   
-  self.w_clipsize = 3;
-  self.reloadRate = 0.15;
-  self.reloadMax = 3;
+  self.w_clipsize = 1;
+  self.reloadRate = 1.5;
+  self.reloadMax = 1.5;
   self.energyRate = 0;
   
   self.w_range = 500;
-  self.damageValue = 2; //2.5
+  self.damageValue = 1; //2.5
+  if((self.owner.flags & FL_CLIENT)){
+    self.damageValue = 3;
+    self.w_clipsize = 3;
+    self.reloadRate = 0.15;
+    self.reloadMax = 3;
+  }
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
@@ -96,6 +102,10 @@ void() data_ini_flak_cannon_={
   self.description = "+ Instant-impact weapon. + 3-rnd burst and 6 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";
   self.itemMuzzleFlash = te_muzzle_flk;
+  self.damageValue = 4;
+  self.w_clipsize = 3;
+  self.reloadRate = 0.15;
+  self.reloadMax = 3;
 #endif
 
 #ifdef SSQC
@@ -135,13 +145,15 @@ void() data_ini_attack_flak_={
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
-        t_damage_shield(trace_ent, self,self.owner, self.damageValue * 1.33, trace_endpos, FALSE);
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue * 1.5, trace_endpos, FALSE);
       }
       else{
         damage = self.damageValue;
-        if( (trace_ent.data_type == DATA_MECH) || (trace_ent.data_type == DATA_VEHC) ){
-          if( trace_ent.vec_size == 1 || trace_ent.data_type == DATA_VEHC){
-            damage = self.damageValue * 1.25;
+        if( trace_ent.data_type == DATA_MECH || trace_ent.data_type == DATA_VEHC ){
+            damage = damage - trace_ent.vec_size;
+            if( trace_ent.data_type == DATA_VEHC ){
+              damage = self.damageValue * 1.67;
+            }
           }
         }
         HIT_LOCATION = t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');

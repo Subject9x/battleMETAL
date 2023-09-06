@@ -9,8 +9,9 @@ Overview:
 */
 
 #ifdef SSQC
-#define DATA_PROJECTILE_PLASMA_BURN_TIME 0.75
-#define DATA_PROJECTILE_PLASMA_BURN_DMG 3.0
+#define DATA_PROJECTILE_PLASMA_BURN_TIME 0.8
+#define DATA_PROJECTILE_PLASMA_BURN_DMG 4.5
+
 //was 5.0
 
 void() data_projectile_plasma_touch;
