@@ -124,6 +124,8 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     if( self.deadflag != DEAD_NO ){
       handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
+      
+      self.shield = ReadByte();
     }
   }
   
@@ -230,7 +232,10 @@ void() interpolate_mech_ai={
   interpolate_angle();
   interpolate_ground();
   
-  self.rootOrigin = self.origin;
+  self.rootOrigin_x = self.origin_x;
+  self.rootOrigin_y = self.origin_y;
+  self.rootOrigin_z = self.origin_z;
+  
   self.rootAngle = self.angles;
   
   local float hitcontent;
@@ -263,6 +268,7 @@ void() interpolate_mech_ai={
     self.maxs = self.cache_maxs;
     return;
   }
+  
   self.cl_lod_weapon = TRUE;
   if( vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE / 2 ){
     self.cl_lod_weapon = FALSE;

@@ -19,7 +19,7 @@ void() client_push_player_info={
     self.stat_client_energy = (self.energy / self.energyMax) * 100;
     
     if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-      if( time <= self.shieldHitRegen ) {
+      if( time < self.shieldHitRegen ) {
         myShield = self.shieldHitRegen - self.shieldHitRegenStart;
         myShield = (time - self.shieldHitRegenStart) / myShield;
         myShield =  100 - (myShield * 100) + 100;

@@ -121,8 +121,8 @@ void() player_unmakeMech={
   self.shield = 0;
   self.shieldMax = 0;
   self.shieldRate = 0;
-  self.stat_client_energy = 1;
-  self.stat_client_shield = 1;
+  self.stat_client_energy = 100;
+  self.stat_client_shield = 100;
   
   self.w_group1 = 0;
   self.w_group2 = 0;

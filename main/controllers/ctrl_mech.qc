@@ -581,6 +581,8 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
       WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+
+      WriteByte( MSG_ENTITY, (self.shield / self.shieldMax) * 100);
     }
   }
   
@@ -596,6 +598,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
     WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
     WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+    self.shieldHitFlag = 0;
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){
@@ -625,6 +628,5 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     WriteByte(MSG_ENTITY, self.faction);
   }
 
-  self.shieldHitFlag = 0;
   return TRUE;
 };

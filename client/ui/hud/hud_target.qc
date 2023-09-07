@@ -321,7 +321,7 @@ void(entity targetEnt, float algn, float val, vector mSize, float meterAxis) hud
     pos = gui_calcAlign(pos, algn);
    
     meterColor = CLR_DEF_ARM_DED;
-    if( scopeVal > 100 ){
+    if( scopeVal > 100.01){
       //render delay regen
       scopeVal = 100 - scopeVal;
       gui_renderMeter( (scopeVal * -1), pos, aSize, meterColor, CLR_DEF_RED, HUD_ALPHA, 0, AXIS_H, FALSE);

@@ -43,7 +43,7 @@ void() ctrl_updateTank={
   }
   
   if( (self.unitModFlags & MOD_HAS_SHIELD) ){
-    if( time <= self.shieldHitRegen ) {
+    if( time < self.shieldHitRegen ) {
       myShield = self.shieldHitRegen - self.shieldHitRegenStart;
       myShield = (time - self.shieldHitRegenStart) / myShield;
       self.stat_client_shield =  (100 - (myShield * 100) ) + 100;
@@ -60,8 +60,8 @@ void() ctrl_updateTank={
           }
         }
       }
-      self.stat_client_shield = (self.shield / self.shieldMax) * 100;
     }
+    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   }
   self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
   self.ai_weaponEnergy = 0;

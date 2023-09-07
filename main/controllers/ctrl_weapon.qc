@@ -388,19 +388,22 @@ float( float isNew, float changedflags ) ctrl_send_weapon={
   WriteByte( MSG_ENTITY, SENDTYPE_ITEM );
   WriteLong( MSG_ENTITY, changedflags );
   
-  WriteLong( MSG_ENTITY, num_for_edict(self.owner));
-  if( (changedflags & SENDFLAG_MOVE) ){
-  }
+  if( (changedflags & SENDFLAG_MOVE) ){}
 
   if( (changedflags & SENDFLAG_NEWENT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self.owner));
+
+    WriteByte( MSG_ENTITY, self.data_idx);
+    
     WriteLong( MSG_ENTITY, self.w_group);
     WriteLong( MSG_ENTITY, self.partParentId);
-    WriteAngle( MSG_ENTITY, self.compOffset_x);
-    WriteAngle( MSG_ENTITY, self.compOffset_y);
-    WriteAngle( MSG_ENTITY, self.compOffset_z);
+    WriteCoord( MSG_ENTITY, self.compOffset_x);
+    WriteCoord( MSG_ENTITY, self.compOffset_y);
+    WriteCoord( MSG_ENTITY, self.compOffset_z);
   }
   
   if( (changedflags & SENDFLAG_NEWUNIT) ){
+    WriteLong( MSG_ENTITY, num_for_edict(self.owner));
     WriteByte( MSG_ENTITY, self.data_idx);
   }
   

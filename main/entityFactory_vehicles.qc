@@ -311,7 +311,7 @@ void() build_mech_bot={
   }
   if( (self.unitModFlags & MOD_HAS_SHIELD) ){ 
     self.shield = self.shieldMax;
-    self.stat_client_shield = self.shield;
+    self.stat_client_shield = (self.shield / self.shieldMax) * 100;
   }
 };
 

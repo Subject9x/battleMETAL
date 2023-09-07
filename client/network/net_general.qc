@@ -334,29 +334,35 @@ void( float isNew, float changeFlags ) sendent_handle_item={
   
   prevIdx = self.data_idx;
   
-  ownerEntId =  fabs(rint(ReadLong()));
-  
-  self.owner = findfloat(world, entnum, ownerEntId);
-  if( (changeFlags & SENDFLAG_MOVE) ){
-  
-  }
+
+  if( (changeFlags & SENDFLAG_MOVE) ){}
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
+    ownerEntId =  fabs(rint(ReadLong()));
+    self.owner = findfloat(world, entnum, ownerEntId);
+    
+    self.data_idx = ReadByte();
+    
     self.w_group = rint(ReadLong());
     self.partParentId = rint(ReadLong());
-    self.compOffset_x = ReadAngle();
-    self.compOffset_y = ReadAngle();
-    self.compOffset_z = ReadAngle();
+    self.compOffset_x = ReadCoord();
+    self.compOffset_y = ReadCoord();
+    self.compOffset_z = ReadCoord();
   }
   
   if( (changeFlags & SENDFLAG_NEWUNIT) ){
+    ownerEntId =  fabs(rint(ReadLong()));
+    self.owner = findfloat(world, entnum, ownerEntId);
+
     self.data_idx = ReadByte();
   }
-  if( (changeFlags & SENDFLAG_DEAD) ){
-  }
+  //no-op because 
+  if( (changeFlags & SENDFLAG_DEAD) ){}
   
-  if(self.data_idx != prevIdx && self.data_idx != 0){
-    initialize_data_item_(self.data_idx);
+  if(isNew){
+    if(self.data_idx != 0){
+      initialize_data_item_(self.data_idx);
+    }
     if(self.owner != world){
       switch(self.w_group){
         default:
@@ -388,9 +394,6 @@ void( float isNew, float changeFlags ) sendent_handle_item={
           break;
       }
     }
-  }
-  
-  if(isNew){
     //self.predraw = predraw_weapon_ent;
     self.deadflag = DEAD_NO;
     self.classname = "UNIT_ITEM";

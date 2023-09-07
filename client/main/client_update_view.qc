@@ -105,7 +105,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       CLIENT_vis_org = trace_endpos + (v_forward * 2);
     }
     else{
-    
       makevectors([0, CLIENT_server_ent.angles_y, 0]);
       //predraw takes care of mech geom in FPS cam
       CLIENT_vis_org =  CLIENT_server_ent.rootOrigin + (v_up * CLIENT_server_ent.cameraOffset_y);
@@ -114,7 +113,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       if( CLIENT_server_ent.moveState != MOVE_STAND ){
         CLIENT_vis_org = CLIENT_vis_org + (v_up* (cos(time * CLIENT_server_ent.hud_bob * (2.0 * M_PI)) + 1.0) * 0.5 * CLIENT_server_ent.hud_bob_up);
       }
-      
     }
   }
   else{

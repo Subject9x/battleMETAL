@@ -781,7 +781,7 @@ void() data_hud_frame={
     hud_renderTargetOverlay(CLIENT_target_ent);
     
     //func call optimization, adding shield-down filter, players are confused about a target's shield flashing red to indicate 'time-before-regen' delay.
-    if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.0){
+    if( CLIENT_target_shield > 0.0 && CLIENT_target_shield <= 100.01){
       hud_renderShieldOverlay(CLIENT_target_ent, 0, CLIENT_target_shield, '64 6', AXIS_H);
     }
   }

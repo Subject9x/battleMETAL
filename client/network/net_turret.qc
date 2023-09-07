@@ -117,7 +117,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
-    self.shield = ReadByte();
+    self.shield = ReadByte() / 100 * self.shieldMax;
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = fabs(ReadByte());

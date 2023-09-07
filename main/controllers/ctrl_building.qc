@@ -103,6 +103,7 @@ void() building_die={
   IF a building lacks a unique think function, use this 
 */
 void() building_burn_th={
+  local float myShield;
   
   building_burn();
   
@@ -111,11 +112,22 @@ void() building_burn_th={
     self.last_energy = self.energy;
   }
   
-  if( (self.unitModFlags & MOD_HAS_SHIELD)){
-    if( self.last_shield != self.stat_client_shield ){
-      self.SendFlags = self.SendFlags | SENDFLAG_SHIELD;
-      self.last_shield = self.stat_client_shield;
+  if( (self.unitModFlags & MOD_HAS_SHIELD) ){
+    if( time < self.shieldHitRegen ) {
+      myShield = self.shieldHitRegen - self.shieldHitRegenStart;
+      myShield = (time - self.shieldHitRegenStart) / myShield;
+      myShield =  100 - (myShield * 100) + 100;
     }
+    else{
+      myShield = self.shield;
+      if( myShield <= 0 ){
+        myShield = 0;
+      }
+      else{
+        myShield = (self.shield / self.shieldMax) * 100;
+      }
+    }
+    self.stat_client_shield = myShield;
   }
   
   self.think = building_burn_th;
