@@ -406,8 +406,7 @@ void() building_repair_cooldown={
       building_repair_allowGuns(TRUE);
       client_send_event_repairs( self.goalentity, FALSE );
     }
-
-    self.goalentity.stat_plr_rep = -1;
+    
     self.critBits = 0;
     self.SendFlags = self.SendFlags | SENDFLAG_EXDATA;
     self.burstRate = 2;
