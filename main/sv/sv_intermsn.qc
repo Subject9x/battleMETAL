@@ -252,7 +252,9 @@ void() changelevel_use={
   if( world.animaticOnly ){
   
     if( (self.spawnflags & 4) ){
-      thisMap =  campaign_nextMap( cvar_string("sv_campaign"), mapname, TRUE );
+      
+		thisMap =  campaign_nextMap( cvar_string("sv_campaign"), mapname, TRUE );
+
     }
     else{
       thisMap = self.map;

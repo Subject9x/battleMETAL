@@ -861,6 +861,7 @@ void() menu_scan_saves={
       cacheGlobalString( GAME_SAVES_MAP[itr], map_name)
       GAME_SAVES_NEWG[itr] = new_gameplus;
       cacheGlobalString( GAME_SAVES_CAMP_FILE[itr], campFile )
+      //WARN - FIX ME, NOT SETTING CORRECTLY ON LOAD
       
       
       if( isVer1 ){

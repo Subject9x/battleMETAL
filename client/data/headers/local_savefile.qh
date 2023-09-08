@@ -17,12 +17,16 @@ string SAVEFILE_CAMPAIGN;
 
 string SAVE_TAG_MISSION = "mission";
 
+string CAMP_START_MAP;
+string CAMP_END_MAP;
+
 //Savefile cache - loaded when player connects to a CAMPAIGN MAP
 //primarily used if SV_NEXTMAP has not been determined, makes sure the save is not wiped out.
 string SAVEFILE_CACHE_MAP;
 
 void( string fileName ) cl_load_savefile;
 void() cl_load_savefile_singleMap;
+float() cl_campaign_check_end;
 void( float serverMode, float svFlags ) cl_set_savepath;
 void() cl_get_mechs_sort;
 void() cl_load_mechs_all;

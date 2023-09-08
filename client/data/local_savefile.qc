@@ -35,6 +35,9 @@ void( string fileName ) cl_load_savefile={
         if( argv(0) == SAVE_TAG_MISSION ){
           cacheGlobalString( SAVEFILE_CACHE_MAP, argv(1))
         }
+        if( argv(0) == CAMP_TAG_NEWG){
+          cvar_set("cl_newgameplus", argv(1));
+        }
       }
       line = fgets(flannel);
     }
@@ -89,6 +92,46 @@ void() cl_load_savefile_singleMap={
   cl_load_mechs_all();
   cl_load_items_all();
 };
+
+/*
+  Detect the end/last playable map of a campaign file so that the newgame+ flag can be set correctly.
+  campaign map lists need to have a '+' at the start map and a '*' for the end map.
+
+  example: o1m1:o1m2|none|+ //start
+  example: o3m6:anim4|none|*  //end
+*/
+float() cl_campaign_check_end={
+  
+  local string cleanMapName;
+  local float flannel;
+  local string contents, line;
+  local float mapItr;
+
+  local string startMap;
+  local string endMap;
+  
+  campaign_loadMapList( cvar_string("sv_campaign") );
+  tokenizebyseparator(mapname, "/", ".");
+  cleanMapName = argv(1);
+  
+  mapItr = 0;
+  while( CAMP_MAPS[mapItr] != "" ){
+    tokenizebyseparator(CAMP_MAPS[mapItr], ":", "|");
+    if(argv(3) == "*"){
+      cacheGlobalString(CAMP_END_MAP, argv(0))
+    }
+    if(argv(3) == "+"){
+      cacheGlobalString(CAMP_START_MAP, argv(0))
+    }
+    mapItr = mapItr + 1;
+  }
+
+  if(CAMP_END_MAP == cleanMapName){
+    return TRUE;
+  }
+  return FALSE;
+};
+
 
 void( float serverMode, float svFlags ) cl_set_savepath={
   local string filePath;
@@ -317,20 +360,37 @@ void() cl_savefile_save={
   local float flannel;
   local string file;
   
+  local float newGame;
+  newGame = cl_campaign_check_end();
+
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   if(flannel > -1){
     fputs(flannel, "// save file v2.0 for 5.0+ release, don't modify order of labels!\n");
     fputs(flannel, strcat("save=", ftos(cvar("saveslot")), "\n"));
-    fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+    
+    if(newGame){
+      fputs(flannel, strcat("mission=", CAMP_START_MAP, "\n"));
+    }
+    else{
+      fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+    }
+    
     fputs(flannel, strcat("points=", ftos(1), "\n"));
     fputs(flannel, strcat("skill=", ftos(cvar("skill")), "\n"));
     fputs(flannel, strcat("campaign=", SAVEFILE_CAMPAIGN, "\n"));
     fputs(flannel, strcat("mechs=", UNLOCKED_MECHS_DATA, "\n"));
     fputs(flannel, strcat("items=", UNLOCKED_ITEMS_DATA, "\n"));
-    fputs(flannel, strcat("newgame+=", ftos(cvar("cl_newgameplus")), "\n"));
+    if(newGame){
+      fputs(flannel, strcat("newgame+=","1", "\n"));
+    }
+    else{
+      fputs(flannel, strcat("newgame+=", "0", "\n"));
+    }
     fclose(flannel);
   }
+  freeGlobalString(CAMP_START_MAP)
+  freeGlobalString(CAMP_END_MAP)
 }; 
 
 /*
