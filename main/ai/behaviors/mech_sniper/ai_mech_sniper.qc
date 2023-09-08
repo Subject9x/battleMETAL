@@ -24,9 +24,6 @@ void() ai_mech_sniper={
   
   self.SendEntity = ctrl_send_mech_ai;
   
-  self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
-  
   self.ai_unit_update = ai_ctrl_update_mechplayer;
   
   self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check

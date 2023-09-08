@@ -229,7 +229,6 @@ float(entity t) ai_check_range={
 */
 float( entity targ ) ai_check_vis={
   local vector spot1, spot2;
-  local float contentBuffer;
   
   makevectors(self.angles);
   spot1 = self.cameraOrigin + (v_forward * 10) + (v_up * 3);
@@ -239,9 +238,8 @@ float( entity targ ) ai_check_vis={
   else{
     spot2 = targ.origin + [0, 0, targ.maxs_z * 0.5];
   }
-  contentBuffer = self.dphitcontentsmask;
-  self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_OPAQUE | DPCONTENTS_SKY);
+
+  self.dphitcontentsmask = 0 | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_OPAQUE | DPCONTENTS_SKY);
   
   //traceline (spot1, spot2, , self);
   traceline( [targ.absmax_x, targ.absmax_y, targ.origin_z + targ.maxs_z/2], spot1, MOVE_NORMAL, self);
@@ -260,7 +258,7 @@ float( entity targ ) ai_check_vis={
   VIS_FRAC4 = trace_fraction;
   VIS_ENT4 = trace_ent;
 
-  self.dphitcontentsmask = 0 | fabs(contentBuffer);
+  self.dphitcontentsmask = 0;
 
   if( VIS_ENT1 == world && VIS_ENT2 == world  && VIS_ENT3 == world  && VIS_ENT4 == world ){
     return VIS_FAIL;  // sight line crossed contents

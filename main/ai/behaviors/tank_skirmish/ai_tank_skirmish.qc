@@ -26,9 +26,6 @@ void() ai_tank_skirmish={
   
   self.SendEntity = ctrl_send_tank;
   
-  self.dphitcontentsmask = 0;
-  self.dphitcontentsmask = self.dphitcontentsmask | (DPCONTENTS_SOLID | DPCONTENTS_BODY | DPCONTENTS_MONSTERCLIP | DPCONTENTS_DONOTENTER | DPCONTENTS_BOTCLIP);
-  
   self.ai_unit_update = ctrl_updateTank;
   
   self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check
