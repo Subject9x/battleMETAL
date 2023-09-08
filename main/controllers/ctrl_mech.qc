@@ -154,10 +154,8 @@ void() ctrl_updateCenterTorso={
     makevectors(self.v_angle);
     if(self.chaseActive){
       laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
-      TRACE_HIT_TEMP = self.dphitcontentsmask;
       self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
-        traceline(self.origin, laserOrg, TRUE, self);
-      self.dphitcontentsmask = TRACE_HIT_TEMP;
+      traceline(self.origin, laserOrg, TRUE, self);
 
       laserOrg = trace_endpos;
     }
@@ -166,15 +164,15 @@ void() ctrl_updateCenterTorso={
     }
     laserHit = laserOrg + (v_forward * 10000);
 
-    TRACE_HIT_TEMP = self.dphitcontentsmask;
     self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
-      traceline(laserOrg, laserHit, FALSE, self);
-    self.dphitcontentsmask = TRACE_HIT_TEMP;
+    traceline(laserOrg, laserHit, FALSE, self);
 
     self.laser_sight_org = trace_endpos;
     self.laser_sight_timer = time + 0.05;
   }
   
+  self.dphitcontentsmask = rint(0);
+
   mx = self.movement_x;
   if(mx < 0){
     mx = mx * -1;
@@ -572,16 +570,14 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     }
     
     WriteByte( MSG_ENTITY, self.deadflag );
-    
-    if( self.deadflag != DEAD_NO ){
-      WriteLong( MSG_ENTITY,   self.criticalHits );
+    if( self.deadflag == DEAD_NO ){
+      WriteLong( MSG_ENTITY,  self.criticalHits );
       WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
       WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
-
       WriteByte( MSG_ENTITY, (self.shield / self.shieldMax) * 100);
     }
   }

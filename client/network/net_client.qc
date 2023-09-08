@@ -220,7 +220,7 @@ void() client_predraw={
       setmodel(self, self.torC_mdl);
       self.angles = self.torC_angl;
       self.origin = self.torC_org;
-      self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / self.torC_hpMax) * 2;
+      self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / 100) * 2;
       addentity(self);
       
       if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
@@ -231,7 +231,7 @@ void() client_predraw={
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
              self.torL_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / self.armL_hpMax) * 2;
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / 100) * 2;
           setmodel(self, self.torL_mdl);
           self.angles = self.torL_angl;
           self.origin = self.torL_org;
@@ -246,7 +246,7 @@ void() client_predraw={
           if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
              self.torR_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / self.torR_hpMax) * 2;
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / 100) * 2;
           setmodel(self, self.torR_mdl);
           self.angles = self.torR_angl;
           self.origin = self.torR_org;
@@ -261,7 +261,7 @@ void() client_predraw={
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
             self.armL_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / self.armL_hpMax)  * 2;
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / 100)  * 2;
           setmodel(self, self.armL_mdl);
           self.angles = self.armL_angl;
           self.origin = self.armL_org;
@@ -420,6 +420,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     if( self.deadflag != DEAD_NO ){
       handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
+      cons_logAFloat("self.torC_hp", self.torC_hp); //debug
     }
   }
   
@@ -483,8 +484,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     
     if( self.data_type != DATA_POBS ){
       self.data_idx = ReadByte();
-
-
       self.next_wepn1 = ReadByte();
       self.next_wepn2 = ReadByte();
       self.next_wepn3 = ReadByte();
@@ -494,21 +493,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       self.next_wepn7 = ReadByte();
       self.next_wepn8 = ReadByte();
       self.next_wepn9 = ReadByte();
-
-      self.torC_hpMax = ReadFloat();
-      self.torL_hpMax = ReadFloat();
-      self.torR_hpMax = ReadFloat();
-      self.armL_hpMax = ReadFloat();
-      self.armR_hpMax = ReadFloat();
-      self.legs_hpMax = ReadFloat();
-
-      self.torC_hp = self.torC_hpMax;
-      self.torL_hp = self.torL_hpMax;
-      self.torR_hp = self.torR_hpMax;
-      self.armL_hp = self.armL_hpMax;
-      self.armR_hp = self.armR_hpMax;
-      self.legs_hp = self.legs_hpMax;
-
+      
       if( self.prevDataType == DATA_POBS ){
         //genuine spawn event.
         if( self.clientServerNum = player_localentnum ){
@@ -520,6 +505,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
         }
         client_event_mech_spawn( self.data_idx );
       }
+      handle_existing_hp(TRUE, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
     }
   }
   
@@ -564,12 +550,12 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     /* EVENT - Client has taken ranged hits. */
     if( (changeFlags & SENDFLAG_IMPACT) ){
       self.shieldHitFlag = ReadByte();
-      self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
-      self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
-      self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
-      self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
-      self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
-      self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
+      self.torC_hp = ReadByte();
+      self.torL_hp = ReadByte();
+      self.torR_hp = ReadByte();
+      self.armL_hp = ReadByte();
+      self.armR_hp = ReadByte();
+      self.legs_hp = ReadByte();
     }
     
     /* EVENT - pieces of player mech is blown off */

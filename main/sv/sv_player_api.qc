@@ -490,7 +490,10 @@ void() PlayerDie4={
 
 void() PlayerDie5={
   te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
-
+  self.moveState = MOVE_STAND;
+  self.movetype = MOVETYPE_TOSS;
+  self.velocity = normalize(self.velocity) * 100;
+  self.velocity_z = self.velocity_z + 50;
   self.playerState = PLAYER_DEAD;
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;

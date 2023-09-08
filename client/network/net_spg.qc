@@ -85,7 +85,7 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
-    self.health = ReadByte() / 100 * self.max_health;
+    self.health = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_CRIT) ){

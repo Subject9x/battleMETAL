@@ -317,7 +317,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   //HANDLE EVENT - projectile hit.
   if( self.impactType > 0 && prevImpactType == FALSE ){
     self.deadflag = DEAD_DEAD;
-    if( self.pcl_explode ){
+    if( self.pcl_explode  && MENU_PROG_OFF){
       self.pcl_explode();
     }
     self.velocity = '0 0 0';
@@ -615,35 +615,35 @@ void() render_mech_effect_burning={
   //ideally you've makevectors before this....
 
   if( !(self.criticalHits & M_ARM_LEFT) && (self.unitModFlags & MOD_HAS_ARM_L) ){
-    if( self.armL_hp < self.armL_hpMax * 0.67 ){
+    if( self.armL_hp < 67 ){
       spark = self.armL_org + (v_up * 10);
       pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.armL_org, normalize( spark - self.armL_org) * (windVel_z/2), 1.0);
     }
   }
   if( !(self.criticalHits & M_ARM_RIGHT) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-    if( self.armR_hp < self.armR_hpMax * 0.67 ){
+    if( self.armR_hp < 67 ){
       spark = self.armR_org + (v_up * 10);
       pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.armR_org, normalize( spark - self.armR_org) * (windVel_z/2), 1.0);
     }
   }
   if( !(self.criticalHits & M_TOR_LEFT) && (self.unitModFlags & MOD_HAS_TOR_L) ){
-    if( self.armR_hp < self.armR_hpMax * 0.5 ){
+    if( self.armR_hp < 50 ){
       spark = self.torL_org + (v_up * 10);
       pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.torL_org, normalize( spark - self.torL_org) * (windVel_z/2), 1.0);
     }
   }
   if( !(self.criticalHits & M_TOR_RIGHT) && (self.unitModFlags & MOD_HAS_TOR_R) ){
-    if( self.torR_hp < self.torR_hpMax * 0.5 ){
+    if( self.torR_hp < 50 ){
       spark = self.torR_org + (v_up * 10);
       pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.torR_org, normalize( spark - self.torR_org) * (windVel_z/2), 1.0);
     }
   }
   if( !(self.criticalHits & M_LEGS) ){
-    if( self.legs_hp < self.legs_hpMax * 0.5 ){
+    if( self.legs_hp < 50 ){
       pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.legs_org, normalize( spark - self.legs_org) * (windVel_z/2), 1.0);
     }
   }
-  if( self.torC_hp < self.torC_hpMax * 0.33 ){
+  if( self.torC_hp < 33 ){
     spark = self.torC_org + (v_up * 10);
     pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), self.torC_org, normalize( spark - self.torC_org) * (windVel_z/2), 1.0);
   }
@@ -695,12 +695,14 @@ void( float playerEntId, float playerCritFlags ) client_handle_crit={
 
 
 void(float isnew, float ct, float lt, float rt, float la, float ra, float lg) handle_existing_hp={
-  self.torC_hp = ct / 100 * self.torC_hpMax;
-  self.torL_hp = lt / 100 * self.torL_hpMax;
-  self.torR_hp = rt / 100 * self.torR_hpMax;
-  self.armL_hp = la / 100 * self.armL_hpMax;
-  self.armR_hp = ra / 100 * self.armR_hpMax;
-  self.legs_hp = lg / 100 * self.legs_hpMax;
+  if(isnew){
+    self.torC_hp = ct;
+    self.torL_hp = lt;
+    self.torR_hp = rt;
+    self.armL_hp = la;
+    self.armR_hp = ra;
+    self.legs_hp = lg;
+  }
 };
 
 void(float isnew, float existCrits) handle_existing_crits={

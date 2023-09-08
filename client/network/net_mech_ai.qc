@@ -79,6 +79,9 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   local float prevDeadFlag;
   local float voiceId;
 
+  local float cthp, lthp, rthp, lahp, raph, lghp;
+  cthp = 0;
+
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
   
@@ -121,10 +124,17 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     newName = ReadString();
     
     self.deadflag = ReadByte();
-    if( self.deadflag != DEAD_NO ){
+    if( self.deadflag == DEAD_NO ){
       handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
       
+      cthp = self.torC_hp;
+      lthp = self.torL_hp;
+      rthp = self.torR_hp;
+      lahp = self.armL_hp;
+      raph = self.armR_hp;
+      lghp = self.legs_hp;
+
       self.shield = ReadByte();
     }
   }
@@ -144,10 +154,15 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
     }
     else{
       data_sync_new_mech_ai( self.data_idx );
-      if( self.deadflag != DEAD_NO ){
-      
-      }
       pointparticles( PTC_WRECK_SMOKE, self.origin + '0 0 20', normalize( (self.origin + '0 0 20') - self.origin) * 5, 0.5);
+    }
+    if(cthp){
+      self.torC_hp = cthp ;
+      self.torL_hp = lthp ;
+      self.torR_hp = rthp ;
+      self.armL_hp = lahp ;
+      self.armR_hp = raph ;
+      self.legs_hp = lghp ;
     }
   }
   
@@ -156,12 +171,12 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
-    self.torC_hp = ReadByte() / 100 * self.torC_hpMax;
-    self.torL_hp = ReadByte() / 100 * self.torL_hpMax;
-    self.torR_hp = ReadByte() / 100 * self.torR_hpMax;
-    self.armL_hp = ReadByte() / 100 * self.armL_hpMax;
-    self.armR_hp = ReadByte() / 100 * self.armR_hpMax;
-    self.legs_hp = ReadByte() / 100 * self.legs_hpMax;
+    self.torC_hp = ReadByte();
+    self.torL_hp = ReadByte();
+    self.torR_hp = ReadByte();
+    self.armL_hp = ReadByte();
+    self.armR_hp = ReadByte();
+    self.legs_hp = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
@@ -287,7 +302,7 @@ void() interpolate_mech_ai={
   if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
     self.torC_angl_x = self.torC_angl_x * -1;
   }
-  self.colormod = CLR_DEF_WHITE * (self.torC_hp / self.torC_hpMax) * 2;
+  self.colormod = CLR_DEF_WHITE * (self.torC_hp / 100) * 2;
   setmodel(self, self.torC_mdl);
   self.angles = self.torC_angl;
   self.origin = self.torC_org;
@@ -301,7 +316,7 @@ void() interpolate_mech_ai={
       if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
           self.torL_angl_x = self.torL_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.torL_hp / self.torL_hpMax) * 2;
+      self.colormod = CLR_DEF_WHITE * (self.torL_hp / 100) * 2;
       setmodel(self, self.torL_mdl);
       self.angles = self.torL_angl;
       self.origin = self.torL_org;
@@ -316,7 +331,7 @@ void() interpolate_mech_ai={
       if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
           self.torR_angl_x = self.torR_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.torR_hp / self.torR_hpMax) * 2;
+      self.colormod = CLR_DEF_WHITE * (self.torR_hp / 100) * 2;
       setmodel(self, self.torR_mdl);
       self.angles = self.torR_angl;
       self.origin = self.torR_org;
@@ -331,7 +346,7 @@ void() interpolate_mech_ai={
       if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
         self.armL_angl_x = self.armL_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.armL_hp / self.armL_hpMax) * 2;
+      self.colormod = CLR_DEF_WHITE * (self.armL_hp / 100) * 2;
       setmodel(self, self.armL_mdl);
       self.angles = self.armL_angl;
       self.origin = self.armL_org;
@@ -346,7 +361,7 @@ void() interpolate_mech_ai={
       if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
         self.armR_angl_x = self.armR_angl_x * -1;
       }
-      self.colormod = CLR_DEF_WHITE * (self.armR_hp / self.armR_hpMax) * 2;
+      self.colormod = CLR_DEF_WHITE * (self.armR_hp / 100) * 2;
       setmodel(self, self.armR_mdl);
       self.angles = self.armR_angl;
       self.origin = self.armR_org;

@@ -422,20 +422,20 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   pnl_ctr = backOrg + backSize * 0.5;
 
   if(isTarget){
-    ct = CLIENT_target_ent.torC_hp / CLIENT_target_ent.torC_hpMax * 100;
-    lt = CLIENT_target_ent.torL_hp / CLIENT_target_ent.torL_hpMax * 100;
-    rt = CLIENT_target_ent.torR_hp / CLIENT_target_ent.torR_hpMax * 100;
-    la = CLIENT_target_ent.armL_hp / CLIENT_target_ent.armL_hpMax * 100;
-    ra = CLIENT_target_ent.armR_hp / CLIENT_target_ent.armR_hpMax * 100;
-    lg = CLIENT_target_ent.legs_hp / CLIENT_target_ent.legs_hpMax * 100;
+    ct = CLIENT_target_ent.torC_hp;
+    lt = CLIENT_target_ent.torL_hp;
+    rt = CLIENT_target_ent.torR_hp;
+    la = CLIENT_target_ent.armL_hp;
+    ra = CLIENT_target_ent.armR_hp;
+    lg = CLIENT_target_ent.legs_hp;
   }
   else{
-    ct = CLIENT_server_ent.torC_hp / CLIENT_server_ent.torC_hpMax * 100;
-    lt = CLIENT_server_ent.torL_hp / CLIENT_server_ent.torL_hpMax * 100;
-    rt = CLIENT_server_ent.torR_hp / CLIENT_server_ent.torR_hpMax * 100;
-    la = CLIENT_server_ent.armL_hp / CLIENT_server_ent.armL_hpMax * 100;
-    ra = CLIENT_server_ent.armR_hp / CLIENT_server_ent.armR_hpMax * 100;
-    lg = CLIENT_server_ent.legs_hp / CLIENT_server_ent.legs_hpMax * 100;
+    ct = CLIENT_server_ent.torC_hp;
+    lt = CLIENT_server_ent.torL_hp;
+    rt = CLIENT_server_ent.torR_hp;
+    la = CLIENT_server_ent.armL_hp;
+    ra = CLIENT_server_ent.armR_hp;
+    lg = CLIENT_server_ent.legs_hp;
   }  
   hud_renderArmorMeter('-10 -34', pnl_ctr, ct, '20 32', HUD_MECH_CT, isTarget, M_TOR_CENTER );
   
@@ -494,12 +494,12 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
   
   panelOrg = gui_calcAlign(vorg, algn);
-    ct = CLIENT_target_ent.torC_hp / CLIENT_target_ent.torC_hpMax * 100;
-    lt = CLIENT_target_ent.torL_hp / CLIENT_target_ent.torL_hpMax * 100;
-    rt = CLIENT_target_ent.torR_hp / CLIENT_target_ent.torR_hpMax * 100;
-    la = CLIENT_target_ent.armL_hp / CLIENT_target_ent.armL_hpMax * 100;
-    ra = CLIENT_target_ent.armR_hp / CLIENT_target_ent.armR_hpMax * 100;
-    lg = CLIENT_target_ent.legs_hp / CLIENT_target_ent.legs_hpMax * 100;
+    ct = CLIENT_target_ent.torC_hp;
+    lt = CLIENT_target_ent.torL_hp;
+    rt = CLIENT_target_ent.torR_hp;
+    la = CLIENT_target_ent.armL_hp;
+    ra = CLIENT_target_ent.armR_hp;
+    lg = CLIENT_target_ent.legs_hp;
     HUD_MODEL_ARMOR_GRAPH_TARGET.mins = CLIENT_target_ent.cache_mins;
     HUD_MODEL_ARMOR_GRAPH_TARGET.maxs = CLIENT_target_ent.cache_maxs;
     hudEnt = HUD_MODEL_ARMOR_GRAPH_TARGET;

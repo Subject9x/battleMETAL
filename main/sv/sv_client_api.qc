@@ -107,13 +107,12 @@ float( float isNew, float changeFlags ) send_client={
       WriteByte( MSG_ENTITY, self.next_wepn7);
       WriteByte( MSG_ENTITY, self.next_wepn8);
       WriteByte( MSG_ENTITY, self.next_wepn9);
-
-      WriteFloat( MSG_ENTITY, self.torC_hpMax );
-      WriteFloat( MSG_ENTITY, self.torL_hpMax );
-      WriteFloat( MSG_ENTITY, self.torR_hpMax );
-      WriteFloat( MSG_ENTITY, self.armL_hpMax );
-      WriteFloat( MSG_ENTITY, self.armR_hpMax );
-      WriteFloat( MSG_ENTITY, self.legs_hpMax );
+      WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
+      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
     }
   }
   
@@ -438,7 +437,6 @@ void() ClientConnect = {
   if (intermission_running){
     ExitIntermission();
   }
-  self.dphitcontentsmask = (DPCONTENTS_SOLID | DPCONTENTS_WATER | DPCONTENTS_SLIME | DPCONTENTS_LAVA | DPCONTENTS_SKY | DPCONTENTS_BODY | DPCONTENTS_PLAYERCLIP);
   
   self.SendEntity = send_client;
   self.think = player_think_normal;
@@ -703,6 +701,8 @@ void() PutClientInServer_Coop={
   mapfile_coop_load();
   
   self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_SLIDEBOX;
+  
   self.flags = self.flags - (self.flags & FL_FLY);
   if( world.animaticOnly ){
     self.playerState = PLAYER_INTERMSN;

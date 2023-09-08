@@ -85,10 +85,12 @@ void( float isNew, float changeFlags) sendent_handle_building={
   local float mapKey;
   local float vipKey;
   local float muted;
+  local float hp;
   
   prevShield = self.shield;
   prevDeadflag = self.deadflag;
   prevBurn = 0 | self.burnBits;
+  hp = 0;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
     self.clientServerNum = fabs(rint(ReadLong()));
@@ -119,6 +121,10 @@ void( float isNew, float changeFlags) sendent_handle_building={
       self.spawnflags = self.spawnflags | MUTE_ME;
     }
     self.deadflag = ReadByte();
+    if(self.deadflag == DEAD_NO){
+      self.health = ReadByte();
+      hp = self.health;
+    }
   }
   
   if( (changeFlags & SENDFLAG_MOVE) ){
@@ -167,8 +173,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
-    self.health = ReadByte() / 100 * self.max_health;
-
+    self.health = ReadByte();
   }
   
   //rider for desired stat changes
@@ -181,22 +186,22 @@ void( float isNew, float changeFlags) sendent_handle_building={
         self.targetEntId = ReadLong();
         self.enemy = findfloat( world, entnum, self.targetEntId );
         if( self.critBits == M_TOR_CENTER ){
-          self.enemy.torC_hp = ReadByte() / 100 * self.enemy.torC_hpMax;
+          self.enemy.torC_hp = ReadByte();
         }
         else if( self.critBits == M_TOR_LEFT ){
-          self.enemy.torL_hp = ReadByte() / 100 * self.enemy.torL_hpMax;
+          self.enemy.torL_hp = ReadByte();
         }
         else if( self.critBits == M_TOR_RIGHT ){
-          self.enemy.torR_hp = ReadByte() / 100 * self.enemy.torR_hpMax;
+          self.enemy.torR_hp = ReadByte();
         }
         else if( self.critBits == M_ARM_LEFT ){
-          self.enemy.armL_hp = ReadByte() / 100 * self.enemy.armL_hpMax;
+          self.enemy.armL_hp = ReadByte();
         }
         else if( self.critBits == M_ARM_RIGHT ){
-          self.enemy.armR_hp = ReadByte() / 100 * self.enemy.armR_hpMax;
+          self.enemy.armR_hp = ReadByte();
         }
         else if( self.critBits == M_LEGS ){
-          self.enemy.legs_hp = ReadByte() / 100 * self.enemy.legs_hpMax;
+          self.enemy.legs_hp = ReadByte();
         }
       }
       else{
@@ -225,6 +230,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.predraw = predraw_building;
     data_sync_new_building(self.data_idx); 
     if( self.deadflag == DEAD_NO ){
+      self.health = hp;
       if( (self.spawnflags & IS_MAPKEY) ){
         if( lastMapKeyObject ){
           //build linked list backwards for later forward iteration.

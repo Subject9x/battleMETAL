@@ -329,7 +329,7 @@ void() hud_model_cockpit_draw_frame={
   self.scale = 1.0;
   self.renderflags = 0;
 
-  if(self.torC_hp <= self.torC_hpMax * 0.5){
+  if(self.torC_hp <= 50){
     if( time > HUD_STRUT_COLOR_TIME ){
       if(HUD_STRUT_COLOR == CLR_DEF_RED * 3){
         HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
@@ -360,7 +360,7 @@ void() hud_model_cockpit_draw_frame={
   self.origin = HUD_MODEL_STRUTS_origin;
   
   self.effects = 0 | EF_NOSHADOW;
-  if(self.torC_hp <= self.torC_hpMax * 0.5){
+  if(self.torC_hp <= 50){
     self.effects = self.effects | EF_RED;
   }
 
@@ -472,12 +472,12 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
   gui_renderPatch9_1_32(backOrg, backSize, backColor, max(0.8, HUD_ALPHA), 0);
 
   clearscene();
-    ct = CLIENT_server_ent.torC_hp / CLIENT_server_ent.torC_hpMax * 100;
-    lt = CLIENT_server_ent.torL_hp / CLIENT_server_ent.torL_hpMax * 100;
-    rt = CLIENT_server_ent.torR_hp / CLIENT_server_ent.torR_hpMax * 100;
-    la = CLIENT_server_ent.armL_hp / CLIENT_server_ent.armL_hpMax * 100;
-    ra = CLIENT_server_ent.armR_hp / CLIENT_server_ent.armR_hpMax * 100;
-    lg = CLIENT_server_ent.legs_hp / CLIENT_server_ent.legs_hpMax * 100;
+    ct = CLIENT_server_ent.torC_hp;
+    lt = CLIENT_server_ent.torL_hp;
+    rt = CLIENT_server_ent.torR_hp;
+    la = CLIENT_server_ent.armL_hp;
+    ra = CLIENT_server_ent.armR_hp;
+    lg = CLIENT_server_ent.legs_hp;
 
     hudEnt = HUD_MODEL_ARMOR_GRAPH_PLAYER;
 

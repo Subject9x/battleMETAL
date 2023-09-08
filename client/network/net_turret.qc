@@ -42,6 +42,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local float mapKey;
   local float vipKey;
   local float muted;
+  local float hp;
+
+  hp = 0;
   
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
@@ -79,7 +82,8 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.subType = ReadChar();
     self.deadflag = ReadByte();
     if(self.deadflag == DEAD_NO){
-      self.health = ReadByte() / 100 * self.max_health;
+      self.health = ReadByte();
+      hp = self.health;
     }
   }
   
@@ -117,11 +121,11 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   }
   
   if( (changeFlags & SENDFLAG_SHIELD) ){
-    self.shield = ReadByte() / 100 * self.shieldMax;
+    self.shield = ReadByte();
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = fabs(ReadByte());
-    self.health = ReadByte() / 100 * self.max_health;
+    self.health = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_ATTACK) ){
@@ -153,6 +157,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.predraw = predraw_turret;
     data_sync_new_turret(self.data_idx);
     if( self.deadflag == DEAD_NO){
+      self.health = hp;
       if( !(self.spawnflags & MUTE_ME) ){
         self.ai_muted = FALSE;
         ai_voice_ini( TRUE );

@@ -85,7 +85,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   }
   if( (changeFlags & SENDFLAG_IMPACT) ){
     self.shieldHitFlag = ReadByte();
-    self.health = ReadByte() / 100 * self.max_health;
+    self.health = ReadByte();
   }
   
   //EVENT - TURRET ROTATES

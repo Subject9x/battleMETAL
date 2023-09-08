@@ -168,10 +168,9 @@ vector( vector viewAngle, float idealRange ) util_applySpreadToTrace={
   //acc_y = acc_y * crandom();
   //direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
   
-  TRACE_HIT_TEMP = self.dphitcontentsmask;
-  self.owner.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY ;
+  self.owner.dphitcontentsmask =  DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY ;
     traceline (FIRE_ORIGIN, FIRE_ORIGIN + wepAim*idealRange, FALSE, self.owner);
-  self.owner.dphitcontentsmask = TRACE_HIT_TEMP;
+  self.owner.dphitcontentsmask = 0;
   
   return trace_endpos;
 };
@@ -295,25 +294,6 @@ void(string mdl_name, float skinNum, float ef_flags) util_setModel={
   setmodel(self, path);
 };
 
-/*
-  call stack scope = self;
-*/
-void(float dmgMode, float solid_type, float move_type) util_setCollider={
-  self.takedamage = dmgMode;
-  self.solid = solid_type;
-  self.movetype = move_type;
-};
-
-/*
-  call stack scope = self;
-*/
-void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor={
-  self.health = hp;
-  self.max_health = max_hp;
-  self.armortype = arm_type;
-  self.armorvalue = arm_val;
-  self.max_armor = arm_val;
-};
 
 /*
   Runs a traceline from all 4 bottom corners of the entity.

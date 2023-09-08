@@ -211,9 +211,9 @@ void() build_mech_unit={
 void() build_mech_torsoCenter={
   local entity this;
   local vector hmins, hmaxs;
-
+  
   if( (self.flags & FL_CLIENT) ){
-    macro_set_collider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_WALK)
+    macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_WALK)
   }
   else{
     macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)

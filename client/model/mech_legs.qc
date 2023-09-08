@@ -65,7 +65,7 @@ void() predraw_legs={
   else{
     self.unit_legs.colormod = CLR_DEF_WHITE;
   }
-  self.unit_legs.colormod =  self.unit_legs.colormod * (self.legs_hp / self.legs_hpMax) * 2;
+  self.unit_legs.colormod =  self.unit_legs.colormod * (self.legs_hp / 100) * 2;
   self.unit_legs.angles = self.legs_angl;
   self.unit_legs.origin = self.legs_org;
   self.legs_frame = self.unit_legs.frame;

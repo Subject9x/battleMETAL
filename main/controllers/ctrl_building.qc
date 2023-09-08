@@ -236,6 +236,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   if( (changedflags & SENDFLAG_IMPACT) ){
     WriteByte( MSG_ENTITY, self.shieldHitFlag );
     WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100);
+    self.shieldHitFlag = 0;
   }
   
   if( (changedflags & SENDFLAG_ATTACK) ){
@@ -250,7 +251,6 @@ float( float isNew, float changedflags ) ctrl_send_turret={
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
-  self.shieldHitFlag = 0;
   return TRUE;
 };
 
@@ -297,6 +297,9 @@ float( float isNew, float changedflags ) ctrl_send_building={
       WriteChar( MSG_ENTITY, FALSE );
     }
     WriteByte( MSG_ENTITY, self.deadflag );
+    if(self.deadflag == DEAD_NO){
+      WriteByte( MSG_ENTITY, self.health / self.max_health * 100);
+    }
   }
   
   if( (changedflags & SENDFLAG_MOVE) ){
