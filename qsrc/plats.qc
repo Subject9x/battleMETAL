@@ -241,6 +241,10 @@ void() train_wait =
 {
 	if (self.wait)
 	{
+		if(self.wait == -1){
+			//-1 permanently shut off
+			return;
+		}
 		self.nextthink = self.ltime + self.wait;
 		sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
 	}

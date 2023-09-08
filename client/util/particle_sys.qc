@@ -994,7 +994,7 @@ void() particle_box_think={
       break;
   }
 
-  PTC_CUBE_UPDATE = time + 0.1;
+  PTC_CUBE_UPDATE = servertime + (servertime - time ) + (2 * frametime);
 };
 
 
