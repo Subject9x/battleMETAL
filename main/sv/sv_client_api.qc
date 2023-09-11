@@ -81,7 +81,12 @@ float( float isNew, float changeFlags ) send_client={
   
   if( (changeFlags & SENDFLAG_TURRET) ){
     WriteAngle( MSG_ENTITY, self.v_angle_x);
-    WriteAngle( MSG_ENTITY, self.v_angle_y);
+    if(self.playerState == PLAYER_POWERUP_BEGIN){
+      WriteAngle( MSG_ENTITY, self.wind_y); //power up view angle.
+    }
+    else{
+      WriteAngle( MSG_ENTITY, self.v_angle_y);
+    }
   }
   
   /* EVENT - Client sends extra data "EXDATA"*/
@@ -107,6 +112,8 @@ float( float isNew, float changeFlags ) send_client={
       WriteByte( MSG_ENTITY, self.next_wepn7);
       WriteByte( MSG_ENTITY, self.next_wepn8);
       WriteByte( MSG_ENTITY, self.next_wepn9);
+
+
       WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
       WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
       WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
@@ -810,7 +817,8 @@ void() sv_client_spawnpoint_select={
   local entity spot;
 
   if( (serverflags & SVFLAG_SPAWNFAR) ){
-    self.goalentity = spot = world_deathmatch_random_spawn();
+    spot = world_deathmatch_random_spawn();
+    self.goalentity = spot;
   }
 
   if(self.goalentity){
@@ -835,14 +843,14 @@ void() sv_client_spawnpoint_select={
   }
   
   self.angles = spot.angles;
-  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
   
   //haha, cache angles for powerup sequence.
   self.wind_x = 0;
-  self.wind_y = self.angles_y;
-  self.wind_z = self.angles_z;
+  self.wind_y = spot.angles_y;
+  self.wind_z = spot.angles_z;
   
 	self.fixangle = TRUE;
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
   self.trigOnSpawn = spot.trigOnSpawn;
   self.trigOnDeath = spot.trigOnDeath;
   self.trigOnAttack = spot.trigOnAttack;

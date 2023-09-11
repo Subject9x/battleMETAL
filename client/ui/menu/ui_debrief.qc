@@ -49,7 +49,7 @@ void() menu_debrief_drawFrame={
 
   if( MENU_DEBRIEF_time_elapsed != -1 ){
     if( servertime > MENU_DEBRIEF_time_elapsed ){
-      cl_set_mission( MENU_DEBRIEF_status );  //DEBUG
+      cl_set_mission( MENU_DEBRIEF_status );
       MENU_DEBRIEF_time_elapsed = -1;
     }
   }

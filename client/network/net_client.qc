@@ -285,7 +285,7 @@ void() client_predraw={
       }
       //cockpit draw needs to be distinct because its always on, even in-death.
       if(self.entnum == player_localentnum){
-        hud_model_cockpit_draw_frame(); //debug
+        hud_model_cockpit_draw_frame();
       }
       if(self.deadflag == DEAD_NO){
         if(self.cl_lod_weapon){
@@ -405,8 +405,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   
   //Receive from server
   self.data_type = ReadByte();  //Always received, important switch value.
-  
-  
+
   /*EVENT - Client is new to receiver */
   if( (changeFlags & SENDFLAG_NEWENT) ){
     //clientServerNum = player entity ID on server.
@@ -420,7 +419,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     if( self.deadflag != DEAD_NO ){
       handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
-      cons_logAFloat("self.torC_hp", self.torC_hp); //debug
     }
   }
   
@@ -763,7 +761,7 @@ void( float unit_id ) client_event_mech_spawn={
   self.unit_legs = spawn();
   self.unit_legs.skin = self.skin;
   
-  self.fixAngle = self.angles;
+  self.fixAngle = TRUE;
   
 };
 

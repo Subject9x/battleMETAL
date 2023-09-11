@@ -99,6 +99,9 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   VIEW_SCALE = 0.35;
   
   if(CLIENT_data_type == DATA_MECH){
+    if( CLIENT_player_state == PLAYER_POWERUP_BEGIN){
+      view_angles = CLIENT_server_ent.angles;
+    }
     if( CLIENT_server_ent.chaseActive ){
       makevectors(view_angles);
       traceline( CLIENT_server_ent.rootOrigin,  CLIENT_server_ent.rootOrigin + (v_forward * cvar("chase_back") * -0.9) + (v_up * cvar("chase_up")), TRUE, CLIENT_server_ent);
@@ -121,7 +124,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   setproperty(VF_ORIGIN, CLIENT_vis_org);
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     if( CLIENT_server_ent.chaseActive == FALSE ){
-      setproperty(VF_ANGLES, HUD_FIXED_ANGLE); 
+      setproperty(VF_ANGLES, CLIENT_server_ent.angles); 
     }
   }
   //NOTE: this seems to fix 'input lag' when toggling menu during gameplay, but not sure why
@@ -192,9 +195,19 @@ void(float w, float h, float menuView) CSQC_UpdateView =
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
-  if(CLIENT_data_type == DATA_MECH){
+  if(CLIENT_server_ent.data_type == DATA_MECH){
     //HUD RENDER FRAME SYSTEM
-    if( CLIENT_player_state == PLAYER_ACTIVE ){
+    if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+      //Map has a .message value, and it's currently active for rendering
+      if( MISSION_NAME_ON == TRUE ){
+        client_event_mission_name_frame();
+      }
+      //Main HUD entry point
+      data_hud_frame();
+      //HUD sound system
+      snd_hud_vfx_frame();
+    }
+    else if( CLIENT_player_state == PLAYER_ACTIVE ){
       //HUD Highlight Boxes
       hud_renderHighlight_frame();
       
@@ -203,11 +216,6 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);
-      
-      //Map has a .message value, and it's currently active for rendering
-      if( MISSION_NAME_ON == TRUE ){
-        client_event_mission_name_frame();
-      }
     }
     //HUD sound system
     snd_hud_vfx_frame();

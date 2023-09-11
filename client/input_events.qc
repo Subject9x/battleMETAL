@@ -121,11 +121,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return handle_input_chat(inputEventType, scanx, chary, devid);
     }
   }
-  
-//player mech powerup prevents input events
-  if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) && inputEventType != INPUT_EVENT_MOUSE_POS ){
-    return TRUE;
-  }
 //=====================
   
 //Stops animatic playback by pressing space bar
@@ -270,6 +265,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return TRUE;
     }
     else{
+      if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+        return TRUE;
+      }
       return FALSE;
     }
   }
@@ -361,6 +359,13 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     return FALSE;
   }
    
+  if( inputEventType == INPUT_EVENT_MOUSE_MOVE){
+    if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+      return TRUE;
+    }
+    return FALSE;
+  }
+
   if(MENU_ACTIVE){
     //always consume CSQC menu input when they're active, otherwise random input will be propagated to server!
     return TRUE;

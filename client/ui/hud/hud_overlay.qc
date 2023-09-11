@@ -287,12 +287,7 @@ void() hud_model_cockpit_draw_frame={
   cacheEffects = 0 | self.effects;
   cacheEffects = 0 | self.renderflags;
 
-  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
-    hudAngle = [0, self.fixAngle_y, 0];
-  }
-  else{
-    hudAngle = [0, self.angles_y, 0];
-  }
+  hudAngle = [0, self.angles_y, 0];
   
   makevectors(hudAngle);
   
@@ -364,13 +359,14 @@ void() hud_model_cockpit_draw_frame={
     self.effects = self.effects | EF_RED;
   }
 
-  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
-    self.angles = self.fixAngle;
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN){
+    self.angles_y = self.rootAngle_y;
   }
   else{
-    //self.angles = self.torC_angl;
-    self.angles = [self.torC_angl_x, view_angles_y, self.torC_angl_z];
+    self.angles_y = view_angles_y;
   }
+  self.angles_x = self.torC_angl_x;
+  self.angles_z = self.torC_angl_z;
   self.angles_z = self.hud_roll_val;
   
   addentity(self);

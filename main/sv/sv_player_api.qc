@@ -90,8 +90,9 @@ void() PlayerPreThink = {
 		//self.flags = self.flags | FL_JUMPRELEASED;
 
 // teleporters can force a non-moving pause time	
-	if (time < self.pausetime)
+	if (time < self.pausetime){
 		self.velocity = '0 0 0';
+  }
   
   //Player powering up their mech, prevent movement
   if(time < self.power_timer){
