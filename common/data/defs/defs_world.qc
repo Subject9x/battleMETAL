@@ -68,6 +68,28 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_RULES );
   //==================================================
+  
+  if( (changedFlags & SENDFLAG_NEWENT) ){
+    WriteString( MSG_ENTITY, cvar_string("hostname") );
+    WriteString( MSG_ENTITY, cvar_string("sv_about"));
+    WriteLong( MSG_ENTITY, self.serverFlags );
+    WriteByte( MSG_ENTITY, self.gameType );
+    
+    WriteCoord( MSG_ENTITY, self.minimapMins_x);
+    WriteCoord( MSG_ENTITY, self.minimapMins_y);
+    WriteCoord( MSG_ENTITY, self.minimapMins_z);
+    
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_x);
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_y);
+    WriteCoord( MSG_ENTITY, self.minimapMaxs_z);
+    
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_x);
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_y);
+    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_z);
+    
+    WriteByte( MSG_ENTITY, self.sounds );
+  }
+
   if( (changedFlags & SENDFLAG_GAMETYPE) ){
     WriteByte( MSG_ENTITY, self.gameType );
   }
@@ -92,27 +114,6 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
     if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
       WriteShort( MSG_ENTITY, self.ruleFraglimit );
     }
-  }
-  
-  if( (changedFlags & SENDFLAG_NEWENT) ){
-    WriteString( MSG_ENTITY, cvar_string("hostname") );
-    WriteString( MSG_ENTITY, cvar_string("sv_about"));
-    WriteLong( MSG_ENTITY, self.serverFlags );
-    WriteByte( MSG_ENTITY, self.gameType );
-    
-    WriteCoord( MSG_ENTITY, self.minimapMins_x);
-    WriteCoord( MSG_ENTITY, self.minimapMins_y);
-    WriteCoord( MSG_ENTITY, self.minimapMins_z);
-    
-    WriteCoord( MSG_ENTITY, self.minimapMaxs_x);
-    WriteCoord( MSG_ENTITY, self.minimapMaxs_y);
-    WriteCoord( MSG_ENTITY, self.minimapMaxs_z);
-    
-    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_x);
-    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_y);
-    WriteCoord( MSG_ENTITY, self.uiViewBoxOrg_z);
-    
-    WriteByte( MSG_ENTITY, self.sounds );
   }
   
   if( (changedFlags & SENDFLAG_RULE_LIMIT_TIME) ){
@@ -160,6 +161,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   local string tempHostName;
   local string tempAbout;
   local string tempNextMap;
+  local float prevGameMode;
   
   /*local float nextGameType;
   local float nextStartTime;
@@ -169,6 +171,22 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   local float nextRuleFrag;
   local float nextRuleTime;*/
   
+  prevGameMode = self.gameType;
+  if( (changeFlags & SENDFLAG_NEWENT) ){
+    tempHostName = ReadString();
+    tempAbout = ReadString();
+    cacheGlobalString(self.netname, tempHostName)
+    cacheGlobalString(self.svAbout, tempAbout)
+    //have to doubly make sure serverflags and gameType are sent because .ignoreSave is riding on this.
+    self.serverFlags = ReadLong();
+    self.gameType = ReadByte();
+    self.minimapMins = te_read_vector();
+    self.minimapMaxs = te_read_vector();
+    self.uiViewBoxOrg = te_read_vector();
+    self.sounds = ReadByte();
+    
+  }
+
   ENT_SERVER_INFO = self;
   if( isNew ){
     self.solid = SOLID_NOT;
@@ -189,6 +207,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   }
   if( (changeFlags & SENDFLAG_SERVERFLAGS) ){
     self.serverFlags = ReadLong();
+    cvar_set("sv_serverflags", ftos(fabs(rint(self.serverFlags))));
   }
   if( (changeFlags & SENDFLAG_MISSION_STATUS) ){
     self.missionStatusPrev = self.missionStatus;
@@ -203,20 +222,6 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     if( self.gameType == GAMEMODE_DM || self.gameType == GAMEMODE_TEAMDM ){
       self.ruleFraglimit = ReadShort();
     }
-  }
-  
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    tempHostName = ReadString();
-    tempAbout = ReadString();
-    cacheGlobalString(self.netname, tempHostName)
-    cacheGlobalString(self.svAbout, tempAbout)
-    //have to doubly make sure serverflags and gameType are sent because .ignoreSave is riding on this.
-    self.serverFlags = ReadLong();
-    self.gameType = ReadByte();
-    self.minimapMins = te_read_vector();
-    self.minimapMaxs = te_read_vector();
-    self.uiViewBoxOrg = te_read_vector();
-    self.sounds = ReadByte();
   }
   
   if( (changeFlags & SENDFLAG_RULE_LIMIT_TIME) ){

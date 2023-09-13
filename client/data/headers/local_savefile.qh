@@ -9,6 +9,9 @@ Overview:
 */
 
 
+float SAVE_READY;
+float SAVE_FILE_LOADED;
+
 float SAVE_COMPARE[128];  //lacking regex and other nice ways of digging through a string to find a comma-separated value, argh.
 
 string UNLOCKED_MECHS_DATA; // pulled from cl_load_savefile
@@ -19,6 +22,7 @@ string SAVE_TAG_MISSION = "mission";
 
 string CAMP_START_MAP;
 string CAMP_END_MAP;
+string CAMP_NEXT_MAP;
 
 //Savefile cache - loaded when player connects to a CAMPAIGN MAP
 //primarily used if SV_NEXTMAP has not been determined, makes sure the save is not wiped out.

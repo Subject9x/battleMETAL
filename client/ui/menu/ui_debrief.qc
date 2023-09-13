@@ -16,17 +16,6 @@ void() menu_debriefListener_onClick={
   if( servertime > MENU_respawn_cool ){
     if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, '128 24', TRUE) ){
       if( servertime > MENU_DEBRIEF_time_elapsed ){
-        //Single player 
-        if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
-          if( strlen(SV_NEXTMAP) > 0 ){
-            if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
-              if( MAP_NAME == "o3m5" ){
-                //yay 11th hour hard codes.
-                cvar_set("cl_newgameplus", "1");
-              }
-            }
-          }
-        }
         MENU_DEBRIEF_time_elapsed = servertime + 0.15;
         return;
       }

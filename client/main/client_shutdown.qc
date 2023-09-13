@@ -45,6 +45,10 @@ void() CSQC_Shutdown =
   
   freeGlobalString(UNLOCKED_MECHS_DATA)
   freeGlobalString(UNLOCKED_ITEMS_DATA)
+
+  freeGlobalString(CAMP_END_MAP)
+  freeGlobalString(CAMP_START_MAP)
+  freeGlobalString(CAMP_NEXT_MAP)
   
   //4.0.0 - WARN : campaign file system upgraded, this patches older save files.
   if( strcmp( SAVEFILE_CAMPAIGN, "aa1.dat") ){

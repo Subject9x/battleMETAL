@@ -42,6 +42,8 @@ void( string fileName ) cl_load_savefile={
       line = fgets(flannel);
     }
     fclose(flannel);
+    
+    SAVE_FILE_LOADED = TRUE;
   }
   else{
     if( cvar("developer") ){
@@ -91,6 +93,7 @@ void() cl_load_savefile_singleMap={
   cacheGlobalString( UNLOCKED_ITEMS_DATA, newItems )
   cl_load_mechs_all();
   cl_load_items_all();
+  SAVE_FILE_LOADED = TRUE;
 };
 
 /*
@@ -106,9 +109,6 @@ float() cl_campaign_check_end={
   local float flannel;
   local string contents, line;
   local float mapItr;
-
-  local string startMap;
-  local string endMap;
   
   campaign_loadMapList( cvar_string("sv_campaign") );
   tokenizebyseparator(mapname, "/", ".");
@@ -130,6 +130,35 @@ float() cl_campaign_check_end={
     return TRUE;
   }
   return FALSE;
+};
+
+string(float msnWin) cl_campaign_next_map={
+  
+  local float flannel;
+  local float mapItr;
+  
+  local string line;
+  local string cleanMapName;
+  local string theMap
+  
+  campaign_loadMapList( cvar_string("sv_campaign") );
+  tokenizebyseparator(mapname, "/", ".");
+  cleanMapName = argv(1);
+  
+  mapItr = 0;
+  while( CAMP_MAPS[mapItr] != "" ){
+    tokenizebyseparator(CAMP_MAPS[mapItr], ":", "|");
+    if(argv(0) == cleanMapName){
+      if( msnWin == TRUE){
+          theMap = argv(1);
+      }
+      else{
+        theMap = argv(2);
+      }
+    }
+    mapItr = mapItr + 1;
+  }
+  return theMap;
 };
 
 
@@ -174,13 +203,12 @@ void( float serverMode, float svFlags ) cl_set_savepath={
   //Sort and initialize the mech_names and mech_sizes arrays here
   //so that any UI can access this info.
   cl_get_mechs_sort();
-
-  if( serverMode == GAMEMODE_CAMPAIGN ){
-    if( !(svFlags & SVFLAG_NOSAVE) ){
-      cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
-                                //this is to save player progress on entering a new map, lame hack.
-    }
-  }
+  // if( serverMode == GAMEMODE_CAMPAIGN ){
+  //   if( !(svFlags & SVFLAG_NOSAVE) ){
+  //     cl_savefile_save_mission(); //single-player caching of map-they-just-connected to.
+  //                               //this is to save player progress on entering a new map, lame hack.
+  //   }
+  // }
 };
 
 // all mech unlocks to same array
@@ -361,6 +389,7 @@ void() cl_savefile_save={
   local string file;
   
   local float newGame;
+  
   newGame = cl_campaign_check_end();
 
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, ftos(cvar("saveslot")), SAVE_FILE_EXT);
@@ -373,7 +402,7 @@ void() cl_savefile_save={
       fputs(flannel, strcat("mission=", CAMP_START_MAP, "\n"));
     }
     else{
-      fputs(flannel, strcat("mission=", cvar_string("sv_worldbasename"), "\n"));
+      fputs(flannel, strcat("mission=", cl_campaign_next_map((ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN)), "\n"));
     }
     
     fputs(flannel, strcat("points=", ftos(1), "\n"));

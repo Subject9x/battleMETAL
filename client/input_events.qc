@@ -174,70 +174,71 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         //pass to engine to engage sprint
         return FALSE;
       }
-      
-      if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_tacmap();
-        return TRUE;
-      }
-      
-      if( strstrofs(findkeysforcommand("impulse 25", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_objectives();
-        return TRUE;
-      }
-      
-      if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_zoom();
-        return FALSE;
-      }
-      
-      if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_radar_toggle();
-        return FALSE;
-      }
-      
-      if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_chase_toggle();
-        return FALSE; //we pass the event to the server for correct player aiming.
-      }
-      if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
-        //INPUT - HUD - Toggle Group Fire
-        hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
-        return FALSE;
-      }
-      if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
-        //INPUT - HUD - Toggle Chain Fire
-        hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
-        return FALSE;
-      }
-      if( strstrofs(findkeysforcommand("impulse 31", 0), ftos(scanx),0) != -1 ){
-        //INPUT - MENU - firegroup rebind
-        if( CLIENT_player_state == PLAYER_ACTIVE ){
-          if( CLIENT_MENU_menu_choice == 0 && !MENU_ACTIVE){
-            menu_enter( MENU_REBIND_ACTIVE );
-            REBIND_SEND_TIME = time + REBIND_SEND_TIME_MIN;
-          }
-          else{
-            menu_exit();
-            //spam guard
-            if( time > REBIND_SEND_TIME ){
-              cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
-              cl_send_infostring( INFO_FLAG_GROUPS );
+      if( CLIENT_player_state > PLAYER_POWERUP_END){
+        if( strstrofs(findkeysforcommand("impulse 12", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_tacmap();
+          return TRUE;
+        }
+        
+        if( strstrofs(findkeysforcommand("impulse 25", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_objectives();
+          return TRUE;
+        }
+        
+        if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_zoom();
+          return FALSE;
+        }
+        
+        if( strstrofs(findkeysforcommand("impulse 8", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_radar_toggle();
+          return FALSE;
+        }
+        
+        if( strstrofs(findkeysforcommand("impulse 30", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_chase_toggle();
+          return FALSE; //we pass the event to the server for correct player aiming.
+        }
+        if( strstrofs(findkeysforcommand("impulse 10", 0), ftos(scanx),0) != -1 ){
+          //INPUT - HUD - Toggle Group Fire
+          hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
+          return FALSE;
+        }
+        if( strstrofs(findkeysforcommand("impulse 11", 0), ftos(scanx),0) != -1 ){
+          //INPUT - HUD - Toggle Chain Fire
+          hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
+          return FALSE;
+        }
+        if( strstrofs(findkeysforcommand("impulse 31", 0), ftos(scanx),0) != -1 ){
+          //INPUT - MENU - firegroup rebind
+          if( CLIENT_player_state == PLAYER_ACTIVE ){
+            if( CLIENT_MENU_menu_choice == 0 && !MENU_ACTIVE){
+              menu_enter( MENU_REBIND_ACTIVE );
+              REBIND_SEND_TIME = time + REBIND_SEND_TIME_MIN;
+            }
+            else{
+              menu_exit();
+              //spam guard
+              if( time > REBIND_SEND_TIME ){
+                cl_setweapongroup( CLIENT_MENU_nex_grp1, CLIENT_MENU_nex_grp2, CLIENT_MENU_nex_grp3, CLIENT_MENU_nex_grp4 );
+                cl_send_infostring( INFO_FLAG_GROUPS );
+              }
             }
           }
+          return TRUE;
         }
-        return TRUE;
-      }
-      if( strstrofs(findkeysforcommand("impulse 32", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_headlight_toggle();
-        return FALSE;
-      }
-      if( strstrofs(findkeysforcommand("impulse 33", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_player3d_toggle();
-        return TRUE;
-      }
-      if( strstrofs(findkeysforcommand("impulse 34", 0), ftos(scanx),0) != -1 ){
-        input_key_impulse_hud_targ3d_toggle();
-        return TRUE;
+        if( strstrofs(findkeysforcommand("impulse 32", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_headlight_toggle();
+          return FALSE;
+        }
+        if( strstrofs(findkeysforcommand("impulse 33", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_player3d_toggle();
+          return TRUE;
+        }
+        if( strstrofs(findkeysforcommand("impulse 34", 0), ftos(scanx),0) != -1 ){
+          input_key_impulse_hud_targ3d_toggle();
+          return TRUE;
+        }
       }
     }
     //---------------------------------------------------------------

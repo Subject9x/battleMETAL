@@ -198,7 +198,6 @@ void() CSQC_Init =
   UNLOCKED_ITEMS_DATA = ""; 
   MENU_DEBRIEF_unlocks_mechs = ""; 
   MENU_DEBRIEF_unlocks_equip = ""; 
-  SV_NEXTMAP = "";
   
   initparticlespawner(16);
   VIEW_OBS_ID = 1;
@@ -222,7 +221,8 @@ void() CSQC_Init =
   cl_ini_infostring();
   
   CHAT_INP_SEND = FALSE;
-  
+  SAVE_FILE_LOADED = FALSE;
+
   localcmd("cd stop");
 };
 

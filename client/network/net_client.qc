@@ -761,7 +761,7 @@ void( float unit_id ) client_event_mech_spawn={
   self.unit_legs = spawn();
   self.unit_legs.skin = self.skin;
   
-  self.fixAngle = TRUE;
+  self.fixangle = TRUE;
   
 };
 

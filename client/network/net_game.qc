@@ -161,9 +161,9 @@ void() client_state_events={
         menu_update_colors( CLIENT_faction );
         menu_enter( menu_connect_choice() );
         menu_chat_config(FALSE);
+        //I think we can only rely on cvars at this connection stage.
+        cl_set_savepath(cvar("gamemode"),  cvar("sv_serverflags") );
       }
-      //I think we can only rely on cvars at this connection stage.
-      cl_set_savepath(cvar("gamemode"), cvar("sv_serverflags") );
       return;
     }
     //------------------------------------
@@ -237,7 +237,7 @@ void() client_state_events={
       MENU_respawn_cool_start = servertime;
       MENU_button_delay = MENU_respawn_cool;
       SV_ENDTIME = servertime;
-      if( ENT_SERVER_INFO.missionResult == MISSION_RESULT_WIN ){
+      if( !(ENT_SERVER_INFO.serverFlags & SVFLAG_NOSAVE) ){
         msn_unlock_stuff();
         cl_savefile_save(); //fixes save issue?
         menu_debrief_sort_unlocks();

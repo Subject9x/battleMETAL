@@ -535,7 +535,7 @@ void(entity item) predraw_unit_weapon={
   offset = T_PART_PARENT_ORG;
   
   if(self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
-    drawAng = item.owner.fixAngle;
+    drawAng = item.owner.angles;
   }
   else{
     drawAng = T_PART_PARENT_ANGL;
@@ -552,7 +552,7 @@ void(entity item) predraw_unit_weapon={
   item.origin = offset;
   
   if( self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
-    item.angles = item.owner.fixAngle;
+    item.angles = item.owner.angles;
   }
   else{
     item.angles = T_PART_PARENT_ANGL;
