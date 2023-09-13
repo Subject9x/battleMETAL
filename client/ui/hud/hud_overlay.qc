@@ -373,14 +373,27 @@ void() hud_model_cockpit_draw_frame={
   self.origin = self.rootOrigin;
   self.angles = self.rootAngle;
   
-  HUD_MODEL_CONSOLE_origin = self.rootOrigin;
-  //HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_right * 0);
-  HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_forward * (self.hud_StrutsOffset_z * 0.9));
-  HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_up *  (self.hud_StrutsOffset_y + -1.55 + self.cameraOffset_y));
+  makevectors([0, self.angles_y, 0]);
+  HUD_MODEL_CONSOLE_origin = HUD_MODEL_STRUTS_origin;
+  HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_forward * 0.8);
+  HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_up * -0.5);
+  // HUD_MODEL_CONSOLE_origin = HUD_MODEL_CONSOLE_origin + (v_up *  (self.hud_StrutsOffset_y + -1.55 + self.cameraOffset_y));
   
   setmodel(self, self.hud_model);
-  self.angles = [45, view_angles_y, 0];
+  
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN){
+    self.angles_y = self.rootAngle_y;
+  }
+  else{
+    self.angles_y = view_angles_y;
+  }
+  self.angles_x = self.torC_angl_x + 45;
+  self.angles_z = self.torC_angl_z;
+  self.angles_z = self.hud_roll_val;
+
   self.origin = HUD_MODEL_CONSOLE_origin;
+  self.effects = 0 | EF_NOSHADOW;
+  
   addentity(self);
 
   self.origin = self.rootOrigin;

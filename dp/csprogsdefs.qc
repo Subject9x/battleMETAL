@@ -1815,7 +1815,7 @@ void() CS_PlayerPhysics;
 .float renderflags; //again, lost in documentation somewhere, use RF_* flags on this.
 .float scale;
 .float ping; //client string ping value doesn't seem to work :|
-.vector fixangle;
+.float fixangle;
 
 #define cacheGlobalString(var, val) if(val!="" && strlen(val) > 0){if (var!="" && strlen(val) > 0){strunzone(var);} var = strzone(val);}
 #define freeGlobalString(var) if (var!="" && strlen(var) > 0){strunzone(var); var = "";}

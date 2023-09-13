@@ -53,7 +53,6 @@ void() player_makeMech={
   initialize_data_mech_( self.nextVecChoice );
   self.touch = ctrl_player_mech_touch;
   
-  
   self.currentWeaponGroup = self.w_group1;
   
   if( cvar("developer") || (!(serverflags & SVFLAG_POWERUP) && (ENT_SERVER_INFO.gameType != GAMEMODE_CAMPAIGN)) ){
@@ -84,12 +83,6 @@ void() player_makeMech={
       case 2:
         self.energyMax = self.energyMax * 1.15;
         self.energyRate = self.energyRate * 1.0;
-        break;
-      case 3:
-        self.energyMax = self.energyMax * 0.85;
-        self.energyRate = self.energyRate * 0.9;
-        break;
-      default:
         break;
     }
   }
