@@ -211,6 +211,9 @@ void() default_weapon_think={
         self.ai_nextFireTime = self.ai_nextFireTime + ((4 - self.owner.ai_rank) / 2); //4 is magic, its max skill (3) + 1, tougher AI attacks more frequently
         self.ai_nextFireTime = time + (random() * self.ai_nextFireTime);  //gotta love randomization
       }
+      if( (self.owner.flags & FL_CLIENT)){
+        self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
+      }
     }
     else{
       self.reloadValue = 0;

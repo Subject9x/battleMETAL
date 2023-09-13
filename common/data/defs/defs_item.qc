@@ -26,6 +26,7 @@ Overview
 
 #ifdef CSQC
 .string fire_sound;
+.string reload_sound;
 .string w_name;       //label for weapon, need to keep 'classname' reserved for actual class
 .string icon;       //client-side
 .void() itemMuzzleFlash;

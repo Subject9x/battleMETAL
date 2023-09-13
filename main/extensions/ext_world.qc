@@ -70,6 +70,10 @@ void() world_metal_ini={
   if( world.ignoreSave || world.animaticOnly || cvar("sv_singlemap") ){
     serverflags = serverflags | SVFLAG_NOSAVE;
   }
+  else{
+    serverflags = serverflags - (serverflags & SVFLAG_NOSAVE);
+  }
+  cvar_set("sv_serverflags", ftos(serverflags) );
   ENT_SERVER_INFO = world_ini_serverInfo_ent();
   
   world_ini_serverinfo();

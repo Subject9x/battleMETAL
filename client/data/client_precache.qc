@@ -93,6 +93,11 @@ void() cs_precache={
   SND_HUD_VFX_FIREMODE_CHAIN = precache_sound2("sound/comp/fire_chain.ogg");
   SND_HUD_VFX_FIREMODE_GROUP = precache_sound2("sound/comp/fire_group.ogg");
   
+  SND_HUD_SHLD_DN = precache_sound2("sound/comp/shld_down.ogg");
+  SND_HUD_CRIT_DMG = precache_sound2("sound/comp/crt_dmg.ogg");
+  SND_HUD_SHLD_DN_SFX = precache_sound2("sound/fx_shld_down.ogg");
+  SND_HUD_SHLD_UP_SFX = precache_sound2("sound/fx_shld_up.ogg");
+
   
   //UI GRAPHICS
   UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png", 0);

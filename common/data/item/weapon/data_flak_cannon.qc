@@ -92,10 +92,12 @@ void() data_ini_flak_cannon_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/flak_fire.ogg");
+  precache_sound("sound/weapons/flak_reload.ogg");
   precache_model("models/weapons/w_flk.md3");
   precache_file( "gfx/ui/wep_icons/wi_flak.png");
   self.w_name = "Flak Cannon";
   self.fire_sound = "sound/weapons/flak_fire.ogg";
+  self.reload_sound = "sound/weapons/flak_reload.ogg";
   self.model = "models/weapons/w_flk.md3";
   self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL * 3 / 3;
   self.abbrev = "FLAK";
@@ -150,10 +152,9 @@ void() data_ini_attack_flak_={
       else{
         damage = self.damageValue;
         if( trace_ent.data_type == DATA_MECH || trace_ent.data_type == DATA_VEHC ){
-            damage = damage - trace_ent.vec_size;
-            if( trace_ent.data_type == DATA_VEHC ){
-              damage = self.damageValue * 1.67;
-            }
+          damage = damage - trace_ent.vec_size;
+          if( trace_ent.data_type == DATA_VEHC ){
+            damage = self.damageValue * 1.67;
           }
         }
         HIT_LOCATION = t_damage(trace_ent, self, self.owner, damage, trace_endpos, '0 0 0');

@@ -398,7 +398,7 @@ void( float isNew, float changeFlags ) sendent_handle_item={
     self.deadflag = DEAD_NO;
     self.classname = "UNIT_ITEM";
     if( (self.owner.flags & FL_CLIENT) && self.owner.clientServerNum == player_localentnum ){
-      CLIENT_weapon_state = CLIENT_weapon_state |  self.w_group;
+      CLIENT_weapon_state = CLIENT_weapon_state | self.w_group;
     }
     //self.drawmask = MASK_ENGINE;
   }

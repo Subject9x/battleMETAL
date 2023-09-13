@@ -320,6 +320,12 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
     
     wepState = '1 1 1';
     if( theWeapon.equipSize < MSC1 ){
+      if(theWeapon.reloadValue == 100 && theWeapon.wepReloadState != theWeapon.reloadValue){
+        if(strlen(theWeapon.reload_sound) > 0){
+          pointsound(CLIENT_vis_org, theWeapon.reload_sound, 1, ATTN_NONE);
+        }
+      }
+
       if(theWeapon.reloadValue < 100){
         //weapon reloading
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
@@ -330,6 +336,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
       if( CLIENT_target_ent.data_idx != 0 && CLIENT_target_dist > theWeapon.w_range ){
         wepState = CLR_DEF_ARM_DED;
       }
+      theWeapon.wepReloadState = theWeapon.reloadValue;
     }
   }
   else{
@@ -388,6 +395,11 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
     }*/
     wepState = '1 1 1';
     if( theWeapon.equipSize < MSC1 ){
+      if(theWeapon.reloadValue == 100 && theWeapon.wepReloadState != theWeapon.reloadValue){
+        if(strlen(theWeapon.reload_sound) > 0){
+          pointsound(CLIENT_vis_org, theWeapon.reload_sound, 1.0, ATTN_NONE);
+        }
+      }
       if(theWeapon.reloadValue < 100){
         //weapon reloading
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
@@ -398,6 +410,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
       if( CLIENT_target_ent.data_idx != 0 && CLIENT_target_dist > theWeapon.w_range ){
         wepState = CLR_DEF_ARM_DED;
       }
+      theWeapon.wepReloadState = theWeapon.reloadValue;
     }
   }
   else{

@@ -97,6 +97,16 @@ void() ctrl_updateTank={
         self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
       }
     }
+
+    if( getsoundtime(self, CHAN_BODY) == -1 ){
+      if( (self.SendFlags & SENDFLAG_MOVE)){
+        sound(self, CHAN_BODY, "sound/fx_tank_move.ogg", 1.0, ATTN_NORM);
+      }
+      else{
+        sound(self, CHAN_BODY, "sound/fx_tank_idle.ogg", 1.0, ATTN_NORM);
+      }
+    }
+
   }
   
   if(self.shield > 0){

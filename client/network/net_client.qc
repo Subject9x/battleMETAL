@@ -10,6 +10,8 @@ Overview:
 void(entity theWep) client_weapon_reload;
 
 //events 
+float SHLD_VFX_TIME;
+
 void(float unitId) client_event_mech_spawn;
 void() client_event_target_new;
 void() client_event_handle_moveChange;
@@ -24,12 +26,14 @@ float() remove_client={
 };
 
 float VFX_RAM_TIME;
+float SFX_SHLD_UP_TIME;
 
 void() client_entity_think={
   local vector laserHit;
   local vector laserOrg;
   local entity theWeapon;
   local float wepItr;
+  local vector v1, v2;
   
   makevectors(self.angles);
   if(self.chaseActive){
@@ -51,6 +55,7 @@ void() client_entity_think={
       
       if( theWeapon.data_idx ){
         client_weapon_reload( theWeapon );
+
       }
       
       wepItr = wepItr + 1;
@@ -69,6 +74,25 @@ void() client_entity_think={
       self.unit_light_org = trace_endpos + (v_up * 32) + (v_forward * -16);
     }
   }
+
+  if(self.clientServerNum != player_localentnum || self.chaseActive){
+    if(time > SHLD_VFX_TIME && self.shieldHitFlag == 0){
+      if(self.shield < 100.01 && self.shield > 0.0){
+        v1 = self.rootOrigin + randomvec2() * self.cache_maxs_x;
+       
+        pointparticles(particleeffectnum("TE_SHIELD_ON"), v1 , '0 0 0', 1);
+      }
+      else if(self.shield > 100.0){
+        v1 = randompos(self.rootOrigin + self.cache_mins, self.rootOrigin + self.cache_maxs); 
+        v2 = randompos(self.rootOrigin + self.cache_mins, self.rootOrigin + self.cache_maxs); 
+        
+        trailparticles( self, particleeffectnum("TE_SHIELD_DOWN"), v1, v2) ;
+      }
+      SHLD_VFX_TIME = time + 0.1;
+    }
+  }
+
+
   
   self.think = client_entity_think;
   self.nextthink = time + 0.001;
@@ -568,6 +592,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   }
   
   if(isNew){
+    self.flags = self.flags | FL_CLIENT;
     if(self.entnum == player_localentnum ){
       CLIENT_server_ent = self;
     }
@@ -657,43 +682,55 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     }
   }
   
-  
   //CLIENT -> Local Player Ent
   if( self.clientServerNum == player_localentnum ){
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;
     }
-    CLIENT_stat_rdr_mode = self.stat_rdr_mode;
-    
     CLIENT_flags_prev = rint(CLIENT_flags);
     CLIENT_flags = rint(self.flags);
    
     CLIENT_player_deadflag = self.deadflag;
     CLIENT_faction = self.faction;
-    CLIENT_data_type = self.data_type;
+    CLIENT_data_type = self.data_type;  
     CLIENT_data_idx = self.data_idx;
-    CLIENT_move_state = self.moveState;
-    CLIENT_shield = self.shield;
-    if( self.shield > 0 ){
+
+    if(self.data_type == DATA_MECH){
+      CLIENT_stat_rdr_mode = self.stat_rdr_mode;
+      CLIENT_move_state = self.moveState;
       CLIENT_shield = self.shield;
-    }
-    else{
-      CLIENT_shield = 0;
-    }
-    
-    if( self.energy > 0 ){
-      CLIENT_energy = self.energy;
-      CLIENT_energy_total = (self.energy / 100) * self.energyMax;
-    }
-    else{
-      CLIENT_energy = 0;
-    }
-    
-    if( (changeFlags & SENDFLAG_TARGET) ){
-      client_event_target_new();
+      if( self.shield > 0 ){
+        CLIENT_shield = self.shield;
+      }
+      else{
+        CLIENT_shield = 0;
+      }
+      if(self.shieldHitFlag > SHIELD_HIT_EMP){
+        pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN, 1.0, ATTN_NONE);
+        pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN_SFX, 1.0, ATTN_NONE);
+      }
+      else if(self.prevShield == 101 ) {
+        if(time > SFX_SHLD_UP_TIME){
+          pointsound(CLIENT_vis_org, SND_HUD_SHLD_UP_SFX, 1.0, ATTN_NONE);
+          SFX_SHLD_UP_TIME = time + 1;
+        }
+      }
+      
+      if( self.energy > 0 ){
+        CLIENT_energy = self.energy;
+        CLIENT_energy_total = (self.energy / 100) * self.energyMax;
+      }
+      else{
+        CLIENT_energy = 0;
+      }
+      
+      if( (changeFlags & SENDFLAG_TARGET) ){
+        client_event_target_new();
+      }
     }
   }
+  self.shieldHitFlag = 0;
 };
 
 

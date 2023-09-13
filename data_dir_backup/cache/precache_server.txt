@@ -52,6 +52,11 @@ sound/fx_armorhit.ogg
 
 sound/demon/dland2.wav
 
+sound/fx_tank_idle.ogg
+sound/fx_tank_move.ogg
+
+sound/fx_ram_hit.ogg
+
 //MAPS
 
 //IMAGES

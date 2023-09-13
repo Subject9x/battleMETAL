@@ -40,6 +40,7 @@ void() ai_wreck_vec={
   wreck.vec_size = self.vec_size;
   wreck.flags = self.flags;
   if(self.deadflag == DEAD_RAMMED){
+    sound7(wreck, CHAN_BODY, "sound/fx_ram_hit.ogg", 1, ATTN_NORM, (0.5 + random()/2) * 125, 0);
     wreck.movetype = MOVETYPE_BOUNCE;
     wreck.solid = SOLID_CORPSE;
     wreck.velocity = normalize(self.ramAngle) * 300 ;

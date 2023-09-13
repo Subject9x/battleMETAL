@@ -268,6 +268,7 @@ void() hud_model_cockpit_ini={
       self = player mech entity.
     ]
 */
+float CRT_DMG_TIME;
 void() hud_model_cockpit_draw_frame={
   local vector hudAngle;
   local float hudRoll;
@@ -324,30 +325,34 @@ void() hud_model_cockpit_draw_frame={
   self.scale = 1.0;
   self.renderflags = 0;
 
-  if(self.torC_hp <= 50){
-    if( time > HUD_STRUT_COLOR_TIME ){
-      if(HUD_STRUT_COLOR == CLR_DEF_RED * 3){
-        HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+  HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+  if(CLIENT_player_state >= PLAYER_ACTIVE){
+    if(self.torC_hp <= 50){
+      if( time > CRT_DMG_TIME ){
+        pointsound(CLIENT_vis_org, SND_HUD_CRIT_DMG, 1.0, ATTN_NONE);
+        CRT_DMG_TIME = time + 4;
       }
-      else{
-        HUD_STRUT_COLOR = CLR_DEF_RED * 3;
+      if( time > HUD_STRUT_COLOR_TIME ){
+        if(HUD_STRUT_COLOR == CLR_DEF_RED * 3){
+          HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+        }
+        else{
+          HUD_STRUT_COLOR = CLR_DEF_RED * 3;
+        }
+        HUD_STRUT_COLOR_TIME = time + 10 * frametime;
       }
-      HUD_STRUT_COLOR_TIME = time + 10 * frametime;
     }
-  }
-  else if((self.criticalHits & M_TOR_LEFT) || (self.criticalHits & M_TOR_RIGHT)){
-    if( time > HUD_STRUT_COLOR_TIME ){
-      if(HUD_STRUT_COLOR == CLR_HUD_ORANGE * 3){
-        HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+    else if((self.criticalHits & M_TOR_LEFT) || (self.criticalHits & M_TOR_RIGHT)){
+      if( time > HUD_STRUT_COLOR_TIME ){
+        if(HUD_STRUT_COLOR == CLR_HUD_ORANGE * 3){
+          HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
+        }
+        else{
+          HUD_STRUT_COLOR = CLR_HUD_ORANGE * 3;
+        }
+        HUD_STRUT_COLOR_TIME = time + 20 * frametime;
       }
-      else{
-        HUD_STRUT_COLOR = CLR_HUD_ORANGE * 3;
-      }
-      HUD_STRUT_COLOR_TIME = time + 20 * frametime;
     }
-  }
-  else{
-    HUD_STRUT_COLOR = CLR_DEF_WHITE * 2;
   }
   self.colormod = HUD_STRUT_COLOR;
   
