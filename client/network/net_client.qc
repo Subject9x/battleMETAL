@@ -836,6 +836,8 @@ void() client_event_target_new={
     self.enemy = world;
     return;
   }
+  
+  pointsound(CLIENT_vis_org, SND_HUD_TRG_NEW, 1, ATTN_NONE);
 
   self.enemy = findfloat(world, clientServerNum, self.targetEntId);
   CLIENT_target_ent = self.enemy;

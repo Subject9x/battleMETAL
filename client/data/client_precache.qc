@@ -97,6 +97,7 @@ void() cs_precache={
   SND_HUD_CRIT_DMG = precache_sound2("sound/comp/crt_dmg.ogg");
   SND_HUD_SHLD_DN_SFX = precache_sound2("sound/fx_shld_down.ogg");
   SND_HUD_SHLD_UP_SFX = precache_sound2("sound/fx_shld_up.ogg");
+  SND_HUD_TRG_NEW = precache_sound2("sound/comp/trg_new.ogg");
 
   
   //UI GRAPHICS

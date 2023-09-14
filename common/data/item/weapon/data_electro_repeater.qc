@@ -50,6 +50,11 @@ void() weapon_esr_think={
       if( self.w_currentammo < self.reloadMax ){
         self.w_currentammo = self.w_currentammo + ESR_HEAT_UP;
         self.w_firetime = time + 0.33;
+        if( (self.owner.flags & FL_CLIENT) ){
+          if( getsoundtime(self, CHAN_BODY) == -1){
+            sound(self, CHAN_BODY, "sound/weapons/esr_ovrht.ogg", 1.0, ATTN_NORM);
+          }
+        }
       }
       else{
         self.reloadValue = 100;
@@ -154,12 +159,14 @@ void() data_ini_electro_repeater_={
   self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   
+  precache_sound("sound/weapons/esr_ovrht.ogg");
 #ifdef CSQC
   precache_model("models/weapons/w_esr.md3");
   precache_sound("sound/weapons/esr_fire.ogg");
   precache_file( "gfx/ui/wep_icons/wi_esr.png");
   self.w_name = "Electro-Static Repeater";
   self.fire_sound = "sound/weapons/esr_fire.ogg";
+  // self.reload_sound = "sound/weapons/esr_ovrht.ogg";
   self.model = "models/weapons/w_esr.md3";
   self.abbrev = "ESR";
   self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage reduced by 50% against <shields>";

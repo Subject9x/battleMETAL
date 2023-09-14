@@ -41,6 +41,7 @@ string SND_HUD_SHLD_DN;
 string SND_HUD_SHLD_DN_SFX;
 string SND_HUD_SHLD_UP_SFX;
 string SND_HUD_CRIT_DMG;
+string SND_HUD_TRG_NEW;
 
 //Sound Queue globals
 float SQSIZE; //set to 6
