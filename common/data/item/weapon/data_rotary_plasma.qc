@@ -78,6 +78,7 @@ void() data_ini_plasma_={
 #endif 
 
 #ifdef SSQC
+  precache_sound("sound/weapons/rpls_burn.ogg");
   self.w_isburst = TRUE;
   self.w_attack = data_ini_attack_plasma_;
   self.think = default_weapon_think;

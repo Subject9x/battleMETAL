@@ -86,6 +86,11 @@ void() data_projectile_plasma_burn_th={
     return;
   }
 
+  
+  if( getsoundtime(self, CHAN_BODY) == -1){
+    sound(self, CHAN_BODY, "sound/weapons/rpls_burn.ogg", 1.0, ATTN_NORM);
+  }
+
 
   setorigin(self, T_PART_PARENT_ORG + randomvec2() * 5);
 
