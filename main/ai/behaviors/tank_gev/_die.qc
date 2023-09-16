@@ -62,7 +62,8 @@ void() ai_gev_touch_death={
 
 void() ai_gev_die={
   local entity w_chain;
-  if( self.deadflag > DEAD_NO ){
+  
+  if( self.deadflag > DEAD_NO && self.deadflag != DEAD_RAMMED){
     return; //double play prevention
   }
   
