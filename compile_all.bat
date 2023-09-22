@@ -1,5 +1,5 @@
 echo off
-echo battleMETAL v4.0.0 COMPILE ALL
+echo battleMETAL v5.0.0 COMPILE ALL
 echo ------------------------------
 
 echo COMPILE PROGS.DAT
