@@ -220,7 +220,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //HUD sound system
     snd_hud_vfx_frame();
     
-    if( PTC_CUBE_ON && servertime > PTC_CUBE_UPDATE){
+    if( PTC_CUBE_ON && time > PTC_CUBE_UPDATE){
       particle_box_think();
     }
   }

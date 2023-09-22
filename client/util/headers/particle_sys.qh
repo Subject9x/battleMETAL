@@ -106,6 +106,7 @@ float PTC_CUBE_FLAGS;
 
 void() particle_box_ini;
 void() particle_box_think;
+void(vector dir, float count) CL_ParticleRain;
 
 
 //Particle globals - reduce func calls

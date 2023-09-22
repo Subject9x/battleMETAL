@@ -139,7 +139,7 @@ string(float msnWin) cl_campaign_next_map={
   
   local string line;
   local string cleanMapName;
-  local string theMap
+  local string theMap;
   
   campaign_loadMapList( cvar_string("sv_campaign") );
   tokenizebyseparator(mapname, "/", ".");

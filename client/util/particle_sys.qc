@@ -959,13 +959,13 @@ void() particle_box_think={
   
   
   playerMove = vectoangles(pmove_vel);
-  makevectors(playerMove);
+  makevectors([playerMove_x, playerMove_y, 0]);
   
-  playerOrgOffset = CLIENT_vis_org + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
+  playerOrgOffset = CLIENT_server_ent.rootOrigin + (v_forward * (PTC_CUBE_MAX_x * 0.5) );
   
   cubeLen = vlen( playerOrgOffset - PTC_CUBE_ORG);
   if( cubeLen > PTC_CUBE_MAX_x ){
-    PTC_CUBE_ORG = CLIENT_vis_org + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
+    PTC_CUBE_ORG = CLIENT_server_ent.rootOrigin + (v_forward * (PTC_CUBE_MAX_x * 0.9)); 
   }
   
   traceline(playerOrgOffset, playerOrgOffset + (v_up * PTC_CUBE_MAX_z), TRUE, world);
@@ -975,7 +975,7 @@ void() particle_box_think={
   amax = PTC_CUBE_ORG + PTC_CUBE_MAX;
   
   for(meta = particleCubeMetaDataList; meta != world; meta = meta.w_slot){
-    if( BoxesOverlap(CLIENT_vis_org - '2 2 2', CLIENT_vis_org + '2 2 2', meta.absmin, meta.absmax ) ){
+    if( BoxesOverlap(CLIENT_server_ent.rootOrigin - '2 2 2', CLIENT_server_ent.rootOrigin + '2 2 2', meta.absmin, meta.absmax ) ){
       amin = meta.absmin;
       amax = meta.absmax;
       break;
@@ -987,15 +987,42 @@ void() particle_box_think={
       te_particlecube(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR, PTC_CUBE_GRAV, PTC_CUBE_VEL_JITTER);
       break;
     case PTC_CUBE_TYPE_RAIN:
-      te_particlerain(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
+      //te_particlerain(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
+      CL_ParticleRain(PTC_CUBE_VEL, PTC_CUBE_COUNT);
       break;
     case PTC_CUBE_TYPE_SNOW:
       te_particlesnow(amin, amax, PTC_CUBE_VEL, PTC_CUBE_COUNT, PTC_CUBE_COLOR);
       break;
   }
 
-  PTC_CUBE_UPDATE = servertime + (servertime - time ) + (2 * frametime);
+  PTC_CUBE_UPDATE = time + (20 * frametime);
 };
+
+
+/**
+  Chopped-down copy of engine-side call of CL_ParticleRain, removes costly impact tests
+*/
+void(vector dir, float count) CL_ParticleRain={
+  local float k;
+  local float minz, maxz, lifetime;
+  local vector org;
+  local float total;
+  local vector v;
+
+  total = PTC_CUBE_COUNT;
+
+  pointparticles( particleeffectnum("TE_RAIN_DROP"), org, normalize(dir) * 10, count);
+  while(total > 0){
+    v = randomvec2();
+    org_x = CLIENT_server_ent.rootOrigin_x + (v_x * PTC_CUBE_MAX_x);
+    org_y = CLIENT_server_ent.rootOrigin_y + (v_y * PTC_CUBE_MAX_y);
+    org_z = CLIENT_server_ent.rootOrigin_z + PTC_CUBE_MAX_z;
+
+    pointparticles( particleeffectnum("TE_RAIN_DROP"), org, normalize(dir) * 50, 1);
+    total = total - 1;
+  }
+};
+
 
 
 //maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
