@@ -201,6 +201,8 @@ void() coop_deploy_postconstruct={
   }
   
   self.owner = parent;
+  self.faction = parent.faction;
+  
   cacheGlobalString( self.iniConfig, strcat(self.group, ftos(self.coopClientId)) )
   
 };
@@ -214,9 +216,10 @@ HOWEVER - for compatability, if a mapper needs to cast a co-op spawn point to a 
 .group(string) - bind to map_deploy_point_coop
 -------SPAWNFLAGS-----
 */
+
 void() map_deploy_point_coop={
   
-  if( !self.group || strlen(self.group) <= 0 ){
+  if( strlen(self.group) <= 0 ){
     objerror(strcat("map_deploy_point_coop(", vtos(self.origin),") was missing groupId, unable to link to deploy point!\n"));
     remove(self);
     return;
@@ -224,10 +227,7 @@ void() map_deploy_point_coop={
 
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-
-  if( !self.coopClientId ){
-    self.coopClientId = 1;
-  }
+  
 
   self.think = coop_deploy_postconstruct;
   self.nextthink = time + 1;
