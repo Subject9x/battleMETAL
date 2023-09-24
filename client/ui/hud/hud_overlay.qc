@@ -339,7 +339,7 @@ void() hud_model_cockpit_draw_frame={
         else{
           HUD_STRUT_COLOR = CLR_DEF_RED * 3;
         }
-        HUD_STRUT_COLOR_TIME = time + 10 * frametime;
+        HUD_STRUT_COLOR_TIME = time + (20 * frametime);
       }
     }
     else if((self.criticalHits & M_TOR_LEFT) || (self.criticalHits & M_TOR_RIGHT)){
@@ -350,7 +350,7 @@ void() hud_model_cockpit_draw_frame={
         else{
           HUD_STRUT_COLOR = CLR_HUD_ORANGE * 3;
         }
-        HUD_STRUT_COLOR_TIME = time + 20 * frametime;
+        HUD_STRUT_COLOR_TIME = time + (30 * frametime);
       }
     }
   }
