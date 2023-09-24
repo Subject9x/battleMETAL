@@ -195,6 +195,11 @@ void( float serverMode, float svFlags ) cl_set_savepath={
           //TODO - figure out team dm lists
           filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
           break;
+        
+        default:
+          filePath = strcat(PATH_DATA_MAP, MAP_NAME, "/dm", SAVE_FILE_EXT);
+          break;
+
       }
     }
     
