@@ -201,13 +201,14 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   //==================================================
   if( (changeFlags & SENDFLAG_GAMETYPE) ){
     self.gameType = ReadByte();
+    cvar_set("gamemode", ftos(self.gameType));
   }
   if( (changeFlags & SENDFLAG_STARTTIME) ){
     self.timeStart = ReadLong();
   }
   if( (changeFlags & SENDFLAG_SERVERFLAGS) ){
     self.serverFlags = ReadLong();
-    cvar_set("sv_serverflags", ftos(fabs(rint(self.serverFlags))));
+    cvar_set("sv_serverflags", ftos(self.serverFlags));
   }
   if( (changeFlags & SENDFLAG_MISSION_STATUS) ){
     self.missionStatusPrev = self.missionStatus;

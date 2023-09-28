@@ -53,8 +53,9 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   turretAng = self.v_angle;
   turretAng_x = 0;
   
+  self.clientServerNum = self.entnum;
+
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.clientServerNum = fabs(rint(ReadLong()));
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();

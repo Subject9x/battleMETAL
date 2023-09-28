@@ -44,18 +44,14 @@ void() PlayerPreThink = {
   self.attackFlag = 0;
   //keep losses up-to-date
   client_update_losses();
-  
+
   if( self.playerState == PLAYER_INTERMSN ){
     if( ENT_SERVER_INFO.missionStatus == MISSION_STATUS_ENDING ){
       return;
     }
   }
-  
-	if (self.deadflag == DEAD_DEAD){
-		return;
-	}
-  
-	if (self.deadflag >= DEAD_DYING){
+
+	if (self.deadflag != DEAD_NO){
     return;	// dying, so do nothing
   }
   
@@ -132,7 +128,7 @@ void() PlayerPostThink = {
   local entity wep_chain;
   local float legDmg, centerTorsoDmg;
   
-  if (self.deadflag >= DEAD_DYING){
+  if (self.deadflag != DEAD_NO){
     return;
   }
   
@@ -445,18 +441,20 @@ void() PlayerDie1={
   ctrl_mech_die_player();
   
   client_push_player_info();
-  client_push_mapobjects();
-  client_send_campaign_end_data( self );
   
+  if(ENT_SERVER_INFO.gameType != GAMEMODE_DM){
+    client_push_mapobjects();
+  }
+  if(ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+    client_send_campaign_end_data( self );
+  }
+
   self.damageValue = 0;
   self.critBits = 0;
   self.last_crit = 0;
   self.targetEntId = 0;
-  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET;
   self.effects = 0;
-  self.deadflag = DEAD_DYING;
-  self.solid = SOLID_CORPSE;
   
   if( self.moveState != MOVE_STAND ){
     self.flags = self.flags - (self.flags & FL_ONGROUND);
@@ -490,12 +488,19 @@ void() PlayerDie4={
 };
 
 void() PlayerDie5={
+  local entity leg;
+
+  leg = ai_wreck_mech();
+  leg.ai_timer_breathe = time + 100;
+
   te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
   self.moveState = MOVE_STAND;
   self.movetype = MOVETYPE_TOSS;
   self.velocity = normalize(self.velocity) * 100;
   self.velocity_z = self.velocity_z + 50;
-  self.playerState = PLAYER_DEAD;
+  
+  self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY | SENDFLAG_ANGLE;
+
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
@@ -506,120 +511,42 @@ void() PlayerDie={
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
+  self.playerState = PLAYER_DEAD;
+  self.solid = SOLID_CORPSE;
   self.deadflag = DEAD_DYING;
-  // ctrl_unit_clean_wgroups();
-  // ctrl_mech_die_player();
-  
-  // client_push_player_info();
-  // client_push_mapobjects();
-  // client_send_campaign_end_data( self );
-  
-  // self.damageValue = 0;
-  // self.critBits = 0;
-  // self.last_crit = 0;
-  // self.targetEntId = 0;
-  // self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
-  
-  // self.effects = 0;
-  // self.deadflag = DEAD_DYING;
-  // self.solid = SOLID_CORPSE;
-  
-  // if( self.moveState != MOVE_STAND ){
-  //   self.flags = self.flags - (self.flags & FL_ONGROUND);
-  //   if (self.velocity_z < 10){
-  //     self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
-  //   }
-  // }
-  
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
+
   self.think = PlayerDie1;
   self.nextthink = time + 0.1;
-  //self.think = PlayerDieEnd;
-  //self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
 
 
 void() PlayerDieEnd={
-  self.playerState = PLAYER_DEBRIEF;
-  ctrl_weapon_remove_all();
-  player_unmakeMech();
-  
-  self.think = PlayerDead;
-  self.nextthink = time + 0.1;
-};
-
-/*
-===========
-PlayerDie - Network Games
-============
-*/
-/*
-  Call stack: t_damage() -> killed() -> player.th_die();
-    this is called on the frame that a player is actually killed.
-*/
-void() PlayerDieNetwork={
-	if( self.deadflag ){
-		bprint("warning: PlayerDie called twice\n");
-		return;
-	}
-  self.playerState = PLAYER_DEAD;
-	if(self.data_type == DATA_MECH){
-    ctrl_unit_clean_wgroups();
-    ctrl_mech_die_player();
-  }
-  client_push_player_info();
-  client_push_mapobjects();
-  
-  self.effects = 0;
-  self.deadflag = DEAD_DYING;
-  self.solid = SOLID_CORPSE;
-  self.flags = self.flags - (self.flags & FL_ONGROUND);
-  self.movetype = MOVETYPE_TOSS;
-  setsize(self, '-8 -8 -8', '8 8 8');
-  setorigin(self, self.origin);
-  
-  if( self.moveState != MOVE_STAND ){
-    if (self.velocity_z < 10){
-      self.velocity_x = self.velocity_x + (crandom() * ((4 - self.vec_size) * 100));
-      self.velocity_y = self.velocity_y + (crandom() * ((4 - self.vec_size) * 100));
-      self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 150));
-    }
-  }
-  
-  self.angles_x = 0;
-  self.angles_z = 0;
-  self.angles_y = 0;
-  self.avelocity = '0 0 0';
-  
-  self.damageValue = 0;
-  self.critBits = 0;
-  self.last_crit = 0;
-  self.targetEntId = 0;
-  self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TARGET);
-  
-  self.playerDeaths = self.playerDeaths + 1;
-  
-  self.think = PlayerDieNetworkEnd;
-  self.nextthink = time + GAME_TIME_TO_DEBRIEF;
-};
-
-/*
-  call stack: think()? -> 
-    time + GAME_TIME_TO_DEBRIEF
-*/
-void() PlayerDieNetworkEnd={
+  local entity infoDm;
 
   ctrl_weapon_remove_all();
   player_unmakeMech();
+
+  if(ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+    self.playerState = PLAYER_DEBRIEF;
+    self.think = PlayerDead;
+    self.nextthink = time + 0.1;
+    return;
+  }
+
   player_makeObserver();
- 
+
+  infoDm = find(world, classname, "info_player_deathmatch");
+  setorigin(self, infoDm.origin);
+  
   if( self.playerState == PLAYER_INTERMSN ){
     //end of round happened during death.
     self.deadflag = DEAD_DEAD;
+    self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
     return;
   }
-  self.movetype = MOVETYPE_NONE;
-  
+
   if( ENT_SERVER_INFO.missionStatus < MISSION_STATUS_OVER ){
     self.playerState = PLAYER_REDEPLOY;
   }
@@ -632,16 +559,23 @@ void() PlayerDieNetworkEnd={
   self.nextthink = time + 1;
 };
 
-
 void() PlayerDead={
 	self.nextthink = -1;
   if( self.playerState == PLAYER_INTERMSN ){
     //end of round happened during death.
     self.deadflag = DEAD_DEAD;
+    self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
     return;
   }
-  self.playerState = PLAYER_SPAWN;
-	self.deadflag = DEAD_DEAD;
+
+  if(ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN){
+    self.playerState = PLAYER_SPAWN;
+  }
+  else{
+    self.playerState = PLAYER_REDEPLOY;
+  }
+
+  self.health = 1;
 };
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD
@@ -672,6 +606,7 @@ void() PlayerDeathThink={
   self.button8 = 0;
   */
 	self.deadflag = DEAD_RESPAWNABLE;
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 };
 
 //UNUSED

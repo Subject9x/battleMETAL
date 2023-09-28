@@ -35,6 +35,14 @@ void() client_entity_think={
   local float wepItr;
   local vector v1, v2;
   
+  self.think = client_entity_think;
+  self.nextthink = time + 0.001;
+  self.legs_nextthink = time + 0.001;
+
+  if( self.data_type == DATA_POBS){
+    return;
+  }
+
   makevectors(self.angles);
   if(self.chaseActive){
     laserOrg = self.origin + (v_up * 22); //+ (v_forward * -96);
@@ -48,7 +56,7 @@ void() client_entity_think={
   traceline(laserOrg, laserHit, FALSE, self);
   self.laser_sight_org = trace_endpos;
   
-  if( self.clientServerNum == player_localentnum ){
+  if( self.isLocalPlayer ){
     wepItr = 0;
     while( wepItr < self.hardpoint_cnt ){
       theWeapon = sendent_get_weapon( bitshift(1, wepItr ) );
@@ -65,7 +73,6 @@ void() client_entity_think={
       traceline(self.rootOrigin + (v_forward * 16), self.rootOrigin + (v_forward * 512), MOVE_MISSILE, self);
       self.unit_light_org = trace_endpos + (v_up * 32) + (v_forward * -16);
     }
-    
   }
   else{
     if(self.headlight){
@@ -75,7 +82,7 @@ void() client_entity_think={
     }
   }
 
-  if(self.clientServerNum != player_localentnum || self.chaseActive){
+  if( !self.isLocalPlayer || self.chaseActive){
     if(time > SHLD_VFX_TIME && self.shieldHitFlag == 0){
       if(self.shield < 100.01 && self.shield > 0.0){
         v1 = self.rootOrigin + randomvec2() * self.cache_maxs_x;
@@ -91,12 +98,6 @@ void() client_entity_think={
       SHLD_VFX_TIME = time + 0.1;
     }
   }
-
-
-  
-  self.think = client_entity_think;
-  self.nextthink = time + 0.001;
-  self.legs_nextthink = time + 0.001;
 };
 
 
@@ -117,7 +118,7 @@ void() client_predraw={
     Credit:
       thanks, Marco “eukara” Hladik for tutorial!
   */
-  if( self.entnum == player_localentnum ){
+  if( self.isLocalPlayer ){
     // Prepare rollback
     vOldOrigin = self.origin;
     vOldVelocity = self.velocity;
@@ -174,7 +175,7 @@ void() client_predraw={
     self.unit_light_org1 = self.unit_light_org2;
     self.unit_light_org2 = self.unit_light_org;
     
-    if( self.entnum == player_localentnum ){
+    if( self.isLocalPlayer ){
       if( self.data_type == DATA_MECH ){
         CLIENT_mech_torC_org2 = CLIENT_mech_torC_org1;
         CLIENT_mech_torC_org1 = self.torC_org;
@@ -204,6 +205,12 @@ void() client_predraw={
   self.rootOrigin = self.origin;
   self.rootAngle = self.angles;
   
+  if( self.data_type == DATA_POBS){
+    self.alpha = 0.01;
+    self.scale = 0.01;
+    return;
+  }
+
   if( self.data_type == DATA_MECH ){
     self.alpha = 1.0;
     self.scale = 1.0;
@@ -211,7 +218,7 @@ void() client_predraw={
     
     self.laser_sight_org = self.laser_sight_org1 + (self.laser_sight_org2 - self.laser_sight_org1 ) * self.lerpfrac;
     
-    if(self.entnum == player_localentnum ){
+    if( self.isLocalPlayer ){
       CLIENT_lerp = self.lerpfrac;
     }
     
@@ -308,7 +315,7 @@ void() client_predraw={
         }
       }
       //cockpit draw needs to be distinct because its always on, even in-death.
-      if(self.entnum == player_localentnum){
+      if( self.isLocalPlayer ){
         hud_model_cockpit_draw_frame();
       }
       if(self.deadflag == DEAD_NO){
@@ -344,7 +351,7 @@ void() client_predraw={
             predraw_unit_weapon(self.weaponEnt9);
           }
         }
-        if(self.entnum == player_localentnum){
+        if( self.isLocalPlayer ){
           //apparently when menu running, these just get STACCCCCCKED and murder framerate.
           if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
             self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
@@ -429,23 +436,57 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   
   //Receive from server
   self.data_type = ReadByte();  //Always received, important switch value.
+  
+  self.clientServerNum = self.entnum;
+  self.clientLocalNum = self.entnum - 1;
+  self.isLocalPlayer = FALSE;
+  if( self.entnum == player_localentnum ){
+    self.isLocalPlayer = TRUE;
+  }
 
   /*EVENT - Client is new to receiver */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    //clientServerNum = player entity ID on server.
-    //clientLocalNum = this is player-entity only, local id for some reason is ServerNum-1?
-    self.clientServerNum = self.entnum;
-    self.clientLocalNum = fabs(self.clientServerNum - 1);
-    //cons_logAFloat("CS - RECEIVE - player.entnum/clientServerNum", self.clientServerNum); //debug
-    //cons_logAFloat("CS - LOCAL - player_localentnum", player_localentnum); //debug
-    
+    self.data_type = ReadByte();
     self.deadflag = ReadByte();
-    if( self.deadflag != DEAD_NO ){
+    if( self.data_type == DATA_MECH && self.deadflag != DEAD_NO){
       handle_existing_crits(isNew, fabs(rint(ReadLong())));
       handle_existing_hp(isNew, ReadByte(), ReadByte(),ReadByte(),ReadByte(),ReadByte(),ReadByte());
     }
   }
   
+  if(isNew){
+    self.flags = self.flags | FL_CLIENT;
+    if( self.isLocalPlayer ){
+      CLIENT_server_ent = self;
+    }
+    if( self.data_type == DATA_POBS ){
+      self.moveFlags = self.moveFlags - (self.moveFlags | PMF_ONGROUND);
+      self.movetype = MOVETYPE_FLY;
+      self.solid = SOLID_SLIDEBOX;
+      self.flags = self.flags | FL_FLY;
+      self.data_type = DATA_POBS;
+      setmodel(self, "models/testball.md3");
+      setsize(self, '-4 -4 -4', '4 4 4');
+      setorigin(self, self.origin);
+      self.alpha = 0.01;
+      self.scale = 0.01;
+      self.deadflag = DEAD_NO;
+      if( self.isLocalPlayer ){
+        cvar_set( "cl_forwardspeed", ftos(400) );
+        cvar_set( "cl_sidespeed", ftos(400) );
+        cvar_set( "cl_backspeed", ftos(400) );
+        cvar_set( "cl_movespeedkey", ftos(2) );
+      }
+    }
+    self.think = client_entity_think;
+    self.nextthink = time + 0.001;
+    self.frame1time = time;
+    self.frame2time = time;
+    self.predraw = client_predraw;
+    self.drawmask = MASK_ENGINE;
+    self.t_remove = remove_client;
+  }
+
   /* EVENT - Send client.flags total value*/
   if( (changeFlags & SENDFLAG_EFLAGS) ){
     self.flags = fabs(rint(ReadLong()));
@@ -518,7 +559,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       
       if( self.prevDataType == DATA_POBS ){
         //genuine spawn event.
-        if( self.clientServerNum = player_localentnum ){
+        if( self.isLocalPlayer ){
           self.classname = "UI_ITEM"; //hack, investigate
           cvar_set( "cl_forwardspeed", ftos(self.data_speed_forward) );
           cvar_set( "cl_sidespeed", ftos(self.data_speed_strafe) );
@@ -541,6 +582,16 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     self.unitColorLG = ReadByte();
   }
   
+  //update [PlayerKey] values.
+  self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );
+  self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
+  self.kills = stof(getplayerkeyvalue(self.clientLocalNum, "frags"));
+  //===========================================================================================
+  
+  if( self.prevFaction != self.faction ){
+    client_event_handle_faction();
+  }
+
   //WARN! - this is why we send .data_type on EVERY packet!
   if( self.data_type != DATA_POBS ){
     /* EVENT - Client switch Camera mode or headlights. */
@@ -582,59 +633,13 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     
     /* EVENT - pieces of player mech is blown off */
     if( (changeFlags & SENDFLAG_CRIT) ){
-      self.critBits = fabs(rint(ReadLong()));
+      self.critBits = ReadLong();
     }
     
     /* EVENT - Client has acquired a new target. */
     if( (changeFlags & SENDFLAG_TARGET) ){
-      self.targetEntId = fabs(rint(ReadLong()));
+      self.targetEntId = ReadLong();
     }
-  }
-  
-  if(isNew){
-    self.flags = self.flags | FL_CLIENT;
-    if(self.entnum == player_localentnum ){
-      CLIENT_server_ent = self;
-    }
-    if( self.data_type == DATA_POBS ){
-      self.moveFlags = self.moveFlags - (self.moveFlags | PMF_ONGROUND);
-      self.movetype = MOVETYPE_FLY;
-      self.solid = SOLID_SLIDEBOX;
-      self.flags = self.flags | FL_FLY;
-      self.data_type = DATA_POBS;
-      setmodel(self, "models/testball.md3");
-      setsize(self, '-4 -4 -4', '4 4 4');
-      setorigin(self, self.origin);
-      self.alpha = 0.01;
-      self.scale = 0.01;
-      self.deadflag = DEAD_NO;
-      cvar_set( "cl_forwardspeed", ftos(400) );
-      cvar_set( "cl_sidespeed", ftos(400) );
-      cvar_set( "cl_backspeed", ftos(400) );
-      cvar_set( "cl_movespeedkey", ftos(2) );
-    }
-    self.think = client_entity_think;
-    self.nextthink = time + 0.001;
-    self.frame1time = time;
-    self.frame2time = time;
-    self.predraw = client_predraw;
-    self.drawmask = MASK_ENGINE;
-    self.t_remove = remove_client;
-  }
-  
-  //update [PlayerKey] values.
-  self.ping = stof( getplayerkeyvalue(self.clientLocalNum, "ping") );
-  self.netname = getplayerkeyvalue(self.clientLocalNum, "name");
-  self.kills = stof(getplayerkeyvalue(self.clientLocalNum, "frags"));
-  
-  
-  //===========================================================================================
-  
-  if( self.prevFaction != self.faction ){
-    client_event_handle_faction();
-  }
-  //PROCESS EVENTS
-  if( self.data_type != DATA_POBS ){
   
     if( (self.deadflag == DEAD_DYING) && (self.prevDeadFlag != DEAD_DYING) ){
       //sendevent_handle_player_death();
@@ -683,7 +688,7 @@ void( float isNew, float changeFlags ) sendent_handle_client={
   }
   
   //CLIENT -> Local Player Ent
-  if( self.clientServerNum == player_localentnum ){
+  if( self.isLocalPlayer ){
     if(isNew){
       CLIENT_flags = 0;
       CLIENT_flags_prev = 0;
@@ -783,7 +788,7 @@ void( float unit_id ) client_event_mech_spawn={
   setorigin(self, self.origin);
   
   //hud shenanigans
-  if( self.clientServerNum == player_localentnum){
+  if( self.isLocalPlayer ){
     //MODELS - COCKPIT
     hud_model_cockpit_ini();
     
@@ -827,7 +832,7 @@ void() client_event_target_new={
   }
 
   //check against self-player
-  if( self.targetEntId == num_for_edict(self)){
+  if( self.targetEntId == player_localentnum){
     notarg = TRUE;
   }
 

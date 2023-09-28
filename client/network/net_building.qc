@@ -92,8 +92,9 @@ void( float isNew, float changeFlags) sendent_handle_building={
   prevBurn = 0 | self.burnBits;
   hp = 0;
   
+  self.clientServerNum = self.entnum;
+
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.clientServerNum = fabs(rint(ReadLong()));
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();

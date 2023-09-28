@@ -79,6 +79,8 @@ void() world_metal_ini={
   world_ini_serverinfo();
 
   //kept in numerical order for easy reference.
+  addstat(32, AS_FLOAT, deadflag);
+
   addstat(STAT_ENV_WARN, AS_FLOAT, stat_env_warn);
   addstat(STAT_RAM, AS_INT, ramUp);
   
@@ -539,6 +541,7 @@ void() sv_endServer={
           }
           self.playerState = sendPlayerState;
           self.deadflag = DEAD_DEAD;
+          self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
           setorigin( self, spot.origin );
         self = this;
       }

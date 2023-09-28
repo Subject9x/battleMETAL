@@ -167,7 +167,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   prevDeadflag = self.deadflag;
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.clientServerNum = ReadLong();
+    self.clientServerNum = fabs(rint(ReadLong()));
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -334,7 +334,6 @@ void( float isNew, float changeFlags ) sendent_handle_item={
   
   prevIdx = self.data_idx;
   
-
   if( (changeFlags & SENDFLAG_MOVE) ){}
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
@@ -397,7 +396,7 @@ void( float isNew, float changeFlags ) sendent_handle_item={
     //self.predraw = predraw_weapon_ent;
     self.deadflag = DEAD_NO;
     self.classname = "UNIT_ITEM";
-    if( (self.owner.flags & FL_CLIENT) && self.owner.clientServerNum == player_localentnum ){
+    if( (self.owner.flags & FL_CLIENT) && self.owner.isLocalPlayer ){
       CLIENT_weapon_state = CLIENT_weapon_state | self.w_group;
     }
     //self.drawmask = MASK_ENGINE;
@@ -470,7 +469,7 @@ vector( vector partOffset) predraw_unit_part={
   offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
   
   self.renderflags = 0;
-  if( self.clientServerNum == player_localentnum ){
+  if(self.isLocalPlayer ){
     if( self.chaseActive  == FALSE ){
       self.renderflags = 0 | RF_EXTERNALMODEL;
       offset = offset - (v_forward * self.cameraOffset_z);
@@ -486,7 +485,7 @@ vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
   offset = self.rootOrigin + (v_right * partOffset_x) + (v_up * partOffset_y) + (v_forward * partOffset_z);
   
   self.renderflags = 0;
-  if( self.clientServerNum == player_localentnum ){
+  if( self.isLocalPlayer ){
     if( !self.chaseActive){
       self.renderflags = 0 | RF_EXTERNALMODEL;
       //offset = offset - (v_forward * self.cameraOffset_z);
@@ -534,7 +533,7 @@ void(entity item) predraw_unit_weapon={
   
   offset = T_PART_PARENT_ORG;
   
-  if(self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+  if( self.isLocalPlayer && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     drawAng = item.owner.angles;
   }
   else{
@@ -551,7 +550,7 @@ void(entity item) predraw_unit_weapon={
   setmodel(item, item.model);
   item.origin = offset;
   
-  if( self.entnum == player_localentnum && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+  if( self.isLocalPlayer && CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     item.angles = item.owner.angles;
   }
   else{
@@ -676,24 +675,6 @@ entity(float weaponId) sendent_get_weapon={
   return world;
 };
 
-
-/*
-  HANDLE EVENT - Player Critical notifying everyone
-*/
-void( float playerEntId, float playerCritFlags ) client_handle_crit={
-  local entity playerMech;
-  local entity nonSelf;
-  
-  playerMech = findfloat(world, clientServerNum, playerEntId);
-  if( playerMech ){
-    nonSelf = self;
-    self = playerMech;
-      sendevent_mech_crit(playerCritFlags);
-    self = nonSelf;
-  }
-};
-
-
 void(float isnew, float ct, float lt, float rt, float la, float ra, float lg) handle_existing_hp={
   if(isnew){
     self.torC_hp = ct;
@@ -716,53 +697,46 @@ void(float isnew, float existCrits) handle_existing_crits={
   EVENT - CRITICAL =====================================
 */
 void( float critical ) sendevent_mech_crit={
-    
-  local float isPlayer;
-
-  isPlayer = FALSE;
-  if(self == CLIENT_server_ent){
-    isPlayer = TRUE;
-  }
-
   if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
     
     traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
     
     if( trace_ent != world || trace_fraction == 1.0){
+      
+      sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
+
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
         te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
+        if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
         }
       }
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (self.critBits & M_TOR_RIGHT) ){
         te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
+        if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
         }
       }
       if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (self.critBits & M_ARM_LEFT) ){
         te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
+        if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
         }
       }
       if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
         te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
+        if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
         }
       }
       if( (self.critBits & M_LEGS) && !(self.criticalHits & M_LEGS) ){
         te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
-        if(isPlayer){
+        if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
         }
       }
     }
   }
-  
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
 };
 
 

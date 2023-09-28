@@ -32,6 +32,8 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   prevShield = self.shield;
   prevDeadFlag = self.deadflag;
   
+  self.clientServerNum = self.entnum;
+
   if( (changeFlags & SENDFLAG_MOVE) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -51,7 +53,6 @@ void( float isNew, float changeFlags) sendent_handle_spg={
   }
   
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    self.clientServerNum = fabs(rint(ReadLong()));
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();

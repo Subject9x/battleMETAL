@@ -32,10 +32,10 @@ float( float isNew, float changeFlags ) send_client={
   
   /*EVENT - Client is new to receiver */
   if( (changeFlags & SENDFLAG_NEWENT) ){
-    //WriteByte( MSG_ENTITY, num_for_edict(self) ); //Game capped at 16 max players, client will always be 0-15
+    WriteByte( MSG_ENTITY, self.data_type );
     //WriteLong( MSG_ENTITY, self.criticalHits);  //sync clients-copies to server-state.
     WriteByte( MSG_ENTITY, self.deadflag);
-    if( self.deadflag != DEAD_NO ){
+    if( self.data_type == DATA_MECH && self.deadflag != DEAD_NO ){
       WriteLong( MSG_ENTITY,   self.criticalHits );
       WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
       WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
@@ -478,6 +478,7 @@ void() PutClientInServer = {
   //DecodeLevelParms ();  //- going to reactivate these soon. - 2022...I don't we think ever are...
 	self.attack_finished = time;  
   self.deadflag = DEAD_NO;  //re-rack
+  self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
@@ -678,9 +679,9 @@ void() PutClientInServer_Coop={
     3) send eqipment selections
     4) config client th_ funcs
   */
+  if( self.playerState == PLAYER_CONNECT ){
   
   //handle one-time server connect functions.
-  if( self.playerState == PLAYER_CONNECT ){
     self.power_timer = 0;
     player_makeObserver();
     if(world.animaticOnly > 1){
@@ -691,7 +692,6 @@ void() PutClientInServer_Coop={
     }
     self.faction = FACTION_PSC; //campaign default
     self.clientcolors = FACTION_PSC;
-
   }
   
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
@@ -704,7 +704,7 @@ void() PutClientInServer_Coop={
   
   client_push_mapobjects(); //refreshes map object data for everyone
 
-  self.th_die = PlayerDieNetwork;
+  self.th_die = PlayerDie;
   mapfile_coop_load();
   
   self.movetype = MOVETYPE_NONE;
@@ -733,16 +733,16 @@ void() PutClientInServer_Deathmatch={
     4) config client th_ funcs
   */
   
+  self.power_timer = 0;
+  player_makeObserver();
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    self.power_timer = 0;
-    player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     self.faction = FACTION_ALL; //deathmatch has no real teams
     self.clientcolors = FACTION_ALL;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
-  self.th_die = PlayerDieNetwork; 
+  self.th_die = PlayerDie; 
   self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_EFLAGS);
   
   //if( cvar("developer") ){
@@ -763,10 +763,10 @@ void() PutClientInServer_TeamDeathmatch={
     4) config client th_ funcs
   */
   
+  self.power_timer = 0;
+  player_makeObserver();
   //handle one-time server connect functions.
   if( self.playerState == PLAYER_CONNECT ){
-    self.power_timer = 0;
-    player_makeObserver();
     self.playerState = PLAYER_SPAWN;
     if( TEAM_SURVEST_TOTAL <= 7 ){
       TEAM_SURVEST_TOTAL = TEAM_SURVEST_TOTAL + 1;
@@ -781,7 +781,7 @@ void() PutClientInServer_TeamDeathmatch={
     ENT_SERVER_INFO.SendFlags = ENT_SERVER_INFO.SendFlags | SENDFLAG_FACTION;
   }
   client_push_mapobjects(); //refreshes map object data for everyone
-  self.th_die = PlayerDieNetwork;
+  self.th_die = PlayerDie;
 };
 
 void() sv_client_respawn={
@@ -792,7 +792,6 @@ void() sv_client_respawn={
     if(self.data_type == DATA_MECH ){
       player_makeObserver();
     }
-    self.playerState = PLAYER_SPAWN;
     // respawn		
     PutClientInServer ();
     return;
@@ -803,7 +802,6 @@ void() sv_client_respawn={
     if(self.data_type == DATA_MECH ){
       player_makeObserver();
     }
-    self.playerState = PLAYER_SPAWN;
     // respawn		
     PutClientInServer ();
     return;

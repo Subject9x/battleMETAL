@@ -28,7 +28,6 @@ void( entity targetClient ) server_push_player_info; //simply wraps client_push_
 void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
 void() client_push_mapobjects;
-void( float playerId, float playerCritBits ) client_send_critical_hit;
 void( entity client, float menuFlag ) client_send_menu_flag;
 
 //client command layer

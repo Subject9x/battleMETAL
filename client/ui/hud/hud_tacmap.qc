@@ -106,7 +106,7 @@ void() hud_render_tactical_map={
       continue;
     }
     //PLAYER TAC MAP INFO
-    if( player.clientServerNum == player_localentnum ){
+    if( player.entnum == player_localentnum ){
       drawpic(gui_mapCoordToImgCoord(mapMins, map_size, CLIENT_vis_org, mapOrg, mapImgSize) - '5 5', HUD_RAD_PIP_MCH, '10 10', CLR_DEF_IIF_FRIEND_BLD * 1.25, 1, 0);
       if( CLIENT_stat_trg_ent_id <= 0 ){continue;}
       if( CLIENT_stat_trg_ddflg > DEAD_NO ){continue;}
@@ -191,7 +191,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
   
   if( (ENT_SERVER_INFO.serverFlags & SVFLAG_NOSTATUS) ){
     rowColor = CLR_DEF_WHITE;
-    if( playerRow.clientServerNum == player_localentnum ){
+    if( playerRow.entnum == player_localentnum ){
       fontSize = '10 10 0';
     }
     else{
@@ -199,7 +199,7 @@ void( vector rowOfs, float itr, entity playerRow ) hud_render_score_row={
     }
   }
   else{
-    if( playerRow.clientServerNum == player_localentnum ){
+    if( playerRow.entnum == player_localentnum ){
       fontSize = '10 10 0';
       rowColor = CLR_DEF_GREEN;
     }

@@ -348,13 +348,6 @@ void(entity client, string theMessage, float messageLifetime) client_send_info_m
   WriteLong( MSG_ONE, messageLifetime );
 };
 
-void( float playerId, float playerCritBits ) client_send_critical_hit={
-  WriteByte( MSG_ALL, SVC_TEMPENTITY );
-  WriteByte( MSG_ALL, TE_PLAYER_CRIT );
-  WriteByte( MSG_ALL, playerId );
-  WriteLong( MSG_ALL, playerCritBits );
-};
-
 void( entity client, float menuFlag ) client_send_menu_flag={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
@@ -457,7 +450,7 @@ void(float wantNavId) client_setNavPoint={
     }
     self.goalentity = nav;
     if( cvar("gameType") == GAMEMODE_COOP){
-      if( self.coopClientId > 1){
+      if( self.coopClientId != 0){
         self.goalentity = find(world, iniConfig, strcat(nav.group, ftos(self.coopClientId)));
         if( !self.goalentity ){
           self.goalentity = nav;

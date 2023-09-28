@@ -33,7 +33,7 @@ Overview:
 #define TE_CLIENT_INFO 80
 #define TE_SERVERINFO 81
 #define TE_CLIENT_INFO_DM 82
-#define TE_PLAYER_CRIT 83
+//float 83
 #define TE_UI_BOX 84
 
 #define TE_FOG_SET 90

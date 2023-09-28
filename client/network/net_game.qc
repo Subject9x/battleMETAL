@@ -114,8 +114,7 @@ void() receive_ent_bindData={
 void() client_state_events={
   local float timeVal;
   
-  //SERVER EVENTS
-  
+  //SERVER EVENTS  
   if( ENT_SERVER_INFO.missionStatusPrev != ENT_SERVER_INFO.missionStatus ){
     //Server Event - end of map
     if( (ENT_SERVER_INFO.missionStatusPrev != MISSION_STATUS_OVER) && (ENT_SERVER_INFO.missionStatus == MISSION_STATUS_OVER) ){

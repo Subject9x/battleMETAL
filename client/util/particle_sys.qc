@@ -570,7 +570,7 @@ void() te_shield_explode_th={
   self.alpha = self.alpha - (1.67 * frametime);
   self.scale = self.scale + (2 * frametime);
   
-  if(self.owner.clientServerNum == player_localentnum){
+  if(self.owner.isLocalPlayer){
     self.origin = CLIENT_vis_org;
   }
   else{
@@ -612,7 +612,7 @@ void( vector org, float vecSize ) te_shield_explode={
     explode.data_lifetime = 10;
     explode.scale = 0.1 + (vecSize / 3);
     explode.alpha = 0.75;
-    if(self.clientServerNum == player_localentnum){
+    if( self.isLocalPlayer ){
       explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_DOUBLESIDED;
     }
     else{

@@ -174,7 +174,7 @@ void() model_misc_building_die={
   xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
   te_missile_explode( randompos(self.origin + self.mins, self.origin + self.maxs), self.vec_size, CLR_DEF_RED, 0.01 );
   
-  if(self == CLIENT_target_ent){
+  if(CLIENT_target_ent.entnum == self.entnum ){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
   }
   

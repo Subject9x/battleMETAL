@@ -169,7 +169,6 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   
   
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -262,7 +261,6 @@ float( float isNew, float changedflags ) ctrl_send_building={
   //=================
   
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );

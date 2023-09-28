@@ -614,8 +614,10 @@ void(vector vorg, vector vSize, float algn, float lalgn, vector lblOfs, vector l
     
     hudEnt.legs_org = hud_model_armor_part_frame(CLIENT_target_ent.legs_compOffset, viewOrg);
     hudEnt.frame = CLIENT_target_ent.legs_frame;
+    hudEnt.legs_angl = [CLIENT_target_ent.armR_angl_x, hudEnt.torC_angl_y, 0];
     hudEnt.colormod = colorLG;
     setmodel(hudEnt, CLIENT_target_ent.legs_mdl);
+    hudEnt.angles = CLIENT_target_ent.legs_angl;
     hudEnt.origin = hudEnt.legs_org;
     addentity(hudEnt);   
   renderscene();

@@ -390,7 +390,7 @@ void( vector rowOfs, float itr, entity playerRow, float showScore) menu_player_r
   local string playerStatus;
   local float scoreLen;
   
-  if( playerRow.clientServerNum == player_localentnum ){
+  if( playerRow.isLocalPlayer ){
     fontSize = '12 12 0';
     rowColor = CLR_DEF_GREEN;
   }

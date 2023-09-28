@@ -8,6 +8,7 @@ Overview: header for player type factory
 
 void() player_makeObserver={
   self.data_type = DATA_POBS;
+  self.data_idx = 0;
   self.flags = self.flags | FL_FLY;
 
   self.health = 1;
@@ -28,8 +29,9 @@ void() player_makeObserver={
   self.data_speed_strafe = 1000;
   self.data_speed_backward = 1000;
   self.data_speed_accel = 2;
-  self.SendFlags =  self.SendFlags | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS;
   self.canTarget = FALSE;
+  self.deadflag = DEAD_NO;
+  self.SendFlags =  self.SendFlags | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_DEAD;
 };
 
 void() player_unmakeObserver={
@@ -48,6 +50,7 @@ void() player_makeVec={
 void() player_makeMech={
   local entity hudWepStart;
   
+  self.deadflag = DEAD_NO;
   self.data_idx = self.nextVecChoice;
   
   initialize_data_mech_( self.nextVecChoice );

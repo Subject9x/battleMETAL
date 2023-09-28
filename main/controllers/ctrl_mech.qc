@@ -556,7 +556,6 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   }
   
   if( (changedflags & SENDFLAG_NEWENT) ){
-    WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );

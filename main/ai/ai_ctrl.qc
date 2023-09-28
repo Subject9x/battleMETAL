@@ -467,7 +467,7 @@ void() ai_wreck_mech_th={
   } 
 };
 
-void() ai_wreck_mech={
+entity() ai_wreck_mech={
   local entity corpse;
   
   corpse = spawn();
@@ -488,7 +488,9 @@ void() ai_wreck_mech={
     corpse.nextthink = time + 0.1;
     
     corpse.ai_timer_breathe = time + 600;
+    return corpse;
   }
+  return world;
 };
 
 

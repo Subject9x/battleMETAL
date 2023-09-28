@@ -126,18 +126,12 @@ void( float isNew, float changeFlags ) sendent_handle_item;
 void( float isNew, float changeFlags ) sendent_handle_client;
 //void( float isNew, float changeFlags ) sendent_handle_misc;
 
-
 entity(float weaponId) sendent_get_weapon;
-
 void() sendent_ini_interpolate;
-
 void( float prevShield ) sendevent_shield_explode;
 void() sendevent_handle_weaponfire;
-
 void() sendevent_building_die;
-
 void() sendent_ai_think;
-void( float playerEntId, float playerCritFlags ) client_handle_crit;
 
 vector( vector partOffset) predraw_unit_part;
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle;
