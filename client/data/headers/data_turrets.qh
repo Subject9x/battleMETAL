@@ -7,7 +7,7 @@ Overview:
 */
 
 /*
-  client_main.CSQC_ent_update()->Ent Type == building, SENDFLAG_NEWENT
+  client_main.CSQC_ent_update()->Ent Type == building, SENDFLAG_UPDATE_FULL
   scope = self
   self is building
 */

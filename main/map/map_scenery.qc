@@ -42,7 +42,7 @@ float( float isNew, float changeFlags ) send_scenery={
     //dead event.
   }
   
-  if( (newFlags & SENDFLAG_NEWENT) ){
+  if( (newFlags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.skin );
     WriteShort( MSG_ENTITY, rint(self.modelindex) );
   }
@@ -98,7 +98,7 @@ void() doodad_rocks_1={
   }
   scenery_obj();
 //self.SendEntity = send_scenery;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   self.takedamage = DAMAGE_AIM;
   if(!self.health){
     self.health = self.max_health = 250;
@@ -115,7 +115,7 @@ void() doodad_rocks_2={
   }
   scenery_obj();
   //self.SendEntity = send_scenery;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   self.takedamage = DAMAGE_AIM;
   if(!self.health){
     self.health = self.max_health = 250;
@@ -132,7 +132,7 @@ void() doodad_rocks_3={
   }
   scenery_obj();
   //self.SendEntity = send_scenery;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   self.takedamage = DAMAGE_AIM;
   if(!self.health){
     self.health = self.max_health = 250;
@@ -167,7 +167,7 @@ void() doodad_rocks_column_1={
   makevectors(self.angles);
   setorigin( self, self.origin);
   //self.SendEntity = send_scenery;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
 };
 void() doodad_rocks_column_2={
   self.model = "models/map/rocks/rockcol2.md3";
@@ -180,7 +180,7 @@ void() doodad_rocks_column_2={
   makevectors(self.angles);
   setorigin( self, self.origin);
   //self.SendEntity = send_scenery;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
 };
 void() doodad_rocks_column_3={
   self.model = "models/map/rocks/rockcol3.md3";
@@ -193,7 +193,7 @@ void() doodad_rocks_column_3={
   makevectors(self.angles);
   setorigin( self, self.origin );
   //self.SendEntity = send_scenery;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
 };
 
 void() doodad_rocks_col_random={

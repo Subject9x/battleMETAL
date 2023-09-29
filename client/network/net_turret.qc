@@ -55,7 +55,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   self.clientServerNum = self.entnum;
 
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
@@ -147,7 +147,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   
   //EVENT - voice chatter
   if( (changeFlags & SENDFLAG_VOICE) ){
-    if( !(changeFlags & SENDFLAG_NEWENT) ){
+    if( !(changeFlags & SENDFLAG_UPDATE_FULL) ){
       voiceId = ReadByte();
       snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }

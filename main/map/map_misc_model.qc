@@ -15,7 +15,7 @@ float( float isNew, float changeFlags) terrain_model_send={
   WriteByte( MSG_ENTITY, SENDTYPE_TERRAIN );
   WriteLong( MSG_ENTITY, changeFlags );
 
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     WriteShort( MSG_ENTITY, self.modelindex );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -66,7 +66,7 @@ void() map_terrain_model={
     self.effects = EF_NOSHADOW;
   }
   //self.SendEntity = terrain_model_send;
-  //self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  //self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
 };
 
 

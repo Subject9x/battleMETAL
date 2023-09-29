@@ -114,13 +114,13 @@ void() client_push_mapobjects={
   for(obj = findchainflags( flags, FL_NODE ); obj != world; obj = obj.chain){
     switch( obj.data_type ){
       case DATA_DEPL:
-        obj.SendFlags = obj.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+        obj.SendFlags = obj.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
         break;
       case DATA_NAVP:
-        obj.SendFlags = obj.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+        obj.SendFlags = obj.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
         break;
       case DATA_OBJT:
-        obj.SendFlags = obj.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+        obj.SendFlags = obj.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
         break;
     }
   }

@@ -100,17 +100,17 @@ void() map_particlecube_effect={
 
 
 void() func_meta_particlecube_th={
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   
 };
 
-float( float isNew, float changedFlags ) send_pcl_cube_meta={
+float( entity to, float changedFlags ) send_pcl_cube_meta={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_PCL_CUBE );
   //--------
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteCoord(MSG_ENTITY, self.absmin_x);
     WriteCoord(MSG_ENTITY, self.absmin_y);
     WriteCoord(MSG_ENTITY, self.absmin_z);

@@ -31,7 +31,13 @@ void() player_makeObserver={
   self.data_speed_accel = 2;
   self.canTarget = FALSE;
   self.deadflag = DEAD_NO;
-  self.SendFlags =  self.SendFlags | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_DEAD;
+
+  self.critBits = -1;
+  self.criticalHits = -1;
+  self.criticalHits = 0;
+  self.health = 1;
+  self.max_health = 1;
+  self.SendFlags =  self.SendFlags | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_DEAD | SENDFLAG_TARGET;
 };
 
 void() player_unmakeObserver={
@@ -67,7 +73,7 @@ void() player_makeMech={
   //self.power_timer_segment = time + (self.startupDelay / 100 ); not sure why this was needed
   self.playerState = PLAYER_POWERUP_BEGIN;
   self.last_color = FALSE;
-  self.new_color = FALSE;
+  self.new_color = TRUE;
   self.enemy = world;
   
   client_push_player_info();
@@ -108,7 +114,7 @@ void() player_makeMech={
   self.targetEntId = 0;
   self.new_color = TRUE;
   self.effects = self.effects | EF_NODEPTHTEST;
-  self.SendFlags = self.SendFlags | (SENDFLAG_VELOCITY | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR | SENDFLAG_TARGET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_TURRET | SENDFLAG_NEWUNIT | SENDFLAG_EFLAGS | SENDFLAG_COLORS | SENDFLAG_CAMERA | SENDFLAG_FACTION | SENDFLAG_RADAR);
 };
 
 void() player_unmakeMech={

@@ -83,7 +83,7 @@ void( float isNew, float entFlags ) data_nav_point={
   }
   
   //EVENT - new to player
-  if( (entFlags & SENDFLAG_NEWENT) ){
+  if( (entFlags & SENDFLAG_UPDATE_FULL) ){
     self.data_idx = ReadByte();
   }
   
@@ -166,7 +166,7 @@ void( float isNew, float entFlags ) data_objective={
   }
   
   //EVENT - new to player
-  if( entFlags & SENDFLAG_NEWENT ){
+  if( entFlags & SENDFLAG_UPDATE_FULL ){
     self.data_idx = ReadByte();
     self.data_type = DATA_OBJT;
   }
@@ -227,7 +227,7 @@ void( float isNew, float entFlags ) data_deploy={
   }
   
   //EVENT - new to player
-  if( (entFlags & SENDFLAG_NEWENT) ){
+  if( (entFlags & SENDFLAG_UPDATE_FULL) ){
     self.data_idx = ReadByte();
      nextOrg_x = ReadCoord();
      nextOrg_y = ReadCoord();
@@ -504,7 +504,7 @@ void( float isNew, float entFlags ) data_map_damage={
     self.angles_z = anglemod(ReadAngle());
   }
   
-  if( (entFlags & SENDFLAG_NEWENT) ){
+  if( (entFlags & SENDFLAG_UPDATE_FULL) ){
     self.data_idx = ReadByte();
     self.spawnflags = rint(ceil(ReadLong()));
     self.damageType = ReadByte();
@@ -573,7 +573,7 @@ void( float isNew, float entFlags ) data_particle_cube_meta={
       particleCubeMetaData = self;
     }
   }
-  if( (entFlags & SENDFLAG_NEWENT) ){
+  if( (entFlags & SENDFLAG_UPDATE_FULL) ){
     self.absmin = te_read_vector();
     self.absmax = te_read_vector();
     self.origin = self.absmax - self.absmin;

@@ -18,7 +18,7 @@ float DEBRIS_COUNT;
 
 .float pcl_effectnum;
 
-float( float isNew, float changedFlags ) te_send_missile;
+float( entity to, float changedFlags ) te_send_missile;
 
 void(string gibname, float dm) ThrowGib ;
 vector(float dm) VelocityForDamage;

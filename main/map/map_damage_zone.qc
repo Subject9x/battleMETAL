@@ -21,7 +21,7 @@ Overview:
 */
 void() map_hazard_ping={
   self.SendEntity = send_damage_zone;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   self.think = self.th_walk;
   
   if( self.isActive ){

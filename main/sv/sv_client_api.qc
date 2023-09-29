@@ -18,7 +18,7 @@ void() player_think_normal;
   SendEntity - Client
     
 */
-float( float isNew, float changeFlags ) send_client={
+float( entity to, float changeFlags ) send_client={
   local entity player;
   local float prevType;
   
@@ -29,20 +29,31 @@ float( float isNew, float changeFlags ) send_client={
   
   //Always send, cost saving just send this here.
   WriteByte( MSG_ENTITY, self.data_type );       //always send type, always.
-  
+
   /*EVENT - Client is new to receiver */
-  if( (changeFlags & SENDFLAG_NEWENT) ){
-    WriteByte( MSG_ENTITY, self.data_type );
-    //WriteLong( MSG_ENTITY, self.criticalHits);  //sync clients-copies to server-state.
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
+    WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.deadflag);
-    if( self.data_type == DATA_MECH && self.deadflag != DEAD_NO ){
-      WriteLong( MSG_ENTITY,   self.criticalHits );
-      WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
-      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+    if( self.deadflag == DEAD_NO){
+     if( self.data_type != DATA_POBS ){
+        WriteByte( MSG_ENTITY, self.next_wepn1);
+        WriteByte( MSG_ENTITY, self.next_wepn2);
+        WriteByte( MSG_ENTITY, self.next_wepn3);
+        WriteByte( MSG_ENTITY, self.next_wepn4);
+        WriteByte( MSG_ENTITY, self.next_wepn5);
+        WriteByte( MSG_ENTITY, self.next_wepn6);
+        WriteByte( MSG_ENTITY, self.next_wepn7);
+        WriteByte( MSG_ENTITY, self.next_wepn8);
+        WriteByte( MSG_ENTITY, self.next_wepn9);
+  
+        WriteLong( MSG_ENTITY, self.criticalHits );
+        WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
+        WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
+        WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
+      }
     }
   }
   
@@ -100,27 +111,6 @@ float( float isNew, float changeFlags ) send_client={
     WriteFloat( MSG_ENTITY, self.data_speed_strafe);
     WriteFloat( MSG_ENTITY, self.data_speed_backward);
     WriteFloat( MSG_ENTITY, self.data_speed_accel);
-    
-    if( self.data_type != DATA_POBS ){
-      WriteByte( MSG_ENTITY, self.data_idx );
-      WriteByte( MSG_ENTITY, self.next_wepn1);
-      WriteByte( MSG_ENTITY, self.next_wepn2);
-      WriteByte( MSG_ENTITY, self.next_wepn3);
-      WriteByte( MSG_ENTITY, self.next_wepn4);
-      WriteByte( MSG_ENTITY, self.next_wepn5);
-      WriteByte( MSG_ENTITY, self.next_wepn6);
-      WriteByte( MSG_ENTITY, self.next_wepn7);
-      WriteByte( MSG_ENTITY, self.next_wepn8);
-      WriteByte( MSG_ENTITY, self.next_wepn9);
-
-
-      WriteByte( MSG_ENTITY, (self.health / self.max_health) * 100 );
-      WriteByte( MSG_ENTITY, (self.torL_hp / self.torL_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.torR_hp / self.torR_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.armL_hp / self.armL_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.armR_hp / self.armR_hpMax) * 100 );
-      WriteByte( MSG_ENTITY, (self.legs_hp / self.legs_hpMax) * 100 );
-    }
   }
   
   /* EVENT - Client has changed their unit color settings.*/
@@ -177,7 +167,6 @@ float( float isNew, float changeFlags ) send_client={
       //placed here for just-in-time calculation
       // because not all SendFlags might be sent exactly when called, and the code originally was clearing out critBits
       WriteLong( MSG_ENTITY, self.critBits );
-      self.critBits = 0;
     }
     
     /* EVENT - Client has acquired a new target. */
@@ -185,8 +174,6 @@ float( float isNew, float changeFlags ) send_client={
       WriteLong( MSG_ENTITY, self.targetEntId );
     }
   }
-  
-  self.shieldHitFlag = 0;
   return TRUE;
 };
 
@@ -462,7 +449,7 @@ note: This is also called after a player respawns too...
 */
 void() PutClientInServer = {
   
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   self.nextthink = time + 0.01;
   
   self.flags = FL_CLIENT;
@@ -785,7 +772,6 @@ void() PutClientInServer_TeamDeathmatch={
 };
 
 void() sv_client_respawn={
-  
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
     // get the spawn parms as they were at level start
     //setspawnparms (self);

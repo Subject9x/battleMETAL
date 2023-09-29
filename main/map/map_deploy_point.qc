@@ -92,7 +92,7 @@ void() map_deploy_point={
   }
   
   self.SendEntity = send_deploy_point;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = deploy_point_ini;
   self.nextthink = time + 0.1;
 }
@@ -122,7 +122,7 @@ void() deploy_point_remote_use={
 };
 
 void() deploy_point_remote_send={
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
 };
 
 void() deploy_point_remote_query={
@@ -170,7 +170,7 @@ void() map_deploy_point_remote={
   setorigin( self, self.origin );
   
   self.SendEntity = send_deploy_point;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   
   self.use = deploy_point_remote_use;
   self.think = deploy_point_remote_query;

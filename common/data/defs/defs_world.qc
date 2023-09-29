@@ -26,7 +26,7 @@ entity() world_ini_serverInfo_ent={
   
   eServerInfo.serverFlags = serverflags;
   eServerInfo.SendEntity = world_rules_sendEntity;
-  eServerInfo.SendFlags = eServerInfo.SendFlags | SENDFLAG_NEWENT;
+  eServerInfo.SendFlags = eServerInfo.SendFlags | SENDFLAG_UPDATE_FULL;
   
   eServerInfo.sounds = world.sounds;
   
@@ -61,7 +61,7 @@ void() world_server_rules_frame={
   self.nextthink = time + 0.1;
 };
 
-float( float isNew, float changedFlags ) world_rules_sendEntity={
+float( entity to, float changedFlags ) world_rules_sendEntity={
   
   //SendEnt header
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
@@ -69,7 +69,7 @@ float( float isNew, float changedFlags ) world_rules_sendEntity={
   WriteByte( MSG_ENTITY, DATA_MAP_RULES );
   //==================================================
   
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteString( MSG_ENTITY, cvar_string("hostname") );
     WriteString( MSG_ENTITY, cvar_string("sv_about"));
     WriteLong( MSG_ENTITY, self.serverFlags );
@@ -172,7 +172,7 @@ void( float isNew, float changeFlags) world_rules_readEntity={
   local float nextRuleTime;*/
   
   prevGameMode = self.gameType;
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     tempHostName = ReadString();
     tempAbout = ReadString();
     cacheGlobalString(self.netname, tempHostName)

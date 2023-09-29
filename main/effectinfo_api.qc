@@ -16,11 +16,11 @@ vector( vector startOrg ) te_apply_wind={
   return windVel;
 };
 
-float( float isNew, float changedFlags ) te_send_missile={
+float( entity to, float changedFlags ) te_send_missile={
   WriteByte( MSG_ENTITY, SENDTYPE_PROJ );
   WriteLong( MSG_ENTITY, changedFlags );
   
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteByte( MSG_ENTITY, self.damageValue );
     WriteShort( MSG_ENTITY, num_for_edict(self.owner));

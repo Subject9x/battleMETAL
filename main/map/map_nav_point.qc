@@ -73,7 +73,7 @@ void() map_nav_point_th={
 };
 
 void() map_nav_point_ini={
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = map_nav_point_th;
   self.nextthink = time + 1;
 };
@@ -221,7 +221,7 @@ void() nav_omega{
 
 
 void() map_nav_point_remote_send={
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
 };
 
 void() map_nav_point_remote_query={
@@ -262,7 +262,7 @@ void() map_nav_point_remote={
   setorigin( self, self.origin );
   
   self.SendEntity = send_nav_point;
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = map_nav_point_remote_query;
   self.nextthink = time + 0.1;
 };

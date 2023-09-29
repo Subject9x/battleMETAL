@@ -39,7 +39,7 @@ entity ENT_SERVER_INFO;
 #define SENDFLAG_MISSION_STATUS 16
 #define SENDFLAG_MISSION_RESULT 32
 #define SENDFLAG_RULE_LIMIT_FRAG 64
-//float SENDFLAG_NEWENT         = 128 <- IMPORT
+//float SENDFLAG_UPDATE_FULL         = 128 <- IMPORT
 #define SENDFLAG_RULE_LIMIT_TIME 256
 #define SENDFLAG_MAP_NEXT 512
 #define SENDFLAG_SAVESLOT 1024
@@ -48,7 +48,7 @@ entity ENT_SERVER_INFO;
 
 #ifdef SSQC
 entity() world_ini_serverInfo_ent;
-float( float isNew, float changedFlags ) world_rules_sendEntity;
+float( entity to, float changedFlags ) world_rules_sendEntity;
 void() world_server_setRules;
 void() world_server_rules_frame;
 #endif

@@ -576,6 +576,7 @@ void() PlayerDead={
   }
 
   self.health = 1;
+  self.max_health = 1;
 };
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD

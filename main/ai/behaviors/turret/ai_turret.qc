@@ -23,7 +23,7 @@ void() ai_turret={
   self.touch = ai_turret_touch;
   
   self.SendEntity = ctrl_send_turret;
-  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_NEWENT);
+  self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_UPDATE_FULL);
   
   self.ai_movewait = 0;
   

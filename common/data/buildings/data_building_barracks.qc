@@ -242,7 +242,7 @@ void() building_barracks={
   }  
   if( self.canTarget || (self.spawnflags & IS_MAPKEY) ){
     self.SendEntity = ctrl_send_building;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   }
   self.think = building_bbox_settle;
   self.nextthink = time + 0.01;

@@ -87,7 +87,7 @@ void() map_objective_th={
 };
 
 void() map_objective_ini={
-  self.SendFlags = self.SendFlags | (SENDFLAG_NEWENT | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
+  self.SendFlags = self.SendFlags | (SENDFLAG_UPDATE_FULL | SENDFLAG_MOVE | SENDFLAG_CRIT | SENDFLAG_TURRET);
   self.think = map_objective_th;
   self.nextthink = time + 0.1;
 };

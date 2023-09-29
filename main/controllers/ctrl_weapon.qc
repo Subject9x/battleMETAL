@@ -383,14 +383,14 @@ void() ctrl_weapon_update={
   
   
 */
-float( float isNew, float changedflags ) ctrl_send_weapon={
+float( entity to, float changedflags ) ctrl_send_weapon={
   
   WriteByte( MSG_ENTITY, SENDTYPE_ITEM );
   WriteLong( MSG_ENTITY, changedflags );
   
   if( (changedflags & SENDFLAG_MOVE) ){}
 
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteLong( MSG_ENTITY, num_for_edict(self.owner));
 
     WriteByte( MSG_ENTITY, self.data_idx);

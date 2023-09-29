@@ -160,7 +160,7 @@ void() building_burn={
   }
 };
 
-float( float isNew, float changedflags ) ctrl_send_turret={
+float( entity to, float changedflags ) ctrl_send_turret={
   
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_TURRET );
@@ -168,7 +168,7 @@ float( float isNew, float changedflags ) ctrl_send_turret={
   //=================
   
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -246,21 +246,21 @@ float( float isNew, float changedflags ) ctrl_send_turret={
     WriteAngle( MSG_ENTITY, self.torC_angl_y );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
-    if( !(changedflags & SENDFLAG_NEWENT) ){
+    if( !(changedflags & SENDFLAG_UPDATE_FULL) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
   return TRUE;
 };
 
-float( float isNew, float changedflags ) ctrl_send_building={
+float( entity to, float changedflags ) ctrl_send_building={
   local float mapKey;
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_BUILD );
   WriteLong( MSG_ENTITY, changedflags );
   //=================
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
@@ -374,7 +374,7 @@ float( float isNew, float changedflags ) ctrl_send_building={
   }
   
   if( (changedflags & SENDFLAG_VOICE) ){
-    if( !(changedflags & SENDFLAG_NEWENT) ){
+    if( !(changedflags & SENDFLAG_UPDATE_FULL) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }

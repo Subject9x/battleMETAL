@@ -52,7 +52,7 @@ void(entity unitPiece) ctrl_unit_remove_piece={
 /*
   OBJECT - Nav Point
 */
-float( float isNew, float changedFlags ) send_nav_point={
+float( entity to, float changedFlags ) send_nav_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteLong( MSG_ENTITY, changedFlags );
@@ -84,7 +84,7 @@ float( float isNew, float changedFlags ) send_nav_point={
   }
   
   //EVENT - new to player
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   return TRUE;
@@ -94,7 +94,7 @@ float( float isNew, float changedFlags ) send_nav_point={
 /*
   OBJECT - Mission Objective
 */
-float( float isNew, float changedFlags ) send_objective={
+float( entity to, float changedFlags ) send_objective={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteLong( MSG_ENTITY, changedFlags );
@@ -120,7 +120,7 @@ float( float isNew, float changedFlags ) send_objective={
   }
   
   //EVENT - New Ent
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
   }
   
@@ -130,7 +130,7 @@ float( float isNew, float changedFlags ) send_objective={
 /*
   OBJECT - Player Deploy point
 */
-float( float isNew, float changedFlags ) send_deploy_point={
+float( entity to, float changedFlags ) send_deploy_point={
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
   WriteLong( MSG_ENTITY, changedFlags );
@@ -162,7 +162,7 @@ float( float isNew, float changedFlags ) send_deploy_point={
   }
   
   //EVENT - New Ent
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
@@ -175,44 +175,39 @@ float( float isNew, float changedFlags ) send_deploy_point={
 };
 
 
-float( float isNew, float changedFlags ) send_damage_zone={
+float( entity to, float changedFlags ) send_damage_zone={
   local float newFlags;
-  
-  newFlags = changedFlags;
-  if( isNew ){
-    newFlags = newFlags | (SENDFLAG_MOVE | SENDFLAG_ANGLE);
-  }
-  
+    
   //HEADER
   WriteByte( MSG_ENTITY, SENDTYPE_MAP );
-  WriteLong( MSG_ENTITY, newFlags );
+  WriteLong( MSG_ENTITY, changedFlags );
   WriteByte( MSG_ENTITY, DATA_MAP_DMG );
   //============
   
-  if( (newFlags & SENDFLAG_BURN) ){
+  if( (changedFlags & SENDFLAG_BURN) ){
     //use to adjust isActive, toggling the field
   }
   
-  if( (newFlags & SENDFLAG_DEAD) ){
+  if( (changedFlags & SENDFLAG_DEAD) ){
     WriteByte( MSG_ENTITY, self.isActive );
   }
   
-  if( (newFlags & SENDFLAG_CRIT) ){
+  if( (changedFlags & SENDFLAG_CRIT) ){
     WriteByte( MSG_ENTITY, 1 );
   }
   
-  if( (newFlags & SENDFLAG_MOVE) ){
+  if( (changedFlags & SENDFLAG_MOVE) ){
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );
     WriteCoord( MSG_ENTITY, self.origin_z );
   } 
-  if( (newFlags & SENDFLAG_ANGLE) ){
+  if( (changedFlags & SENDFLAG_ANGLE) ){
     WriteAngle( MSG_ENTITY, self.angles_x );
     WriteAngle( MSG_ENTITY, self.angles_y );
     WriteAngle( MSG_ENTITY, self.angles_z );
   }
   
-  if( (changedFlags & SENDFLAG_NEWENT) ){
+  if( (changedFlags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.spawnflags );
     WriteByte( MSG_ENTITY, self.damageType );

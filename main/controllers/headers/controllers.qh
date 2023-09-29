@@ -32,11 +32,11 @@ void() ctrl_player_mech_touch;
 
 void() touch_mechPiece;
 
-float( float isNew, float changeFlags ) ctrl_send_mech_ai;
+float( entity to, float changeFlags ) ctrl_send_mech_ai;
 
 //Building entity controllers
-float( float isNew, float changedflags ) ctrl_send_turret;
-float( float isNew, float changedflags ) ctrl_send_building;
+float( entity to, float changedflags ) ctrl_send_turret;
+float( entity to, float changedflags ) ctrl_send_building;
 void() building_burn_th;  //generic check-for-burning think
 void() building_burn;
 void() building_die;
@@ -44,17 +44,17 @@ void() building_bbox_settle;
 
 //Vehicle entity controllers
 void() ctrl_updateTank;
-float( float isNew, float changedflags ) ctrl_send_tank;
-float( float isNew, float changedflags ) ctrl_send_spg;
-float( float isNew, float changedflags ) ctrl_send_gev;
+float( entity to, float changedflags ) ctrl_send_tank;
+float( entity to, float changedflags ) ctrl_send_spg;
+float( entity to, float changedflags ) ctrl_send_gev;
 
 //Generic entity controllers
 void() ctrl_die_weapon;
 
-float( float isNew, float changedFlags ) send_deploy_point;
-float( float isNew, float changedFlags ) send_nav_point;
-float( float isNew, float changedFlags ) send_objective;
-float( float isNew, float changedFlags ) send_damage_zone;
+float( entity to, float changedFlags ) send_deploy_point;
+float( entity to, float changedFlags ) send_nav_point;
+float( entity to, float changedFlags ) send_objective;
+float( entity to, float changedFlags ) send_damage_zone;
 
 //Weapon/equip controllers
 void(entity wep) ctrl_weapon_think;
@@ -68,4 +68,4 @@ void() ctrl_missile_dud;
 void() ctrl_missile_dud_touch;
 void(entity wep) ctrl_weapon_update_player;
 void() ctrl_missile_lastframe;
-float( float isNew, float changedflags ) ctrl_send_weapon;
+float( entity to, float changedflags ) ctrl_send_weapon;

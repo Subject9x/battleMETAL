@@ -440,7 +440,7 @@ void() ai_setup_patrol={
   self.ai_timer_tracepath = time + 0.1;
   
   self.nextthink = self.nextthink + time;
-  self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+  self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
 };
 
 

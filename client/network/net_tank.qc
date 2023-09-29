@@ -54,7 +54,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   }
   
   //EVENT - NEW ENTITY
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     self.data_idx = ReadByte();
     self.flags = ReadLong();
     self.faction = ReadByte();
@@ -129,7 +129,7 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //EVENT - voice chatter
   if( (changeFlags & SENDFLAG_VOICE) ){
-    if( !(changeFlags & SENDFLAG_NEWENT) ){
+    if( !(changeFlags & SENDFLAG_UPDATE_FULL) ){
       voiceId = ReadByte();
       snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
     }

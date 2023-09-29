@@ -377,7 +377,7 @@ void() scoreboard_sort={
 };
 
 /*
-  sendent_handle_player()-> SENDFLAG_NEWENT && isNew
+  sendent_handle_player()-> SENDFLAG_UPDATE_FULL && isNew
   scope: self == player data ent
   player data ent's ID at this point IS the player's Server EntID
     therefore scoreId is then decremented to equal player's local entId;

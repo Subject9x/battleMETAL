@@ -2675,7 +2675,7 @@ float(string url, float id, string content_type, string delim, float buf, float 
   //-Roohr (I dont take credit, just adding here)
 
 #define MSG_ENTITY 5
-.float( float isNew, float changedflags) SendEntity;
+.float( entity to, float changedflags) SendEntity;
 .float SendFlags;
 void(float buf, float fl) WriteFloat = #280;
 

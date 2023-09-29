@@ -45,12 +45,8 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
     }
   }
   
-  //------------> Damage Buffer system
-  if( trg.data_type != DATA_BLD ){
-    dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
-  }
-  //-----------------------
-                            
+  dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
+              
   trg.dmg_inflictor = inflictor;
   if(trg.was_hit < time){
     trg.was_hit = time + 1;

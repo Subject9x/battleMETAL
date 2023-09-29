@@ -114,7 +114,7 @@ void() ctrl_updateTank={
   }
 };
 
-float( float isNew, float changedflags ) ctrl_send_tank={
+float( entity to, float changedflags ) ctrl_send_tank={
   WriteByte( MSG_ENTITY, SENDTYPE_TANK );
   WriteLong( MSG_ENTITY, changedflags );
   
@@ -133,7 +133,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -172,7 +172,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
-    if( !(changedflags & SENDFLAG_NEWENT) ){
+    if( !(changedflags & SENDFLAG_UPDATE_FULL) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
@@ -185,7 +185,7 @@ float( float isNew, float changedflags ) ctrl_send_tank={
   return TRUE;
 };
 
-float( float isNew, float changedflags ) ctrl_send_spg={
+float( entity to, float changedflags ) ctrl_send_spg={
   WriteByte( MSG_ENTITY, SENDTYPE_SPG );
   WriteLong( MSG_ENTITY, changedflags );
   
@@ -204,7 +204,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -238,7 +238,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
     WriteLong( MSG_ENTITY, self.attackFlag );
   }
   if( (changedflags & SENDFLAG_VOICE) ){
-    if( !(changedflags & SENDFLAG_NEWENT) ){
+    if( !(changedflags & SENDFLAG_UPDATE_FULL) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }
@@ -249,7 +249,7 @@ float( float isNew, float changedflags ) ctrl_send_spg={
   return TRUE;
 };
 
-float( float isNew, float changedflags ) ctrl_send_gev={
+float( entity to, float changedflags ) ctrl_send_gev={
   WriteByte( MSG_ENTITY, SENDTYPE_GEV );
   WriteLong( MSG_ENTITY, changedflags );
   
@@ -268,7 +268,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
     WriteByte( MSG_ENTITY, self.deadflag );
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -307,7 +307,7 @@ float( float isNew, float changedflags ) ctrl_send_gev={
   }
   
   if( (changedflags & SENDFLAG_VOICE) ){
-    if( !(changedflags & SENDFLAG_NEWENT) ){
+    if( !(changedflags & SENDFLAG_UPDATE_FULL) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }

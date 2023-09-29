@@ -527,7 +527,7 @@ void() touch_mechPiece={
   }
 };
 
-float( float isNew, float changedflags ) ctrl_send_mech_ai={
+float( entity to, float changedflags ) ctrl_send_mech_ai={
 
   WriteByte( MSG_ENTITY, SENDTYPE_MECH_AI );
   WriteLong( MSG_ENTITY, changedflags );
@@ -555,7 +555,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
     self.critBits = 0;
   }
   
-  if( (changedflags & SENDFLAG_NEWENT) ){
+  if( (changedflags & SENDFLAG_UPDATE_FULL) ){
     WriteByte( MSG_ENTITY, self.data_idx );
     WriteLong( MSG_ENTITY, self.flags );
     WriteByte( MSG_ENTITY, self.faction );
@@ -614,7 +614,7 @@ float( float isNew, float changedflags ) ctrl_send_mech_ai={
   }
 
   if( (changedflags & SENDFLAG_VOICE) ){
-    if( !(changedflags & SENDFLAG_NEWENT) ){
+    if( !(changedflags & SENDFLAG_UPDATE_FULL) ){
       WriteByte( MSG_ENTITY, self.ai_voice_id );
     }
   }

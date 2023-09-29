@@ -109,7 +109,7 @@ void() interpolate_ground={
   SendEntity - Map Objects ====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_terrain={
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     setmodel( self, modelnameforindex(ReadShort()) );
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -166,7 +166,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   
   prevDeadflag = self.deadflag;
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     self.clientServerNum = fabs(rint(ReadLong()));
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -255,7 +255,7 @@ void( float isNew, float changeFlags ) sendent_handle_missile={
   prevImpactType = self.impactType;
   
   self.oldvelocity = self.velocity;
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     self.data_idx = ReadByte();
     self.damageValue = ReadByte();
     ownerId = ReadShort();
@@ -336,7 +336,7 @@ void( float isNew, float changeFlags ) sendent_handle_item={
   
   if( (changeFlags & SENDFLAG_MOVE) ){}
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     ownerEntId =  fabs(rint(ReadLong()));
     self.owner = findfloat(world, entnum, ownerEntId);
     
@@ -698,11 +698,9 @@ void(float isnew, float existCrits) handle_existing_crits={
 */
 void( float critical ) sendevent_mech_crit={
   if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
-    
-    traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
+     traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
     
     if( trace_ent != world || trace_fraction == 1.0){
-      
       sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
 
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
@@ -758,7 +756,7 @@ void( float isNew, float changeFlags ) sendent_handle_misc={
     self.angles_z = ReadAngle();
   }
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     self.skin = ReadByte();
     self.modelindex = ReadShort();
   }

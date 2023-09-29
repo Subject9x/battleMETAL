@@ -6,13 +6,13 @@ Overview:
   misc buildings that really serve no direct purpose
 */
 
-float( float isNew, float changeFlags ) sendent_misc_building={
+float( entity to, float changeFlags ) sendent_misc_building={
   
   WriteByte( MSG_ENTITY, SENDTYPE_MISC_BLD );
   WriteLong( MSG_ENTITY, changeFlags );
   //======================
   
-  if( (changeFlags & SENDFLAG_NEWENT) ){
+  if( (changeFlags & SENDFLAG_UPDATE_FULL) ){
     WriteLong( MSG_ENTITY, num_for_edict(self));
     WriteCoord( MSG_ENTITY, self.origin_x );
     WriteCoord( MSG_ENTITY, self.origin_y );

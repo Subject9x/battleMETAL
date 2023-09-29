@@ -748,7 +748,7 @@ void() building_repair_bay={
     
   if( self.canTarget || (self.spawnflags & IS_MAPKEY) ){
     self.SendEntity = ctrl_send_building;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWENT;
+    self.SendFlags = self.SendFlags | SENDFLAG_UPDATE_FULL;
   }
     
   self.ai_state_next = REPAIR_STATE_IDLE;

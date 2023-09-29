@@ -323,7 +323,7 @@ float AS_INT = 8;
 #define SENDFLAG_CRIT  16 //what component(s) blew off.
 #define SENDFLAG_BURN  32 //what is starting to burn.
 #define SENDFLAG_IMPACT  64 //specifically missile strike on something.
-#define SENDFLAG_NEWENT  128  //engine-set value, do not modify
+#define SENDFLAG_UPDATE_FULL  128  //engine-set value, do not modify
   //128 is hardcoded as isNew, dont change
   //.modelindex
   //.faction
