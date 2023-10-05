@@ -444,6 +444,13 @@ void() ai_setup_patrol={
 };
 
 
+//holder-think to make sure deadflag propagates 
+void() ai_tank_dead_frame={
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
+};
+
+
 /*
   Mech corpse optimization:
     CSQC + SendEnt violates server-side culling, which works against us when doing cosmetic things

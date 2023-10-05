@@ -285,9 +285,11 @@ void() interpolate_tank={
 };
 
 void() predraw_tank={
-  if(self.deadflag==DEAD_NO){
-    if(self.interpolate_entity){
-      self.interpolate_entity();
-    }
+  if( self.deadflag != DEAD_NO ){
+    return;
   }
+  if(!self.interpolate_entity){
+    return;
+  }
+  self.interpolate_entity();
 };

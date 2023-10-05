@@ -302,7 +302,6 @@
   
   //TE_LAS_RAIL
     effect TE_LAS_RAIL
-    countabsolute 1
     type spark
     blend add
     orientation beam

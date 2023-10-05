@@ -115,6 +115,7 @@ void() ai_tank_sk_die={
   ai_nodegraph_clear_locks();
   
   self.SendFlags = self.SendFlags | (SENDFLAG_DEAD | SENDFLAG_BURN | SENDFLAG_MOVE);
-  self.think = SUB_Remove;
+  self.ai_unit_update = SUB_Null;
+  self.think = ai_tank_dead_frame;
   self.nextthink = time + 0.1;
 };

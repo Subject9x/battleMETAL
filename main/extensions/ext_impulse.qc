@@ -36,7 +36,12 @@ defines all impulse numbers, prevents magic numbers for key definitions
 #define IMP_SLIDE 27
 #define IMP_FAC_NEXT 28
 #define IMP_FAC_PREV 29
+#define IMP_DBG_ENT 29
 #define IMP_EXTERNAL_CAMERA 30
 #define IMP_MENU_GROUP 31 //mostly clientside only for opening weapon rebind menu
 #define IMP_HEADLIGHT 32  //toggle headlight.
+
+#define IMP_CHEAT_KILL 64
+#define IMP_CHEAT_WIN 65
+
 void(float selector) mpls_groupFire;

@@ -23,8 +23,10 @@ void() te_muzzle_las={
   local vector norm;
   
   startOrg = self.wepFireOffset;
+
   traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
   endOrg = trace_endpos;
+
   norm = normalize(endOrg - startOrg);
   
   if( vlen(endOrg - startOrg) >= 1500 ){
@@ -34,8 +36,7 @@ void() te_muzzle_las={
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
   }
   
-  
-  trailparticles( self, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
+  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
