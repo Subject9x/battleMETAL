@@ -306,6 +306,10 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
     theWeapon = sendent_get_weapon(w_bit);
   self = oself;
   
+  if(!theWeapon || theWeapon == world){
+    return;
+  }
+
   rOrg = torg;
   rOrg = gui_calcAlign(rOrg, algn);
   
@@ -381,6 +385,10 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
   self = CLIENT_server_ent;
     theWeapon = sendent_get_weapon(w_bit);
   self = oself;
+
+  if(!theWeapon || theWeapon == world){
+    return;
+  }
   
   rOrg = torg;
   rOrg = gui_calcAlign(torg, algn);
