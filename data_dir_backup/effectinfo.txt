@@ -293,7 +293,7 @@
 
 //LASER EFFECTS==================================
   //TE_LAS_HIT - LIGHT
-    effect TE_LAS_RAIL
+    effect TE_LAS_HIT
     countabsolute 1
     lightradius 50
     lightradiusfade 100
@@ -302,19 +302,13 @@
   
   //TE_LAS_RAIL
     effect TE_LAS_RAIL
-    type spark
+    type beam
     blend add
     orientation beam
-    //color 0x7339AC 0x7339AC
     color 0xe1bee7 0xce93d8
-    //tex 41 41
     tex 60 60
     size 3 3
-    sizeincrease -0.1
     alpha 512 512 768
-    notunderwater
-    //trailspacing 32
-    //stretchfactor 2
 
   //TE_LAS_HIT - SPARK
     effect TE_LAS_HIT
