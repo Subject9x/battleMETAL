@@ -70,6 +70,7 @@ void() world_get_fog;
 
 
 //CO-OP System
+float COOP_DEPLOY_COUNT;  //auto iterator for deploy points, 
 .float coopClientId;  // 1 - 4, assigned on player connect.
 entity COOP_PLAYER_1;
 entity COOP_PLAYER_2;
