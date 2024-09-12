@@ -95,6 +95,8 @@ void() playerAttack={
 
 void() ImpulseCommands ={
   local entity client;
+  local entity tmp;
+
   client = self;
   
   if(self.impulse == IMP_FGROUP){
@@ -186,39 +188,51 @@ void() ImpulseCommands ={
     }
   }
 
-  if(self.impulse == IMP_FAC_NEXT){
-    self.faction = self.faction + 1;
-    if( self.faction > 3 ){
-      self.faction = 1;
-    }
-    if( self.data_type == DATA_MECH ){
-      client_update_faction();
-    }
-    else{
-      if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
-        self.data_type = DATA_POBS;
-        PutClientInServer();
-      }
-    }
-    self.SendFlags = self.SendFlags | SENDFLAG_FACTION;
-  }
+  // if(self.impulse == IMP_FAC_NEXT){
+  //   self.faction = self.faction + 1;
+  //   if( self.faction > 3 ){
+  //     self.faction = 1;
+  //   }
+  //   if( self.data_type == DATA_MECH ){
+  //     client_update_faction();
+  //   }
+  //   else{
+  //     if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
+  //       self.data_type = DATA_POBS;
+  //       PutClientInServer();
+  //     }
+  //   }
+  //   self.SendFlags = self.SendFlags | SENDFLAG_FACTION;
+  // }
   
-  if(self.impulse == IMP_FAC_PREV){
-    self.faction = self.faction - 1;
-    if( self.faction < 1 ){
-      self.faction = 3;
-    }
-    if( self.data_type == DATA_MECH ){
-      client_update_faction();
-    }
-    else{
-      if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
-        self.data_type = DATA_POBS;
-        PutClientInServer();
-      }
-    }
-    self.SendFlags = self.SendFlags | SENDFLAG_FACTION;
-  }
+  // if(self.impulse == IMP_FAC_PREV){
+  //   self.faction = self.faction - 1;
+  //   if( self.faction < 1 ){
+  //     self.faction = 3;
+  //   }
+  //   if( self.data_type == DATA_MECH ){
+  //     client_update_faction();
+  //   }
+  //   else{
+  //     if( ENT_SERVER_INFO.gameType == GAMEMODE_DM ){
+  //       self.data_type = DATA_POBS;
+  //       PutClientInServer();
+  //     }
+  //   }
+  //   self.SendFlags = self.SendFlags | SENDFLAG_FACTION;
+  // }
+
+      // local entity e;
+    // //debug
+
+    // makevectors(self.v_angle);
+    // traceline(self.origin, self.origin + (v_forward * 1024), TRUE, self);
+
+    // e = findradius(trace_endpos, 32);
+    // while(e){
+    //   cons_logAVector(e.classname, e.origin);
+    //   e = e.chain;
+    // }
 
   if(self.impulse == IMP_EXTERNAL_CAMERA){
     if(self.chaseActive){
@@ -238,6 +252,25 @@ void() ImpulseCommands ={
       self.headlight = TRUE;
     }
     self.SendFlags = self.SendFlags | SENDFLAG_CAMERA;
+  }
+
+  if(self.impulse == IMP_CHEAT_KILL){
+    if(self.enemy){
+      t_damage(self.enemy, self, self, self.enemy.max_health, self.enemy.origin, '0 0 0');
+    }
+  }
+
+  if(self.impulse == IMP_CHEAT_WIN){
+    if(cvar("gamemode") == GAMEMODE_CAMPAIGN){
+      tmp = findchain(classname, "map_objective");
+      while(tmp){
+        if(tmp.faction == self.faction){
+          tmp.think = tmp.use;
+          tmp.nextthink = time;
+        }
+        tmp = tmp.chain;
+      }
+    }
   }
 
 	self.impulse = 0;
