@@ -63,8 +63,8 @@
     orientation beam
     color 0x33CCCC 0x66FFFF
     tex 60 60
-    size 2 2
-    alpha 256 450 2048
+    size 2 3
+    alpha 1024 1024 3000
     bounce -1
     notunderwater
     originjitter 2 2 2
@@ -308,7 +308,7 @@
     color 0xe1bee7 0xce93d8
     tex 60 60
     size 3 3
-    alpha 512 512 768
+    alpha 1024 1024 2048
 
   //TE_LAS_HIT - SPARK
     effect TE_LAS_HIT
@@ -330,14 +330,13 @@
 
   //TE_LAS_HIT - RING
     effect TE_LAS_HIT
-    count 1
+    countabsolute 1
     type alphastatic 
     blend alpha
     color 0xB40404 0xFF0040
     tex 32 33
-    size 1.75 2.25
-    alpha 128 256 180
-    time 4 8 
+    size 2.75 3.0
+    alpha 1024 1024 1024
     
   //TE_LAS_HIT - CENTER HOLE
     effect TE_LAS_HIT
@@ -346,9 +345,8 @@
     blend alpha
     color 0xFF4000 0xFFBF00
     tex 47 47
-    size 1.75 2.25
-    alpha 128 256 180
-    time 4 8
+    size 1.85 2.25
+    alpha 1024 1024 1500
 
   //TE_LAS_DIRT
     effect TE_LAS_DIRT
@@ -769,20 +767,17 @@
   
   //TE_FLK_MUZZLE - SMOKE
     effect TE_FLK_MUZZLE
-    count 1
-    type spark
+    countabsolute 1
+    type smoke
     blend alpha
     color 0x000000 0x1C1C1C
     tex 46 46
-    size 1.25 1.4 
+    size 0.5 0.75
     sizeincrease 1
-    alpha 175 190 150
-    time 0.4 0.6
-    gravity -0.0025
+    alpha 175 190 400
     originjitter 0.15 0.15 0.15
     velocitymultiplier 2
     velocityjitter 2 2 2
-    stretchfactor 4
 
   //TE_FLK_MUZZLE - FLAME
     effect TE_FLK_MUZZLE
@@ -793,7 +788,6 @@
     tex 46 46
     size 0.65 1 
     alpha 256 256 128
-    time 0.075 0.1
     originjitter 0 0 0
     velocityjitter 1 1 1
     velocitymultiplier 1
@@ -818,8 +812,7 @@
     effect TE_FLK_MUZZLE
     countabsolute 1
     lightradius 15
-    lightradiusfade 1
-    lighttime 0.05
+    lightradiusfade 15
     lightcolor 1 0.251 0
     lightshadow 0
     notunderwater
@@ -831,9 +824,9 @@
     blend alpha
     color 0x000000 0x1C1C1C
     tex 0 7
-    size 5 7
-    sizeincrease 0.25
-    alpha 128 150 64
+    size 4 6
+    sizeincrease 0.5
+    alpha 256 350 180
     originjitter 0.15 0.15 0.15
     velocityjitter 0.05 0.5 1
     
@@ -847,7 +840,6 @@
     tex 38 41
     size 0.25 0.65
     alpha 256 512 2048
-    time 0.15 0.25
     originjitter 3 3 3
     velocityjitter 10 10 10
     velocitymultiplier 2
@@ -863,7 +855,6 @@
     tex 46 46
     size 0.65 1 
     alpha 256 256 128
-    time 0.075 0.1
     originjitter 0 0 0
     velocityjitter 1 1 1
     velocitymultiplier 1
@@ -874,7 +865,6 @@
     countabsolute 1
     lightradius 24
     lightradiusfade 24
-    lighttime 0.075
     lightcolor 0.961 0.855 0.506
     lightshadow 0
     notunderwater
@@ -888,8 +878,7 @@
     tex 0 7
     size 3 5
     sizeincrease 0.25
-    alpha 120 128 32
-    time 3 5
+    alpha 200 256 128
     originjitter 0.15 0.15 0.15
     velocityjitter 0.05 0.5 1
     
@@ -903,7 +892,6 @@
     tex 44 46
     size 0.25 0.65
     alpha 256 512 256
-    time 0.65 0.9
     originjitter 3 3 3
     velocityjitter 10 10 10
     velocitymultiplier 2
@@ -920,7 +908,6 @@
     tex 38 41
     size 0.25 0.65
     alpha 256 512 2048
-    time 0.25 0.4
     originjitter 3 3 3
     velocitymultiplier 10
     velocityjitter 20 20 1
@@ -943,12 +930,12 @@
     //color 0x331100 0x662200
     color 0x000000 0x1C1C1C
     tex 8 15
-    size 3 4
+    size 1 2
     sizeincrease 0.75
-    alpha 200 300 100
+    alpha 200 300 300
     originjitter 0.33 0.33 0.33
     velocityjitter 0.1 0.1 0.1
-    trailspacing 72
+    trailspacing 24
 
   //TE_FLK_TRAIL - SHRAPNEL
     effect TE_FLK_TRAIL
@@ -1199,10 +1186,9 @@
     tex 32 32
     size 1 2
     sizeincrease 4
-    alpha 150 170 100
-    time 8 10
+    alpha 512 512 660
     originjitter 0.2 0.2 0.2
-    trailspacing 48
+    trailspacing 24
     rotate 0 0 15 35
     
   //TE_EMP_TRAIL - SMOKE DISTORT
@@ -1228,11 +1214,11 @@
     tex 40 40
     size 0.2 0.4
     sizeincrease 2
-    alpha 96 96 45
+    alpha 256 256 325
     time 0.3 0.5
     originjitter 1.75 1.75 1.75
     velocitymultiplier -0.085
-    trailspacing 32
+    trailspacing 24
   
   //TE_EMP_TRAIL - SPARK CLOUD
     effect TE_EMP_TRAIL
@@ -1244,7 +1230,6 @@
     size 0.2 0.4
     sizeincrease 2
     alpha 96 96 45
-    time 0.2 0.4
     originjitter 1.75 1.75 1.75
     velocitymultiplier 1
     trailspacing 16
@@ -1253,8 +1238,8 @@
   //TE_EMP_TRAIL - LIGHT
     effect TE_EMP_TRAIL
     countabsolute 1
-    lightradius 25
-    lightradiusfade 50
+    lightradius 100
+    lightradiusfade 75
     lightcolor 0.827 0.345 0.969
     lightshadow 0
 
@@ -1281,8 +1266,7 @@
     tex 41 41
     size 12 14
     sizeincrease -1
-    alpha 175 200 100
-    time 3 6
+    alpha 200 300 275
   
   //TE_EMP_EXPL - SPARKS
     effect TE_EMP_EXPL
@@ -1293,8 +1277,7 @@
     tex 40 40
     size 0.2 0.4
     sizeincrease 2
-    alpha 128 128 64
-    time 2 3
+    alpha 256 256 128
     originjitter 1.75 1.75 1.75
     velocityjitter 10 10 10
     velocitymultiplier 20
@@ -1361,7 +1344,7 @@
     tex 32 32
     size 1 1.5
     sizeincrease 0.33
-    alpha 250 300 150
+    alpha 512 512 660
     time 8 10
     originjitter 0.2 0.2 0.2
     trailspacing 32
@@ -1390,11 +1373,11 @@
     tex 40 40
     size 0.2 0.4
     sizeincrease 2
-    alpha 96 96 64
+    alpha 256 256 325
     originjitter 1.75 1.75 1.75
     velocityjitter 4 4 4
     velocitymultiplier -0.005
-    trailspacing 64
+    trailspacing 16
   
   //TE_ION_TRAIL - SPARK CLOUD
     effect TE_ION_TRAIL
@@ -1409,14 +1392,14 @@
     time 0.2 0.4
     originjitter 1.75 1.75 1.75
     velocitymultiplier 1
-    trailspacing 32
+    trailspacing 24
     rotate 0 180 75 100
     
   //TE_ION_TRAIL - LIGHT
     effect TE_ION_TRAIL
     countabsolute 1
-    lightradius 33
-    lightradiusfade 50
+    lightradius 100
+    lightradiusfade 75
     lightcolor 0.2 0.2 0.45
     lightshadow 0
   
@@ -1429,8 +1412,7 @@
     tex 26 31
     size 3 4
     sizeincrease 3
-    alpha 16 32 -50
-    time 1 3
+    alpha 128 128 256
     originjitter 1 1 1
     velocityjitter 1 1 1
     
@@ -1466,8 +1448,8 @@
   //TE_ION_EXPL - LIGHT
     effect TE_ION_EXPL
     countabsolute 1
-    lightradius 33
-    lightradiusfade 50
+    lightradius 67
+    lightradiusfade 80
     lightcolor 0.5 0.5 0.75
     lightshadow 0
 
@@ -1480,8 +1462,7 @@
     tex 40 40
     size 0.2 0.4
     sizeincrease 2
-    alpha 128 128 32
-    time 1 2
+    alpha 256 256 128
     originjitter 1.75 1.75 1.75
     velocityjitter 10 10 10
     velocitymultiplier 20

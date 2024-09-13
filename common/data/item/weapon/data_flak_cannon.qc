@@ -47,18 +47,7 @@ void() te_muzzle_flk={
       traceline (startOrg, startOrg + (v * self.w_range), FALSE, self.owner);
       impactStyle = te_impact_type(trace_endpos, trace_ent, trace_dphitcontents);
       
-      trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, trace_endpos);
-      
-      switch(impactStyle){
-        case IMPACT_ARMOR:
-          pointparticles( particleeffectnum("TE_FLK_IMPACT"), endOrg + (v_forward * -32), norm * 4, 1);
-          break;
-        case IMPACT_DIRT:
-          pointparticles( particleeffectnum("TE_FLK_DIRT"), endOrg + (v_up * 3) + (v_forward * -7), norm * 20, 1);
-          break;
-        default:
-          return;
-      }
+      trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, startOrg + (v * 32));
       shrap = shrap - 1;
     }
   }
@@ -161,7 +150,11 @@ void() data_ini_attack_flak_={
         if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
           self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
         }
+        pointparticles( particleeffectnum("TE_FLK_IMPACT"), trace_endpos + (v_forward * -16), dir * -4, 1);
       }
+    }
+    else{
+      pointparticles( particleeffectnum("TE_FLK_DIRT"), trace_endpos + (v_forward * -4), dir * -8, 1);
     }
     totes = totes - 1;
   }
