@@ -107,6 +107,35 @@ void() data_ini_attack_electro_repeater_;
 #endif 
 
 #ifdef CSQC
+void() te_beam_esr={
+  local vector bAngl;
+  local float segment;
+  local vector segOrg;
+  local vector nexOrg;
+  local float itr;
+  local float width;
+
+  bAngl = vectoangles(self.beamEnd - self.wepFireOffset);
+  bAngl_x = bAngl_x * -1;
+
+  makevectors(bAngl);
+  
+  segment = rint(vlen(self.beamEnd - self.wepFireOffset) / 6);
+  segOrg = self.wepFireOffset;
+  width = self.beamWidth;
+
+  for( itr = 0; itr < 6; itr = itr + 1){
+    nexOrg = self.wepFireOffset + (v_forward * segment * itr) + (v_right * random() * 6) + (v_up * random() * 6);
+
+    Draw_CylindricLine(segOrg, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+    
+    width = max(1, width - 1);
+
+    segOrg = nexOrg;
+  }
+  Draw_CylindricLine(segOrg, self.beamEnd, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+
+};
 void() te_muzzle_esr={
   local vector startOrg;
   local vector endOrg;
@@ -122,7 +151,7 @@ void() te_muzzle_esr={
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   
-  trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
+  //trailparticles( world, particleeffectnum("TE_ESR_RAIL"), startOrg, endOrg );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
@@ -137,6 +166,12 @@ void() te_muzzle_esr={
       pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
     }
   }
+
+  self.beamTime = time + 0.05;
+  self.beamOrg = startOrg;
+  self.beamEnd = endOrg;
+  self.beamWidth = 5.0;
+  self.beamActive = TRUE;
 };
 #endif
 void() data_ini_electro_repeater_={
@@ -172,6 +207,7 @@ void() data_ini_electro_repeater_={
   self.description = "+ Instant-impact weapon. + Rate of Fire spin up/cool down. + Damage reduced by 50% against <shields>";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
   self.itemMuzzleFlash = te_muzzle_esr;
+  self.effect_beam = te_beam_esr;
 #endif
 
 #ifdef SSQC

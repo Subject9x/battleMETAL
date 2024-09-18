@@ -178,6 +178,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     // and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
     
   }
+  
   renderscene();
   
   //DATA - Update local Client data vars from Server
@@ -216,6 +217,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);
+
     }
     //HUD sound system
     snd_hud_vfx_frame();
@@ -241,6 +243,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   if(ANM_FILE_STATUS == 1){
     anm_execute_frame();
   }
+
   
   if( cvar("developer") ){
     
@@ -253,8 +256,8 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     //drawstring(porg + '1 -30', strcat("Player Origin: ", vtos(getpropertyvec(VF_ORIGIN))), '8 8 0', '0.85 0.85 0.85', 1, 0);
     //version wille eventually be only displayed as needed.
     gui_drawversion();
-    drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos([w,h])), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 24', sprintf("VF_SIZE  = %s", vtos(getpropertyvec(VF_SIZE))), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 32', sprintf("W/H  = %s", vtos([w,h])), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 40', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 48', sprintf("VF_ORIGIN       = %s", vtos(getpropertyvec(VF_ORIGIN))), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 56', sprintf("VF_ANGLES       = %s", vtos(getpropertyvec(VF_ANGLES))), '8 8', '0.85 0.85 0.85', 1, 0);
@@ -262,20 +265,21 @@ void(float w, float h, float menuView) CSQC_UpdateView =
     local vector mpos;
     mpos = getmousepos();
     if(MENU_ACTIVE){
-      drawstring(VIEW_ORG + '0 64', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
+     // drawstring(VIEW_ORG + '0 64', sprintf("UI mouse  = %0.2f %0.2f", mpos_x - UI_ORG_x, mpos_y - UI_ORG_y), '8 8', '0.85 0.85 0.85', 1, 0);
     }
     else{
-      drawstring(VIEW_ORG + '0 64', sprintf("Hud offset    = %s", vtos(CLIENT_server_ent.hud_StrutsOffset)), '8 8', '0.85 0.85 0.85', 1, 0);
+      //drawstring(VIEW_ORG + '0 64', sprintf("Hud offset    = %s", vtos(CLIENT_server_ent.hud_StrutsOffset)), '8 8', '0.85 0.85 0.85', 1, 0);
     }
-    drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 72', sprintf("DBG_PREDRAW_ORG = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
+   // drawstring(VIEW_ORG + '0 72', sprintf("DBG_PREDRAW_ORG = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 80', sprintf("pmove_org        = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 92',  sprintf("torso org      = %s", vtos(CLIENT_server_ent.torC_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 100', sprintf("left torso org = %s", vtos(CLIENT_server_ent.torL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 108', sprintf("right torso org= %s", vtos(CLIENT_server_ent.torR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 92',  sprintf("torso org      = %s", vtos(CLIENT_server_ent.torC_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 100', sprintf("left torso org = %s", vtos(CLIENT_server_ent.torL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 108', sprintf("right torso org= %s", vtos(CLIENT_server_ent.torR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     drawstring(VIEW_ORG + '0 116', sprintf("left arm org   = %s", vtos(CLIENT_server_ent.armL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 124', sprintf("right arm org  = %s", vtos(CLIENT_server_ent.armR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 132', sprintf("legs org       = %s", vtos(CLIENT_server_ent.legs_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 124', sprintf("left arm angl  = %s", vtos(CLIENT_server_ent.armL_angl)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 124', sprintf("right arm org  = %s", vtos(CLIENT_server_ent.armR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    //drawstring(VIEW_ORG + '0 132', sprintf("legs org       = %s", vtos(CLIENT_server_ent.legs_org)), '8 8', '0.85 0.85 0.85', 1, 0);
   }
 };

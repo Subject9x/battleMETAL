@@ -147,8 +147,11 @@ void() data_projectile_snub_artillery_touch_={
     if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
       self.impactType = IMPACT_DIRT;
       debris = ceil(random() * 4);
+      data_projectile_snub_artillery_radiusDamage();
     }
-    data_projectile_snub_artillery_radiusDamage();
+    else if( (trace_dphitcontents & DPCONTENTS_SKY) || (trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
+      debris = 0;
+    }
   }
   if( debris > 0 ){
     te_debris( self.origin, vectoangles(self.velocity), self.velocity, debris, min(3, rint(0.5+ (random() * 3))) );

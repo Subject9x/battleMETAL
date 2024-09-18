@@ -160,6 +160,12 @@ float PTC_WRECK_SMOKE;
 .float count1;
 //.vector dest;
 
+.void() effect_beam;
+.float beamActive;
+.vector beamOrg;
+.vector beamEnd;
+.float beamWidth;
+.float beamTime;
 //===================================
 
 void() particle_sys_ini_globals;
@@ -171,6 +177,8 @@ vector() te_read_angle;
 //AI voice selector
 void( float randomBool ) ai_voice_ini;
 
+void (vector from, vector to, float thickness, string texture, float aspect, float shift, vector rgb, float theAlpha, float drawflag, vector vieworg) Draw_CylindricLine;
+void (vector from, vector to, float thickness, string texture, float aspect, float shift, vector rgb, float theAlpha, float drawflag, vector vieworg) Draw_CrossPlanesLine;
 
 //ported from effectinfo_api
 void( vector org, vector windVel ) te_mech_crit;

@@ -16,6 +16,9 @@ void() data_ini_attack_laser_;
 #endif
  
 #ifdef CSQC
+void() te_beam_las={
+  Draw_CylindricLine(self.wepFireOffset, self.beamEnd, self.beamWidth, "particles/laserbeam", 0.5, time * (random() * -6), '1.0 0.33 0.67', 0.75, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+};
 void() te_muzzle_las={
   local vector startOrg;
   local vector endOrg;
@@ -35,17 +38,22 @@ void() te_muzzle_las={
   else{
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
   }
-  
-  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
-  
+
+  self.beamTime = time + 0.2;
+  self.beamOrg = startOrg;
+  self.beamEnd = endOrg;
+  self.beamWidth = 3.0;
+  self.beamActive = TRUE;
+
+  //trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
     pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, norm * -2, 1);
     if(impactStyle == IMPACT_ARMOR){
-        pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg + (v_forward * -2), norm, 1);
+        pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg + (norm * -2), norm, 1);
     }
     else if(impactStyle == IMPACT_DIRT){
-      pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg + (v_forward * -2), norm, 1);
+      pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg + (norm * -2), norm, 1);
       pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
     }
   }
@@ -82,6 +90,7 @@ void() data_ini_light_laser_={
   self.description = "+ Instant-impact weapon. + bonus damage against <shields>.";
   self.icon = "gfx/ui/wep_icons/wi_las.png";
   self.itemMuzzleFlash = te_muzzle_las;
+  self.effect_beam = te_beam_las;
 #endif
 
 #ifdef SSQC

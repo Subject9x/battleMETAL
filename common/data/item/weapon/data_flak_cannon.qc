@@ -114,7 +114,8 @@ void() data_ini_attack_flak_={
   local vector dir;
   local float totes;
   local float damage;
-      
+  local float contents;
+  
   cacheSpread = self.spreadDefault;
   self.spreadDefault = '0 0 0';
   
@@ -153,9 +154,10 @@ void() data_ini_attack_flak_={
         pointparticles( particleeffectnum("TE_FLK_IMPACT"), trace_endpos + (v_forward * -16), dir * -4, 1);
       }
     }
-    else{
+    else if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitq3surfaceflags & DPCONTENTS_BODY) ){
       pointparticles( particleeffectnum("TE_FLK_DIRT"), trace_endpos + (v_forward * -4), dir * -8, 1);
     }
+    
     totes = totes - 1;
   }
 };

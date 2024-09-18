@@ -34,6 +34,7 @@ void( float dataID ) data_sync_new_vehicle={
   }
   
   self.skin =  self.faction - 1;
+  self.solid = SOLID_SLIDEBOX;
   self.data_type = DATA_VEHC;
   self.deadflag = DEAD_NO;
   self.critBits = 0;

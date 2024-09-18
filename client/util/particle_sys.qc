@@ -59,6 +59,59 @@ vector() te_read_angle={
   return newa;
 };
 
+vector (vector a, vector b ) crossProduct={
+
+  local vector cross;
+  cross_x = (a_y * b_z) - (a_z * b_y);
+  cross_y = (a_z * b_x) - (a_x * b_z);
+  cross_z = (a_x * b_y) - (a_y * b_x);
+
+  return cross;
+};
+
+/**
+  pulled from Xonotic for very nice beams.
+*/
+void (vector from, vector to, float thickness, string texture, float aspect, float shift, vector rgb, float theAlpha, float drawflag, vector vieworg) Draw_CylindricLine={
+    // I want to draw a quad...
+    // from and to are MIDPOINTS.
+    local vector axis;
+    local vector thickdir;
+    local vector A;
+    local vector B;
+    local vector C;
+    local vector D;
+
+    local float length_tex;
+
+    axis = normalize(to - from);
+
+    length_tex = aspect * vlen(to - from) / thickness;
+
+    // direction is perpendicular to the view normal, and perpendicular to the axis
+
+    //Subject9x- somehow this is bugged in vanilla DP QC, or perhaps my code, but it doesn't auto-orient the way the func says it should.
+    // as a lame hack I've just made the polygon double sided.
+    thickdir = normalize( crossProduct(axis, vieworg - from) );
+
+    A = from - thickdir * (thickness / 2);
+    B = from + thickdir * (thickness / 2);
+    C = to + thickdir * (thickness / 2);
+    D = to - thickdir * (thickness / 2);
+
+    R_BeginPolygon(texture, drawflag, FALSE);
+      R_PolygonVertex(A, '0 0 0' + shift * '1 0 0', rgb, theAlpha);
+      R_PolygonVertex(B, '0 1 0' + shift * '1 0 0', rgb, theAlpha);
+      R_PolygonVertex(C, '0 1 0' + (shift + length_tex) * '1 0 0', rgb, theAlpha);
+      R_PolygonVertex(D, '0 0 0' + (shift + length_tex) * '1 0 0', rgb, theAlpha);
+      //reverse order for primitive double-sided effect.
+      R_PolygonVertex(D, '0 0 0' + (shift + length_tex) * '1 0 0', rgb, theAlpha);
+      R_PolygonVertex(C, '0 1 0' + (shift + length_tex) * '1 0 0', rgb, theAlpha);
+      R_PolygonVertex(B, '0 1 0' + shift * '1 0 0', rgb, theAlpha);
+      R_PolygonVertex(A, '0 0 0' + shift * '1 0 0', rgb, theAlpha);
+    R_EndPolygon();
+};
+
 /*
   Ported from SSQC, ai_voice system now CSQC implemented, but
   driven by SendEnt events.

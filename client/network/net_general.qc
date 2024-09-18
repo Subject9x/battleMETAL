@@ -507,6 +507,7 @@ vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
       where parent.origin has already been calculated.
 */
 void(entity item) predraw_unit_weapon={
+  local entity this;
   local vector pOfs;
   local vector drawAng;
   local vector offset;
@@ -557,6 +558,19 @@ void(entity item) predraw_unit_weapon={
     item.angles = T_PART_PARENT_ANGL;
   }
   addentity(item);
+
+  if(item.effect_beam){
+    if(item.beamActive){  
+      this = self;
+      self = item;
+        item.effect_beam();
+        if(time > item.beamTime){
+          item.beamActive = FALSE;
+        }
+      self = this;
+    }
+  }
+
 };
 
 void(entity item) predraw_unit_weapon_tank={
