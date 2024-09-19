@@ -108,6 +108,7 @@ void() data_ini_attack_electro_repeater_;
 
 #ifdef CSQC
 void() te_beam_esr={
+  local float segCount;
   local vector bAngl;
   local float segment;
   local vector segOrg;
@@ -115,17 +116,22 @@ void() te_beam_esr={
   local float itr;
   local float width;
 
+  segCount = 6;
+  width = self.beamWidth;
+  segment = rint(vlen(self.beamEnd - self.wepFireOffset) / segCount);
+  segOrg = self.wepFireOffset;
+
   bAngl = vectoangles(self.beamEnd - self.wepFireOffset);
   bAngl_x = bAngl_x * -1;
 
   makevectors(bAngl);
-  
-  segment = rint(vlen(self.beamEnd - self.wepFireOffset) / 6);
-  segOrg = self.wepFireOffset;
-  width = self.beamWidth;
+  nexOrg = self.wepFireOffset + (v_forward * segment) + (v_right * crandom() * 4) + (v_up * crandom() * 6);
+  Draw_CylindricLine(self.wepFireOffset, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+  segOrg = nexOrg;
+  segCount = segCount - 1;
 
-  for( itr = 0; itr < 6; itr = itr + 1){
-    nexOrg = self.wepFireOffset + (v_forward * segment * itr) + (v_right * random() * 6) + (v_up * random() * 6);
+  for( itr = segCount; itr < (segment-2); itr = itr + 1){
+    nexOrg = self.wepFireOffset + (v_forward * segment * itr) + (v_right * crandom() * 2) + (v_up * crandom() * 4);
 
     Draw_CylindricLine(segOrg, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
     
@@ -170,7 +176,7 @@ void() te_muzzle_esr={
   self.beamTime = time + 0.05;
   self.beamOrg = startOrg;
   self.beamEnd = endOrg;
-  self.beamWidth = 5.0;
+  self.beamWidth = 4.0;
   self.beamActive = TRUE;
 };
 #endif

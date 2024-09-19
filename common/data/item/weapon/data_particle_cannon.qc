@@ -16,6 +16,13 @@ void() data_ini_attack_particle_cannon_;
 #endif
 
 #ifdef CSQC
+void() te_pac_beam={
+  
+  self.beamWidth = self.beamWidth + (3 * frametime);
+  self.beamAlpha = self.beamAlpha - (0.1 * frametime);
+  Draw_CylindricLine(self.wepFireOffset, self.beamEnd, self.beamWidth, "particles/pac_beam", 1.0, time * -3.0, '0.98 0.68 0.23', self.beamAlpha, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+
+};
 void() te_muzzle_pac={
   local vector startOrg;
   local vector endOrg;
@@ -27,8 +34,6 @@ void() te_muzzle_pac={
   endOrg = trace_endpos;
   norm = normalize(endOrg - startOrg);
   
-  //pointsound( startOrg, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM);
-  
   if( vlen(endOrg - startOrg) >= 1500 ){
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 185, 0 );
   }
@@ -36,7 +41,7 @@ void() te_muzzle_pac={
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.2 + (random() * 0.8)) * 100, 0 );
   }
   
-  trailparticles( world, particleeffectnum("TE_PAC_RAIL"), startOrg, endOrg );
+  //trailparticles( world, particleeffectnum("TE_PAC_RAIL"), startOrg, endOrg );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_PAC_MUZZLE"), startOrg, norm * 2, 1);
@@ -51,6 +56,12 @@ void() te_muzzle_pac={
       pointparticles(PTC_HIT_DIRT_ENE_LRG, endOrg, trace_plane_normal * -1, 1);
     }
   }
+
+  self.beamActive = TRUE;
+  self.beamEnd = endOrg;
+  self.beamWidth = 3.0;
+  self.beamTime = time + 1.0;
+  self.beamAlpha = 0.8;
 };
 #endif
 void() data_ini_particle_cannon_={
@@ -86,6 +97,7 @@ void() data_ini_particle_cannon_={
   self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage.";
   self.icon = "gfx/ui/wep_icons/wi_pac.png";
   self.itemMuzzleFlash = te_muzzle_pac;
+  self.effect_beam = te_pac_beam;
 #endif 
 
 #ifdef SSQC
