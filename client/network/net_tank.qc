@@ -21,6 +21,8 @@ void() sendevent_tank_die={
   pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
 };
 
+
+
 /*
   SendEntity - Tank =======================================
 */
@@ -175,7 +177,7 @@ void() interpolate_tank={
 	setorigin(self, self.origin);
   
   makevectors(self.angles);
-  traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
+  traceline(self.rootOrigin, self.rootOrigin - (v_up * 512), TRUE, self);
   
   self.rootOrigin = self.origin;
   self.rootAngle = self.angles;
@@ -209,11 +211,6 @@ void() interpolate_tank={
   if(  PVS_FAIL || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
-
-  // self.cl_lod_unit = TRUE;
-  // if( (trace_fraction != 1.0 && trace_ent == world) || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
-  //   self.cl_lod_unit = FALSE;
-  // }
   
   if( self.cl_lod_unit ){
     self.cl_lod_weapon = TRUE;
@@ -237,9 +234,11 @@ void() interpolate_tank={
       self.torC_org = chasOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
       
       setmodel(self, self.torC_mdl);
-      self.origin =  self.torC_org;
+      
+      self.origin = self.torC_org;
       self.angles = self.torC_angl;
       addentity(self);
+      
       self.origin = self.rootOrigin;
       self.angles = self.rootAngle;
       setsize(self, self.cache_mins, self.cache_maxs);
@@ -252,6 +251,7 @@ void() interpolate_tank={
     
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon_tank(self.weaponEnt1);
+        //Draw_CylindricLine(self.weaponEnt1.wepFireOffset, self.laser_sight_org, 1.0, "particles/laserbeam", 1.0, time * 0.1, '1.0 1.0 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
       }
       if(self.weaponEnt2.data_idx){
         predraw_unit_weapon_tank(self.weaponEnt2);
@@ -282,6 +282,7 @@ void() interpolate_tank={
   setsize(self, self.cache_mins, self.cache_maxs);
   setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
+
 };
 
 void() predraw_tank={

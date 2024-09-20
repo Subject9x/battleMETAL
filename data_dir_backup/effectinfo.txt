@@ -130,9 +130,8 @@
     orientation spark
     color 0xF5DA81 0xE6E6E6
     tex 44 46
-    size 0.25 0.65
+    size 0.67 1.67
     alpha 256 512 256
-    time 0.65 0.9
     originjitter 3 3 3
     velocityjitter 10 10 10
     velocitymultiplier 2
@@ -147,9 +146,8 @@
     orientation spark
     color 0x00BFFF 0xA9F5F2
     tex 38 41
-    size 0.25 0.65
+    size 0.75 1.5
     alpha 256 512 1024
-    time 0.35 0.55
     originjitter 0.25 0.25 0.25
     velocityjitter 30 30 30
     velocitymultiplier 3
@@ -167,7 +165,6 @@
     size 0.75 1
     sizeincrease 0.5
     alpha 512 1024 512
-    time 0.25 0.35
     notunderwater
     stretchfactor 3
     
@@ -198,9 +195,8 @@
     orientation spark
     color 0xFAAC58 0x81F7F3
     tex 38 41
-    size 0.25 0.65
-    alpha 256 512 128
-    time 0.3 0.5
+    size 0.33 1.33
+    alpha 400 500 512
     originjitter 0.1 0.1 0.1
     velocityjitter 10 10 10
     velocitymultiplier -1
@@ -216,8 +212,8 @@
     blend alpha
     color 0xFAAC58 0x81F7F3
     tex 63 63
-    size 1 2
-    alpha 256 512 650
+    size 2 3
+    alpha 400 500 400
     originjitter 0.1 0.1 0.1
     velocitymultiplier 0
     notunderwater
@@ -226,7 +222,7 @@
     effect TE_ESR_IMPACT_ARMOR
     countabsolute 1
     lightradius 15
-    lightradiusfade 100
+    lightradiusfade 5
     lightcolor 0.875 0.004 0.004
     lightshadow 0
   
@@ -239,7 +235,6 @@
     tex 43 45
     size 1 2
     alpha 256 512 180
-    time 1 2
     originjitter 0.25 0.25 0.25
     velocityoffset 5 5 5
     velocityjitter 25 25 25
@@ -258,7 +253,6 @@
     size 2 4
     sizeincrease 1
     alpha 185 370 256
-    time 2 4
     originjitter 0.1 0.1 0.1
     velocitymultiplier 0
     notunderwater
@@ -267,7 +261,7 @@
     effect TE_ESR_IMPACT_SHIELD
     countabsolute 1
     lightradius 15
-    lightradiusfade 100
+    lightradiusfade 5
     lightcolor 0.031 0.031 0.541
     lightshadow 0
   

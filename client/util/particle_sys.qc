@@ -245,11 +245,13 @@ void() cl_particles_fogFrame={
 void(entity item) te_weapon_fire_handler={
   local entity this;
   local entity parent;
+  local vector unitOrg;
   local vector view;
   local vector adjPartOffset;
   local vector offset;
   
   view = self.rootAngle;
+
   view_x = 0;
   makevectors(view);
 
@@ -257,7 +259,13 @@ void(entity item) te_weapon_fire_handler={
   self = item;
     util_getPartFromName( self.partParentId, this);
     
-    offset = this.rootOrigin + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
+    if(this.data_type == DATA_VEHC){
+      unitOrg = this.cacheGroundPos;
+    }
+    else{
+      unitOrg = this.rootOrigin;
+    }
+    offset = unitOrg + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
     if(this.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){

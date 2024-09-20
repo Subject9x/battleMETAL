@@ -26,7 +26,7 @@ void() ctrl_updateTank={
   self.torC_org = self.tankChassisOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
   
   makevectors(self.v_angle);
-  v1 = self.origin + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
+  v1 = self.tankChassisOrg + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;

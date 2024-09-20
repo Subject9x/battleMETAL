@@ -44,9 +44,9 @@ void( float isNew, float changeFlags) sendent_handle_spg={
     self.angles_x = anglemod(ReadAngle());
     self.angles_y = anglemod(ReadAngle());
     self.angles_z = 0;
+    self.v_angle = self.angles;
   }
   
-  self.v_angle = self.angles;
   
   if( (changeFlags & SENDFLAG_DEAD) ){
     self.deadflag = ReadByte();

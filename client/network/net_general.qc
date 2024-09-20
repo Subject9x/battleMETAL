@@ -40,8 +40,15 @@ void() sendent_empty_think={
 void() sendent_ai_think={
   local vector v1;
   
-  makevectors(self.v_angle);
-  v1 = self.origin;
+  
+  if((self.flags & FL_TURRET)){
+    makevectors(self.torC_angl);
+    v1 = self.torC_org;
+  }
+  else{
+    makevectors(self.angles);
+    v1 = self.origin;
+  }
   traceline(v1, v1 + v_forward*10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   
@@ -574,6 +581,7 @@ void(entity item) predraw_unit_weapon={
 };
 
 void(entity item) predraw_unit_weapon_tank={
+  local entity this;
   local vector pOfs;
   local vector drawAng;
   local vector offset;
@@ -603,9 +611,9 @@ void(entity item) predraw_unit_weapon_tank={
   else{
     offset = T_PART_PARENT_ORG;
     drawAng = T_PART_PARENT_ANGL;
-    drawAng_x = drawAng_x *-1;
     item.angles = T_PART_PARENT_ANGL;
   }
+  drawAng_x = drawAng_x *-1;
   
   makevectors( drawAng);
   offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
@@ -616,6 +624,17 @@ void(entity item) predraw_unit_weapon_tank={
   item.origin = offset;
   
   addentity(item);
+  if(item.effect_beam){
+    if(item.beamActive){  
+      this = self;
+      self = item;
+        item.effect_beam();
+        if(time > item.beamTime){
+          item.beamActive = FALSE;
+        }
+      self = this;
+    }
+  }
 };
 
 void() render_mech_effect_burning={
