@@ -178,11 +178,10 @@ void() map_damage_zone_crs_think={
 
           t_damage_shield(unit, self, world, self.damageValue, unit.origin, TRUE);
 
-          org = self.view_ofs + randompos(self.maxs, self.mins);
-          hit = unit.origin + randompos(unit.maxs, unit.mins);
-
-          trailparticles( unit, particleeffectnum("TE_CRYS_RAIL"), org, hit );
-          pointparticles(particleeffectnum("TE_CRYS_MUZZLE"), org, normalize(hit - org) * 10, 2);
+          org = self.view_ofs + (randompos(self.maxs, self.mins) * 0.5);
+          hit = unit.origin + (randompos(unit.maxs, unit.mins) * 0.85);
+          traceline(org, hit, MOVE_NORMAL, self);
+          client_send_particle_rail( 1, org, trace_endpos, 4 );
 
           if( (unit.flags & FL_CLIENT) ){
             self.SendFlags = self.SendFlags | SENDFLAG_CRIT;

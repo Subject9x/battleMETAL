@@ -741,14 +741,6 @@ void() spawnpoint_Random={
 	self.fixangle = TRUE;	
 };
 
-void() legacy_PlayerDie={
-	//self.items = self.items - (self.items & (IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
-	//self.invisible_finished = 0;
-	//self.invincible_finished = 0;
-	//self.super_damage_finished = 0;
-	//self.radsuit_finished = 0;
-};
-
 float(float hpCurrent, float hpTotal) csqc_updateCompStat={
   local float perc;
   perc = 0;
@@ -770,22 +762,29 @@ void( float particleEffectId, vector particleOrg, vector particleVel, float part
   WriteCoord(MSG_BROADCAST, particleOrg_x);
   WriteCoord(MSG_BROADCAST, particleOrg_y);
   WriteCoord(MSG_BROADCAST, particleOrg_z);
+
   WriteCoord(MSG_BROADCAST, particleVel_x);
   WriteCoord(MSG_BROADCAST, particleVel_y);
   WriteCoord(MSG_BROADCAST, particleVel_z);
+  
   WriteShort(MSG_BROADCAST, particleCount);
 };
 
-void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail={
+//void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail={
+void(float beamType, vector particleOrg, vector particleEnd, float width) client_send_particle_rail={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_VFX_RAIL );
-  WriteShort( MSG_BROADCAST, particleEffectId );
+  WriteByte( MSG_BROADCAST, beamType );
+
   WriteCoord(MSG_BROADCAST, particleOrg_x);
   WriteCoord(MSG_BROADCAST, particleOrg_y);
   WriteCoord(MSG_BROADCAST, particleOrg_z);
+
   WriteCoord(MSG_BROADCAST, particleEnd_x);
   WriteCoord(MSG_BROADCAST, particleEnd_y);
   WriteCoord(MSG_BROADCAST, particleEnd_z);
+  
+  WriteFloat(MSG_BROADCAST, width);
 };
 
 /*

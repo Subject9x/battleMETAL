@@ -85,13 +85,15 @@ void() CS_PlayerPhysics =
 		// acceleration
 		wishdir = normalize(wishvel);
 		wishspeed = vlen(wishvel);
-		if (wishspeed > cs_maxspeed)
+		if (wishspeed > cs_maxspeed){
 			wishspeed = cs_maxspeed;
+		}
 		if (time >= self.teleport_time)
 		{
 			f = wishspeed - (self.velocity * wishdir);
-			if (f > 0)
+			if (f > 0){
 				self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
+			}
 		}
 	}
 	else if (self.waterlevel >= 2)
@@ -100,13 +102,14 @@ void() CS_PlayerPhysics =
 		makevectors(self.v_angle);
 		//wishvel = v_forward * self.movement_x + v_right * self.movement_y + v_up * self.movement_z;
 		wishvel = v_forward * self.movement_x + v_right * self.movement_y + '0 0 1' * self.movement_z;
-		if (wishvel == '0 0 0')
+		if (wishvel == '0 0 0'){
 			wishvel = '0 0 -60'; // drift towards bottom
-
+		}
 		wishdir = normalize(wishvel);
 		wishspeed = vlen(wishvel);
-		if (wishspeed > cs_maxspeed)
+		if (wishspeed > cs_maxspeed){
 			wishspeed = cs_maxspeed;
+		}
 		wishspeed = wishspeed * 0.7;
 
 		// water friction
@@ -114,8 +117,9 @@ void() CS_PlayerPhysics =
 
 		// water acceleration
 		f = wishspeed - (self.velocity * wishdir);
-		if (f > 0)
+		if (f > 0){
 			self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
+		}
 	}
 	else if (time < self.ladder_time)
 	{

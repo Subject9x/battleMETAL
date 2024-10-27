@@ -185,6 +185,8 @@ void( vector org, vector windVel ) te_mech_crit;
 
 void( entity item )te_weapon_fire_handler;
 
+void(float beamType, vector particleOrg, vector particleEnd, float width) particle_spawn_beam;
+
 //void() te_explode_mech_piece_th;
 //void(entity piece) te_explode_mech_piece;
 

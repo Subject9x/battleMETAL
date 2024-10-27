@@ -1085,6 +1085,99 @@ void(vector dir, float count) CL_ParticleRain={
 };
 
 
+void() particle_beam_th={
+
+  if(time > self.beamTime){
+    self.beamActive = FALSE;
+    remove(self);
+  }
+}
+
+void() particle_beam_las_draw={
+  if(vlen(self.beamOrg - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE){
+   return;
+  }
+  if(self.beamActive == FALSE){
+    return;
+  }
+  Draw_CylindricLine(self.beamOrg, self.beamEnd, self.beamWidth, "particles/laserbeam", 0.5, time * (random() * -6), self.drawcolor1, 0.75, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+};
+
+void() particle_beam_lightning_draw={
+  local float segCount;
+  local vector bAngl;
+  local float segment;
+  local vector segOrg;
+  local vector nexOrg;
+  local float itr;
+  local float width;
+
+  if(vlen(self.beamOrg - CLIENT_vis_org)  > PARTICLE_HAZ_DISTANCE){
+   return;
+  }
+
+  if(self.beamActive == FALSE){
+    return;
+  }
+  segCount = 6;
+  width = self.beamWidth;
+  segment = rint(vlen(self.beamEnd - self.beamOrg) / segCount);
+  segOrg = self.beamOrg;
+
+  bAngl = vectoangles(self.beamEnd - self.beamOrg);
+  bAngl_x = bAngl_x * -1;
+  makevectors(bAngl);
+
+  nexOrg = self.beamOrg + (v_forward * segment) + (v_right * crandom() * 4) + (v_up * crandom() * 6);
+  Draw_CylindricLine(self.beamOrg, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+  segOrg = nexOrg;
+  segCount = segCount - 1;
+
+  for( itr = segCount; itr < (segment-2); itr = itr + 1){
+    nexOrg = self.beamOrg + (v_forward * segment * itr) + (v_right * crandom() * 2) + (v_up * crandom() * 4);
+
+    Draw_CylindricLine(segOrg, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+    
+    width = max(1, width - 1);
+
+    segOrg = nexOrg;
+  }
+  Draw_CylindricLine(segOrg, self.beamEnd, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+
+};
+
+
+
+//float beamType, vector particleOrg, vector particleEnd, float width, float aspect, float shift, vector colr, float alph
+void(float beamType, vector particleOrg, vector particleEnd, float width) particle_spawn_beam={
+
+  local entity ent;
+
+  ent = spawn();
+  if(!ent){
+    return;
+  }
+  if(beamType == 0){
+    ent.predraw = particle_beam_las_draw;
+    ent.nextthink = time + 0.2;
+  }
+  else{
+    ent.predraw = particle_beam_lightning_draw;
+    ent.nextthink = time + 0.075;
+  }
+  ent.drawmask = MASK_NORMAL;
+  ent.origin = particleOrg;
+  ent.solid = SOLID_NOT;
+  ent.movetype = MOVETYPE_NONE;
+  setsize(ent, '-1 -1 -1', '1 1 1');
+  setorigin(ent, ent.origin);
+  ent.beamOrg = particleOrg;
+  ent.beamEnd = particleEnd;
+  ent.beamWidth = width;
+  ent.beamActive = TRUE;
+  ent.think = particle_beam_th;
+
+};
 
 //maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.
 /*

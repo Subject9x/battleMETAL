@@ -68,7 +68,7 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
       
     case TE_VFX_RAIL:
-      trailparticles( world, ReadShort(), te_read_vector(), te_read_vector() );
+      particle_spawn_beam(ReadByte(), te_read_vector(), te_read_vector(), ReadFloat());
       return TRUE;
      
     case TE_PARTICLE_CUBE:
