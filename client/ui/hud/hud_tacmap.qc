@@ -152,9 +152,7 @@ void() hud_render_tactical_map={
   }
   
   //render player pointer
-  //arrow = gui_angleToArrow(input_angles_y - 90);
-  arrowAng = anglemod( 90 - view_angles_y);
-  makevectors(view_angles);
+  arrowAng = anglemod( view_angles_y + 270);
   playerMapOrg = gui_mapCoordToImgCoord(mapMins, map_size, CLIENT_vis_org, mapOrg, mapImgSize);
   drawrotpic(playerMapOrg, "gfx/hud/map_up.png", '12 12', '6 6', arrowAng, '0.25 1 2', 1, 0);
 };

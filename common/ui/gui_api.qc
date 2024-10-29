@@ -168,8 +168,7 @@ vector(vector startSize, vector targsize) gui_newAspectRatio={
 };
 
 float(float pct, float ox, float mx) gui_percentCustom={
-  pct = pct / ox;
-  pct = pct * mx;
+  pct = (pct / ox) * mx;
   return pct;
 };
 
@@ -342,17 +341,19 @@ void( vector org, vector siz, vector fontSize, vector colr, float alpha, float d
   drawpic(vOrg + [i * celSize, 0], TEXT64_RT, [celSize,celSize], colr, alpha, drawFlag);
 };
 
+/*
+  Projects 3D engine coords to a 2D map space, attempting to correct for abnormal map sizes.
 
+*/
 vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord={
   local vector mapCenter, objectTransform, objectPercent, objectUIOrg;
   
-  mapCenter_x = ((areaMins_x*-1)/areaMinAndMax_x) * areaMinAndMax_x;
-  mapCenter_x = areaMinAndMax_x - mapCenter_x;
-  
-  mapCenter_y = ((areaMins_y*-1)/areaMinAndMax_y) * areaMinAndMax_y;
-  mapCenter_y = areaMinAndMax_y - mapCenter_y;
-  
-  objectTransform = mapCenter - objectCoords;
+  mapCenter_x = ((areaMins_x * -1) / areaMinAndMax_x) * areaMinAndMax_x;
+
+  mapCenter_y = ((areaMins_y * -1) / areaMinAndMax_y) * areaMinAndMax_y;
+
+  objectTransform = objectCoords + mapCenter;
+  objectTransform_y = areaMinAndMax_y + (objectTransform_y * -1);
   objectTransform_z = 0;
   
   objectPercent = gui_percentCustomVec(objectTransform, areaMinAndMax, uiAreaSize);
