@@ -181,7 +181,7 @@ void() map_damage_zone_crs_think={
           org = self.view_ofs + (randompos(self.maxs, self.mins) * 0.5);
           hit = unit.origin + (randompos(unit.maxs, unit.mins) * 0.85);
           traceline(org, hit, MOVE_NORMAL, self);
-          client_send_particle_rail( 1, org, trace_endpos, 4 );
+          client_send_particle_rail( BEAM_ESR, FALSE, org, trace_endpos, 4, 0 );
 
           if( (unit.flags & FL_CLIENT) ){
             self.SendFlags = self.SendFlags | SENDFLAG_CRIT;

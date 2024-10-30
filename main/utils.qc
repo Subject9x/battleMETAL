@@ -127,11 +127,12 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
 //vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
-vector( vector viewAngle, float idealRange ) util_applySpreadToTrace={
+vector( vector fireOrg, vector viewAngle, float idealRange ) util_applySpreadToTrace={
   //local vector direction; //shot dispersion disabled
   //local vector acc;
   local vector wepAim;
   local vector targVel;
+  local vector endPos;
   
   targVel = '0 0 0';
   if( (self.owner.enemy.flags & FL_CLIENT) ){
@@ -155,7 +156,7 @@ vector( vector viewAngle, float idealRange ) util_applySpreadToTrace={
   }
   else{
     //Player aiming
-    wepAim = normalize( self.owner.laser_sight_org - FIRE_ORIGIN ); 
+    wepAim = normalize( self.owner.laser_sight_org - fireOrg ); 
   }  
   //08-2020: shot dispersion has been disabled because I can't find a clean/lightweight
   //means of sending this information over the network
@@ -168,11 +169,15 @@ vector( vector viewAngle, float idealRange ) util_applySpreadToTrace={
   //acc_y = acc_y * crandom();
   //direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
   
-  self.owner.dphitcontentsmask =  DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY ;
-    traceline (FIRE_ORIGIN, FIRE_ORIGIN + wepAim*idealRange, FALSE, self.owner);
+  self.owner.dphitcontentsmask =  (DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY) ;
+    traceline (fireOrg, fireOrg + (wepAim * idealRange), MOVE_MISSILE, self.owner);
   self.owner.dphitcontentsmask = 0;
   
-  return trace_endpos;
+  endPos_x = trace_endpos_x;
+  endPos_y = trace_endpos_y;
+  endPos_z = trace_endpos_z;
+
+  return endPos;
 };
 
 //simply returns a vector offset from an origin along a given angle

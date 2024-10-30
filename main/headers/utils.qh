@@ -44,7 +44,7 @@ void(entity ent, vector pnt) util_chekPointToHitDir;
 
 float(float numOfSides) util_roll_dice;
 
-vector( vector viewAngle, float idealRange) util_applySpreadToTrace;
+vector( vector fireOrg, vector viewAngle, float idealRange) util_applySpreadToTrace;
 vector( vector start, vector offsets, vector viewAngle) util_getOffsetOfVector;
 
 float(float v) anglemod;

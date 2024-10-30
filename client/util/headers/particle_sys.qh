@@ -183,9 +183,9 @@ void (vector from, vector to, float thickness, string texture, float aspect, flo
 //ported from effectinfo_api
 void( vector org, vector windVel ) te_mech_crit;
 
-void( entity item )te_weapon_fire_handler;
+void( entity item, entity parent )te_weapon_fire_handler;
 
-void(float beamType, vector particleOrg, vector particleEnd, float width) particle_spawn_beam;
+void(float beamType, float entId, vector particleOrg, vector particleEnd, float width, float impactType) particle_spawn_beam;
 
 //void() te_explode_mech_piece_th;
 //void(entity piece) te_explode_mech_piece;

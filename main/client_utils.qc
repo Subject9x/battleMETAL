@@ -759,32 +759,34 @@ void( float particleEffectId, vector particleOrg, vector particleVel, float part
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_VFX_POINT );
   WriteShort( MSG_BROADCAST, particleEffectId );
-  WriteCoord(MSG_BROADCAST, particleOrg_x);
-  WriteCoord(MSG_BROADCAST, particleOrg_y);
-  WriteCoord(MSG_BROADCAST, particleOrg_z);
+  WriteCoord(MSG_BROADCAST, particleOrg_x );
+  WriteCoord(MSG_BROADCAST, particleOrg_y );
+  WriteCoord(MSG_BROADCAST, particleOrg_z );
 
-  WriteCoord(MSG_BROADCAST, particleVel_x);
-  WriteCoord(MSG_BROADCAST, particleVel_y);
-  WriteCoord(MSG_BROADCAST, particleVel_z);
+  WriteCoord(MSG_BROADCAST, particleVel_x );
+  WriteCoord(MSG_BROADCAST, particleVel_y );
+  WriteCoord(MSG_BROADCAST, particleVel_z );
   
-  WriteShort(MSG_BROADCAST, particleCount);
+  WriteShort(MSG_BROADCAST, particleCount );
 };
 
-//void( float entityId, float particleEffectId, vector particleOrg, vector particleEnd ) client_send_particle_rail={
-void(float beamType, vector particleOrg, vector particleEnd, float width) client_send_particle_rail={
+
+void(float beamType, float entId, vector particleOrg, vector particleEnd, float width, float impactType) client_send_particle_rail={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_VFX_RAIL );
   WriteByte( MSG_BROADCAST, beamType );
+  WriteLong( MSG_BROADCAST, entId );
 
-  WriteCoord(MSG_BROADCAST, particleOrg_x);
-  WriteCoord(MSG_BROADCAST, particleOrg_y);
-  WriteCoord(MSG_BROADCAST, particleOrg_z);
+  WriteCoord( MSG_BROADCAST, particleOrg_x );
+  WriteCoord( MSG_BROADCAST, particleOrg_y );
+  WriteCoord( MSG_BROADCAST, particleOrg_z );
 
-  WriteCoord(MSG_BROADCAST, particleEnd_x);
-  WriteCoord(MSG_BROADCAST, particleEnd_y);
-  WriteCoord(MSG_BROADCAST, particleEnd_z);
+  WriteCoord( MSG_BROADCAST, particleEnd_x );
+  WriteCoord( MSG_BROADCAST, particleEnd_y );
+  WriteCoord( MSG_BROADCAST, particleEnd_z );
   
-  WriteFloat(MSG_BROADCAST, width);
+  WriteFloat( MSG_BROADCAST, width );
+  WriteByte( MSG_BROADCAST, impactType );
 };
 
 /*

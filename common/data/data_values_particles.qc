@@ -8,6 +8,11 @@ Overview:
   
 */
 
+//BEAMS
+#define BEAM_LAS 0
+#define BEAM_ESR 1
+#define BEAM_PAC 2
+
 //Projectile Impact Events
 #define IMPACT_SKY 0
 #define IMPACT_DIRT 1

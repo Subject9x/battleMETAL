@@ -52,4 +52,4 @@ void() client_update_faction;
 void() client_update_losses;
 
 void( float particleEffectId, vector particleOrg, vector particleVel, float particleCount ) client_send_particle;
-void(float beamType, vector particleOrg, vector particleEnd, float width) client_send_particle_rail;
+void(float beamType, float entId, vector particleOrg, vector particleEnd, float width, float impactType) client_send_particle_rail;

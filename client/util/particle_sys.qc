@@ -242,7 +242,7 @@ void() cl_particles_fogFrame={
   localcmd(newFog);*/
 };
 
-void(entity item) te_weapon_fire_handler={
+void(entity item, entity parent) te_weapon_fire_handler={
   local entity this;
   local entity parent;
   local vector unitOrg;
@@ -250,37 +250,35 @@ void(entity item) te_weapon_fire_handler={
   local vector adjPartOffset;
   local vector offset;
   
-  view = self.rootAngle;
-
+  view = parent.rootAngle;
   view_x = 0;
   makevectors(view);
 
   this = self;
   self = item;
     util_getPartFromName( self.partParentId, this);
+  self = this;
     
-    if(this.data_type == DATA_VEHC){
-      unitOrg = this.cacheGroundPos;
+    if(parent.data_type == DATA_VEHC){
+      unitOrg = parent.cacheGroundPos;
     }
     else{
-      unitOrg = this.rootOrigin;
+      unitOrg = parent.rootOrigin;
     }
     offset = unitOrg + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
     
     //FPV z-offset is corrected at the parent-part origin step!
-    if(this.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){
-      offset = offset + (v_forward * this.cameraOffset_z);
+    if(parent.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){
+      offset = offset + (v_forward * parent.cameraOffset_z);
     }
-    adjPartOffset = self.compOffset - T_PART_PARENT_OFFSET;
+    adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
     
     view = T_PART_PARENT_ANGL;
     view_x = view_x *-1;
     makevectors( view);
     offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
     
-    self.wepFireOffset = offset + (v_forward * self.wepFireOffsetCache_z) + (v_right * self.wepFireOffsetCache_x) + (v_up * self.wepFireOffsetCache_y);
-    self.itemMuzzleFlash();
-  self = this;
+    item.wepFireOffset = offset + (v_forward * item.wepFireOffsetCache_z) + (v_right * item.wepFireOffsetCache_x) + (v_up * item.wepFireOffsetCache_y);
 };
 
 /*
@@ -1103,6 +1101,16 @@ void() particle_beam_las_draw={
   Draw_CylindricLine(self.beamOrg, self.beamEnd, self.beamWidth, "particles/laserbeam", 0.5, time * (random() * -6), self.drawcolor1, 0.75, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
 };
 
+void() particle_beam_pac_draw={
+  if(vlen(self.beamOrg - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE){
+   return;
+  }
+  if(self.beamActive == FALSE){
+    return;
+  }
+  Draw_CylindricLine(self.beamOrg, self.beamEnd, self.beamWidth, "particles/laserbeam", 0.5, time * (random() * -6), self.drawcolor1, 0.75, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+};
+
 void() particle_beam_lightning_draw={
   local float segCount;
   local vector bAngl;
@@ -1146,36 +1154,70 @@ void() particle_beam_lightning_draw={
 
 };
 
-
-
 //float beamType, vector particleOrg, vector particleEnd, float width, float aspect, float shift, vector colr, float alph
-void(float beamType, vector particleOrg, vector particleEnd, float width) particle_spawn_beam={
+void(float beamType, float entId, vector particleOrg, vector particleEnd, float width, float impactType) particle_spawn_beam={
 
   local entity ent;
+  local entity this;
 
-  ent = spawn();
+  //'WORLD' beam effects, not bound to weapons
+  if(entId == 0){
+    ent = spawn();
+    if(!ent){
+      return;
+    }
+    if(beamType == BEAM_LAS){
+      ent.predraw = particle_beam_las_draw;
+      ent.nextthink = time + 0.2;
+    }
+    else if(beamType == BEAM_ESR){
+      ent.predraw = particle_beam_lightning_draw;
+      ent.nextthink = time + 0.075;
+    }
+    else if( beamType == BEAM_PAC){
+      ent.predraw = particle_beam_pac_draw;
+      ent.nextthink = 0.5;
+    }
+    else{
+      //no-op, bad beam type
+      return;
+    }
+    ent.drawmask = MASK_NORMAL;
+    ent.origin = particleOrg;
+    ent.solid = SOLID_NOT;
+    ent.movetype = MOVETYPE_NONE;
+    setsize(ent, '-1 -1 -1', '1 1 1');
+    setorigin(ent, ent.origin);
+    ent.beamOrg = particleOrg;
+    ent.beamEnd = particleEnd;
+    ent.beamWidth = width;
+    ent.beamActive = TRUE;
+    ent.think = particle_beam_th;
+    return;
+  }
+
+  //WEAPON beam effects
+  ent = findfloat(world, entnum, fabs(rint(entId)));
   if(!ent){
     return;
   }
-  if(beamType == 0){
-    ent.predraw = particle_beam_las_draw;
-    ent.nextthink = time + 0.2;
+  if(!ent.owner){
+    return;
   }
-  else{
-    ent.predraw = particle_beam_lightning_draw;
-    ent.nextthink = time + 0.075;
+  if(ent.beamActive){
+    return;
   }
-  ent.drawmask = MASK_NORMAL;
-  ent.origin = particleOrg;
-  ent.solid = SOLID_NOT;
-  ent.movetype = MOVETYPE_NONE;
-  setsize(ent, '-1 -1 -1', '1 1 1');
-  setorigin(ent, ent.origin);
-  ent.beamOrg = particleOrg;
+  
   ent.beamEnd = particleEnd;
-  ent.beamWidth = width;
-  ent.beamActive = TRUE;
-  ent.think = particle_beam_th;
+  ent.pcl_count = impactType;
+
+  te_weapon_fire_handler(ent, ent.owner);
+  this = self;
+  self = ent;
+    if(self.itemMuzzleFlash){
+      self.itemMuzzleFlash();
+    }
+  self = this;
 
 };
 

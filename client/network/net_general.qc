@@ -431,8 +431,11 @@ void( float prevShield ) sendevent_shield_explode={
 */
 void() sendevent_handle_weaponfire={
   local entity equip;
+  local entity unit;
   local float wepId;
-  
+
+  unit = self;
+
   particleDraw = vlen(CLIENT_vis_org - self.origin);
   
   wepId = 0;
@@ -441,8 +444,13 @@ void() sendevent_handle_weaponfire={
     equip =  sendent_get_weapon( bitshift(1, wepId) );
     
     if( equip ){
-      if( (self.attackFlag & equip.w_group) && equip.itemMuzzleFlash ){
-        te_weapon_fire_handler(equip);
+      if( (self.attackFlag & equip.w_group) && equip.beamFlag == FALSE ){
+        te_weapon_fire_handler(equip, self);
+        self = equip;
+          if(self.itemMuzzleFlash){
+            self.itemMuzzleFlash();
+          }
+        self = unit;
       }
     }
     

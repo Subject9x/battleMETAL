@@ -32,6 +32,7 @@ Overview
 .void() itemMuzzleFlash;
 #endif
 
+.float beamFlag;	//<sigh>
 .float w_isburst;   //ugh
 .float w_currentammo;
 .float burstRate; //percentage of reloadRate to use for burst-fire intervals.

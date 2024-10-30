@@ -26,9 +26,7 @@ void() te_muzzle_las={
   local vector norm;
   
   startOrg = self.wepFireOffset;
-
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
+  endOrg = self.beamEnd;
 
   norm = normalize(endOrg - startOrg);
   
@@ -41,18 +39,16 @@ void() te_muzzle_las={
 
   self.beamTime = time + 0.2;
   self.beamOrg = startOrg;
-  self.beamEnd = endOrg;
   self.beamWidth = 3.0;
   self.beamActive = TRUE;
 
   //trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    impactStyle = te_impact_type(endOrg, trace_ent, trace_dphitcontents);
     pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, norm * -2, 1);
-    if(impactStyle == IMPACT_ARMOR){
+    if(self.pcl_count == IMPACT_ARMOR){
         pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg + (norm * -2), norm, 1);
     }
-    else if(impactStyle == IMPACT_DIRT){
+    else if(self.pcl_count == IMPACT_DIRT){
       pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg + (norm * -2), norm, 1);
       pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
     }
@@ -78,6 +74,7 @@ void() data_ini_light_laser_={
   self.spreadDefault = '0.0075 0.0075 0';
   self.wepFireOffset = '0 0 3.5';
   self.burstRate = 0;
+  self.beamFlag = TRUE;
   
 #ifdef CSQC
   precache_sound("sound/weapons/laser_fire.ogg");
@@ -102,6 +99,8 @@ void() data_ini_light_laser_={
 
 #ifdef SSQC
 void() data_ini_attack_laser_={
+  local float impactStyle;
+
   if( !ctrl_weapon_checkEnergy() ){
     return;
   }
@@ -109,22 +108,27 @@ void() data_ini_attack_laser_={
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
-  
+  impactStyle = IMPACT_SKY;
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
-  if( (trace_dphitcontents & DPCONTENTS_SKY) || (trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
-    return;
-  }
-  
-  if( trace_ent.takedamage ){
-    if( trace_ent.shield > 0 ){
-      t_damage_shield(trace_ent, self,self.owner, self.damageValue * LIGHT_LAS_SHIELD_BONUS, trace_endpos, FALSE); 
-    }
-    else{
-      HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
-      if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
-        self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
+
+  if( !(trace_dphitcontents & DPCONTENTS_SKY) && !(trace_dphitq3surfaceflags & Q3SURFACEFLAG_SKY) ){
+    impactStyle = IMPACT_DIRT;
+
+    if( trace_ent.takedamage ){
+      impactStyle = IMPACT_ARMOR;
+
+      if( trace_ent.shield > 0 ){
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue * LIGHT_LAS_SHIELD_BONUS, trace_endpos, FALSE); 
+        impactStyle = IMPACT_SHIELD;
+      }
+      else{
+        HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+        if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
+          self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
+        }
       }
     }
   }
+  client_send_particle_rail( BEAM_LAS, num_for_edict(self), FIRE_ORIGIN, FIRE_ENDPOINT, 4,  impactStyle);
 };
 #endif
