@@ -210,6 +210,17 @@ void( vector menuOrg ) menu_connect_draw_rules_team={
       ruleRow_y = ruleRow_y + 12;
     }
   }
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SIMMOVE) ){
+    drawstring( ruleRow, "Retro move speed", '10 10', CLR_DEF_WHITE, 1, 0);
+    listCount = listCount + 1;
+    if( listCount == 4 ){
+      ruleRow_x = ruleRow_x + 85;
+      ruleRow_y = leftAnchor_y;
+    }
+    else{
+      ruleRow_y = ruleRow_y + 12;
+    }
+  }
   drawfont = drawfont_prev;
 };
 

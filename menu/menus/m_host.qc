@@ -86,6 +86,7 @@ entity host_flag_nomap;
 entity host_flag_noradar;
 entity host_flag_nostatus;
 entity host_flag_nocam;
+entity host_flag_move_speed;
 
 //images
 #define IMG_HOST_TITLE "gfx/menu/host/host_title.png"
@@ -457,6 +458,17 @@ void() host_check_flag_nocamera={
   }
 };
 
+void() host_check_flag_simmove={
+  if( host_flag_move_speed.len == TRUE ){
+    SERVER_FLAGS = SERVER_FLAGS | SVFLAG_SIMMOVE;
+  }
+  else{
+    SERVER_FLAGS = SERVER_FLAGS - (SERVER_FLAGS & SVFLAG_SIMMOVE);
+  }
+};
+
+
+
 void() click_host_back={
   cvar_set("sv_serverflags", "0");  //dont save serverflags
   cvar_set("sv_public", "-2");
@@ -594,11 +606,21 @@ void() m_host_i={
     host_flag_spawnfar.drawme = TRUE;
   }
   
-  host_flag_powerup = btn_check_callback(MENU_ORG + '210 263', '14 14', 0, M_HOST, host_check_flag_powerup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_powerup.label = "Powerup Delay";
   
+  host_flag_move_speed = btn_check_callback(MENU_ORG + '100 263', '14 14', 0, M_HOST, host_check_flag_simmove, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_move_speed.label = "Retro move speed";
+
   host_flag_cheats = btn_check_callback(MENU_ORG + '100 283', '14 14', 0, M_HOST, host_check_flag_cheats, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_cheats.label = "Cheats";
+  
+  host_flag_nomap = btn_check_callback(MENU_ORG + '100 303', '14 14', 0, M_HOST, host_check_flag_nomap, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_nomap.label = "No Map ";
+  
+  host_flag_nostatus = btn_check_callback(MENU_ORG + '100 323', '14 14', 0, M_HOST, host_check_flag_nostatus, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_nostatus.label = "Hide Menu Status";
+
+  host_flag_powerup = btn_check_callback(MENU_ORG + '210 263', '14 14', 0, M_HOST, host_check_flag_powerup, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
+  host_flag_powerup.label = "Powerup Delay";
   
   host_flag_fireon = btn_check_callback(MENU_ORG + '210 283', '14 14', 0, M_HOST, host_check_flag_fireon, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_fireon.label = "Friendly Fire";
@@ -606,18 +628,13 @@ void() m_host_i={
   //host_flag_nolives = btn_check_callback('100 273', '14 14', 0, M_HOST, host_check_flag_nolives, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, UI_FLAG_SIZE_IMG);
   //host_flag_nolives.label = strzone("Respawn");
   
-  host_flag_nomap = btn_check_callback(MENU_ORG + '100 303', '14 14', 0, M_HOST, host_check_flag_nomap, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_nomap.label = "No Map ";
-  
   host_flag_noradar = btn_check_callback(MENU_ORG + '210 303', '14 14', 0, M_HOST, host_check_flag_noradar, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_noradar.label = "No Radar";
   
-  host_flag_nostatus = btn_check_callback(MENU_ORG + '100 323', '14 14', 0, M_HOST, host_check_flag_nostatus, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
-  host_flag_nostatus.label = "Hide Menu Status";
-  
   host_flag_nocam = btn_check_callback(MENU_ORG + '210 323', '14 14', 0, M_HOST, host_check_flag_nocamera, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0.5', 1, 0);
   host_flag_nocam.label = "No Ext. Camera";
-  
+
+
   //LAAAAAAAAUNCH!
   host_launch = btn_text_callback(MENU_ORG + '200 360 0', '16 16', "LAUNCH", VIEW_CTX, M_HOST, click_host_launch, CLR_DEF_TXT_GRAY_SMOOTH, '0 1 0', 1, UI_FLAG_SIZE_IMG);
   host_launch.fontId = FONT_NUM_XOLONIUM_BOLD;

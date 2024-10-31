@@ -268,5 +268,12 @@ void( float isNew, float changeFlags) world_rules_readEntity={
     SV_FRAGLIMIT = self.ruleFraglimit;
     SV_TIMELIMIT = self.ruleTimelimit;
   }
+
+  if( (self.serverFlags & SVFLAG_SIMMOVE) ){
+    cvar_set("sv_gameplayfix_mech_speed", ftos(fabs(rint(SV_MECH_SPEED_RETRO))));
+  }
+  else{
+    cvar_set("sv_gameplayfix_mech_speed", ftos(fabs(rint(SV_MECH_SPEED_METAL))));
+  }
 };
 #endif

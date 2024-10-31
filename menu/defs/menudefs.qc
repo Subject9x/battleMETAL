@@ -716,6 +716,7 @@ float	stringwidth(string text, float handleColors, vector size) = #468;
 #define SVFLAG_ITEMOVER 256 //used when world.itemOverride = 1; tells game to load the override file
 #define SVFLAG_NOSAVE   512 //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
 #define SVFLAG_FPSONLY  1024 //disables third person / chase_active commands.
+#define SVFLAG_SIMMOVE  2048 //server has set the sv_gameplayfix_mech_speed var set to 'RETRO'
 
 #define MENUQC
 #define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}

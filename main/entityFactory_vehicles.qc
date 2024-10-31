@@ -151,6 +151,12 @@ void() build_mech_unit={
   
   makevectors(self.angles);
   
+  if(cvar("sv_gameplayfix_mech_speed") == 1){
+    self.data_speed_forward = self.data_speed_forward * SV_SPEED_RETRO_FWD;
+    self.data_speed_strafe = self.data_speed_strafe * SV_SPEED_RETRO_BAK;
+    self.data_speed_backward = self.data_speed_backward * SV_SPEED_RETRO_SDE;
+  }
+
   self.cache_speed_fwd = self.data_speed_forward;
   self.cache_speed_sid = self.data_speed_strafe;
   self.cache_speed_back = self.data_speed_backward;

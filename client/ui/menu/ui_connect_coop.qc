@@ -203,6 +203,19 @@ void( vector menuOrg ) menu_connect_draw_coop_rules={
     }
     listCount = listCount + 1;
   }
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SIMMOVE) ){
+    drawstring( ruleRow, "Retro move speed", '10 10', CLR_DEF_WHITE, 1, 0);
+    if( listCount == 3 ){
+      ruleRow_x = ruleRow_x + 85;
+      ruleRow_y = ruleRow_y - (listCount * 12);
+    }
+    else{
+      ruleRow_y = ruleRow_y + 12;
+    }
+    listCount = listCount + 1;
+  }
+
+  
   drawfont = drawfont_prev;
 };
 

@@ -88,6 +88,17 @@ float TEAM_MILITAR_TOTAL;
 #define SVFLAG_ITEMOVER 256 //used when world.itemOverride = 1; tells game to load the override file
 #define SVFLAG_NOSAVE   512 //used when world.ignoreSave = 1; tells game to NOT save any progress to save file, world.animaticOnly will also trigger this!
 #define SVFLAG_FPSONLY  1024 //disables third person / chase_active commands.
+#define SVFLAG_SIMMOVE  2048 //server has set the sv_gameplayfix_mech_speed var set to 'RETRO'
+
+//============================
+//   MECH SPEED
+//============================
+#define SV_MECH_SPEED_METAL 0
+#define SV_MECH_SPEED_RETRO 1
+
+#define SV_SPEED_RETRO_FWD 0.6
+#define SV_SPEED_RETRO_BAK 0.67
+#define SV_SPEED_RETRO_SDE 0.6
 
 //============================
 //   GAME DIFFICULTY

@@ -103,6 +103,12 @@ void( vector menuOrg ) menu_connect_draw_rules_dm={
     drawstring( ruleRow, "No External Cam", '12 12', CLR_DEF_WHITE, 1, 0);
     ruleRow_y = ruleRow_y + 14;
   }
+  if( (ENT_SERVER_INFO.serverFlags & SVFLAG_SIMMOVE) ){
+    drawstring( ruleRow, "Retro move speed", '12 12', CLR_DEF_WHITE, 1, 0);
+    ruleRow_y = ruleRow_y + 14;
+  }
+
+  
   drawfont = drawfont_prev;
 };
 
