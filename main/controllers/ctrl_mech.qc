@@ -152,11 +152,10 @@ void() ctrl_updateCenterTorso={
   
   if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
+    self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY;
     if(self.chaseActive){
       laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
-      self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
-      traceline(self.origin, laserOrg, TRUE, self);
-
+      traceline(self.origin, laserOrg, MOVE_MISSILE, self);
       laserOrg = trace_endpos;
     }
     else{
@@ -164,11 +163,10 @@ void() ctrl_updateCenterTorso={
     }
     laserHit = laserOrg + (v_forward * 10000);
 
-    self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID;
-    traceline(laserOrg, laserHit, FALSE, self);
+    traceline(laserOrg, laserHit, MOVE_MISSILE, self);
 
     self.laser_sight_org = trace_endpos;
-    self.laser_sight_timer = time + 0.05;
+    self.laser_sight_timer = time + 0.25;
   }
   
   self.dphitcontentsmask = rint(0);

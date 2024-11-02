@@ -39,7 +39,7 @@ void() te_muzzle_las={
 
   self.beamTime = time + 0.2;
   self.beamOrg = startOrg;
-  self.beamWidth = 3.0;
+  self.beamWidth = 2.0;
   self.beamActive = TRUE;
 
   //trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );

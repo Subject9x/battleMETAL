@@ -578,9 +578,9 @@ void(entity item) predraw_unit_weapon={
     if(item.beamActive){  
       this = self;
       self = item;
-        item.effect_beam();
-        if(time > item.beamTime){
-          item.beamActive = FALSE;
+      self.effect_beam();
+        if(time > self.beamTime){
+          self.beamActive = FALSE;
         }
       self = this;
     }
@@ -636,9 +636,9 @@ void(entity item) predraw_unit_weapon_tank={
     if(item.beamActive){  
       this = self;
       self = item;
-        item.effect_beam();
-        if(time > item.beamTime){
-          item.beamActive = FALSE;
+        self.effect_beam();
+        if(time > self.beamTime){
+          self.beamActive = FALSE;
         }
       self = this;
     }

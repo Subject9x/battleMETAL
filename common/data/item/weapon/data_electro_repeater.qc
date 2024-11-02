@@ -129,16 +129,15 @@ void() te_beam_esr={
   makevectors(bAngl);
   if(len > 100){
     nexOrg = self.wepFireOffset + (v_forward * segment) + (v_right * crandom() * 4) + (v_up * crandom() * 6);
-    Draw_CylindricLine(self.wepFireOffset, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
-    
+    Draw_CylindricLine(self.wepFireOffset, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 0.95, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
     
     segOrg = nexOrg;
-    segCount = segCount - 1;
+    segCount = segCount - 2;
 
-    for( itr = segCount; itr < (segment-2); itr = itr + 1){
+    for( itr = segCount; itr < segCount; itr = itr + 1){
       nexOrg = self.wepFireOffset + (v_forward * segment * itr) + (v_right * crandom() * 2) + (v_up * crandom() * 4);
 
-      Draw_CylindricLine(segOrg, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+      Draw_CylindricLine(segOrg, nexOrg, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 0.95, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
       
       width = max(1, width - 1);
 
@@ -148,7 +147,7 @@ void() te_beam_esr={
   else{
     segOrg = self.wepFireOffset;
   }
-  Draw_CylindricLine(segOrg, self.beamEnd, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+  Draw_CylindricLine(segOrg, self.beamEnd, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 0.95, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
 };
 void() te_muzzle_esr={
   local vector startOrg;
@@ -158,21 +157,26 @@ void() te_muzzle_esr={
   
   startOrg = self.wepFireOffset;
   endOrg = self.beamEnd;
-  
+
   norm = normalize(endOrg - startOrg);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
-    
-    
-    if(self.pcl_count == IMPACT_ARMOR){
+
+    traceline(self.wepFireOffset, self.beamEnd, FALSE, self.owner);
+    impactStyle  = te_impact_type(self.beamEnd, trace_ent, trace_dphitcontents);
+
+    if(impactStyle == IMPACT_ARMOR){
         pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
     }
-    if(self.pcl_count == IMPACT_DIRT){
+    if(impactStyle == IMPACT_DIRT){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
       pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+    }
+    if(impactStyle == IMPACT_SHIELD){
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), endOrg, norm * -4, 1);
     }
   }
 
@@ -191,8 +195,8 @@ void() data_ini_electro_repeater_={
   self.reloadMax = 4;
   self.energyRate = 5;
   
-  self.w_range = 1000;
-  self.damageValue = 12;  //10
+  self.w_range = 850;
+  self.damageValue = 12;
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;

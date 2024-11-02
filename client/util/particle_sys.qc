@@ -259,26 +259,26 @@ void(entity item, entity parent) te_weapon_fire_handler={
     util_getPartFromName( self.partParentId, this);
   self = this;
     
-    if(parent.data_type == DATA_VEHC){
-      unitOrg = parent.cacheGroundPos;
-    }
-    else{
-      unitOrg = parent.rootOrigin;
-    }
-    offset = unitOrg + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
-    
-    //FPV z-offset is corrected at the parent-part origin step!
-    if(parent.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){
-      offset = offset + (v_forward * parent.cameraOffset_z);
-    }
-    adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
-    
-    view = T_PART_PARENT_ANGL;
-    view_x = view_x *-1;
-    makevectors( view);
-    offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
-    
-    item.wepFireOffset = offset + (v_forward * item.wepFireOffsetCache_z) + (v_right * item.wepFireOffsetCache_x) + (v_up * item.wepFireOffsetCache_y);
+  if(parent.data_type == DATA_VEHC){
+    unitOrg = parent.cacheGroundPos;
+  }
+  else{
+    unitOrg = parent.rootOrigin;
+  }
+  offset = unitOrg + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
+  
+  //FPV z-offset is corrected at the parent-part origin step!
+  if(parent.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){
+    offset = offset + (v_forward * parent.cameraOffset_z);
+  }
+  adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
+  
+  view = T_PART_PARENT_ANGL;
+  view_x = view_x *-1;
+  makevectors( view);
+  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
+  
+  item.wepFireOffset = offset + (v_forward * item.wepFireOffsetCache_z) + (v_right * item.wepFireOffsetCache_x) + (v_up * item.wepFireOffsetCache_y);
 };
 
 /*

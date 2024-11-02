@@ -132,7 +132,8 @@ vector( vector fireOrg, vector viewAngle, float idealRange ) util_applySpreadToT
   //local vector acc;
   local vector wepAim;
   local vector targVel;
-  local vector endPos;
+  local float aimLen;
+  local vector converge;
   
   targVel = '0 0 0';
   if( (self.owner.enemy.flags & FL_CLIENT) ){
@@ -156,7 +157,15 @@ vector( vector fireOrg, vector viewAngle, float idealRange ) util_applySpreadToT
   }
   else{
     //Player aiming
-    wepAim = normalize( self.owner.laser_sight_org - fireOrg ); 
+    aimLen  = vlen(self.owner.laser_sight_org - fireOrg);
+    if( aimLen <= idealRange){
+      wepAim = normalize( self.owner.laser_sight_org - fireOrg ); 
+    }
+    else{
+      converge = self.owner.origin + (v_forward * idealRange);
+      wepAim = normalize( converge - fireOrg ); 
+    }
+    
   }  
   //08-2020: shot dispersion has been disabled because I can't find a clean/lightweight
   //means of sending this information over the network
@@ -172,12 +181,8 @@ vector( vector fireOrg, vector viewAngle, float idealRange ) util_applySpreadToT
   self.owner.dphitcontentsmask =  (DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY) ;
     traceline (fireOrg, fireOrg + (wepAim * idealRange), MOVE_MISSILE, self.owner);
   self.owner.dphitcontentsmask = 0;
-  
-  endPos_x = trace_endpos_x;
-  endPos_y = trace_endpos_y;
-  endPos_z = trace_endpos_z;
 
-  return endPos;
+  return trace_endpos;
 };
 
 //simply returns a vector offset from an origin along a given angle
