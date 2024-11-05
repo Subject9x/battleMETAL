@@ -51,9 +51,9 @@ void() CS_PlayerPhysics =
 	}*/
 
 	// if dead, behave differently
-	if (self.deadflag)
+	if (self.deadflag){
 		return;
-
+	}
 	if (!self.fixangle)
 	{
 		// show 1/3 the pitch angle and all the roll angle
@@ -96,74 +96,7 @@ void() CS_PlayerPhysics =
 			}
 		}
 	}
-	else if (self.waterlevel >= 2)
-	{
-		// swimming
-		makevectors(self.v_angle);
-		//wishvel = v_forward * self.movement_x + v_right * self.movement_y + v_up * self.movement_z;
-		wishvel = v_forward * self.movement_x + v_right * self.movement_y + '0 0 1' * self.movement_z;
-		if (wishvel == '0 0 0'){
-			wishvel = '0 0 -60'; // drift towards bottom
-		}
-		wishdir = normalize(wishvel);
-		wishspeed = vlen(wishvel);
-		if (wishspeed > cs_maxspeed){
-			wishspeed = cs_maxspeed;
-		}
-		wishspeed = wishspeed * 0.7;
-
-		// water friction
-		self.velocity = self.velocity * (1 - frametime * cs_friction);
-
-		// water acceleration
-		f = wishspeed - (self.velocity * wishdir);
-		if (f > 0){
-			self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
-		}
-	}
-	else if (time < self.ladder_time)
-	{
-		// on a func_ladder or swimming in func_water
-		self.velocity = self.velocity * (1 - frametime * cs_friction);
-		makevectors(self.v_angle);
-		//wishvel = v_forward * self.movement_x + v_right * self.movement_y + v_up * self.movement_z;
-		wishvel = v_forward * self.movement_x + v_right * self.movement_y + '0 0 1' * self.movement_z;
-		if (self.gravity)
-			self.velocity_z = self.velocity_z + self.gravity * cs_gravity * frametime;
-		else
-			self.velocity_z = self.velocity_z + cs_gravity * frametime;
-		if (self.ladder_entity.classname == "func_water")
-		{
-			f = vlen(wishvel);
-			if (f > self.ladder_entity.speed)
-				wishvel = wishvel * (self.ladder_entity.speed / f);
-
-			self.watertype = self.ladder_entity.skin;
-			f = self.ladder_entity.origin_z + self.ladder_entity.maxs_z;
-			if ((self.origin_z + self.view_ofs_z) < f)
-				self.waterlevel = 3;
-			else if ((self.origin_z + (self.mins_z + self.maxs_z) * 0.5) < f)
-				self.waterlevel = 2;
-			else if ((self.origin_z + self.mins_z + 1) < f)
-				self.waterlevel = 1;
-			else
-			{
-				self.waterlevel = 0;
-				self.watertype = CONTENT_EMPTY;
-			}
-		}
-		// acceleration
-		wishdir = normalize(wishvel);
-		wishspeed = vlen(wishvel);
-		if (wishspeed > cs_maxspeed)
-			wishspeed = cs_maxspeed;
-		if (time >= self.teleport_time)
-		{
-			f = wishspeed - (self.velocity * wishdir);
-			if (f > 0)
-				self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
-		}
-	}
+	// 
   //MOVEMENT - RAM SHOCKS ACTIVE------------------------------------------------------------
   else if( time < self.ramCharge ){
     local float stopSpeedSlide;
@@ -184,32 +117,32 @@ void() CS_PlayerPhysics =
     stopSpeedSlide = self.vec_size;
     frictionSlide = 0.5;
     accelerationSlide = cs_accelerate;
-		//ramming
+	//ramming
     self.movement = '0 0 0';
-		makevectors(self.ramAngle_y * '0 1 0');
+	makevectors(self.ramAngle_y * '0 1 0');
     traceline(self.origin, self.origin + (v_up * (self.mins_z * 1.25)), MOVE_NORMAL, self);
-		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y;
-		// friction
-		/*if (self.velocity_x || self.velocity_y)
-		{
-			v = self.velocity;
-			v_z = 0;
-			f = vlen(v);
-			if (f < stopSpeedSlide)
-				f = 1 - frametime * (stopSpeedSlide / f) * frictionSlide;
-			else
-				f = 1 - frametime * frictionSlide;
-			if (f > 0)
-				self.velocity = self.velocity * f;
-			else
-				self.velocity = '0 0 0';
-		}*/
-		// acceleration
-		wishdir = normalize(wishvel);
-		wishspeed = vlen(wishvel);
-		if (wishspeed > (self.data_speed_forward * (self.data_speed_accel * 2))){
-			wishspeed = self.data_speed_forward * (self.data_speed_accel * 2);
-    }
+	wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y;
+	// friction
+	/*if (self.velocity_x || self.velocity_y)
+	{
+		v = self.velocity;
+		v_z = 0;
+		f = vlen(v);
+		if (f < stopSpeedSlide)
+			f = 1 - frametime * (stopSpeedSlide / f) * frictionSlide;
+		else
+			f = 1 - frametime * frictionSlide;
+		if (f > 0)
+			self.velocity = self.velocity * f;
+		else
+			self.velocity = '0 0 0';
+	}*/
+	// acceleration
+	wishdir = normalize(wishvel);
+	wishspeed = vlen(wishvel);
+	if (wishspeed > (self.data_speed_forward * (self.data_speed_sprint * 2))){
+		wishspeed = self.data_speed_forward * (self.data_speed_sprint * 2);
+	}
     f = wishspeed - (self.ramVelocity * wishdir);
     if (f > 0){
       self.ramVelocity = self.ramVelocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
@@ -224,38 +157,42 @@ void() CS_PlayerPhysics =
     self.velocity_z = self.velocity_z + (self.ramPower_x * -0.3);
   }
   //MOVEMENT - REGULAR WALKING------------------------------------------------------------
-	else if (self.flags & FL_ONGROUND)
-	{
+  else if (self.flags & FL_ONGROUND)
+  {
     local vector sprintMove;
-		makevectors(self.v_angle_y * '0 1 0');
+	makevectors(self.v_angle_y * '0 1 0');
     if( self.button8 ){
-      sprintMove = v_forward * (self.movement_x * self.data_speed_accel);
-      sprintMove = sprintMove + v_right * (self.movement_y * self.data_speed_accel);
+      sprintMove = v_forward * (self.movement_x * self.data_speed_sprint);
+      sprintMove = sprintMove + v_right * (self.movement_y * self.data_speed_sprint);
       wishvel = sprintMove;
     }
     else{
       wishvel = v_forward * self.movement_x + v_right * self.movement_y;
     }
     
-		// friction
-		if (self.velocity_x || self.velocity_y)
-		{
-			v = self.velocity;
-			v_z = 0;
-			f = vlen(v);
-			if (f < cs_stopspeed)
-				f = 1 - frametime * (cs_stopspeed / f) * cs_friction;
-			else
-				f = 1 - frametime * cs_friction;
-			if (f > 0)
-				self.velocity = self.velocity * f;
-			else
-				self.velocity = '0 0 0';
+	// friction
+	if (self.velocity_x || self.velocity_y)
+	{
+		v = self.velocity;
+		v_z = 0;
+		f = vlen(v);
+		if (f < cs_stopspeed){
+			f = 1 - frametime * (cs_stopspeed / f) * cs_friction;
 		}
-    
-		// acceleration
-		wishdir = normalize(wishvel);
-		wishspeed = vlen(wishvel);
+		else{
+			f = 1 - frametime * cs_friction;
+		}
+		if (f > 0){
+			self.velocity = self.velocity * f;
+		}
+		else{
+			self.velocity = '0 0 0';
+		}
+	}
+
+	// acceleration
+	wishdir = normalize(wishvel);
+	wishspeed = vlen(wishvel);
     
     //actual terrain test
     if( wishvel ){
@@ -280,15 +217,17 @@ void() CS_PlayerPhysics =
         //wishspeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
       }
     }
-    
-		if (wishspeed > cs_maxspeed)
-			wishspeed = cs_maxspeed;
-		if (time >= self.teleport_time)
-		{
-			f = wishspeed - (self.velocity * wishdir);
-			if (f > 0)
-				self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
+
+	  if (wishspeed > cs_maxspeed){
+		wishspeed = cs_maxspeed;
+	  }
+	  if (time >= self.teleport_time)
+	  {
+	  	f = wishspeed - (self.velocity * wishdir);
+	  	if (f > 0){
+			self.velocity = self.velocity + wishdir * min(f, self.data_speed_accel * frametime * wishspeed);
 		}
+	  }
 	}
   //MOVEMENT - AIR BORN------------------------------------------------------------
 	else
@@ -298,14 +237,92 @@ void() CS_PlayerPhysics =
 		// acceleration
 		wishdir = normalize(wishvel);
 		wishspeed = vlen(wishvel);
-		if (wishspeed > cs_maxairspeed)
+		if (wishspeed > cs_maxairspeed){
 			wishspeed = cs_maxairspeed;
+		}
 		if (time >= self.teleport_time)
 		{
 			f = wishspeed - (self.velocity * wishdir);
-			if (f > 0)
+			if (f > 0){
 				self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
+			}
 		}
 	}
+	// else if (self.waterlevel >= 2)
+	// {
+	// 	// swimming
+	// 	makevectors(self.v_angle);
+	// 	//wishvel = v_forward * self.movement_x + v_right * self.movement_y + v_up * self.movement_z;
+	// 	wishvel = v_forward * self.movement_x + v_right * self.movement_y + '0 0 1' * self.movement_z;
+	// 	if (wishvel == '0 0 0'){
+	// 		wishvel = '0 0 -60'; // drift towards bottom
+	// 	}
+	// 	wishdir = normalize(wishvel);
+	// 	wishspeed = vlen(wishvel);
+	// 	if (wishspeed > cs_maxspeed){
+	// 		wishspeed = cs_maxspeed;
+	// 	}
+	// 	wishspeed = wishspeed * 0.7;
+
+	// 	// water friction
+	// 	self.velocity = self.velocity * (1 - frametime * cs_friction);
+
+	// 	// water acceleration
+	// 	f = wishspeed - (self.velocity * wishdir);
+	// 	if (f > 0){
+	// 		self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
+	// 	}
+	// }
+	// else if (time < self.ladder_time)
+	// {
+	// 	// on a func_ladder or swimming in func_water
+	// 	self.velocity = self.velocity * (1 - frametime * cs_friction);
+	// 	makevectors(self.v_angle);
+	// 	//wishvel = v_forward * self.movement_x + v_right * self.movement_y + v_up * self.movement_z;
+	// 	wishvel = v_forward * self.movement_x + v_right * self.movement_y + '0 0 1' * self.movement_z;
+	// 	if (self.gravity){
+	// 		self.velocity_z = self.velocity_z + self.gravity * cs_gravity * frametime;
+	// 	}
+	// 	else{
+	// 		self.velocity_z = self.velocity_z + cs_gravity * frametime;
+	// 	}
+
+	// 	if (self.ladder_entity.classname == "func_water")
+	// 	{
+	// 		f = vlen(wishvel);
+	// 		if (f > self.ladder_entity.speed)
+	// 			wishvel = wishvel * (self.ladder_entity.speed / f);
+
+	// 		self.watertype = self.ladder_entity.skin;
+	// 		f = self.ladder_entity.origin_z + self.ladder_entity.maxs_z;
+	// 		if ((self.origin_z + self.view_ofs_z) < f){
+	// 			self.waterlevel = 3;
+	// 		}
+	// 		else if ((self.origin_z + (self.mins_z + self.maxs_z) * 0.5) < f){
+	// 			self.waterlevel = 2;
+	// 		}
+	// 		else if ((self.origin_z + self.mins_z + 1) < f){
+	// 			self.waterlevel = 1;
+	// 		}
+	// 		else
+	// 		{
+	// 			self.waterlevel = 0;
+	// 			self.watertype = CONTENT_EMPTY;
+	// 		}
+	// 	}
+	// 	// acceleration
+	// 	wishdir = normalize(wishvel);
+	// 	wishspeed = vlen(wishvel);
+	// 	if (wishspeed > cs_maxspeed){
+	// 		wishspeed = cs_maxspeed;
+	// 	}
+	// 	if (time >= self.teleport_time)
+	// 	{
+	// 		f = wishspeed - (self.velocity * wishdir);
+	// 		if (f > 0){
+	// 			self.velocity = self.velocity + wishdir * min(f, cs_accelerate * frametime * wishspeed);
+	// 		}
+	// 	}
+	// }
   self.prevMovement = self.movement;
 };

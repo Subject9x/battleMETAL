@@ -28,7 +28,7 @@ void() player_makeObserver={
   self.data_speed_forward = 1000;
   self.data_speed_strafe = 1000;
   self.data_speed_backward = 1000;
-  self.data_speed_accel = 2;
+  self.data_speed_sprint = 2;
   self.canTarget = FALSE;
   self.deadflag = DEAD_NO;
 

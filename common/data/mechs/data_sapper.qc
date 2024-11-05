@@ -51,8 +51,6 @@ void() data_ini_sapper_={
   self.data_speed_forward = 125.0;
   self.data_speed_strafe = 105.0;
   self.data_speed_backward = 100.0;
-  self.data_speed_accel = 2.25;
-  self.data_speed_decel = 50;
   self.ramUpMax = 1.75;
   self.ramCooldown = 3;
 #ifdef CSQC
@@ -67,7 +65,6 @@ void() data_ini_sapper_={
   self.turret_yaw_speed = 3.33;
   self.ai_angleLimits = '-120 120 0';
   if( (self.flags & FL_MONSTER) ){
-    self.data_speed_accel = 0.007;
   }
 #endif
 //=====================================

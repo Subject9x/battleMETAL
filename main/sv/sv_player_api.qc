@@ -273,17 +273,14 @@ void() PlayerPostThink = {
           if( self.energy > (self.energyMax * 0.15)){
             if( !(self.criticalHits & M_LEGS) ){
               if( self.ramUp < self.ramUpMax ){
-                self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
               } 
             }  
           }   
         }
         else{
-          self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
         }
       }
       else{
-          self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
       }
       if( self.ramUp < 0 ){
         self.ramUp = 0;

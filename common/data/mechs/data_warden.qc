@@ -31,7 +31,6 @@ void() data_ini_warden_={
   self.max_health = 575;
   
   //Hitbox size, X width, Y Length, Z height.
-  self.mins = '-16 -16 -30.3';
   self.maxs = '16 16 15';
   
 //ENERGY AND SHIELDS===================
@@ -52,12 +51,9 @@ void() data_ini_warden_={
   self.data_speed_forward = 165.0;
   self.data_speed_strafe = 165.0;
   self.data_speed_backward = 165.0;
-  self.data_speed_accel = 1.33;
-  self.data_speed_decel = 55;
   self.ramUpMax = 3;
   self.ramCooldown = 8;
 #ifdef CSQC
-  //animation playback sync to player move speed.
   self.legMoveRate = 12;
   self.legRunRate = 14;
 #endif
@@ -68,7 +64,6 @@ void() data_ini_warden_={
   self.turret_yaw_speed = 4.75;
   self.ai_angleLimits = '-180 180 0';
   if( (self.flags & FL_MONSTER) ){
-    self.data_speed_accel = 0.025;
   }
 #endif
 //=====================================

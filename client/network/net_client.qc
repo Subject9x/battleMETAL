@@ -560,14 +560,14 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     self.data_speed_forward = ReadFloat();
     self.data_speed_strafe = ReadFloat();
     self.data_speed_backward = ReadFloat();
-    self.data_speed_accel = ReadFloat();
+    self.data_speed_sprint = ReadFloat();
       //genuine spawn event.
       if( self.isLocalPlayer ){
         self.classname = "UI_ITEM"; //hack, investigate
         cvar_set( "cl_forwardspeed", ftos(self.data_speed_forward) );
         cvar_set( "cl_sidespeed", ftos(self.data_speed_strafe) );
         cvar_set( "cl_backspeed", ftos(self.data_speed_backward) );
-        cvar_set( "cl_movespeedkey", ftos(self.data_speed_accel) );
+        cvar_set( "cl_movespeedkey", ftos(self.data_speed_sprint) );
 
         //MODELS - COCKPIT
         hud_model_cockpit_ini();

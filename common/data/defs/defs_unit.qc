@@ -55,8 +55,9 @@ Overview:
 .float data_speed_forward; //forward speed
 .float data_speed_strafe; //side strafe speed
 .float data_speed_backward; //backward speed
-.float data_speed_accel;	//cl_speedkey acceleration factor
+.float data_speed_accel;	//replaces cvar("sv_accel") rate in player_movement.qc
 .float data_speed_decel;  //override sv_stopspeed for units.
+.float data_speed_sprint; //cl_speedkey acceleration factor
 
 //subcomponents decomposed to field vars, reduce entity management
 .string torC_mdl;
@@ -160,6 +161,7 @@ Overview:
 .float cache_speed_fwd;
 .float cache_speed_sid;
 .float cache_speed_back;
+.float cache_speed_accel;
 
 
 .float turret_yaw_speed;

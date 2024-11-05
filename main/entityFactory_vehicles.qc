@@ -331,14 +331,12 @@ void() build_unit_turret={
 void() build_mech_legs={
   /*self.laser_sight_org = '0 0 0';
   self.laser_sight_timer = time + 0.5; 
-  self.w_firerate = 0; //used to track data_speed_accel changes*/
 
   self.legs_angl = self.angles;
   //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
   self.legs_speed_f = self.data_speed_forward;
   self.legs_speed_s = self.data_speed_strafe;
   self.legs_speed_b = self.data_speed_backward;
-  self.legs_speed_acc = self.data_speed_accel;
   self.legs_yawSpeed = self.yaw_speed * 2.5;
   self.legs_attackState = TR_NORM;
   self.legDir = self.angles_y;

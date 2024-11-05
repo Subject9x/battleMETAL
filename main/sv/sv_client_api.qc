@@ -110,7 +110,6 @@ float( entity to, float changeFlags ) send_client={
     WriteFloat( MSG_ENTITY, self.data_speed_forward);
     WriteFloat( MSG_ENTITY, self.data_speed_strafe);
     WriteFloat( MSG_ENTITY, self.data_speed_backward);
-    WriteFloat( MSG_ENTITY, self.data_speed_accel);
   }
   
   /* EVENT - Client has changed their unit color settings.*/

@@ -419,18 +419,20 @@ void() ctrl_mech_critical_hits={
     self.cache_speed_fwd = self.data_speed_forward;
     self.cache_speed_sid = self.data_speed_strafe;
     self.cache_speed_back = self.data_speed_backward;
+    self.cache_speed_accel = self.data_speed_accel;
     
     if( (self.flags & FL_CLIENT) ){
       self.data_speed_forward = self.data_speed_forward * 0.7;
       self.data_speed_strafe = self.data_speed_strafe * 0.8;
       self.data_speed_backward = self.data_speed_backward * 0.75;
+      self.data_speed_accel = self.data_speed_accel * 0.5;
       self.SendFlags = self.SendFlags | SENDFLAG_EFLAGS;
     }
     else{
       //AI suffers way more for blown legs
       self.data_speed_forward = self.data_speed_forward * 0.5;
-      self.data_speed_strafe = self.data_speed_strafe * 0.67;
       self.data_speed_backward = self.data_speed_backward * 0.5;
+      self.data_speed_accel = self.data_speed_accel * 0.25;
       if( !(self.damageValue & M_LEGS) ){
         self.damageValue = self.damageValue | M_LEGS;
       }

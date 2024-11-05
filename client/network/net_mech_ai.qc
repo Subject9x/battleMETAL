@@ -295,7 +295,9 @@ void() interpolate_mech_ai={
   setsize(self, self.cache_mins, self.cache_maxs);
   self.renderflags = 0;
   self.legs_org = self.rootOrigin + (v_right * self.legs_compOffset_x) + (v_forward * self.legs_compOffset_z) + (v_up * self.legs_compOffset_y);
-  predraw_legs();
+  
+  predraw_legs_nonclient();
+
   self.origin = self.rootOrigin;
   self.angles = self.rootAngle;
   

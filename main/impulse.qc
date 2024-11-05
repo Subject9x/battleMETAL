@@ -173,7 +173,6 @@ void() ImpulseCommands ={
       if( self.ramUp >= self.ramUpMax ){
         if( self.energy >= (self.energyMax * (self.ramUpMax / 25)) ){
           self.ramCharge = time + (self.ramUp / 2);
-          self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
           self.ramPower_y = 0;
           self.ramPower_z = -15;
           self.ramVelocity = self.velocity;
@@ -291,7 +290,6 @@ void() ButtonCommands={
           if( (self.movement_x || self.movement_y) ){
             self.moveState = MOVE_SPRINT;
           }
-          //client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
         }
       }
     }

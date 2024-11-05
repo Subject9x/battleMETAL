@@ -48,12 +48,9 @@ void() data_ini_monitor_={
   self.data_speed_forward = 90.0;
   self.data_speed_strafe = 90.0;
   self.data_speed_backward = 90.0;
-  self.data_speed_accel = 2.0;
-  self.data_speed_decel = 15;
   self.ramUpMax = 1;
   self.ramCooldown = 2;
 #ifdef CSQC
-  //animation playback sync to player move speed.
   self.legMoveRate = 7.75;
   self.legRunRate = 11;
 #endif
@@ -64,7 +61,6 @@ void() data_ini_monitor_={
   self.turret_yaw_speed = 3;
   self.ai_angleLimits = '-150 150 0';
   if( (self.flags & FL_MONSTER) ){
-    self.data_speed_accel = 0.005;
   }
 #endif
 //=====================================

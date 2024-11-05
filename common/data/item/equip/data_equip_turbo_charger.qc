@@ -22,7 +22,7 @@ void() data_ini_equip_turbo_charger_={
   
   self.energyRate = 0.2;
   self.energyMax = 0; //will hold Unit's previous drain value;
-  self.data_speed_accel = 0;  //will hold Unit's previous accel value.
+  self.data_speed_sprint = 0;  //will hold Unit's previous accel value.
   
   self.w_range = 0;
   self.damageValue = 0;
@@ -64,12 +64,12 @@ void() turbo_charger_upgrade_={
   
   //save old values here
   self.evasionDrain = self.owner.evasionDrain;
-  self.data_speed_accel = self.owner.data_speed_accel;
+  self.data_speed_sprint = self.owner.data_speed_sprint;
   
   self.evasionDrain = self.owner.vec_size / 10;
   perc = 0.4 - self.evasionDrain;
   self.owner.evasionDrain =  self.owner.evasionDrain + (self.owner.evasionDrain * self.evasionDrain);
-  self.owner.data_speed_accel = self.owner.data_speed_accel + perc;
+  self.owner.data_speed_sprint = self.owner.data_speed_sprint + perc;
   
   self.data_speed_forward = self.owner.data_speed_forward;
   
@@ -88,13 +88,13 @@ void() turbo_charger_upgrade_={
 void() turbo_charger_remove_={
   local entity module;
   self.owner.evasionDrain = self.evasionDrain;
-  self.owner.data_speed_accel = self.data_speed_accel;
+  self.owner.data_speed_sprint = self.data_speed_sprint;
   self.owner.data_speed_forward = self.data_speed_forward;
   self.owner.SendFlags = self.owner.SendFlags | SENDFLAG_EFLAGS;
   if( (self.owner.flags & FL_CLIENT) ){
     module = self;
     self = module.owner;
-      self.data_speed_accel = module.data_speed_accel;
+      self.data_speed_sprint = module.data_speed_sprint;
       self.ramUpMax = 4 - self.vec_size;
       self.ramUpMax = self.ramUpMax / 10;
       self.ramUpMax = self.data_speed_forward * self.ramUpMax;

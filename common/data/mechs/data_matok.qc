@@ -50,12 +50,9 @@ void() data_ini_matok_={
   self.data_speed_forward = 155.0;
   self.data_speed_strafe = 155.0;
   self.data_speed_backward = 80.0;
-  self.data_speed_accel = 1.45;
-  self.data_speed_decel = 33;
   self.ramUpMax = 1.5;
   self.ramCooldown = 3;
 #ifdef CSQC
-  //animation playback sync to player move speed.
   self.legMoveRate = 12;
   self.legRunRate = 18;
 #endif
@@ -66,7 +63,6 @@ void() data_ini_matok_={
   self.turret_yaw_speed = 3.75;
   self.ai_angleLimits = '-180 180 0';
   if( (self.flags & FL_MONSTER) ){
-    self.data_speed_accel = 0.015;
   }
 #endif
 //=====================================
