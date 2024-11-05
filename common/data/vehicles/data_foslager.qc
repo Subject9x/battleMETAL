@@ -40,6 +40,7 @@ void() data_ini_foslager_={
   self.data_speed_forward = 50;
   self.data_speed_strafe = 20;
   self.data_speed_backward = 15;
+  self.data_speed_accel = 1.0;
 #ifdef SSQC
   self.yaw_speed = 3.75;        //3.5;    //AI-only 
   self.turret_yaw_speed = 4.25; //3.75;//AI-only

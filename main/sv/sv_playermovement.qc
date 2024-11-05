@@ -162,7 +162,7 @@ void() SV_PlayerPhysics =
 		decel = self.data_speed_decel;
 		friction = sv_friction;
 		if(vlen(wishvel) != 0){
-			decel = decel * 0.5;
+			decel = decel * 0.25;
 			friction = friction * 0.5;
 		}
 		

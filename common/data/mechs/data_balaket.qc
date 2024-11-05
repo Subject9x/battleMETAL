@@ -49,6 +49,8 @@ void() data_ini_balaket_={
   self.data_speed_forward = 185.0;
   self.data_speed_strafe = 120.0;
   self.data_speed_backward = 90.0;
+  self.data_speed_accel = 5.0;
+  self.data_speed_decel = 2.5;
   self.ramUpMax = 2;
   self.ramCooldown = 6;
 #ifdef CSQC
@@ -62,6 +64,7 @@ void() data_ini_balaket_={
   self.turret_yaw_speed = 4.25;
   self.ai_angleLimits = '-175 175 0';
   if( (self.flags & FL_MONSTER) ){
+    self.data_speed_accel = 0.025;
   }
 #endif
 //=====================================

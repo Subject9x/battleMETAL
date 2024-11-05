@@ -39,6 +39,7 @@ void() data_ini_trowel_={
   self.data_speed_forward = 25;
   self.data_speed_strafe = 10;
   self.data_speed_backward = 10;
+  self.data_speed_accel = 1.0;
 #ifdef SSQC
   self.yaw_speed = 1.5;//1;    //AI-only 
   self.turret_yaw_speed = 2;//1.5;//AI-only

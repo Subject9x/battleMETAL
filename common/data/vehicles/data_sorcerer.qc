@@ -40,6 +40,7 @@ void() data_ini_sorcerer_={
   self.data_speed_forward = 66;
   self.data_speed_strafe = 40;
   self.data_speed_backward = 30;
+  self.data_speed_accel = 1.0;
 #ifdef SSQC
   self.yaw_speed = 2.5;    //AI-only 
 #endif
