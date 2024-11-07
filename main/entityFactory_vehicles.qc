@@ -50,7 +50,7 @@ void() build_unit_weapon_list={
           build_unit_weapon( self.next_wepn9, self );
           break;
       }
-      weaponCount = weaponCount + 1;
+      weaponCount = fabs(rint(weaponCount + 1));
       weaponMount.partPrev = prevWeapon;
       prevWeapon = weaponMount;
       weaponMount = weaponMount.w_slot;
@@ -75,6 +75,7 @@ void( float nex_wep, entity own ) build_unit_weapon={
   parentEntity = self;
   
   self = weaponBuild;
+    self.owner = own;
     self.data_idx = nex_wep;
     self.damageType = 0; //zero-out this stat
     initialize_data_item_(nex_wep);
@@ -104,17 +105,6 @@ void( float nex_wep, entity own ) build_unit_weapon={
     
     macro_set_offset(own, ofs)
     
-    util_getPartFromName( self.partParentId, own );
-    
-    self.angles_x = anglemod(T_PART_PARENT_ANGL_x + self.w_adj_ang_x);
-    self.angles_y = anglemod(T_PART_PARENT_ANGL_y + self.w_adj_ang_y);
-    self.angles_z = anglemod(T_PART_PARENT_ANGL_z + self.w_adj_ang_z);
-    
-    self.aiment = own;
-    self.owner = own;
-    self.punchangle = T_PART_PARENT_ANGL;
-    self.view_ofs = self.origin - T_PART_PARENT_ORG;
-    self.v_angle = self.angles - T_PART_PARENT_ANGL;
     
     self.wepFireOffsetCache = self.wepFireOffset;
     self.th_die = ctrl_die_weapon;
@@ -329,7 +319,7 @@ void() build_unit_turret={
 
 
 void() build_mech_legs={
-  /*self.laser_sight_org = '0 0 0';
+  self.laser_sight_org = '0 0 0';
   self.laser_sight_timer = time + 0.5; 
 
   self.legs_angl = self.angles;

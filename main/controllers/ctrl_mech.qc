@@ -6,46 +6,89 @@ Overview:
   implementation for center torso updates
 */
 
-void() ctrl_update_mechplayer={
-  local entity piece;
+void() ctrl_mech_update={
+  local entity weapon;
+  local vector rootAngl;
+  local vector rootTorCAngl;
+  local vector offsetAngl;
   
-  ctrl_updateCenterTorso(); 
-  ctrl_updateLegs();
+  if( (self.flags & FL_CLIENT)){
+    ctrl_updateCenterTorso(); 
+    ctrl_updateLegs();
+    rootAngl = self.angles;
+    rootTorCAngl = [0, self.v_angle_y, 0];
+  }
+  else{
+    ai_ctrl_updateCenterTorso();
+    
+    self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
+    self.ai_weaponEnergy = 0;
+    self.currentWeaponGroup = 0;
+
+    rootAngl = self.angles;
+    rootTorCAngl = self.torC_angl;  //controlled by AI api
+  }
   
   //damage-based cosmetics for unit component pieces
-  makevectors(self.angles);
+  makevectors(rootAngl);
   self.torC_hitOffset = self.origin + (v_right * self.torC_compAltOffset_x) + (v_up * self.torC_compAltOffset_y) + (v_forward * self.torC_compAltOffset_z);
   self.torC_org = self.origin + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
-  
+  self.torC_angl_y = rootTorCAngl_y;
+
+  if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+    self.torC_angl_x = self.v_angle_x;
+  }
+
   self.legs_hitOffset = self.origin + (v_right * self.legs_compAltOffset_x) + (v_up * self.legs_compAltOffset_y) + (v_forward * self.legs_compAltOffset_z);
   self.legs_org = self.origin + (v_right * self.legs_compOffset_x) + (v_up * self.legs_compOffset_y) + (v_forward * self.legs_compOffset_z);
   
+  makevectors(rootTorCAngl);
   if( (self.unitModFlags & MOD_HAS_TOR_L) ){
     self.torL_hitOffset = self.origin + (v_right * self.torL_compAltOffset_x) + (v_up * self.torL_compAltOffset_y) + (v_forward * self.torL_compAltOffset_z);
     self.torL_org = self.origin + (v_right * self.torL_compOffset_x) + (v_up * self.torL_compOffset_y) + (v_forward * self.torL_compOffset_z);
+    self.torL_angl_y = self.torC_angl_y;
+    if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
+      self.torL_angl_x = self.torC_angl_x;
+    }
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) ){
     self.torR_hitOffset = self.origin + (v_right * self.torR_compAltOffset_x) + (v_up * self.torR_compAltOffset_y) + (v_forward * self.torR_compAltOffset_z);
     self.torR_org = self.origin + (v_right * self.torR_compOffset_x) + (v_up * self.torR_compOffset_y) + (v_forward * self.torR_compOffset_z);
+    self.torR_angl_y = self.torC_angl_y;
+    if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
+      self.torR_angl_x = self.torC_angl_x;
+    }
   }
+
   if( (self.unitModFlags & MOD_HAS_ARM_R) ){
     self.armR_hitOffset = self.origin + (v_right * self.armR_compAltOffset_x) + (v_up * self.armR_compAltOffset_y) + (v_forward * self.armR_compAltOffset_z);
     self.armR_org = self.origin + (v_right * self.armR_compOffset_x) + (v_up * self.armR_compOffset_y) + (v_forward * self.armR_compOffset_z);
+    self.armR_angl = [self.v_angle_x, self.torC_angl_y, 0];
   }
   if( (self.unitModFlags & MOD_HAS_ARM_L) ){
     self.armL_hitOffset = self.origin + (v_right * self.armL_compAltOffset_x) + (v_up * self.armL_compAltOffset_y) + (v_forward * self.armL_compAltOffset_z);
     self.armL_org = self.origin + (v_right * self.armL_compOffset_x) + (v_up * self.armL_compOffset_y) + (v_forward * self.armL_compOffset_z);
+    self.armL_angl = [self.v_angle_x, self.torC_angl_y, 0];
   }
 
-  piece = self.w_slot;
-  while(piece){
-    util_getPartFromName(piece.partParentId, self);
-    makevectors(T_PART_PARENT_ANGL);
-    piece.origin = self.origin + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z) + (v_right * piece.compOffset_x);
-    setorigin(piece, piece.origin);
-    piece = piece.w_slot;
+  weapon = self.w_slot;
+  while(weapon){
+    if( weapon.owner != self ){
+      continue;
+    }
+    if( (self.flags & FL_MONSTER) ){
+      ctrl_weapon_think_ai(weapon);
+    }
+    util_getPartFromName(weapon.partParentId, self);
+
+    offsetAngl = T_PART_PARENT_ANGL; 
+    makevectors(offsetAngl);
+    weapon.origin = self.origin + (v_up * weapon.compOffset_y) + (v_forward * weapon.compOffset_z) + (v_right * weapon.compOffset_x);
+    weapon.angles = T_PART_PARENT_ANGL;
+    setorigin(weapon, weapon.origin);
+    weapon = weapon.w_slot;
   }
-  
+
   if(self.critBuffer > 0){
     if( (self.critBuffer & M_TOR_LEFT) && !(self.criticalHits & M_ARM_LEFT) )
     {
@@ -66,81 +109,7 @@ void() ctrl_update_mechplayer={
     else{
       self.criticalHits = self.criticalHits | self.critBits;
     }
-    
     self.critBuffer = 0;
-  }
-};
-
-void() ai_ctrl_update_mechplayer={
-  local entity piece;
-  
-  ai_ctrl_updateCenterTorso();
-  
-  self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
-  self.ai_weaponEnergy = 0;
-  self.currentWeaponGroup = 0;
-  
-  piece = self.w_slot;
-  while(piece){
-    ctrl_weapon_think_ai(piece);
-    piece = piece.w_slot;
-  }
-  
-  makevectors(self.angles);
-  self.torC_hitOffset = self.origin + (v_right * self.torC_compAltOffset_x) + (v_up * self.torC_compAltOffset_y) + (v_forward * self.torC_compAltOffset_z);
-  self.torC_org = self.origin + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
-  
-  self.legs_hitOffset = self.origin + (v_right * self.legs_compAltOffset_x) + (v_up * self.legs_compAltOffset_y) + (v_forward * self.legs_compAltOffset_z);
-  self.legs_org = self.origin + (v_right * self.legs_compOffset_x) + (v_up * self.legs_compOffset_y) + (v_forward * self.legs_compOffset_z);
-  
-  makevectors(self.torC_angl);
-  //damage-based cosmetics for unit component pieces
-  if( (self.unitModFlags & MOD_HAS_TOR_L) ){
-    self.torL_hitOffset = self.origin + (v_right * self.torL_compAltOffset_x) + (v_up * self.torL_compAltOffset_y) + (v_forward * self.torL_compAltOffset_z);
-    self.torL_org = self.origin + (v_right * self.torL_compOffset_x) + (v_up * self.torL_compOffset_y) + (v_forward * self.torL_compOffset_z);
-  }
-  if( (self.unitModFlags & MOD_HAS_TOR_R) ){
-    self.torR_hitOffset = self.origin + (v_right * self.torR_compAltOffset_x) + (v_up * self.torR_compAltOffset_y) + (v_forward * self.torR_compAltOffset_z);
-    self.torR_org = self.origin + (v_right * self.torR_compOffset_x) + (v_up * self.torR_compOffset_y) + (v_forward * self.torR_compOffset_z);
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_R) ){
-    self.armR_hitOffset = self.origin + (v_right * self.armR_compAltOffset_x) + (v_up * self.armR_compAltOffset_y) + (v_forward * self.armR_compAltOffset_z);
-    self.armR_org = self.origin + (v_right * self.armR_compOffset_x) + (v_up * self.armR_compOffset_y) + (v_forward * self.armR_compOffset_z);
-  }
-  if( (self.unitModFlags & MOD_HAS_ARM_L) ){
-    self.armL_hitOffset = self.origin + (v_right * self.armL_compAltOffset_x) + (v_up * self.armL_compAltOffset_y) + (v_forward * self.armL_compAltOffset_z);
-    self.armL_org = self.origin + (v_right * self.armL_compOffset_x) + (v_up * self.armL_compOffset_y) + (v_forward * self.armL_compOffset_z);
-  }
-  
-  piece = self.w_slot;
-  while(piece){
-    util_getPartFromName(piece.partParentId, self);
-    makevectors(T_PART_PARENT_ANGL);
-    piece.origin = self.origin + (v_up * piece.compOffset_y) + (v_forward * piece.compOffset_z) + (v_right * piece.compOffset_x);
-    setorigin(piece, piece.origin);
-    piece = piece.w_slot;
-  }
-  
-  if(self.critBuffer > 0){
-    if( (self.critBuffer & M_TOR_LEFT) && !(self.criticalHits & M_ARM_LEFT) ){
-      self.critBuffer = self.critBuffer | M_ARM_LEFT;
-    }
-    if( (self.critBuffer & M_TOR_RIGHT) && !(self.criticalHits & M_ARM_RIGHT) ){
-      self.critBuffer = self.critBuffer | M_ARM_RIGHT;
-    }
-    
-    ctrl_mech_critical_hits();
-    self.critBits = 0 | self.critBuffer;
-    self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
-    self.criticalHits = self.criticalHits | self.critBuffer;
-    self.critBuffer = 0;
-  }
-  
-  if(self.shield > 0 && time > self.shieldHitRegen ){
-    te_shields_active(self);
-  }
-  else if (time < self.shieldHitRegen ){
-    te_shields_down(self);
   }
 };
 

@@ -116,7 +116,7 @@ void() te_beam_esr={
   local vector nexOrg;
   local float itr;
   local float width;
-
+  
   segCount = 6;
   width = self.beamWidth;
   len = vlen(self.beamEnd - self.wepFireOffset);
@@ -245,6 +245,9 @@ void() data_ini_electro_repeater_={
 #ifdef SSQC
 void() data_ini_attack_electro_repeater_={
   local float impactStyle;
+  local vector shotOrg;
+  local vector endOrg;
+
   if( self.owner.energy <= self.energyRate ){
     self.wepReloadState = RELOADING;
     self.w_currentammo = self.reloadMax / 1.125;
@@ -277,6 +280,8 @@ void() data_ini_attack_electro_repeater_={
     self.spreadDefault = self.spreadCache * 4;
   }
   ctrl_weapon_fireOffset();
+  shotOrg = FIRE_ORIGIN;
+  endOrg = FIRE_ENDPOINT;
   
   impactStyle = IMPACT_SKY;
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
@@ -287,17 +292,17 @@ void() data_ini_attack_electro_repeater_={
       impactStyle = IMPACT_ARMOR;
       
       if( trace_ent.shield > 0 ){
-        t_damage_shield(trace_ent, self, self.owner, self.damageValue * 0.5, FIRE_ENDPOINT, FALSE);
+        t_damage_shield(trace_ent, self, self.owner, self.damageValue * 0.5, endOrg, FALSE);
         impactStyle = IMPACT_SHIELD;
       }
       else{
-        HIT_LOCATION = t_damage(trace_ent, self, self.owner, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+        HIT_LOCATION = t_damage(trace_ent, self, self.owner, self.damageValue, endOrg, '0 0 0');
         if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
           self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
         }
       }
     }
   }
-  client_send_particle_rail( BEAM_ESR, num_for_edict(self), FIRE_ORIGIN, FIRE_ENDPOINT, 4,  impactStyle);
+  client_send_particle_rail( BEAM_ESR, num_for_edict(self), shotOrg, endOrg, 4,  impactStyle);
 };
 #endif

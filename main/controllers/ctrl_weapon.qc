@@ -132,33 +132,22 @@ float() ctrl_weapon_checkEnergy={
 };
 
 /*
-  
   makevectors(self.angles);
   traceline(self.origin, self.origin - (v_up * 512), TRUE, self);
   chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
 */
 void() ctrl_weapon_fireOffset={
+  local vector attackOrg;
   FIRE_ENT = self.owner; 
-  FIRE_OFFSET = self.compOffset + self.wepFireOffset + self.compAltOffset;    //complete offset from player origin
-  if( self.aiment ){
-    WEAPON_PARENT = self.aiment;
-  }
-  else{
-    WEAPON_PARENT = FIRE_ENT;
-  }
-  
-  makevectors( WEAPON_PARENT.angles );
-  if( FIRE_ENT.data_type == DATA_VEHC ){
-    FIRE_ORIGIN = FIRE_ENT.tankChassisOrg + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
-  }
-  else{
-    FIRE_ORIGIN = FIRE_ENT.origin + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
-  }
-  
-  FIRE_ENDPOINT = util_applySpreadToTrace( FIRE_ORIGIN, FIRE_ENT.v_angle, self.w_range );//becomes 'endpoint' for shot angle
+  FIRE_OFFSET = self.wepFireOffset;    //complete offset from player origin
+
+  util_getPartFromName(self.partParentId, self.owner);
+  makevectors( self.angles );
+
+  attackOrg = self.origin + (v_forward * FIRE_OFFSET_z) + (v_right * FIRE_OFFSET_x) + (v_up * FIRE_OFFSET_y);
+  FIRE_ORIGIN = attackOrg;
+  FIRE_ENDPOINT = util_applySpreadToTrace( attackOrg, self.w_range );//becomes 'endpoint' for shot angle
 };
-
-
 
 void( float burstFire ) ctrl_weapon_updateAmmo={
   self.w_currentammo = self.w_currentammo - 1;

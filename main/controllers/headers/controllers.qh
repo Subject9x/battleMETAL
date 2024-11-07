@@ -17,12 +17,9 @@ void(entity unitPiece) ctrl_unit_remove_piece;
 void(entity comp) ctrl_unit_part_death;
 
 //Mech entity controllers
+void() ctrl_mech_update;
 void() ctrl_mech_die_player;
 void() ctrl_mech_critical_hits;
-
-void() ctrl_update_mechplayer;
-void() ai_ctrl_update_mechplayer;
-
 void() ctrl_updateCenterTorso;
 void() ai_ctrl_updateCenterTorso;
 

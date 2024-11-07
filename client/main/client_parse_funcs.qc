@@ -30,6 +30,18 @@ float() CSQC_Parse_TempEntity =
       client_get_hud_highlight();
       return TRUE;
       
+    case TE_VFX_POINT:
+      pointparticles( ReadShort(), te_read_vector(), te_read_vector(), ReadShort());
+      return TRUE;
+    
+    case TE_VFX_RAIL:
+      particle_spawn_beam(ReadByte(), ReadLong(), te_read_vector(), te_read_vector(), ReadFloat(), ReadByte());
+      return TRUE;
+
+    case TE_VFX_EXPLODE:
+      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
+      return TRUE;
+
     case TE_FOG_SET:
       cl_get_new_fog();
       return TRUE;
@@ -46,9 +58,6 @@ float() CSQC_Parse_TempEntity =
       client_event_debrief_active( ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
       
-    case TE_VFX_EXPLODE:
-      particle_missile_explode( te_read_vector(), ReadByte(), te_read_vector(), ReadByte() );
-      return TRUE;
     
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
@@ -62,15 +71,7 @@ float() CSQC_Parse_TempEntity =
         hud_event_enqueue( HUD_EVENT_REPAIRS_OFF, 1) ;
       }
       return TRUE;
-      
-    case TE_VFX_POINT:
-      pointparticles( ReadShort(), te_read_vector(), te_read_vector(), ReadShort());
-      return TRUE;
-      
-    case TE_VFX_RAIL:
-      particle_spawn_beam(ReadByte(), ReadLong(), te_read_vector(), te_read_vector(), ReadFloat(), ReadByte());
-      return TRUE;
-     
+    
     case TE_PARTICLE_CUBE:
       particle_box_ini();
       return TRUE;

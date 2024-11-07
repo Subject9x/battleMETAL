@@ -32,6 +32,7 @@ void() data_ini_warden_={
   
   //Hitbox size, X width, Y Length, Z height.
   self.maxs = '16 16 15';
+  self.mins = '-16 -16 -30.5';
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;
