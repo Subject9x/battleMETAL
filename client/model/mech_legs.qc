@@ -86,7 +86,6 @@ void() predraw_legs={
       self.unit_legs.lerpfrac = self.unit_legs.lerpfrac + 1; //go to the start of the frame
     }
   }
-
   
   setmodel(self.unit_legs, self.legs_mdl);
   if( (self.flags & FL_CLIENT) ){
@@ -100,7 +99,6 @@ void() predraw_legs={
   self.unit_legs.origin = self.legs_org;
   self.legs_frame = self.unit_legs.frame;
   addentity(self.unit_legs);
-  
 };
 
 /*

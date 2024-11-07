@@ -272,74 +272,15 @@ float T_PART_HP;
 
 void(float part, entity unit) util_getPartFromName={
   local vector vOrg;
-  switch( part ){
-    case M_TOR_CENTER:
-      if( (unit.flags & FL_TURRET) ){
-        T_PART_PARENT_ORG = unit.torC_org;
-        T_PART_PARENT_ANGL = unit.torC_angl;
-        T_PART_PARENT_OFFSET = unit.torC_compOffset;
-        T_PART_HP = unit.torC_hp;
-      }
-      else{
-        #ifdef CSQC
-        T_PART_PARENT_ORG = unit.rootOrigin;
-        T_PART_PARENT_ANGL = unit.rootAngle;
-        #endif
-        #ifdef SSQC
-        T_PART_PARENT_ORG = unit.origin;
-        T_PART_PARENT_ANGL = unit.angles;
-        #endif
-        T_PART_PARENT_OFFSET = '0 0 0';
-        T_PART_HP = unit.health;
-      }
-      break;
-    case M_TOR_RIGHT:
-      T_PART_PARENT_ORG = unit.torR_org;
-      T_PART_PARENT_ANGL = unit.torR_angl;
-      T_PART_PARENT_OFFSET = unit.torR_compOffset;
-      T_PART_HP = unit.torR_hp;
-      break;
-    case M_TOR_LEFT:
-      T_PART_PARENT_ORG = unit.torL_org;
-      T_PART_PARENT_ANGL = unit.torL_angl;
-      T_PART_PARENT_OFFSET = unit.torL_compOffset;
-      T_PART_HP = unit.torL_hp;
-      break;
-    case M_LEGS:
-      vOrg = unit.legs_compOffset;
-      if( (unit.data_type == DATA_VEHC) ){
-        //edge case for hull-mounted weapons on a turreted object
-        #ifdef CSQC
-        T_PART_PARENT_ORG = unit.rootOrigin;
-        T_PART_PARENT_ANGL = unit.rootAngle;
-        #endif
-        #ifdef SSQC
-        T_PART_PARENT_ORG = unit.origin;
-        T_PART_PARENT_ANGL = unit.angles;
-        #endif
-        T_PART_PARENT_OFFSET = '0 0 0';
-        T_PART_HP = unit.health;
-      }
-      else{
-        T_PART_PARENT_ORG = unit.legs_org;
-        T_PART_PARENT_ANGL = unit.legs_angl;
-        T_PART_PARENT_OFFSET =  unit.legs_compOffset;
-        T_PART_HP = unit.legs_hp;
-      }
-      break;
-    case M_ARM_LEFT:
-      T_PART_PARENT_ORG = unit.armL_org;
-      T_PART_PARENT_ANGL = unit.armL_angl;
-      T_PART_PARENT_OFFSET = unit.armL_compOffset;
-      T_PART_HP = unit.armL_hp;
-      break;
-    case M_ARM_RIGHT:
-      T_PART_PARENT_ORG = unit.armR_org;
-      T_PART_PARENT_ANGL = unit.armR_angl;
-      T_PART_PARENT_OFFSET = unit.armR_compOffset;
-      T_PART_HP = unit.armR_hp;
-      break;
-    default:
+
+  if( part == M_TOR_CENTER ){
+    if( (unit.flags & FL_TURRET) ){
+      T_PART_PARENT_ORG = unit.torC_org;
+      T_PART_PARENT_ANGL = unit.torC_angl;
+      T_PART_PARENT_OFFSET = unit.torC_compOffset;
+      T_PART_HP = unit.torC_hp;
+    }
+    else{
       #ifdef CSQC
       T_PART_PARENT_ORG = unit.rootOrigin;
       T_PART_PARENT_ANGL = unit.rootAngle;
@@ -350,6 +291,74 @@ void(float part, entity unit) util_getPartFromName={
       #endif
       T_PART_PARENT_OFFSET = '0 0 0';
       T_PART_HP = unit.health;
-      break;
+    }
+    return;
   }
+
+  if( part == M_TOR_RIGHT ){
+    T_PART_PARENT_ORG = unit.torR_org;
+    T_PART_PARENT_ANGL = unit.torR_angl;
+    T_PART_PARENT_OFFSET = unit.torR_compOffset;
+    T_PART_HP = unit.torR_hp;
+    return;
+  }
+
+  if( part == M_TOR_LEFT ){
+    T_PART_PARENT_ORG = unit.torL_org;
+    T_PART_PARENT_ANGL = unit.torL_angl;
+    T_PART_PARENT_OFFSET = unit.torL_compOffset;
+    T_PART_HP = unit.torL_hp;
+    return;
+  }
+
+  if( part == M_LEGS ){
+    vOrg = unit.legs_compOffset;
+    if( (unit.data_type == DATA_VEHC) ){
+      //edge case for hull-mounted weapons on a turreted object
+      #ifdef CSQC
+      T_PART_PARENT_ORG = unit.rootOrigin;
+      T_PART_PARENT_ANGL = unit.rootAngle;
+      #endif
+      #ifdef SSQC
+      T_PART_PARENT_ORG = unit.origin;
+      T_PART_PARENT_ANGL = unit.angles;
+      #endif
+      T_PART_PARENT_OFFSET = '0 0 0';
+      T_PART_HP = unit.health;
+    }
+    else{
+      T_PART_PARENT_ORG = unit.legs_org;
+      T_PART_PARENT_ANGL = unit.legs_angl;
+      T_PART_PARENT_OFFSET =  unit.legs_compOffset;
+      T_PART_HP = unit.legs_hp;
+    }
+    return;
+  }
+
+  if( part == M_ARM_LEFT ){
+    T_PART_PARENT_ORG = unit.armL_org;
+    T_PART_PARENT_ANGL = unit.armL_angl;
+    T_PART_PARENT_OFFSET = unit.armL_compOffset;
+    T_PART_HP = unit.armL_hp;
+    return;
+  }
+
+  if( part == M_ARM_RIGHT ){
+    T_PART_PARENT_ORG = unit.armR_org;
+    T_PART_PARENT_ANGL = unit.armR_angl;
+    T_PART_PARENT_OFFSET = unit.armR_compOffset;
+    T_PART_HP = unit.armR_hp;
+    return;
+  }
+
+  #ifdef CSQC
+  T_PART_PARENT_ORG = unit.rootOrigin;
+  T_PART_PARENT_ANGL = unit.rootAngle;
+  #endif
+  #ifdef SSQC
+  T_PART_PARENT_ORG = unit.origin;
+  T_PART_PARENT_ANGL = unit.angles;
+  #endif
+  T_PART_PARENT_OFFSET = '0 0 0';
+  T_PART_HP = unit.health;
 };

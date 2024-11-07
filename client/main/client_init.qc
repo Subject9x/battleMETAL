@@ -149,6 +149,7 @@ void() CSQC_Init =
   toolTip = spawn();
   UI_HANGAR_DATA_mech = spawn();
   UI_HANGAR_DATA_mech.classname = "UI_ITEM";
+  UI_HANGAR_DATA_mech.flags = UI_HANGAR_DATA_mech.flags | FL_TURRET;
   
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();

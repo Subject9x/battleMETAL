@@ -251,7 +251,6 @@ void() interpolate_tank={
     
       if(self.weaponEnt1.data_idx){
         predraw_unit_weapon_tank(self.weaponEnt1);
-        //Draw_CylindricLine(self.weaponEnt1.wepFireOffset, self.laser_sight_org, 1.0, "particles/laserbeam", 1.0, time * 0.1, '1.0 1.0 1.0', 1.0, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
       }
       if(self.weaponEnt2.data_idx){
         predraw_unit_weapon_tank(self.weaponEnt2);

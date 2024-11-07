@@ -255,9 +255,8 @@ void(entity item, entity parent) te_weapon_fire_handler={
   makevectors(view);
 
   this = self;
-  self = item;
-    util_getPartFromName( self.partParentId, this);
-  self = this;
+  util_getPartFromName( item.partParentId, this);
+
     
   if(parent.data_type == DATA_VEHC){
     unitOrg = parent.cacheGroundPos;
@@ -1207,18 +1206,18 @@ void(float beamType, float entId, vector particleOrg, vector particleEnd, float 
   if(ent.beamActive){
     return;
   }
-  
+
   ent.beamEnd = particleEnd;
   ent.pcl_count = impactType;
 
-  te_weapon_fire_handler(ent, ent.owner);
   this = self;
+  self = ent.owner;
+    te_weapon_fire_handler(ent, ent.owner);
   self = ent;
     if(self.itemMuzzleFlash){
       self.itemMuzzleFlash();
     }
   self = this;
-
 };
 
 //maybe at some point someone can figure out MOVETYPE_BOUNCE for csqc.

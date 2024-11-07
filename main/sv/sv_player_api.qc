@@ -207,7 +207,7 @@ void() PlayerPostThink = {
       }
     }*/
     
-    ctrl_update_mechplayer();
+    ctrl_mech_update();
     
     for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
       if( wep_chain.owner != self ){
@@ -380,7 +380,7 @@ void() PlayerPostThink_powerup={
   traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
   self.stat_ret_dist = (self.radar_range * trace_fraction);
 
-  ctrl_update_mechplayer();
+  ctrl_mech_update();
   
   local entity wep_chain;
   for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){

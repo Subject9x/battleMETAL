@@ -12,6 +12,7 @@ void() ctrl_updateTank={
   local vector v1;
   local float hp;
   local float myShield;
+  local vector offsetAngl;
   
   if( !(self.flags & FL_TURRET) ){
     //Unit lacks a turret.
@@ -69,9 +70,22 @@ void() ctrl_updateTank={
   
   wep = self.w_slot;
   while(wep){
-    ctrl_weapon_think_ai(wep);
+    if( wep.owner != self ){
+      continue;
+    }
+    if( (self.flags & FL_MONSTER) ){
+      ctrl_weapon_think_ai(wep);
+    }
+    util_getPartFromName(wep.partParentId, self);
+
+    offsetAngl = T_PART_PARENT_ANGL; 
+    makevectors(offsetAngl);
+    wep.origin = self.origin + (v_up * wep.compOffset_y) + (v_forward * wep.compOffset_z) + (v_right * wep.compOffset_x);
+    wep.angles = T_PART_PARENT_ANGL;
+    setorigin(wep, wep.origin);
     wep = wep.w_slot;
   }
+
   
   //damage-based cosmetics for unit component pieces
   if( self.deadflag <= DEAD_NO ){

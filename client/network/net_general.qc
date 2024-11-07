@@ -503,7 +503,6 @@ vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle={
   if( self.isLocalPlayer ){
     if( !self.chaseActive){
       self.renderflags = 0 | RF_EXTERNALMODEL;
-      //offset = offset - (v_forward * self.cameraOffset_z);
     }
   }
   

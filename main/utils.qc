@@ -127,23 +127,27 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
 //vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
-vector( vector fireOrg, vector viewAngle, float idealRange ) util_applySpreadToTrace={
+vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
   //local vector direction; //shot dispersion disabled
   //local vector acc;
   local vector wepAim;
   local vector targVel;
-  local float aimLen;
   local vector converge;
   
-  targVel = '0 0 0';
-  if( (self.owner.enemy.flags & FL_CLIENT) ){
-    targVel = self.owner.enemy.velocity;
-  }
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
+    targVel = '0 0 0';
+    if( (self.owner.enemy.flags & FL_CLIENT) ){
+      targVel = self.owner.enemy.velocity;
+    }
     //AI aiming
-    if( self.w_isburst ){
-      wepAim = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
+    if( self.beamFlag ){
+      if( self.owner.enemy.data_type == DATA_BLD ){
+        wepAim = self.owner.enemy.hitOffset;
+      }
+      else{
+        wepAim = self.owner.enemy.origin;
+      }
     }
     else{
       if( self.owner.enemy.data_type == DATA_BLD ){
@@ -153,12 +157,17 @@ vector( vector fireOrg, vector viewAngle, float idealRange ) util_applySpreadToT
         wepAim = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
       }
     }
-    wepAim = normalize(wepAim - self.origin);
+    if(vlen(self.owner.laser_sight_org - fireOrg) <= idealRange){
+      wepAim = normalize(wepAim - fireOrg);
+    }
+    else{
+      converge = self.owner.origin + (v_forward * idealRange);
+      wepAim = normalize( converge - fireOrg ); 
+    }
   }
   else{
     //Player aiming
-    aimLen  = vlen(self.owner.laser_sight_org - fireOrg);
-    if( aimLen <= idealRange){
+    if( vlen(self.owner.laser_sight_org - fireOrg) <= idealRange){
       wepAim = normalize( self.owner.laser_sight_org - fireOrg ); 
     }
     else{

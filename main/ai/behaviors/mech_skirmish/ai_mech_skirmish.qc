@@ -21,7 +21,7 @@ void() ai_mech_skirmish={
   
   self.SendEntity = ctrl_send_mech_ai;
   
-  self.ai_unit_update = ai_ctrl_update_mechplayer;
+  self.ai_unit_update = ctrl_mech_update;
   
   self.th_pain = ai_react_generic;
   self.th_die = ai_mech_sk_die;

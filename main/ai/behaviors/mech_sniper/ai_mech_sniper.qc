@@ -24,7 +24,7 @@ void() ai_mech_sniper={
   
   self.SendEntity = ctrl_send_mech_ai;
   
-  self.ai_unit_update = ai_ctrl_update_mechplayer;
+  self.ai_unit_update = ctrl_mech_update;
   
   self.ai_timer_tracepath = 1 + random() * 5; //seed the nodegraph timer check
   self.ai_findPath = TRUE;

@@ -976,7 +976,7 @@ void() data_hud_fps_cam={
   local vector color2;
   
   hasTarget = FALSE;
-  if( CLIENT_target_ent.data_idx > 0 && CLIENT_target_ent.entnum != 0){
+  if( CLIENT_target_ent.data_idx > 0 && CLIENT_target_ent.entnum != 0 && CLIENT_target_ent.deadflag == DEAD_NO){
     hasTarget = TRUE;
   }
   
