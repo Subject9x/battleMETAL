@@ -8,7 +8,7 @@ Overview:
   Crosshair Type 4
   
   //GLOBAL REFERENCES
-    CLIENT_stat_hit_dirs    - hit direction indicators
+    CLIENT_stat_hit_targ    - hit direction indicators
     CLIENT_stat_trg_face    - player facing selected target
     CLIENT_accuracy         - player moving or not
     CLIENT_target_shield    - target has shield
@@ -33,7 +33,7 @@ void() hud_renderCrosshair4={
 
   drawpic(CROSSHR_IMG_CENTER, "gfx/hud/ret/crosshair4.png", CROSSHR_IMG_SIZE, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   
-  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
+  if( (CLIENT_stat_hit_targ & STAT_HIT_TRG) ){
     if(CLIENT_target_shield > 0){
       CROSSHR_HIT_CLR = CLR_DEF_ARM_OK;
       CROSSHR_HIT_ALPHA = 1;

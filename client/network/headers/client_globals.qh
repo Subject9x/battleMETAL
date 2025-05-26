@@ -41,6 +41,7 @@ float CLIENT_stat_lock_state;
 float CLIENT_stat_rdr_mode;
 float CLIENT_stat_rdr_mode_prev;
 float CLIENT_stat_hit_parts;
+float CLIENT_stat_hit_targ;
 float CLIENT_stat_hit_dirs;
 float CLIENT_stat_ret_dist;
 
@@ -81,7 +82,6 @@ float CLIENT_stat_trg_ent_id;
 float CLIENT_stat_trg_ent_id_prev;
 
 entity CLIENT_target_ent;
-entity CLIENT_server_ent;
 
 float CLIENT_target_dist;
 float CLIENT_target_dist_prev;

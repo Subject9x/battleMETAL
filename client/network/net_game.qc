@@ -52,7 +52,8 @@ void() receive_ent_bindData={
     //CLIENT_stat_lock_state = getstati(STAT_LCK_STT); //2.0.0: lock-on not timer-based anymore
     //CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
     CLIENT_stat_hit_parts = getstati(STAT_TARGET_HIT_PARTS);
-    CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
+    CLIENT_stat_hit_dirs = getstati(STAT_PLR_HIT_DIR);
+    CLIENT_stat_hit_targ = getstati(STAT_PLR_HIT_TARG);
     CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
     
     //Last Frame Target info cache

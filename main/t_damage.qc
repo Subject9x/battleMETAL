@@ -48,9 +48,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
               
   trg.dmg_inflictor = inflictor;
-  if(trg.was_hit < time){
-    trg.was_hit = time + 1;
-  }
+  trg.was_hit = time + 0.5;
   
   //shield delay check=============================
   /*
@@ -64,9 +62,6 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
     trg.shieldHitDelay = trg.shieldHitDelay + 0.5;  //up from 0.1
   }
   //================================================
-  
-  //calculate hit time and angle
-  util_chekPointToHitDir(trg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.playerDMdamage = attacker.playerDMdamage + dmgAmt;
@@ -97,6 +92,10 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
         }
       }
       self = notTarg;
+    }
+    else{
+      //calculate hit time and angle for clients
+      util_checkPointToHitDir(trg, inflictor.origin);
     }
     //-----------------------------
 
@@ -272,12 +271,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
   
   dmgTrg.dmg_inflictor = inflictor;
-  if(dmgTrg.was_hit < time){
-    dmgTrg.was_hit = time + 1;
-  }
+  dmgTrg.was_hit = time + 0.5;
 
-  //calculate hit time and angle
-  util_chekPointToHitDir(dmgTrg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.timer_hittarg = time + 0.2;
@@ -354,6 +349,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
       }
     }
     self = notTarg;
+  }
+  else{
+    //calculate hit time and angle for clients
+    util_checkPointToHitDir(dmgTrg, inflictor.origin);
   }
   return dmgTrg;
 }

@@ -86,7 +86,8 @@ void() world_metal_ini={
   
   addstat(STAT_PLAYER_STATE, AS_FLOAT, playerState);
   
-  addstat(STAT_PLR_HITDIR, AS_FLOAT, stat_hit_dirs);
+  addstat(STAT_PLR_HIT_DIR, AS_FLOAT, stat_hit_dirs);
+  addstat(STAT_PLR_HIT_TARG, AS_FLOAT, hitdir_buffer);
   addstat(STAT_PLR_RETDIST, AS_FLOAT, stat_ret_dist);
   
   addstat(STAT_WEAPON_RELOAD_1, AS_FLOAT, statWeaponReload1);

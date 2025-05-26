@@ -173,6 +173,7 @@ void() ImpulseCommands ={
       if( self.ramUp >= self.ramUpMax ){
         if( self.energy >= (self.energyMax * (self.ramUpMax / 25)) ){
           self.ramCharge = time + (self.ramUp / 2);
+          self.ramPower_x = self.data_speed_forward * 4;  //really not sure how this got broken... 5/23/2025
           self.ramPower_y = 0;
           self.ramPower_z = -15;
           self.ramVelocity = self.velocity;

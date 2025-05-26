@@ -7,7 +7,7 @@ Overview:
   Crosshair Type 2
   
   //GLOBAL REFERENCES
-    CLIENT_stat_hit_dirs    - hit direction indicators
+    CLIENT_stat_hit_targ    - hit direction indicators
     CLIENT_stat_trg_face    - player facing selected target
     CLIENT_accuracy         - player moving or not
     CLIENT_target_shield    - target has shield
@@ -41,7 +41,7 @@ void() hud_renderCrosshair2={
   pipSizeH = '15 3';
   pipSizeV = '3 15';
   
-  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
+  if( (CLIENT_stat_hit_targ & STAT_HIT_TRG) ){
     if(CLIENT_target_shield > 0){
       CROSSHR_HIT_CLR = CLR_DEF_ARM_OK;
       CROSSHR_HIT_ALPHA = 1;

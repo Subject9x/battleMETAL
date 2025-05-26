@@ -808,7 +808,6 @@ void() data_hud_frame={
   }
 
   //CROSSHAIR AND DETAILS
-  hud_renderDirectionHit(CLIENT_stat_hit_dirs);
   if( (CLIENT_flags & FL_NOSHOOT) ){
     hud_renderCrosshairDisabled();
   }
@@ -838,6 +837,7 @@ void() data_hud_frame={
   }
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
+  hud_renderDirectionalHit();
   if( CLIENT_target_ent != world ){
     hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_ent.faction, CLIENT_target_datatype);
   }

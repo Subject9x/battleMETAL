@@ -245,8 +245,8 @@ float TEAM_MILITAR_TOTAL;
 #define DMG_FRIENDLY_FIRE_REDUCE 0.67  // t_damage() - line 35, damage reduction for friendly fire when the flag is on.
 #define DMG_FRIENDLY_FIRE_REDUCE_SKILL 0.33
 
-#define MOVE_RAM_SCALAR_UP 0.004
-#define MOVE_RAM_SCALAR_DN 0.01
+#define MOVE_RAM_SCALAR_UP 0.003
+#define MOVE_RAM_SCALAR_DN 0.025
 
 //leg animation directions
 #define LEGS_MOVE_STAND 0
@@ -392,6 +392,7 @@ float AS_INT = 8;
 .float stat_plr_fir;
 .float targLockState;
 .float stat_trg_ddflg;
+.float stat_plr_hit_trg;
 .float stat_ret_dist;
 
 .float stat_plr_rep;
@@ -428,8 +429,8 @@ float AS_INT = 8;
 //float    = 43;
 //float    = 44;
 //float    = 46;
-//float    = 47;
-#define STAT_PLR_HITDIR 48
+#define STAT_PLR_HIT_DIR 47
+#define STAT_PLR_HIT_TARG 48
 #define STAT_PLR_RETDIST 49
 //float    = 50;
 //float    = 53;
@@ -507,11 +508,22 @@ float AS_INT = 8;
 //============================
 //     HIT DIRECTION FLAGS 
 //============================
-#define STAT_HIT_CL 1
-#define STAT_HIT_LF 2
-#define STAT_HIT_RT 4
-#define STAT_HIT_BK 8
-#define STAT_HIT_TRG 16
+#define HIT_DIR_1 45
+#define HIT_DIR_2 90
+#define HIT_DIR_3 135
+#define HIT_DIR_4 180
+#define HIT_DIR_5 225
+#define HIT_DIR_6 270
+//hit directions are 360 / 45 = 8 segments, but 7 and 0 are "front arc" and generally not used.
+#define STAT_HIT_DIR0 1
+#define STAT_HIT_DIR1 2
+#define STAT_HIT_DIR2 4
+#define STAT_HIT_DIR3 8
+#define STAT_HIT_DIR4 16
+#define STAT_HIT_DIR5 32
+#define STAT_HIT_DIR6 64
+#define STAT_HIT_DIR7 128
+#define STAT_HIT_TRG 256
 
 //============================
 //     PLAYER POWER UP TIME  

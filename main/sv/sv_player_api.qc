@@ -178,13 +178,12 @@ void() PlayerPostThink = {
       self.playerState = PLAYER_ACTIVE;
     }
     
-    self.stat_hit_dirs = self.hitdir_buffer;
+    //TODO - rename, no longer tracks directional hits.
     if(time >= self.timer_hittarg){
-      self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
+      self.hitdir_buffer = self.hitdir_buffer  - (self.hitdir_buffer  & STAT_HIT_TRG);
     }
-    if(time >= self.was_hit){
-      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & (STAT_HIT_LF | STAT_HIT_RT | STAT_HIT_BK));
-      self.hitdir_buffer = 0;
+    if(self.was_hit < time){
+      self.stat_hit_dirs = fabs(rint(0));
     }
   }
   
@@ -273,14 +272,17 @@ void() PlayerPostThink = {
           if( self.energy > (self.energyMax * 0.15)){
             if( !(self.criticalHits & M_LEGS) ){
               if( self.ramUp < self.ramUpMax ){
+                self.ramUp = self.ramUp + self.data_speed_accel * MOVE_RAM_SCALAR_UP;
               } 
             }  
           }   
         }
         else{
+          self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
         }
       }
       else{
+          self.ramUp = self.ramUp - self.data_speed_accel * MOVE_RAM_SCALAR_DN;
       }
       if( self.ramUp < 0 ){
         self.ramUp = 0;
@@ -339,6 +341,7 @@ void() PlayerPostThink = {
     if( self.attackFlag > 0 ){
       self.SendFlags = self.SendFlags | SENDFLAG_ATTACK;
     }
+
   }
   
   //DEBUG / DEV ONLY!

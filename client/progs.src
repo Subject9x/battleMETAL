@@ -38,6 +38,18 @@ network/headers/server_localcmd.qh
 network/headers/receive_entities.qh
 network/headers/receive_sendent.qh
 
+
+util/headers/input_events.qh
+
+//CSQC Menu System Headers
+  ui/headers/hud_view.qh
+  ui/headers/anim.qh
+  ui/headers/hud_system_sound.qh
+  ui/headers/hud_system_event.qh
+  ui/headers/hud_external.qh
+  ui/headers/hud_crosshairs.qh
+//================
+
 //Common Game Data================
   ../common/data/data_values_particles.qc
   ../common/ui/ui_color_constants.qc
@@ -127,16 +139,6 @@ network/headers/receive_sendent.qh
   //-------------------------------
 //================================
 
-util/headers/input_events.qh
-
-//CSQC Menu System Headers
-  ui/headers/hud_view.qh
-  ui/headers/anim.qh
-  ui/headers/hud_system_sound.qh
-  ui/headers/hud_system_event.qh
-  ui/headers/hud_external.qh
-  ui/headers/hud_crosshairs.qh
-//================
 
 //CSQC Menu Header
   ui/headers/ui_ext.qh

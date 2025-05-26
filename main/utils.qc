@@ -263,37 +263,45 @@ float(vector orig) util_lockOnChoke={
   return FALSE;
 };
 
-void(entity ent, vector pnt) util_chekPointToHitDir={
-  local float hitAngle, sideAngle;
-  local vector normVec;
+void(entity targetEnt, vector hitOrigin) util_checkPointToHitDir={
+  local vector normal;
+  local float fwd;
+  local float side;
+  local float entViewYaw;
+  local float checkYaw = 0;
 
-  makevectors(ent.v_angle);
-  normVec = normalize(pnt - ent.origin);
-  hitAngle = normVec * v_forward;
-  sideAngle = normVec * v_right;
-
-  /*
-    Direction Table
-    normVec * v_forward
-      Front = 1.0
-      Back = -1.0
-      
-    normVec * v_right;
-      Left = -1.0
-      Right = 1.0
-  */
-  //check for side hits
-  if( (hitAngle <= 0.7) && (hitAngle > -0.7) ){
-    if( sideAngle < 0 ){
-      ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_LF; 
+  makevectors(targetEnt.v_angle);
+  normal = normalize(hitOrigin - targetEnt.origin);
+  fwd = normal * v_forward;
+  side = normal * v_right;
+  
+  if(fwd < 0.5){
+    //right side hit
+    if(side > 0.0){
+      if(fwd < 0.5 && fwd >= 0.0){
+        targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs | STAT_HIT_DIR1;
+      }
+      else if(fwd < 0.0 && fwd >= -0.5){
+        targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs | STAT_HIT_DIR2;
+      }
+      else if(fwd < -0.5){
+        targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs | STAT_HIT_DIR3;
+      }
     }
     else{
-      ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_RT;
+      //left side
+      if(fwd < 0.5 && fwd >= 0.0){
+        targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs | STAT_HIT_DIR6;
+      }
+      else if(fwd < 0.0 && fwd >= -0.5){
+        targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs | STAT_HIT_DIR5;
+      }
+      else if(fwd < -0.5){
+        targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs | STAT_HIT_DIR4;
+      }
     }
   }
-  else if( hitAngle < -0.75 ){
-    ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_BK;
-  }
+  targetEnt.stat_hit_dirs = targetEnt.stat_hit_dirs;
 };
 
 

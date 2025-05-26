@@ -229,14 +229,65 @@ void(float hitDirBit) hud_renderDirectionHit={
     hitColor = CLR_HUD_DMG_ARMOR;
   }
   
-  if( (hitDirBit & STAT_HIT_LF) ){
-    orgLeft_x = VIEW_ORG_x + 1;
-    gui_renderTintImage(TRUE, orgLeft, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
-  }
+  // if( (hitDirBit & STAT_HIT_LF) ){
+  //   orgLeft_x = VIEW_ORG_x + 1;
+  //   gui_renderTintImage(TRUE, orgLeft, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
+  // }
   
-  if( (hitDirBit & STAT_HIT_RT) ){
-    orgRight_x = VIEW_MAX_x - 24;
-    gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
+  // if( (hitDirBit & STAT_HIT_RT) ){
+  //   orgRight_x = VIEW_MAX_x - 24;
+  //   gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
+  // }
+};
+
+void() hud_renderDirectionalHit={
+  local float itr;
+  local float ang;
+  local float drawAng;
+  local vector lorg;
+  local float hitDirBit;
+  local vector clr;
+  local float ofs;
+  local vector sz;
+
+  if( HUD_EXTERNAL_CAM_ACTIVE ){
+    ofs = 120;
+    sz = '24 64';
+  }
+  else{
+    ofs = 72;
+    sz = '16 48';
+  }
+  //all 8 directions accounted for, but we only care about that 270 rear arc
+  hitDirBit = 1;
+  for( itr = 0; itr < 6; itr = itr + 1){
+    if( (CLIENT_stat_hit_dirs & hitDirBit) ){
+      if( HUD_HIT_DIRS[itr] <= 0){
+        HUD_HIT_DIRS[itr] = servertime + 1.0;
+      }
+    }
+    else if( servertime > HUD_HIT_DIRS[itr] ){
+      HUD_HIT_DIRS[itr] = 0;
+    }
+
+    //0 degree is right-center of screen, going CLOCKWISE
+    if( servertime < HUD_HIT_DIRS[itr] ){
+      ang =  anglemod((45 * itr) - 45);
+      drawAng = anglemod(ang * -1);
+
+      lorg_x = VIEW_CTR_x + (ofs * cos(ang * M_PI/180));
+      lorg_y = VIEW_CTR_y + (ofs * sin(ang * M_PI/180));
+
+      if( CLIENT_shield > 0  && CLIENT_shield < 100.1 ){
+        clr = '0 1 0';
+      }
+      else{
+        clr = '1 0 0';
+      }
+      drawrotpic(lorg , "gfx/hud/ret/crosshair1_rvrt.png", sz,  sz * 0.5, drawAng, clr, HUD_ALPHA * 0.8, 0);
+    }
+
+    hitDirBit = bitshift(hitDirBit, 1);
   }
 };
 

@@ -164,6 +164,9 @@ string HUD_TAGS[22];
   float HUD_STRUT_COLOR_TIME2;
   float HUD_STRUT_COLOR_TIME_NEXT;
 
+//hit indicators, broken down into a roughly 270 arc excluding players 90deg fwd arc.
+float HUD_HIT_DIRS[6];  //each slot is 45deg of arc, starting with '1' @ 45deg
+
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -232,6 +235,7 @@ entity HUD_DATA_weapon;
 
 //void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5;
 
+void() hud_renderDirectionalHit;
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
 void(vector pos, float algn) hud_renderPitchIndicator;
@@ -244,10 +248,6 @@ void(vector grpCtr, vector pos, float val, vector mSize, string imgPiece, float 
 void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize, float isTarget) hud_renderArmorMech;
 void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorMech3D;
 void(vector pos, vector vSize, float algn, float lalgn, vector lblOfs, vector lblSize) hud_renderArmorPlayer3D;
-
-
-
-
 
 void(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(entity blip, float plrFaction, float radRange ) hud_renderRadarContact;

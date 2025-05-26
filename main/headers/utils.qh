@@ -40,7 +40,7 @@ void(string mdl_name, float skinNum, float ef_flags) util_setModel;
 float(entity trg) util_checkPointAngle;
 float(vector orig) util_checkPointAngleImpl;
 float(vector org) util_lockOnChoke;
-void(entity ent, vector pnt) util_chekPointToHitDir;
+void(entity targetEnt, vector hitOrigin) util_checkPointToHitDir;
 
 float(float numOfSides) util_roll_dice;
 

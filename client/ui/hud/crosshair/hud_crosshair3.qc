@@ -7,7 +7,7 @@ Overview:
   Crosshair Type 3
   
   //GLOBAL REFERENCES
-    CLIENT_stat_hit_dirs    - hit direction indicators
+    CLIENT_stat_hit_targ    - hit direction indicators
     CLIENT_stat_trg_face    - player facing selected target
     CLIENT_accuracy         - player moving or not
     CLIENT_target_shield    - target has shield
@@ -30,7 +30,7 @@ void() hud_renderCrosshair3={
   }
   drawpic(CROSSHR_IMG_CENTER, "gfx/hud/ret/crosshair3.png", CROSSHR_IMG_SIZE, HUD_COLOR_DEF, CROSSHR_RET_ALPHA, DRAWFLAG_NORMAL);  
   
-  if( (CLIENT_stat_hit_dirs & STAT_HIT_TRG) ){
+  if( (CLIENT_stat_hit_targ & STAT_HIT_TRG) ){
     hitSize = '27 27';
     hitCenter_x = VIEW_CTR_x - hitSize_x / 2;
     hitCenter_y = VIEW_CTR_y - hitSize_y / 2;
