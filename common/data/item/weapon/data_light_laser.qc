@@ -65,7 +65,7 @@ void() data_ini_light_laser_={
   self.energyRate = 20;   //v3.7.4 - 18
 
   self.w_range = 3000;
-  self.damageValue = 30;  //v3.7.4 - 25
+  self.damageValue = 27;  //v5.4.0 - 30
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;

@@ -63,9 +63,9 @@ void() data_ini_flak_cannon_={
   self.energyRate = 0;
   
   self.w_range = 500;
-  self.damageValue = 1; //2.5
+  self.damageValue = 1.0; //2.5
   if((self.owner.flags & FL_CLIENT)){
-    self.damageValue = 3;
+    self.damageValue = 4.5; //3.0 - v5.4.0
     self.w_clipsize = 3;
     self.reloadRate = 0.15;
     self.reloadMax = 3;

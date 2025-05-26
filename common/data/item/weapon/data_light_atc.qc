@@ -68,15 +68,15 @@ void() data_ini_light_atc_={
   
   if( (self.owner.flags & FL_CLIENT) ){
     self.w_clipsize = 1;
-    self.reloadRate = 0.3;
-    self.reloadMax = 0.3;
-    self.damageValue = 5;
+    self.reloadRate = 0.28;
+    self.reloadMax = 0.28;
+    self.damageValue = 5.5; //5.0 - v5.4.0
   }
   else{
     self.w_clipsize = 3;
     self.reloadRate = 0.5;
     self.reloadMax = 1.0;
-    self.damageValue = 3.0;
+    self.damageValue = 1.5; //3.0 - v5.4.0
   }
   
   self.energyRate = 0;

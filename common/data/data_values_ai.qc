@@ -62,10 +62,10 @@ Overview: AI values that have been spun off from common/game
 //shield = shield * AI_SHIELD
 //AI mechs share initial stats with player, so we have to detune them now.
 //release v3.12.16
-#define AI_SHIELD_ROK 0.4
-#define AI_SHIELD_REG 0.67
-#define AI_SHIELD_VET 0.73
-#define AI_SHIELD_ACE 0.8
+#define AI_SHIELD_ROK 0.3   //0.4 - v5.4.0
+#define AI_SHIELD_REG 0.58  //0.67 - v5.4.0
+#define AI_SHIELD_VET 0.67  //0.73 - v5.4.0
+#define AI_SHIELD_ACE 0.75  //0.8 - v5.4.0
 
 //AI TH_REACT cooldown
 #define AI_REACT_ROK 2
@@ -139,16 +139,16 @@ Overview: AI values that have been spun off from common/game
 #define AI_WEAPON_RPS_MOD 1500
 
 //Minimum convergence modifier
-#define AI_CNV_MIN_ROK 2
-#define AI_CNV_MIN_REG 1.5
-#define AI_CNV_MIN_VET 1
-#define AI_CNV_MIN_ACE 0.5
+#define AI_CNV_MIN_ROK 2.75 // 2.0 - v5.4.0
+#define AI_CNV_MIN_REG 2    // 1.5 - v5.4.0
+#define AI_CNV_MIN_VET 1.5  // 1.0 - v5.4.0
+#define AI_CNV_MIN_ACE 1.0  // 0.5 - v5.4.0
 
 //Maximum convergence modifier
-#define AI_CNV_MAX_ROK 2.5
-#define AI_CNV_MAX_REG 2
-#define AI_CNV_MAX_VET 1.5
-#define AI_CNV_MAX_ACE 1
+#define AI_CNV_MAX_ROK 4.5  // 2.5 - v5.4.0
+#define AI_CNV_MAX_REG 3.0  // 2.0 - v5.4.0
+#define AI_CNV_MAX_VET 2.5  // 1.5 - v5.4.0
+#define AI_CNV_MAX_ACE 1.5  // 1.0 - v5.4.0
 
 //Convergence Rate modifier
 #define AI_CNV_RATE_ROK 0.15
