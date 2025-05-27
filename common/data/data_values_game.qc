@@ -246,7 +246,7 @@ float TEAM_MILITAR_TOTAL;
 #define DMG_FRIENDLY_FIRE_REDUCE_SKILL 0.33
 
 #define MOVE_RAM_SCALAR_UP 0.003
-#define MOVE_RAM_SCALAR_DN 0.025
+#define MOVE_RAM_SCALAR_DN 0.0075
 
 //leg animation directions
 #define LEGS_MOVE_STAND 0

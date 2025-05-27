@@ -310,7 +310,8 @@ void() ButtonCommands={
         if( self.energy >= (self.energyMax * 0.15) ){
           if( self.shield < self.shieldMax ){
             self.shield = self.shield + ((self.shieldRate + (self.shieldRate * self.shieldRateMod)) * 0.25);
-            self.energy = self.energy - (self.shieldRate * 1.15);  //iirc, shield recharge module doesn't charge for the buff cost.
+            //1.15 - v5.4.0
+            self.energy = self.energy - (self.shieldRate * 1.05);  //iirc, shield recharge module doesn't charge for the buff cost.
             self.energy = bound(0, self.energy, self.energyMax);
           }
         }
