@@ -716,17 +716,17 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       else{
         CLIENT_shield = 0;
       }
-      if( self.shieldHitFlag > SHIELD_HIT_EMP ){
-        if( time > SFX_SHLD_TIME){
-          SFX_SHLD_TIME = time + 5;
-          pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN, 1.0, ATTN_NONE);
+      if( self.shieldHitFlag > SHIELD_HIT_EMP){
+        if( servertime > SFX_SHLD_TIME){
+          SFX_SHLD_TIME = servertime + soundlength(SND_HUD_SHLD_DN) + 3;
+          pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN, 0.5, ATTN_NONE);
           pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN_SFX, 1.0, ATTN_NONE);
         }
       }
-      else if( self.prevShield == 101 ) {
-        if(time > SFX_SHLD_TIME){
+      else if( self.prevShield == 101) {
+        if(servertime > SFX_SHLD_TIME){
           pointsound(CLIENT_vis_org, SND_HUD_SHLD_UP_SFX, 1.0, ATTN_NONE);
-          SFX_SHLD_TIME = time + 1;
+          SFX_SHLD_TIME = servertime + soundlength(SND_HUD_SHLD_UP_SFX);
         }
       }
       
