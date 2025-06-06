@@ -14,6 +14,7 @@ void() predraw_legs={
   local float prevLerpFrac;
   
   local float vel;
+  local float animfps;
   local float animRate;
   
   if(!self.unit_legs){
@@ -24,7 +25,7 @@ void() predraw_legs={
   self.legs_angl = [0, self.legDir, 0];
   
   vel = vlen([self.velocity_x, self.velocity_y, 0]);
-  animRate = min(vel / cvar("cl_maxfps") * 5, 20);
+  animRate = min((vel / 60.0) * 5, 20.0); //capping at 60fps because higher framerate seem to skew the number waaaaaay too low
 
   if( self.moveState == MOVE_STAND ){
     if( vel == 0){

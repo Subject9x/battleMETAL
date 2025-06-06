@@ -82,6 +82,7 @@ entity graphics_accept;
 
 
 //graphics constants
+float v_sync_toggle;
 float options_graphics_submenu;
 
 #define SUB_GRAPHICS_MAIN 1
@@ -329,8 +330,21 @@ void() click_refresh_on={
   
   graphics_refresh_rate_up.drawme = TRUE;
   graphics_refresh_rate_dn.drawme = TRUE;
+  graphics_refresh_rate_lbl.drawme = TRUE;
   graphics_refresh_lbl.color = CLR_DEF_ARM_OK;
   graphics_refresh_rate_lbl.color = CLR_DEF_ARM_OK;
+
+  if(graphics_refresh_rate_lbl.len < 60){
+    graphics_refresh_rate_lbl.len = 60;
+  }
+  else if(graphics_refresh_rate_lbl.len > 120){
+    graphics_refresh_rate_lbl.len = 120;
+  }
+
+  //v-sync vs refresh rate is either/or
+  graphics_vsync_lbl.len = FALSE;
+  graphics_vsync_on.drawme = FALSE;
+  graphics_vsync_on.drawme = FALSE;
 };
 void() click_refresh_off={
   graphics_refresh_lbl.len = FALSE;
@@ -342,6 +356,10 @@ void() click_refresh_off={
   graphics_refresh_rate_dn.drawme = FALSE;
   graphics_refresh_lbl.color = CLR_DEF_GRAY_H;
   graphics_refresh_rate_lbl.color = CLR_DEF_GRAY_H;
+  
+  graphics_vsync_on.drawme = TRUE;
+  graphics_vsync_on.drawme = TRUE;
+
 };
 
 void() click_refresh_rate_up={
@@ -397,11 +415,21 @@ void() click_graphics_vsync_on={
   if(!graphics_vsync_lbl.len){
     graphics_vsync_lbl.len = TRUE;
     graphics_vsync_on.drawme = FALSE;
+
   }
   if( !graphics_vsync_off.drawme ){
     graphics_vsync_off.drawme = TRUE;
   }
   graphics_vsync_lbl.color = CLR_DEF_ARM_OK;
+
+
+  graphics_refresh_rate_lbl.drawme = FALSE;
+  graphics_refresh_rate_lbl.len = FALSE;
+  graphics_refresh_rate_dn.drawme = FALSE;
+  graphics_refresh_rate_up.drawme = FALSE;
+  graphics_refresh_off.drawme = FALSE;
+  graphics_refresh_on.drawme = FALSE;
+
 };
 void() click_graphics_vsync_off={
   if(graphics_vsync_lbl.len){
@@ -412,6 +440,10 @@ void() click_graphics_vsync_off={
     graphics_vsync_on.drawme = TRUE;
   }
   graphics_vsync_lbl.color = CLR_DEF_GRAY_H;
+
+
+  graphics_refresh_rate_lbl.drawme = FALSE;
+  graphics_refresh_on.drawme = TRUE;
 };
 
 void() click_graphics_aniso_more={
@@ -716,12 +748,11 @@ void() click_graphics_accept={
   //vid_samples is...broken I think engine-side.
   //cvar_set("vid_samples", ftos(graphics_aa_lbl.len));
   
+  cvar_set("vid_userefreshrate", ftos(fabs(graphics_refresh_lbl.len)));
   if(graphics_refresh_rate_lbl.len != FALSE){
-    cvar_set("vid_userefreshrate", ftos(fabs(graphics_refresh_lbl.len)));
     cvar_set("vid_refreshrate", ftos(fabs(graphics_refresh_rate_lbl.len)));
   }
   else{
-    cvar_set("vid_userefreshrate", ftos(0));
     cvar_set("vid_refreshrate", ftos(0));
   }
   cvar_set("vid_fullscreen", ftos(graphics_fullscreen_lbl.len));
@@ -878,6 +909,8 @@ void() m_graphics_i={
   cacheGlobalString(graphics_aa_lbl.label, ftos(graphics_aa_lbl.len))*/
   
   //refresh-------------------------------------------
+
+
   graphics_refresh_lbl = lbl_text(MENU_ORG + '150 202', '14 14 0', "60", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, UI_FLAG_LBL_BOOL_ON);
   graphics_refresh_lbl.len = cvar("vid_userefreshrate");
   graphics_refresh_on = btn_img_callback(graphics_refresh_lbl.origin + [stringwidth(graphics_refresh_lbl.label, 0, graphics_refresh_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_refresh_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -888,18 +921,23 @@ void() m_graphics_i={
   graphics_refresh_rate_up = btn_img_callback(graphics_refresh_rate_lbl.origin + [stringwidth(graphics_refresh_rate_lbl.label, 0, graphics_refresh_rate_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_refresh_rate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_refresh_rate_dn = btn_img_callback(graphics_refresh_rate_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_refresh_rate_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
-  if(graphics_refresh_lbl.len == FALSE){
-    graphics_refresh_lbl.color = CLR_DEF_GRAY_H;
-    graphics_refresh_rate_lbl.color = CLR_DEF_GRAY_H;
+  if(cvar("vid_vsync") == 1){
+    graphics_refresh_on.drawme = FALSE;
     graphics_refresh_off.drawme = FALSE;
-    graphics_refresh_rate_lbl.len = 60;
+    graphics_refresh_rate_lbl.drawme = FALSE;
     graphics_refresh_rate_up.drawme = FALSE;
     graphics_refresh_rate_dn.drawme = FALSE;
   }
-  else if(graphics_refresh_lbl.len == TRUE){
-    graphics_refresh_lbl.color = CLR_DEF_ARM_OK;
-    graphics_refresh_rate_lbl.color = CLR_DEF_ARM_OK;
-    graphics_refresh_on.drawme = FALSE;
+  else{
+    if(graphics_refresh_lbl.len == TRUE){
+      graphics_refresh_on.drawme = FALSE;
+    }
+    else{
+      graphics_refresh_off.drawme = FALSE;
+      graphics_refresh_rate_lbl.drawme = FALSE;
+      graphics_refresh_rate_up.drawme = FALSE;
+      graphics_refresh_rate_dn.drawme = FALSE;
+    }
   }
   
   //fullscreen----------------------------
@@ -917,15 +955,18 @@ void() m_graphics_i={
   
   //v-sync
   graphics_vsync_lbl = lbl_text(MENU_ORG + '150 262', '14 14', "OFF", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GRAPHICS, 1, UI_FLAG_LBL_BOOL_ON);
-  graphics_vsync_lbl.len = cvar("vid_fullscreen");
+  graphics_vsync_lbl.len = cvar("vid_vsync");
   graphics_vsync_on = btn_img_callback(graphics_vsync_lbl.origin + [stringwidth(graphics_vsync_lbl.label, 0, graphics_vsync_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_vsync_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_vsync_off = btn_img_callback(graphics_vsync_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_vsync_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  if(graphics_vsync_lbl.len == FALSE){
-    graphics_vsync_off.drawme = FALSE;
+  graphics_vsync_on.drawme = FALSE;
+  graphics_vsync_off.drawme = FALSE;
+
+  if(cvar("vid_vsync") == 1){
+    graphics_vsync_off.drawme = TRUE;
   }
-  else if(graphics_vsync_lbl.len == TRUE){
-    graphics_vsync_on.drawme = FALSE;
+  else{
+    graphics_vsync_on.drawme = TRUE;
   }
   
   //aniso
@@ -1137,10 +1178,12 @@ void() m_graphics_d={
     //vid_samples is...broken I think engine-side.
     //gui_renderString("Anti-Aliasing:", graphics_aa_less.origin - [stringwidth("Anti-Aliasing:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
+
     gui_renderString("Custom Refresh Rate:", graphics_refresh_off.origin - [stringwidth("Custom Refresh Rate:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
     gui_renderString("Refresh Rate:", graphics_refresh_rate_dn.origin - [stringwidth("Refresh Rate:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
+
     gui_renderString("Fullscreen:", graphics_fullscreen_off.origin - [stringwidth("Fullscreen:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
     
     gui_renderString("V-Sync:", graphics_vsync_off.origin - [stringwidth("V-Sync:  ", 0, '12 12'),0], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
