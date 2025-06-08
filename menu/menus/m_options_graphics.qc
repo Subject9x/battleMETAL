@@ -354,10 +354,10 @@ void() click_refresh_off={
   
   graphics_refresh_rate_up.drawme = FALSE;
   graphics_refresh_rate_dn.drawme = FALSE;
-  graphics_refresh_lbl.color = CLR_DEF_GRAY_H;
   graphics_refresh_rate_lbl.color = CLR_DEF_GRAY_H;
+  graphics_refresh_rate_lbl.drawme = FALSE;
+  graphics_refresh_lbl.color = CLR_DEF_GRAY_H;
   
-  graphics_vsync_on.drawme = TRUE;
   graphics_vsync_on.drawme = TRUE;
 
 };
@@ -429,6 +429,7 @@ void() click_graphics_vsync_on={
   graphics_refresh_rate_up.drawme = FALSE;
   graphics_refresh_off.drawme = FALSE;
   graphics_refresh_on.drawme = FALSE;
+  graphics_refresh_lbl.len = FALSE;
 
 };
 void() click_graphics_vsync_off={
@@ -959,14 +960,21 @@ void() m_graphics_i={
   graphics_vsync_on = btn_img_callback(graphics_vsync_lbl.origin + [stringwidth(graphics_vsync_lbl.label, 0, graphics_vsync_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GRAPHICS, click_graphics_vsync_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_vsync_off = btn_img_callback(graphics_vsync_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GRAPHICS, click_graphics_vsync_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  graphics_vsync_on.drawme = FALSE;
-  graphics_vsync_off.drawme = FALSE;
-
-  if(cvar("vid_vsync") == 1){
-    graphics_vsync_off.drawme = TRUE;
+  if(cvar("vid_userefreshrate") == 1){
+    graphics_vsync_lbl.len = FALSE;
+    graphics_vsync_on.drawme = FALSE;
+    graphics_vsync_off.drawme = FALSE;
   }
   else{
-    graphics_vsync_on.drawme = TRUE;
+    graphics_vsync_on.drawme = FALSE;
+    graphics_vsync_off.drawme = FALSE;
+
+    if(cvar("vid_vsync") == 1){
+      graphics_vsync_off.drawme = TRUE;
+    }
+    else{
+      graphics_vsync_on.drawme = TRUE;
+    }
   }
   
   //aniso
