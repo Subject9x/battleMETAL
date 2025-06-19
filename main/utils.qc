@@ -129,10 +129,11 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 //vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
 vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
   //local vector direction; //shot dispersion disabled
-  //local vector acc;
+  local vector acc;
   local vector wepAim;
   local vector targVel;
   local vector converge;
+  
   
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
@@ -161,8 +162,15 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
       wepAim = normalize(wepAim - fireOrg);
     }
     else{
+      acc = vectoangles(self.owner.laser_sight_org - fireOrg);
+      acc_x = acc_x * -1;
+      makevectors(acc);
+
       converge = self.owner.origin + (v_forward * idealRange);
+      
       wepAim = normalize( converge - fireOrg ); 
+      
+      makevectors( self.angles ); //reset values;
     }
   }
   else{
@@ -171,10 +179,16 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
       wepAim = normalize( self.owner.laser_sight_org - fireOrg ); 
     }
     else{
+      acc = vectoangles(self.owner.laser_sight_org - fireOrg);
+      acc_x = acc_x * -1;
+      makevectors(acc);
+
       converge = self.owner.origin + (v_forward * idealRange);
+      
       wepAim = normalize( converge - fireOrg ); 
+      
+      makevectors( self.angles ); //reset values;
     }
-    
   }  
   //08-2020: shot dispersion has been disabled because I can't find a clean/lightweight
   //means of sending this information over the network

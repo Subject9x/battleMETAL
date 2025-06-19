@@ -138,13 +138,6 @@ void() data_ini_attack_plasma_={
       cons_logAString("[Error]", "data_ini_projectile() not defined");  //DEBUG
     }
   }
-
-
-
-
-
-
-
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
 };
 #endif
