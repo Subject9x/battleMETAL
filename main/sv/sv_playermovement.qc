@@ -8,13 +8,25 @@ ported over from Darkplaces mod
 
 void() SV_PlayerPhysics =
 {
-	local vector wishvel, wishdir, v;
-	local float wishspeed, f;
+	local vector wishvel;
+	local vector wishdir; 
+	local vector v;
+	local float wishspeed; 
+	local float f;
+	local float stopSpeedSlide;
+	local float frictionSlide;
+	local float accelerationSlide;
+	local float hitStop;
+	local float avgTopSpeed;
+	local float decel;
+	local float friction;
+	local vector stepOne;
+	local vector stepTwo;
+	local vector stepAngles;
+	local vector stepDir;
+	local float ramSpeedMax;
   
 	// this is the first function run each frame, so do bot think here
-	//if (clienttype(self) == CLIENTTYPE_BOT)
-		//havocbot_think();
-
 	if (self.movetype == MOVETYPE_NONE){
 		return;
 	}
@@ -89,11 +101,6 @@ void() SV_PlayerPhysics =
 	}
  	 //MOVEMENT - RAM SHOCKS ACTIVE------------------------------------------------------------
 	else if( time < self.ramCharge ){
-		local float stopSpeedSlide;
-		local float frictionSlide;
-		local float accelerationSlide;
-		local float hitStop;
-
 		if(time >= self.ramCharge){
 			hitStop = TRUE;
 		}
@@ -110,7 +117,6 @@ void() SV_PlayerPhysics =
 		//ramming
 		self.movement = '0 0 0';
 		makevectors(self.ramAngle_y * '0 1 0');
-		traceline(self.origin, self.origin + (v_up * (self.mins_z * 1.25)), MOVE_NORMAL, self);
 		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y;
 		// friction
 		/*if (self.velocity_x || self.velocity_y)
@@ -130,18 +136,19 @@ void() SV_PlayerPhysics =
 		// acceleration
 		wishdir = normalize(wishvel);
 		wishspeed = vlen(wishvel);
-		if (wishspeed > (self.data_speed_forward * (self.data_speed_sprint * 2))){
-			wishspeed = self.data_speed_forward * (self.data_speed_sprint * 2);
+		ramSpeedMax = self.data_speed_forward * (self.data_speed_sprint * 1.5);
+		if( wishspeed > ramSpeedMax ){
+			wishspeed = ramSpeedMax;
 		}
 		f = wishspeed - (self.ramVelocity * wishdir);
 		if (f > 0){
 			self.ramVelocity = self.ramVelocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
 		}
-		if( self.ramVelocity_x > self.data_speed_forward * 3.5 ){
-			self.ramVelocity_x = self.data_speed_forward * 3.5;
+		if( self.ramVelocity_x > ramSpeedMax ){
+			self.ramVelocity_x = ramSpeedMax;
 		}
-		if( self.ramVelocity_y > self.data_speed_forward * 3.5 ){
-			self.ramVelocity_y = self.data_speed_forward * 3.5;
+		if( self.ramVelocity_y > ramSpeedMax ){
+			self.ramVelocity_y = ramSpeedMax;
 		}
 		self.velocity = self.ramVelocity;
 		self.velocity_z = self.velocity_z + (self.ramPower_x * -0.3);
@@ -149,12 +156,7 @@ void() SV_PlayerPhysics =
   	//MOVEMENT - REGULAR WALKING------------------------------------------------------------
 	else if (self.flags & FL_ONGROUND)
 	{
-   		local float avgTopSpeed;
-		local float decel;
-		local float friction;
-
 		makevectors(self.v_angle_y * '0 1 0');
-
 		wishvel = v_forward * self.movement_x + v_right * self.movement_y;
 		if( self.button8 ){
 			wishvel = wishvel * self.data_speed_sprint;
@@ -203,18 +205,29 @@ void() SV_PlayerPhysics =
 		}
 
 		//actual terrain test
-		if( (self.flags & FL_ONGROUND) ){
-			local vector stepOne, stepTwo, stepAngles, stepDir;
+
+		if( (self.flags & FL_ONGROUND) && vlen(self.movement) != 0.0){
 			stepDir = vectoangles(wishvel);
 			makevectors(stepDir);
-	
-			traceline(self.origin, self.origin + (v_up * -1024) + (v_forward * -128), MOVE_NORMAL, self);
+			
+			traceline(self.origin + (v_forward * -16), self.origin + (v_up * -512) + (v_forward * -64), MOVE_WORLDONLY, self);
 			stepOne = trace_endpos;
-	
-			stepAngles = vectoangles(stepTwo - stepOne);
-			if( stepAngles_x > 1 && stepAngles_x <= 90 ) {
+
+			traceline(self.origin + (v_forward * 16), self.origin + (v_up * -512) + (v_forward * 64), MOVE_WORLDONLY, self);
+			stepTwo = trace_endpos;
+			
+			stepAngles = vectoangles(normalize(stepTwo - stepOne));
+
+			if( stepAngles_x >= 33.0 && stepAngles_x < 90.0 ) {
+				//walking up-hill.
+
 				stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
-				wishspeed = wishspeed * (1.0 - (stepAngles_x / 90));
+				wishspeed = wishspeed * (1.0 - (stepAngles_x / 90.0));
+			}
+			else if( stepAngles_x >= 340.0 && stepAngles_x <= 359.99 ){
+				//going dowhill
+				// stepAngles = vectoangles((stepOne + (v_up * 2)) - stepTwo);  //relish factor
+				wishspeed = wishspeed * 1.1;	//blanket modest speed boost to downhill
 			}
 		}
     

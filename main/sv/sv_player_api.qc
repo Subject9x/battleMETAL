@@ -341,7 +341,6 @@ void() PlayerPostThink = {
     if( self.attackFlag > 0 ){
       self.SendFlags = self.SendFlags | SENDFLAG_ATTACK;
     }
-
   }
   
   //DEBUG / DEV ONLY!
@@ -373,6 +372,8 @@ void() PlayerPreThink_powerup={
 };
 
 void() PlayerPostThink_powerup={
+  local entity wep_chain;
+  
   self.angles = self.wind;
   self.v_angle = self.wind;
   if( (self.flags & FL_ONGROUND) ){
@@ -385,7 +386,6 @@ void() PlayerPostThink_powerup={
 
   ctrl_mech_update();
   
-  local entity wep_chain;
   for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
     if( wep_chain.owner != self ){
       continue;

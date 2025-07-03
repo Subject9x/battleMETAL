@@ -11,8 +11,23 @@ Copied down to CSQC to be run for player prediction.
 
 void() CS_PlayerPhysics =
 {
-	local vector wishvel, wishdir, v;
-	local float wishspeed, f;
+	local vector wishvel;
+	local vector wishdir; 
+	local vector v;
+	local float wishspeed; 
+	local float f;
+	local float stopSpeedSlide;
+	local float frictionSlide;
+	local float accelerationSlide;
+	local float hitStop;
+	local float avgTopSpeed;
+	local float decel;
+	local float friction;
+	local vector stepOne;
+	local vector stepTwo;
+	local vector stepAngles;
+	local vector stepDir;
+	local float ramSpeedMax;
   
 	// this is the first function run each frame, so do bot think here
 	//if (clienttype(self) == CLIENTTYPE_BOT)
@@ -195,28 +210,32 @@ void() CS_PlayerPhysics =
 	wishspeed = vlen(wishvel);
     
     //actual terrain test
-    if( wishvel ){
       local vector stepOne, stepTwo, stepAngles, stepDir;
-      stepDir = vectoangles(wishvel);
-      makevectors(stepDir);
-      traceline(self.origin, self.origin + (v_up * -1024) + (v_forward * -128), MOVE_NORMAL, self);
-      stepOne = trace_endpos;
-      
-      traceline(self.origin, self.origin + (v_up * -1024) + (v_forward * 512), MOVE_NORMAL, self);
-      stepTwo = trace_endpos;
-      
-      stepAngles = vectoangles(stepTwo - stepOne);
-      if( stepAngles_x > 1 && stepAngles_x <=90 ) {
-        //walking up-hill.
-        stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
-        wishspeed = wishspeed * (1.0 - (stepAngles_x / 90));
-      }
-      else if( stepAngles_x >= 340 && stepAngles_x < 360 ){
-        //going dowhill
-        stepAngles = vectoangles((stepOne + (v_up * 1.05)) - stepTwo);  //relish factor
-        //wishspeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
-      }
-    }
+	if( (self.flags & FL_ONGROUND) && vlen(self.movement) != 0.0){
+		stepDir = vectoangles(wishvel);
+		makevectors(stepDir);
+		
+		traceline(self.origin + (v_forward * -16), self.origin + (v_up * -512) + (v_forward * -64), MOVE_WORLDONLY, self);
+		stepOne = trace_endpos;
+
+		traceline(self.origin + (v_forward * 16), self.origin + (v_up * -512) + (v_forward * 64), MOVE_WORLDONLY, self);
+		stepTwo = trace_endpos;
+		
+		stepAngles = vectoangles(normalize(stepTwo - stepOne));
+
+		if( stepAngles_x >= 33.0 && stepAngles_x < 90.0 ) {
+			//walking up-hill.
+
+			stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
+			wishspeed = wishspeed * (1.0 - (stepAngles_x / 90.0));
+		}
+		else if( stepAngles_x >= 340.0 && stepAngles_x <= 359.99 ){
+			//going dowhill
+			// stepAngles = vectoangles((stepOne + (v_up * 2)) - stepTwo);  //relish factor
+			wishspeed = wishspeed * 1.1;	//blanket modest speed boost to downhill
+		}
+	}
+    
 
 	  if (wishspeed > cs_maxspeed){
 		wishspeed = cs_maxspeed;
