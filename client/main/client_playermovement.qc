@@ -210,7 +210,6 @@ void() CS_PlayerPhysics =
 	wishspeed = vlen(wishvel);
     
     //actual terrain test
-      local vector stepOne, stepTwo, stepAngles, stepDir;
 	if( (self.flags & FL_ONGROUND) && vlen(self.movement) != 0.0){
 		stepDir = vectoangles(wishvel);
 		makevectors(stepDir);
