@@ -41,6 +41,7 @@ slideshow-esque animatics
 
 
 //Globals
+float ANM_SHOW_WORLD;   //overlay = true/false, toggles rendering world in background during playback
 float ANM_SERV_TRIG;      //set to TRUE when server is sending the anim, which then sends the exit event back to the server.
 float ANM_FRAME_MAX = 20; //this is here for reference, but if modified, MODIFY THE FOLLOWING ARRAY LIMITS!
 float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer

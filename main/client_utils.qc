@@ -425,9 +425,10 @@ void() client_sendMissionFileName={
   stuffcmd(self, cmd);
 };
 
-void(string fileName) client_sendAnimaticFileName={
+// exclusive here means don't render 3d world, used for sector-transition animatics.
+void(string fileName, float worldOverlay) client_sendAnimaticFileName={
   local string cmd;
-  cmd = strcat("m anm ", fileName, "\n");
+  cmd = strcat("m anm ", ftos(fabs(rint(worldOverlay))), " ", fileName, "\n");
   stuffcmd(self, cmd);
 };
 

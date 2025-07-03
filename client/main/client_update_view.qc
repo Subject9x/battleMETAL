@@ -146,7 +146,10 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   setproperty(VF_FOV, VIEW_FOV);
   if( MENU_ACTIVE && CLIENT_MENU_menu_choice != MENU_REBIND_ACTIVE ){
-    setproperty(VF_DRAWWORLD, FALSE);
+  }
+  else if( ANM_FILE_STATUS == 1){
+
+    setproperty(VF_DRAWWORLD, ANM_SHOW_WORLD);
   }
   else{
     setproperty(VF_DRAWWORLD, TRUE);
@@ -180,6 +183,7 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   }
   
   renderscene();
+  
   
   //DATA - Update local Client data vars from Server
   //note - make sure this is called AFTER addentities(), hehe
@@ -271,14 +275,15 @@ void(float w, float h, float menuView) CSQC_UpdateView =
       //drawstring(VIEW_ORG + '0 64', sprintf("Hud offset    = %s", vtos(CLIENT_server_ent.hud_StrutsOffset)), '8 8', '0.85 0.85 0.85', 1, 0);
     }
     //drawstring(VIEW_ORG + '0 72', sprintf("CLIENT_VIS_ORG  = %s", vtos(CLIENT_vis_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + '0 72', sprintf("CLIENT velocty  = %s", ftos(vlen(CLIENT_server_ent.velocity))), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 80', sprintf("MECH org  = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
    // drawstring(VIEW_ORG + '0 72', sprintf("DBG_PREDRAW_ORG = %s", vtos(CLIENT_server_ent.rootOrigin)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 80', sprintf("pmove_org        = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    // drawstring(VIEW_ORG + '0 80', sprintf("pmove_org        = %s", vtos(pmove_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 92',  sprintf("torso org      = %s", vtos(CLIENT_server_ent.torC_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 100', sprintf("left torso org = %s", vtos(CLIENT_server_ent.torL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 108', sprintf("right torso org= %s", vtos(CLIENT_server_ent.torR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 116', sprintf("left arm org   = %s", vtos(CLIENT_server_ent.armL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + '0 124', sprintf("left arm angl  = %s", vtos(CLIENT_server_ent.armL_angl)), '8 8', '0.85 0.85 0.85', 1, 0);
+    // drawstring(VIEW_ORG + '0 116', sprintf("left arm org   = %s", vtos(CLIENT_server_ent.armL_org)), '8 8', '0.85 0.85 0.85', 1, 0);
+    // drawstring(VIEW_ORG + '0 124', sprintf("left arm angl  = %s", vtos(CLIENT_server_ent.armL_angl)), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 124', sprintf("right arm org  = %s", vtos(CLIENT_server_ent.armR_org)), '8 8', '0.85 0.85 0.85', 1, 0);
     //drawstring(VIEW_ORG + '0 132', sprintf("legs org       = %s", vtos(CLIENT_server_ent.legs_org)), '8 8', '0.85 0.85 0.85', 1, 0);
   }

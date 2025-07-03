@@ -964,6 +964,7 @@ Player can SKIP this animatic IF there's an appropriate trigger_changelevel." [
     16 : "Drop to floor" : 0
     32 : "Freeze players" : 0
     64 : "cooldown" : 0
+	128 : "hideWorld" : 0
   ]
 ]
 

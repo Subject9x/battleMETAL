@@ -3,24 +3,46 @@ battleMETAL
 Author: Peter Roohr
 Date: 3/3/2018
 mod: 11/17/2018
+mod: 07/02/2025
 Overview: 
   An 'Animatic' is a sequence of images and queued up sounds that are played back for players when the animatic is triggered.
   the script file for the Animatic is defined in /data/anim/<anim_name>.anim
   The script schema can be found there too.
   
   The Map_Animatic object 
+
+
+  SPAWNFLAGS
+    1 : "Start Off" : 0
+    2 : "On touch" : 0
+    4 : "Remove done" : 0
+    8 : "Faction Only" : 0
+    16 : "Drop to floor" : 0
+    32 : "Freeze players" : 0
+    64 : "cooldown" : 0
+	128 : "hideWorld"
+
 */
+//SPAWNFLAGS
+//#define START_OFF 1 - already defined
+#define ON_TOUCH 2  
+#define REMOVE_DONE 4  
+#define FACTION_ONLY 8 
+#define DROP_TO_FLOOR 16
+#define FREEZE_PLAYERS 32
+#define COOLDOWN 64
+#define HIDEWORLD 128
 
 void() animatic_event_trigger={
   SUB_UseTargets();
   //Set to remove when complete
-  if( (self.spawnflags & 4) ){
+  if( (self.spawnflags & REMOVE_DONE) ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.05;
     return;
   }
   
-  if( (self.spawnflags & 64) ){
+  if( (self.spawnflags & COOLDOWN) ){
     self.think = self.use;
     self.nextthink = time + self.wait;
     return;
@@ -36,14 +58,14 @@ void() animatic_event_execute={
     //client = findchainflags(flags, (FL_CLIENT));
     for(client = findchainflags(flags, (FL_CLIENT)); client != world; client = client.chain){
       //FACTION_ONLY setting
-      if( (self.spawnflags & 8) ){
+      if( (self.spawnflags & FACTION_ONLY) ){
         if(self.faction != client.faction){
           continue;
         }
       }
       self = client;
         self.count1 = self.playerState;
-        if( (this.spawnflags & 32) ){
+        if( (this.spawnflags & FREEZE_PLAYERS) ){
           self.playerState = PLAYER_ANIM_STOP;
           self.count2 = time + this.count1;
           self.count3 = self.movetype;
@@ -51,7 +73,7 @@ void() animatic_event_execute={
           self.velocity = '0 0 0';
           self.avelocity = '0 0 0';
         }
-        client_sendAnimaticFileName(this.missionFile);
+        client_sendAnimaticFileName(this.missionFile, (this.spawnflags & HIDEWORLD) ? FALSE : TRUE);
         self.animId = this;
       self = this;
       client = client.chain;
@@ -64,13 +86,13 @@ void() animatic_event_execute={
     }
     
     //Set to remove when complete
-    if( (self.spawnflags & 4) ){
+    if( (self.spawnflags & REMOVE_DONE) ){
       self.think = SUB_Remove;
       self.nextthink = time + 0.05;
       return;
     }
     
-    if( (self.spawnflags & 64) ){
+    if( (self.spawnflags & COOLDOWN) ){
       self.think = self.use;
       self.nextthink = time + self.wait;
       return;
@@ -90,7 +112,7 @@ void() animatic_event_use={
     self.isActive = TRUE;
     
     //wait for touch event
-    if( (self.spawnflags & 2) ){
+    if( (self.spawnflags & ON_TOUCH) ){
       return;
     }
     self.think = animatic_event_execute;
@@ -149,7 +171,7 @@ void() map_animatic={
   util_DeveloperNodeMark();
   
   //touchable check
-  if( (self.spawnflags & 2) ){
+  if( (self.spawnflags & ON_TOUCH) ){
     self.solid = SOLID_TRIGGER;
     setsize(self, tempMin, tempMax );
   }
@@ -159,7 +181,7 @@ void() map_animatic={
   }
   
   //drop to floor check
-  if( (self.spawnflags & 16) ){
+  if( (self.spawnflags & DROP_TO_FLOOR) ){
     self.movetype = MOVETYPE_FLY;
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
     droptofloor();
@@ -171,24 +193,24 @@ void() map_animatic={
   
   self.isActive = TRUE;
   //START_OFF
-  if( (self.spawnflags & 1) ){
+  if( (self.spawnflags & START_OFF) ){
     self.isActive = FALSE;
   }
-  if( (self.spawnflags & 32) ){
+  if( (self.spawnflags & FREEZE_PLAYERS) ){
     //set default freeze time
     if( !self.count1 ){
       self.count1 = 15;
     }
   }
 
-  if( (self.spawnflags & 64) ){
+  if( (self.spawnflags & COOLDOWN) ){
     //no default for cooldown behavior;
     if( !self.wait ){
-      self.spawnflags = self.spawnflags - (self.spawnflags & 64);
+      self.spawnflags = self.spawnflags - (self.spawnflags & COOLDOWN);
     }
   }
   
-  if( (self.spawnflags & 1) ){
+  if( (self.spawnflags & START_OFF) ){
     self.touch = animatic_event_touch;
   }
 };

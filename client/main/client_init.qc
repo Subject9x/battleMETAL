@@ -130,6 +130,7 @@ void() CSQC_Init =
   NAVNAMES[20] = "Omega";
   
   ANM_FILE_STATUS = 0;
+  ANM_SHOW_WORLD = 0;
   
   //get mission file
   dynamic_precache();

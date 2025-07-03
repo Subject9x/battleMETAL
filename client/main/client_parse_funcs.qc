@@ -90,7 +90,7 @@ float() CSQC_Parse_TempEntity =
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;
-  
+
   if( cvar("developer") ){
     dprint(sprintf("CSQC_Parse_StuffCmd().s = %s\n", s));  //debug
   }
@@ -101,7 +101,8 @@ void(string s) CSQC_Parse_StuffCmd =
       return;
     }
     if(argv(1) == "anm"){
-      cl_get_animfile( argv(2) );
+      ANM_SHOW_WORLD = fabs(rint(stof(argv(2))));
+      cl_get_animfile( argv(3) );
       ANM_SERV_TRIG = TRUE;
       return;
     }
