@@ -47,7 +47,7 @@ void() data_ini_balaket_={
 
 //SPEED================================
   self.data_speed_forward = 185.0;
-  self.data_speed_strafe = 120.0;
+  self.data_speed_strafe = 130.0;
   self.data_speed_backward = 90.0;
   self.data_speed_accel = 5.0;
   self.data_speed_decel = 2.5;
