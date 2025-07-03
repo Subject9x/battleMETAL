@@ -56,7 +56,6 @@ void() data_ini_equip_shield_capacitor_={
 #ifdef SSQC
 void() shield_capacitor_upgrade_={
   self.energyMax = self.owner.shieldMax;
-  
   self.owner.shieldMax  = self.owner.shieldMax + (self.owner.shieldMax  * self.energyRate);
 };
 

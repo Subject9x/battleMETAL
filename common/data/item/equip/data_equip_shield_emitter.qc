@@ -46,7 +46,7 @@ void() data_ini_equip_shield_emitter_={
   #endif
   
   #ifdef SSQC
-    self.item_remove_upgrade = shield_emitter_upgrade_;
+    self.item_remove_upgrade = shield_emitter_remove_;
     self.item_run_upgrade = shield_emitter_upgrade_;
     self.think = SUB_Null;
     self.w_isburst = FALSE;
