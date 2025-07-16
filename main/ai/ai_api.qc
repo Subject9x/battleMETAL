@@ -573,29 +573,36 @@ float(float wishAngl, float wishspeed) ai_check_slope={
   local vector wishDir;
   local vector stepOne, stepTwo, stepAngles;
   local float outSpeed;
+
 //actual terrain test
   wishDir = '0 0 0';
   wishDir_y = wishAngl;
+  
   makevectors(wishDir);
-  traceline(self.origin, self.origin + (v_forward * -128) + (v_up * -1024), MOVE_NORMAL, self);
+  
+  traceline(self.origin + (v_forward * -8), self.origin + (v_up * -512) + (v_forward * -32), MOVE_WORLDONLY, self);
   stepOne = trace_endpos;
   
-  traceline(self.origin, self.origin + (v_forward * 256) + (v_up * -1024), MOVE_NORMAL, self);
+  traceline(self.origin + (v_forward * 8), self.origin + (v_up * -512) + (v_forward * 32), MOVE_WORLDONLY, self);
   stepTwo = trace_endpos;
   
-  stepAngles = vectoangles(stepTwo - stepOne);
-  if( stepAngles_x > 1 && stepAngles_x <= 90 ) {
-    //walking up-hill.
-    stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
-    outSpeed = wishspeed * (1.0 - (stepAngles_x / 90));
+  stepAngles = vectoangles(normalize(stepTwo - stepOne));
+  if(stepAngles_x >= 33.0 && stepAngles_x < 90.0 ) {
+      //walking up-hill.
+
+      stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
+      //clamp to max 55 deg, anything larger drops player move to near-stop.
+      stepAngles_x = min(55.0, stepAngles_x);
+      outSpeed = wishspeed * (1.0 - (stepAngles_x / 90.0));
   }
-  else if( stepAngles_x > 90 ){
+  else if( stepAngles_x >= 340.0 && stepAngles_x <= 359.99 ){
     //going dowhill
-    outSpeed = wishspeed + (wishspeed * (1.0 - (stepAngles_x / 360)));
+    outSpeed = wishspeed * 1.1;	//blanket modest speed boost to downhill
   }
   else{
     outSpeed = wishspeed;
   }
+  
   outSpeed = max(0.1, outSpeed, wishspeed * 0.1);
   return outSpeed;
 };

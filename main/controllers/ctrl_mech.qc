@@ -135,7 +135,7 @@ void() ctrl_updateCenterTorso={
     traceline(laserOrg, laserHit, MOVE_MISSILE, self);
 
     self.laser_sight_org = trace_endpos;
-    self.laser_sight_timer = time + 0.25;
+    self.laser_sight_timer = time + 0.1;
   }
   
   self.dphitcontentsmask = rint(0);

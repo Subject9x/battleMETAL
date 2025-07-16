@@ -796,13 +796,13 @@ void( float unit_id ) client_event_mech_spawn={
   setorigin(self, self.origin);
   
   //hud shenanigans
-  if( self.isLocalPlayer ){
+  // if( self.isLocalPlayer ){
     // //MODELS - COCKPIT
     // hud_model_cockpit_ini();
     
     // //MODELS - PLAYER ARMOR
     // hud_model_armor_player_ini();
-  }
+  // }
   
   self.shieldEffectTime = 0;
   self.predraw = client_predraw;

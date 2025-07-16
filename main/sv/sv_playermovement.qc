@@ -210,23 +210,23 @@ void() SV_PlayerPhysics =
 			stepDir = vectoangles(wishvel);
 			makevectors(stepDir);
 			
-			traceline(self.origin + (v_forward * -16), self.origin + (v_up * -512) + (v_forward * -64), MOVE_WORLDONLY, self);
+			traceline(self.origin + (v_forward * -8), self.origin + (v_up * -512) + (v_forward * -32), MOVE_WORLDONLY, self);
 			stepOne = trace_endpos;
 
-			traceline(self.origin + (v_forward * 16), self.origin + (v_up * -512) + (v_forward * 64), MOVE_WORLDONLY, self);
+			traceline(self.origin + (v_forward * 8), self.origin + (v_up * -512) + (v_forward * 32), MOVE_WORLDONLY, self);
 			stepTwo = trace_endpos;
 			
 			stepAngles = vectoangles(normalize(stepTwo - stepOne));
-
 			if( stepAngles_x >= 33.0 && stepAngles_x < 90.0 ) {
 				//walking up-hill.
 
 				stepAngles = vectoangles((stepTwo + (v_up * 2)) - stepOne);  //relish factor
+				//clamp to max 55 deg, anything larger drops player move to near-stop.
+				stepAngles_x = min(55.0, stepAngles_x);
 				wishspeed = wishspeed * (1.0 - (stepAngles_x / 90.0));
 			}
 			else if( stepAngles_x >= 340.0 && stepAngles_x <= 359.99 ){
 				//going dowhill
-				// stepAngles = vectoangles((stepOne + (v_up * 2)) - stepTwo);  //relish factor
 				wishspeed = wishspeed * 1.1;	//blanket modest speed boost to downhill
 			}
 		}
