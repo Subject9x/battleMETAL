@@ -74,6 +74,7 @@ float input_sequence;
 .float moveState;  //0 = no sprint, 1 = sprint, 2 = ram charge, 3 = ram charged up
 
 .vector laser_sight_org;
+.vector laser_sight_start;
 .float nextVecChoice;
 .float subType;   //used by AI to delineate unit variant - Zap , gun, brawl, sniper etc
 

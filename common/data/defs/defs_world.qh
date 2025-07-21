@@ -6,6 +6,10 @@ Overview:
   Rules/Server Info entity, shared by client and server, handy for syncro of server 
 */
 
+vector CACHE_V_FORWARD;
+vector CACHE_V_RIGHT;
+vector CACHE_V_UP;
+
 entity ENT_SERVER_INFO;
 
 .float gameType;

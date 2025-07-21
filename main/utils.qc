@@ -126,13 +126,11 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
-//vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
 vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
-  //local vector direction; //shot dispersion disabled
+  local vector direction;
   local vector acc;
   local vector wepAim;
   local vector targVel;
-  local vector converge;
   
   
   //weaponSpread
@@ -144,63 +142,47 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
     //AI aiming
     if( self.beamFlag ){
       if( self.owner.enemy.data_type == DATA_BLD ){
-        wepAim = self.owner.enemy.hitOffset;
+        direction = self.owner.enemy.hitOffset;
       }
       else{
-        wepAim = self.owner.enemy.origin;
+        direction = self.owner.enemy.origin;
       }
     }
     else{
       if( self.owner.enemy.data_type == DATA_BLD ){
-        wepAim = self.owner.enemy.hitOffset - (targVel * self.owner.ai_leading);
+        direction = self.owner.enemy.hitOffset - (targVel * self.owner.ai_leading);
       }
       else{
-        wepAim = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
+        direction = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
       }
-    }
-    if(vlen(self.owner.laser_sight_org - fireOrg) <= idealRange){
-      wepAim = normalize(wepAim - fireOrg);
-    }
-    else{
-      acc = vectoangles(self.owner.laser_sight_org - fireOrg);
-      acc_x = acc_x * -1;
-      makevectors(acc);
-
-      converge = self.owner.origin + (v_forward * idealRange);
-      
-      wepAim = normalize( converge - fireOrg ); 
-      
-      makevectors( self.angles ); //reset values;
     }
   }
   else{
-    //Player aiming
-    if( vlen(self.owner.laser_sight_org - fireOrg) <= idealRange){
-      wepAim = normalize( self.owner.laser_sight_org - fireOrg ); 
-    }
-    else{
-      acc = vectoangles(self.owner.laser_sight_org - fireOrg);
-      acc_x = acc_x * -1;
-      makevectors(acc);
+    direction = self.owner.laser_sight_org;
+  }
 
-      converge = self.owner.origin + (v_forward * idealRange);
-      
-      wepAim = normalize( converge - fireOrg ); 
-      
-      makevectors( self.angles ); //reset values;
-    }
-  }  
-  //08-2020: shot dispersion has been disabled because I can't find a clean/lightweight
-  //means of sending this information over the network
-  
-  //acc = weaponSpread;
-  //acc_x = acc_x * playerAcc;
-  //acc_y = acc_y * playerAcc;
-  
-  //acc_x = acc_x * crandom();
-  //acc_y = acc_y * crandom();
-  //direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
-  
+
+  if( vlen(self.owner.laser_sight_org - fireOrg) <= idealRange){
+    acc = vectoangles(direction - fireOrg);
+    acc_x = acc_x * -1;
+    makevectors(acc);
+
+  }
+  else{
+    acc = vectoangles((self.owner.origin + (v_forward * idealRange)) - fireOrg);
+    acc_x = acc_x * -1;
+    makevectors(acc);
+    direction = fireOrg + (v_forward * idealRange);
+  }
+    
+  if((self.owner.flags & FL_MONSTER)){
+    direction = direction + ((crandom() * self.owner.accuracy) * v_right) + ((crandom() * self.owner.accuracy) * v_up);
+  }
+  direction = direction + ((crandom() * self.spreadDefault_x) * v_right) + ((crandom() * self.spreadDefault_y) * v_up);
+
+  wepAim = normalize( direction - fireOrg ); 
+  makevectors( self.angles ); //reset values;
+
   self.owner.dphitcontentsmask =  (DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY) ;
     traceline (fireOrg, fireOrg + (wepAim * idealRange), MOVE_MISSILE, self.owner);
   self.owner.dphitcontentsmask = 0;

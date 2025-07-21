@@ -125,17 +125,18 @@ void() ctrl_updateCenterTorso={
     if(self.chaseActive){
       laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
       traceline(self.origin, laserOrg, MOVE_MISSILE, self);
-      laserOrg = trace_endpos;
+      self.laser_sight_start = trace_endpos;
+      
     }
     else{
-      laserOrg = self.cameraOrigin;
+      self.laser_sight_start = self.cameraOrigin;
     }
-    laserHit = laserOrg + (v_forward * 10000);
+    laserHit = self.laser_sight_start + (v_forward * 10000);
 
-    traceline(laserOrg, laserHit, MOVE_MISSILE, self);
+    traceline(self.laser_sight_start, laserHit, MOVE_MISSILE, self);
 
     self.laser_sight_org = trace_endpos;
-    self.laser_sight_timer = time + 0.1;
+    self.laser_sight_timer = time + 0.05;
   }
   
   self.dphitcontentsmask = rint(0);

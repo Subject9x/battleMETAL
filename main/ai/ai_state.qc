@@ -58,6 +58,7 @@ void() ai_state_lurker_frame={
   local float visCheck;
   
   if( !self.ai_freeze ){
+    ai_update_accuracy( self.moveState > MOVE_STAND);
     ai_frame_update();
     if( ai_valid_target(self.enemy) ){
     //has enemy -> combat stuff
@@ -140,6 +141,7 @@ void() ai_state_brawler_frame={
   local float visCheck;
   
   if( !self.ai_freeze ){
+    ai_update_accuracy( self.moveState > MOVE_STAND);
     ai_frame_update();
     if( ai_valid_target(self.enemy) ){
       visCheck = ai_check_vis(self.enemy);
@@ -225,6 +227,7 @@ void() ai_state_hunter_frame={
   local float visCheck;
   
   if( !self.ai_freeze ){
+    ai_update_accuracy( self.moveState > MOVE_STAND);
     ai_frame_update();
     if( ai_valid_target(self.enemy) ){
     //has enemy -> combat stuff
@@ -286,6 +289,7 @@ void() ai_state_pause={
   local float visCheck;
   
   ai_frame_update();
+  ai_update_accuracy( self.moveState > MOVE_STAND);
   
   if( ai_valid_target(self.enemy) ){
     visCheck = ai_check_vis(self.enemy);
