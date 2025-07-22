@@ -21,7 +21,7 @@ void() data_ini_sorcerer_={
   self.vec_name = "Sorcerer";
  
   self.max_health = 285;
-  setsize(self, '-22 -22 -9', '22 22 26');
+  setsize(self, '-22 -22 -9', '22 22 14');
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
 //ENERGY AND SHIELDS===================

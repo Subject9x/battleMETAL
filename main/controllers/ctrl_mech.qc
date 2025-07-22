@@ -116,24 +116,21 @@ void() ctrl_mech_update={
 void() ctrl_updateCenterTorso={
   local float mx, my;
   local float rate;
-  local vector laserHit;
-  local vector laserOrg;
   
   if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
     self.dphitcontentsmask = 0 | DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY;
+    
     if(self.chaseActive){
-      laserOrg = self.origin + (v_up * 22) + (v_forward * -96);
-      traceline(self.origin, laserOrg, MOVE_MISSILE, self);
+      traceline(self.origin, self.origin + (v_up * 22) + (v_forward * -96), MOVE_MISSILE, self);
       self.laser_sight_start = trace_endpos;
       
     }
     else{
       self.laser_sight_start = self.cameraOrigin;
     }
-    laserHit = self.laser_sight_start + (v_forward * 10000);
 
-    traceline(self.laser_sight_start, laserHit, MOVE_MISSILE, self);
+    traceline(self.laser_sight_start, self.laser_sight_start + (v_forward * 10000), MOVE_MISSILE, self);
 
     self.laser_sight_org = trace_endpos;
     self.laser_sight_timer = time + 0.05;

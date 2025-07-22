@@ -161,14 +161,10 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
     direction = self.owner.laser_sight_org;
   }
 
-
-  if( vlen(self.owner.laser_sight_org - fireOrg) <= idealRange){
-    acc = vectoangles(direction - fireOrg);
-    acc_x = acc_x * -1;
-    makevectors(acc);
-
-  }
-  else{
+  acc = vectoangles(direction - fireOrg);
+  acc_x = acc_x * -1;
+  makevectors(acc);
+  if( vlen(self.owner.laser_sight_org - fireOrg) > idealRange){
     acc = vectoangles((self.owner.origin + (v_forward * idealRange)) - fireOrg);
     acc_x = acc_x * -1;
     makevectors(acc);
@@ -181,7 +177,6 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
   direction = direction + ((crandom() * self.spreadDefault_x) * v_right) + ((crandom() * self.spreadDefault_y) * v_up);
 
   wepAim = normalize( direction - fireOrg ); 
-  makevectors( self.angles ); //reset values;
 
   self.owner.dphitcontentsmask =  (DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY) ;
     traceline (fireOrg, fireOrg + (wepAim * idealRange), MOVE_MISSILE, self.owner);
