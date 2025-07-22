@@ -75,3 +75,12 @@ models/proj/mdl_proj_sfga_b
     map models/proj/mdl_proj_sfga_b.tga
   }
 }
+
+//SFG
+models/proj/mdl_proj_atc
+{
+  dpNoShadow
+  {
+    map models/proj/proj_atc.tga
+  }
+}

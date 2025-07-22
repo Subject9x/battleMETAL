@@ -38,6 +38,7 @@ models/proj/mdl_proj_swrm.md3
 models/proj/mdl_proj_lgm.md3
 models/proj/mdl_proj_marh.md3
 models/proj/mdl_proj_ion.md3
+models/proj/mdl_proj_atc.md3
 
 models/fx/debris2/mdl_debris_2.md3
 models/fx/debris3/mdl_debris_3.md3

@@ -8,6 +8,10 @@ Overview:
 
 void( float dataID ) data_sync_new_projectile={
   switch(dataID){
+    case UID_ITEM_light_autocannon:
+      data_projectile_ini_latc_();
+      break;
+    
     case UID_ITEM_emp:
       data_projectile_ini_emp_();
       break;
@@ -43,6 +47,8 @@ void( float dataID ) data_sync_new_projectile={
     case UID_ITEM_quantum_rifle:
       data_projectile_ini_quantum_bit_();
       break;
+
+
   }
 };
 
@@ -99,7 +105,9 @@ void() predraw_missile={
 
   setmodel(self, self.model);
   if( self.data_postinit ){
-    self.traileffectnum = self.data_traileff;
+    if( self.data_traileff != -1){
+      self.traileffectnum = self.data_traileff;
+    }
   }
   if( self.predraw_projectile ){
     self.predraw_projectile();
