@@ -145,7 +145,7 @@ void( float move ) ai_update_accuracy={
   else{
     //standing still, lessen the spread
     rate = rate + self.accuracyMod;
-    self.accuracy = self.accuracy - (rate * 2);
+    self.accuracy = self.accuracy - rate;
     if( self.accuracy < self.spreadDefault_x ){
       self.accuracy = self.spreadDefault_x;
     }

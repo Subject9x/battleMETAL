@@ -169,25 +169,23 @@ void() interpolate_tank={
   local vector chasOrg;
   local entity wepn;
   local vector saved;
+  local float hitcontent;
   
   interpolate_origin();
   interpolate_angle();
   interpolate_ground();
-  
-	setorigin(self, self.origin);
-  
-  makevectors(self.angles);
-  traceline(self.rootOrigin, self.rootOrigin - (v_up * 512), TRUE, self);
-  
-  self.rootOrigin = self.origin;
+
+  self.rootOrigin_x = self.origin_x;
+  self.rootOrigin_y = self.origin_y;
+  self.rootOrigin_z = self.origin_z;
   self.rootAngle = self.angles;
+
+  makevectors(self.angles);
+  traceline(self.rootOrigin, self.rootOrigin - (v_up * 512), MOVE_WORLDONLY, self);
   
   chasOrg = trace_endpos + (v_up * self.mins_z * -1 );
   self.originNext = chasOrg;
-  
-  // traceline(self.origin, CLIENT_vis_org, FALSE, self);
-  
-  local float hitcontent;
+
   hitcontent = CLIENT_server_ent.dphitcontentsmask;
 
   PVS_FAIL = FALSE;
@@ -208,7 +206,7 @@ void() interpolate_tank={
   }
 
   self.cl_lod_unit = TRUE;
-  if(  PVS_FAIL || vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE){
+  if(  PVS_FAIL || vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
   
@@ -217,70 +215,82 @@ void() interpolate_tank={
     if( vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
       self.cl_lod_weapon = FALSE;
     }
+  }
     
-    setmodel(self, self.legs_mdl);
-    setsize(self, self.cache_mins, self.cache_maxs);
-    GetAlignedSurfaceAngles(self);
-    self.origin = chasOrg;
-    self.cacheGroundPos = chasOrg;
+  setmodel(self, self.legs_mdl);
+  setsize(self, self.cache_mins, self.cache_maxs);
+  GetAlignedSurfaceAngles(self);
+  self.cacheGroundAngle = self.angles;
+  self.origin = chasOrg;
+  self.cacheGroundPos = chasOrg;
+  
+  if( self.cl_lod_unit ){
     addentity(self);
+  }
+
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  
+  if( (self.flags & FL_TURRET) ){
+    saved = self.angles;
+    saved_x = 0;
+    makevectors(saved);
+    self.torC_org = chasOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
+    
+    setmodel(self, self.torC_mdl);
+    
+    self.origin = self.torC_org;
+    self.angles = self.torC_angl;
+   
+    if( self.cl_lod_unit ){
+      addentity(self);
+    }
     self.origin = self.rootOrigin;
     self.angles = self.rootAngle;
-    
-    if( (self.flags & FL_TURRET) ){
-      saved = self.angles;
-      saved_x = 0;
-      makevectors(saved);
-      self.torC_org = chasOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
-      
-      setmodel(self, self.torC_mdl);
-      
-      self.origin = self.torC_org;
-      self.angles = self.torC_angl;
-      addentity(self);
-      
-      self.origin = self.rootOrigin;
-      self.angles = self.rootAngle;
-      setsize(self, self.cache_mins, self.cache_maxs);
-    }
-
-    if(self.cl_lod_weapon){
-      if( self.pcl_effectnum != 0 ){
-         pointparticles( self.pcl_effectnum, self.cacheGroundPos, normalize( (self.cacheGroundPos + [0, 0, self.maxs_z]) - self.cacheGroundPos) * (10/2), 0.5);
-      }
-    
-      if(self.weaponEnt1.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt1);
-      }
-      if(self.weaponEnt2.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt2);
-      }
-      if(self.weaponEnt3.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt3);
-      }
-      if(self.weaponEnt4.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt4);
-      }
-      if(self.weaponEnt5.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt5);
-      }
-      if(self.weaponEnt6.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt6);
-      }
-      if(self.weaponEnt7.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt7);
-      }
-      if(self.weaponEnt8.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt8);
-      }
-      if(self.weaponEnt9.data_idx){
-        predraw_unit_weapon_tank(self.weaponEnt9);
-      }
-    }
+    setsize(self, self.cache_mins, self.cache_maxs);
   }
+  
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  if( self.pcl_effectnum != 0 ){
+      pointparticles( self.pcl_effectnum, self.cacheGroundPos, normalize( (self.cacheGroundPos + [0, 0, self.maxs_z]) - self.cacheGroundPos) * (10/2), 0.5);
+  }
+
+  if(self.weaponEnt1.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt1, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt2.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt2, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt3.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt3, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt4.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt4, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt5.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt5, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt6.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt6, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt7.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt7, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt8.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt8, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt9.data_idx){
+    predraw_unit_weapon_tank(self.weaponEnt9, self.cl_lod_weapon);
+  }
+  
+  
   setsize(self, self.cache_mins, self.cache_maxs);
+  self.origin = self.rootOrigin;
   setorigin(self, self.rootOrigin);
   self.angles = self.rootAngle;
+  self.alpha = 1.0;
+  self.scale = 1.0;
 
 };
 

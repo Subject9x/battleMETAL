@@ -84,9 +84,12 @@ void (vector from, vector to, float thickness, string texture, float aspect, flo
 
     local float length_tex;
 
+    local float adjustThickness;
+
     axis = normalize(to - from);
 
     length_tex = aspect * vlen(to - from) / thickness;
+    length_tex = max(length_tex, length_tex);
 
     // direction is perpendicular to the view normal, and perpendicular to the axis
 
@@ -94,10 +97,11 @@ void (vector from, vector to, float thickness, string texture, float aspect, flo
     // as a lame hack I've just made the polygon double sided.
     thickdir = normalize( crossProduct(axis, vieworg - from) );
 
-    A = from - thickdir * (thickness / 2);
-    B = from + thickdir * (thickness / 2);
-    C = to + thickdir * (thickness / 2);
-    D = to - thickdir * (thickness / 2);
+    adjustThickness = thickness / 2.0;
+    A = from - thickdir * adjustThickness;
+    B = from + thickdir * adjustThickness;
+    C = to + thickdir * adjustThickness;
+    D = to - thickdir * adjustThickness;
 
     R_BeginPolygon(texture, drawflag, FALSE);
       R_PolygonVertex(A, '0 0 0' + shift * '1 0 0', rgb, theAlpha);
@@ -243,41 +247,30 @@ void() cl_particles_fogFrame={
 };
 
 void(entity item, entity parent) te_weapon_fire_handler={
-  local entity this;
-  local entity parent;
-  local vector unitOrg;
-  local vector view;
-  local vector adjPartOffset;
-  local vector offset;
+  // local vector adjPartOffset;
+  // local vector offset;
+  // local vector drawAng;
   
-  view = parent.rootAngle;
-  view_x = 0;
-  makevectors(view);
+  // util_getPartFromName( item.partParentId, parent);
+  
+  // adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
 
-  this = self;
-  util_getPartFromName( item.partParentId, this);
+  // if( item.partParentId == M_UNIT || item.partParentId == M_LEGS){
+  //   offset = parent.cacheGroundPos;
+  //   drawAng = parent.cacheGroundAngle;
+  // }
+  // else{
+  //   offset = T_PART_PARENT_ORG;
+  //   drawAng = T_PART_PARENT_ANGL;
+  // }
+  // drawAng_x = drawAng_x *-1;
+  
+  // makevectors(drawAng);
+  // offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
 
-    
-  if(parent.data_type == DATA_VEHC){
-    unitOrg = parent.cacheGroundPos;
-  }
-  else{
-    unitOrg = parent.rootOrigin;
-  }
-  offset = unitOrg + (v_right * T_PART_PARENT_OFFSET_x) + (v_up * T_PART_PARENT_OFFSET_y) + (v_forward * T_PART_PARENT_OFFSET_z);
+  //we ignore FPV z offset because player muzzle flash for view-tracking in FPV should match actual game coords.
   
-  //FPV z-offset is corrected at the parent-part origin step!
-  if(parent.clientLocalNum == player_localentnum && CLIENT_server_ent.chaseActive  == FALSE){
-    offset = offset + (v_forward * parent.cameraOffset_z);
-  }
-  adjPartOffset = item.compOffset - T_PART_PARENT_OFFSET;
-  
-  view = T_PART_PARENT_ANGL;
-  view_x = view_x *-1;
-  makevectors( view);
-  offset = offset + (v_up * adjPartOffset_y) + (v_right * adjPartOffset_x) + (v_forward * adjPartOffset_z);
-  
-  item.wepFireOffset = offset + (v_forward * item.wepFireOffsetCache_z) + (v_right * item.wepFireOffsetCache_x) + (v_up * item.wepFireOffsetCache_y);
+  //item.wepFireOffset = offset + (v_up * item.wepFireOffsetCache_y) + (v_right * item.wepFireOffsetCache_x) + (v_forward * item.wepFireOffsetCache_z);  
 };
 
 /*
@@ -1091,7 +1084,7 @@ void() particle_beam_th={
 }
 
 void() particle_beam_las_draw={
-  if(vlen(self.beamOrg - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE){
+  if(vlen(self.beamOrg - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
    return;
   }
   if(self.beamActive == FALSE){
@@ -1101,7 +1094,7 @@ void() particle_beam_las_draw={
 };
 
 void() particle_beam_pac_draw={
-  if(vlen(self.beamOrg - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE){
+  if(vlen(self.beamOrg - CLIENT_vis_org) > PARTICLE_HAZ_DISTANCE * 2){
    return;
   }
   if(self.beamActive == FALSE){
@@ -1119,7 +1112,7 @@ void() particle_beam_lightning_draw={
   local float itr;
   local float width;
 
-  if(vlen(self.beamOrg - CLIENT_vis_org)  > PARTICLE_HAZ_DISTANCE){
+  if(vlen(self.beamOrg - CLIENT_vis_org)  > PARTICLE_HAZ_DISTANCE * 2){
    return;
   }
 
@@ -1198,12 +1191,15 @@ void(float beamType, float entId, vector particleOrg, vector particleEnd, float 
   //WEAPON beam effects
   ent = findfloat(world, entnum, fabs(rint(entId)));
   if(!ent){
+    cons_logAFloat("BEAM CHECK ent null", num_for_edict(ent)); //debug
     return;
   }
   if(!ent.owner){
+    cons_logAFloat("BEAM CHECK ent owner null", num_for_edict(ent)); //debug
     return;
   }
   if(ent.beamActive){
+    cons_logAFloat("BEAM CHECK beam already active", num_for_edict(ent)); //debug
     return;
   }
 

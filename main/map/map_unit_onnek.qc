@@ -343,8 +343,8 @@ void() unit_onnek_survest_lobber={
       self.spreadDefault = ACCURACY_MARKSMAN;
       self.next_wepn1 = UID_ITEM_rotary_plasma;
       self.next_wepn2 = UID_ITEM_rotary_plasma;
-      self.next_wepn3 = UID_ITEM_EMPTY;
-      self.next_wepn4 = UID_ITEM_light_laser;
+      self.next_wepn3 = UID_ITEM_light_laser;
+      self.next_wepn4 = UID_ITEM_EMPTY;
       break;
     case 3:
       //skill- 3

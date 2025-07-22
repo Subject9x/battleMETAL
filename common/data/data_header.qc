@@ -316,7 +316,7 @@ void(float part, entity unit) util_getPartFromName={
     if( (unit.data_type == DATA_VEHC) ){
       //edge case for hull-mounted weapons on a turreted object
       #ifdef CSQC
-      T_PART_PARENT_ORG = unit.rootOrigin;
+      T_PART_PARENT_ORG = unit.cacheGroundPos;
       T_PART_PARENT_ANGL = unit.rootAngle;
       #endif
       #ifdef SSQC

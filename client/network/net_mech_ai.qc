@@ -278,12 +278,6 @@ void() interpolate_mech_ai={
   if(  PVS_FAIL || vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE){
     self.cl_lod_unit = FALSE;
   }
-
-  if(!self.cl_lod_unit){
-    self.mins = self.cache_mins;
-    self.maxs = self.cache_maxs;
-    return;
-  }
   
   self.cl_lod_weapon = TRUE;
   if( vlen(CLIENT_vis_org - self.rootOrigin) > PARTICLE_HAZ_DISTANCE / 2 ){
@@ -309,7 +303,10 @@ void() interpolate_mech_ai={
   setmodel(self, self.torC_mdl);
   self.angles = self.torC_angl;
   self.origin = self.torC_org;
-  addentity(self);
+  
+  if(self.cl_lod_unit){
+    addentity(self);
+  }
 
   makevectors(self.torC_angl);
   if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
@@ -323,7 +320,9 @@ void() interpolate_mech_ai={
       setmodel(self, self.torL_mdl);
       self.angles = self.torL_angl;
       self.origin = self.torL_org;
-      addentity(self);
+      if(self.cl_lod_unit){
+        addentity(self);
+      }
     }
   }
   
@@ -338,7 +337,9 @@ void() interpolate_mech_ai={
       setmodel(self, self.torR_mdl);
       self.angles = self.torR_angl;
       self.origin = self.torR_org;
-      addentity(self);
+      if(self.cl_lod_unit){
+        addentity(self);
+      }
     }
   }
   
@@ -353,7 +354,9 @@ void() interpolate_mech_ai={
       setmodel(self, self.armL_mdl);
       self.angles = self.armL_angl;
       self.origin = self.armL_org;
-      addentity(self);
+      if(self.cl_lod_unit){
+        addentity(self);
+      }
     }
   }
   
@@ -368,42 +371,45 @@ void() interpolate_mech_ai={
       setmodel(self, self.armR_mdl);
       self.angles = self.armR_angl;
       self.origin = self.armR_org;
-      addentity(self);
+      if(self.cl_lod_unit){
+        addentity(self);
+      }
     }
   }
   if(self.cl_lod_weapon){
     self.origin = self.rootOrigin;
     self.angles = self.rootAngle;
     render_mech_effect_burning();
-
-    if(self.weaponEnt1.data_idx){
-      predraw_unit_weapon(self.weaponEnt1);
-    }
-    if(self.weaponEnt2.data_idx){
-      predraw_unit_weapon(self.weaponEnt2);
-    }
-    if(self.weaponEnt3.data_idx){
-      predraw_unit_weapon(self.weaponEnt3);
-    }
-    if(self.weaponEnt4.data_idx){
-      predraw_unit_weapon(self.weaponEnt4);
-    }
-    if(self.weaponEnt5.data_idx){
-      predraw_unit_weapon(self.weaponEnt5);
-    }
-    if(self.weaponEnt6.data_idx){
-      predraw_unit_weapon(self.weaponEnt6);
-    }
-    if(self.weaponEnt7.data_idx){
-      predraw_unit_weapon(self.weaponEnt7);
-    }
-    if(self.weaponEnt8.data_idx){
-      predraw_unit_weapon(self.weaponEnt8);
-    }
-    if(self.weaponEnt9.data_idx){
-      predraw_unit_weapon(self.weaponEnt9);
-    }
   }
+
+  if(self.weaponEnt1.data_idx){
+    predraw_unit_weapon(self.weaponEnt1, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt2.data_idx){
+    predraw_unit_weapon(self.weaponEnt2, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt3.data_idx){
+    predraw_unit_weapon(self.weaponEnt3, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt4.data_idx){
+    predraw_unit_weapon(self.weaponEnt4, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt5.data_idx){
+    predraw_unit_weapon(self.weaponEnt5, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt6.data_idx){
+    predraw_unit_weapon(self.weaponEnt6, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt7.data_idx){
+    predraw_unit_weapon(self.weaponEnt7, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt8.data_idx){
+    predraw_unit_weapon(self.weaponEnt8, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt9.data_idx){
+    predraw_unit_weapon(self.weaponEnt9, self.cl_lod_weapon);
+  }
+  
   self.mins = self.cache_mins;
   self.maxs = self.cache_maxs;
   self.origin = self.rootOrigin;

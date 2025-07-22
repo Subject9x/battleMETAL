@@ -135,7 +135,7 @@ void() sendent_ai_think;
 
 vector( vector partOffset) predraw_unit_part;
 vector( vector partOffset, .vector partAngles) predraw_unit_part_and_angle;
-void(entity item) predraw_unit_weapon
-void(entity item) predraw_unit_weapon_tank; //
+void(entity item, float isLoD) predraw_unit_weapon
+void(entity item, float isLoD) predraw_unit_weapon_tank; //
 
 void( float critical ) sendevent_mech_crit;

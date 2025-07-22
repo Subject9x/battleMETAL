@@ -254,61 +254,62 @@ void() interpolate_turret={
     if( vlen(CLIENT_vis_org - self.origin) > PARTICLE_HAZ_DISTANCE / 2 ){
       self.cl_lod_weapon = FALSE;
     }
-    
-
-    setmodel(self, self.legs_mdl);
-    self.skin = 0;
-    self.angles = self.rootAngle;
-    addentity(self);
-    self.origin = self.rootOrigin;
-    self.angles = self.rootAngle;
-    
-    
-    makevectors(self.angles);
-    self.torC_org =  self.rootOrigin + (v_right * self.torC_compOffset_x) + (v_forward * self.torC_compOffset_z) + (v_up * self.torC_compOffset_y);
-    setmodel(self, self.torC_mdl);
-    self.origin = self.torC_org;
-    self.angles = self.torC_angl;
-    self.skin = 0;
-    addentity(self);
-    self.origin = self.rootOrigin;
-    self.angles = self.rootAngle;
-    setsize(self, self.cache_mins, self.cache_maxs);
-    
-    if(self.cl_lod_weapon && self.deadflag == DEAD_NO){
-      if(self.weaponEnt1.data_idx){
-        predraw_unit_weapon(self.weaponEnt1);
-      }
-      if(self.weaponEnt2.data_idx){
-        predraw_unit_weapon(self.weaponEnt2);
-      }
-      if(self.weaponEnt3.data_idx){
-        predraw_unit_weapon(self.weaponEnt3);
-      }
-      if(self.weaponEnt4.data_idx){
-        predraw_unit_weapon(self.weaponEnt4);
-      }
-      if(self.weaponEnt5.data_idx){
-        predraw_unit_weapon(self.weaponEnt5);
-      }
-      if(self.weaponEnt6.data_idx){
-        predraw_unit_weapon(self.weaponEnt6);
-      }
-      if(self.weaponEnt7.data_idx){
-        predraw_unit_weapon(self.weaponEnt7);
-      }
-      if(self.weaponEnt8.data_idx){
-        predraw_unit_weapon(self.weaponEnt8);
-      }
-      if(self.weaponEnt9.data_idx){
-        predraw_unit_weapon(self.weaponEnt9);
-      }
-    }
-    self.origin = self.rootOrigin;
-    self.angles = self.rootAngle;
-    self.mins = self.cache_mins;
-    self.maxs = self.cache_maxs;
   }
+
+  setmodel(self, self.legs_mdl);
+  self.skin = 0;
+  self.angles = self.rootAngle;
+  if(self.cl_lod_unit){
+    addentity(self);
+  }
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  
+  
+  makevectors(self.angles);
+  self.torC_org =  self.rootOrigin + (v_right * self.torC_compOffset_x) + (v_forward * self.torC_compOffset_z) + (v_up * self.torC_compOffset_y);
+  setmodel(self, self.torC_mdl);
+  self.origin = self.torC_org;
+  self.angles = self.torC_angl;
+  self.skin = 0;
+  if(self.cl_lod_unit){
+    addentity(self);
+  }
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  setsize(self, self.cache_mins, self.cache_maxs);
+
+  if(self.weaponEnt1.data_idx){
+    predraw_unit_weapon(self.weaponEnt1, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt2.data_idx){
+    predraw_unit_weapon(self.weaponEnt2, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt3.data_idx){
+    predraw_unit_weapon(self.weaponEnt3, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt4.data_idx){
+    predraw_unit_weapon(self.weaponEnt4, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt5.data_idx){
+    predraw_unit_weapon(self.weaponEnt5, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt6.data_idx){
+    predraw_unit_weapon(self.weaponEnt6, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt7.data_idx){
+    predraw_unit_weapon(self.weaponEnt7, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt8.data_idx){
+    predraw_unit_weapon(self.weaponEnt8, self.cl_lod_weapon);
+  }
+  if(self.weaponEnt9.data_idx){
+    predraw_unit_weapon(self.weaponEnt9, self.cl_lod_weapon);
+  }
+  self.origin = self.rootOrigin;
+  self.angles = self.rootAngle;
+  self.mins = self.cache_mins;
+  self.maxs = self.cache_maxs;
 };
 
 void() predraw_turret={

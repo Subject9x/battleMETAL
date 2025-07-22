@@ -534,11 +534,11 @@ float AS_INT = 8;
 //============================
 //     UNIT ACCURACY PROFILES
 //============================
-vector ACCURACY_SNIPER      = '0.05 0.33 0.002';
-vector ACCURACY_MARKSMAN    = '0.15 0.48 0.005';
-vector ACCURACY_SKIRMISH    = '0.25 0.63 0.01';
-vector ACCURACY_LOWTECH     = '0.35 0.78 0.0075';
-vector ACCURACY_PRIMITVE    = '0.45 0.93 0.001';
+#define ACCURACY_SNIPER   '0.5 2.5 0.0099'
+#define ACCURACY_MARKSMAN '1.0 3.0 0.0065'
+#define ACCURACY_SKIRMISH '2.0 4.5 0.0045'
+#define ACCURACY_LOWTECH  '3.0 5.5 0.0025'
+#define ACCURACY_PRIMITVE '4.5 7.5 0.0005'
 
 //============================
 //     FACTIONS

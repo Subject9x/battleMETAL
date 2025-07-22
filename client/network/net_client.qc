@@ -234,172 +234,180 @@ void() client_predraw={
         if( vlen(self.origin - CLIENT_vis_org ) > PARTICLE_HAZ_DISTANCE / 2 ){
           self.cl_lod_weapon = FALSE;
         }
+      }
         
-        makevectors( [0, self.angles_y, self.angles_z] );
-        
-        setsize(self, self.cache_mins, self.cache_maxs);
-        self.renderflags = 0;
-        predraw_legs();
-        self.origin = self.rootOrigin;
-        self.angles = self.rootAngle;
-        
-        self.torC_angl = self.rootAngle;
-        self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl) + (CLIENT_mech_torC_org2 - CLIENT_mech_torC_org1) * self.lerpfrac;
-        self.torC_angl = [0, self.rootAngle_y, 0];
-        if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
-          self.torC_angl_x = self.rootAngle_x * -1;
-        }
-        setmodel(self, self.torC_mdl);
-        self.angles = self.torC_angl;
-        self.origin = self.torC_org;
-        self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / 100) * 2;
+      makevectors( [0, self.angles_y, self.angles_z] );
+      
+      setsize(self, self.cache_mins, self.cache_maxs);
+      self.renderflags = 0;
+      predraw_legs();
+      self.origin = self.rootOrigin;
+      self.angles = self.rootAngle;
+      
+      self.torC_angl = self.rootAngle;
+      self.torC_org = predraw_unit_part_and_angle(self.torC_compOffset, torC_angl) + (CLIENT_mech_torC_org2 - CLIENT_mech_torC_org1) * self.lerpfrac;
+      self.torC_angl = [0, self.rootAngle_y, 0];
+      if((self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+        self.torC_angl_x = self.rootAngle_x * -1;
+      }
+      setmodel(self, self.torC_mdl);
+      self.angles = self.torC_angl;
+      self.origin = self.torC_org;
+      self.colormod = CLR_PLAYER_LIST[self.unitColorCT] * (self.torC_hp / 100) * 2;
+      if(self.cl_lod_unit){
         addentity(self);
+      }
+      
+      if( !(self.criticalHits & M_TOR_LEFT) ){
+        if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
+          self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl) + (CLIENT_mech_torL_org2 - CLIENT_mech_torL_org1) * self.lerpfrac; 
+          self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
+          self.torL_angl = [0, self.rootAngle_y, 0];
+          if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
+              self.torL_angl_x = self.rootAngle_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / 100) * 2;
+          setmodel(self, self.torL_mdl);
+          self.angles = self.torL_angl;
+          self.origin = self.torL_org;
+          if(self.cl_lod_unit){
+            addentity(self);
+          }
+        }
+      }
+      
+      if( !(self.criticalHits & M_TOR_RIGHT) ){
+        if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
+          self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl) + (CLIENT_mech_torR_org2 - CLIENT_mech_torR_org1) * self.lerpfrac; 
+          self.torR_angl = [0, self.rootAngle_y, 0];
+          if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
+              self.torR_angl_x = self.rootAngle_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / 100) * 2;
+          setmodel(self, self.torR_mdl);
+          self.angles = self.torR_angl;
+          self.origin = self.torR_org;
+          if(self.cl_lod_unit){
+            addentity(self);
+          }
+        }
+      }
+      
+      if( !(self.criticalHits & M_ARM_LEFT) ){
+        if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
+          self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl) + (CLIENT_mech_armL_org2 - CLIENT_mech_armL_org1) * self.lerpfrac; 
+          self.armL_angl = [0, self.rootAngle_y, 0];
+          if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
+            self.armL_angl_x = self.rootAngle_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / 100)  * 2;
+          setmodel(self, self.armL_mdl);
+          self.angles = self.armL_angl;
+          self.origin = self.armL_org;
+          if(self.cl_lod_unit){
+            addentity(self);
+          }
+        }
+      }
         
-        if( !(self.criticalHits & M_TOR_LEFT) ){
-          if( (self.unitModFlags & MOD_HAS_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L) ){
-            self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl) + (CLIENT_mech_torL_org2 - CLIENT_mech_torL_org1) * self.lerpfrac; 
-            self.torL_org = predraw_unit_part_and_angle(self.torL_compOffset, torL_angl); 
-            self.torL_angl = [0, self.rootAngle_y, 0];
-            if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
-               self.torL_angl_x = self.rootAngle_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorLT] * (self.armL_hp / 100) * 2;
-            setmodel(self, self.torL_mdl);
-            self.angles = self.torL_angl;
-            self.origin = self.torL_org;
+      if( !(self.criticalHits & M_ARM_RIGHT) ){
+        if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
+          self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl) + (CLIENT_mech_armR_org2 - CLIENT_mech_armR_org1) * self.lerpfrac;
+          self.armR_angl = [0, self.rootAngle_y, 0];
+          if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
+            self.armR_angl_x = self.rootAngle_x * -1;
+          }
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / self.armR_hpMax)  * 2;
+          setmodel(self, self.armR_mdl);
+          self.angles = self.armR_angl;
+          self.origin = self.armR_org;
+          if(self.cl_lod_unit){
             addentity(self);
           }
         }
-        
-        if( !(self.criticalHits & M_TOR_RIGHT) ){
-          if( (self.unitModFlags & MOD_HAS_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R) ){
-            self.torR_org = predraw_unit_part_and_angle(self.torR_compOffset, torR_angl) + (CLIENT_mech_torR_org2 - CLIENT_mech_torR_org1) * self.lerpfrac; 
-            self.torR_angl = [0, self.rootAngle_y, 0];
-            if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
-               self.torR_angl_x = self.rootAngle_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorRT] * (self.torR_hp / 100) * 2;
-            setmodel(self, self.torR_mdl);
-            self.angles = self.torR_angl;
-            self.origin = self.torR_org;
-            addentity(self);
+      }
+      if(self.cl_lod_weapon){
+        //client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
+        render_mech_effect_burning();
+      }
+
+      if(self.weaponEnt1.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt1, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt2.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt2, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt3.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt3, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt4.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt4, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt5.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt5, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt6.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt6, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt7.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt7, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt8.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt8, self.cl_lod_weapon);
+      }
+      if(self.weaponEnt9.data_idx > 0){
+        predraw_unit_weapon(self.weaponEnt9, self.cl_lod_weapon);
+      }
+      if( self.isLocalPlayer ){
+        //apparently when menu running, these just get STACCCCCCKED and murder framerate.
+        if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
+          self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+          particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
+          if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+            adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
           }
         }
-        
-        if( !(self.criticalHits & M_ARM_LEFT) ){
-          if( (self.unitModFlags & MOD_HAS_TOR_L) && (self.unitModFlags & MOD_HAS_ARM_L) ){
-            self.armL_org = predraw_unit_part_and_angle(self.armL_compOffset, armL_angl) + (CLIENT_mech_armL_org2 - CLIENT_mech_armL_org1) * self.lerpfrac; 
-            self.armL_angl = [0, self.rootAngle_y, 0];
-            if((self.unitModFlags & MOD_MODEL_PITCH_ARM_L)){
-              self.armL_angl_x = self.rootAngle_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorLA] * (self.armL_hp / 100)  * 2;
-            setmodel(self, self.armL_mdl);
-            self.angles = self.armL_angl;
-            self.origin = self.armL_org;
-            addentity(self);
+      }
+      else{
+        if(self.headlight && MENU_PROG_OFF){
+          self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
+          particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
+          if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
+            adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
           }
         }
-         
-        if( !(self.criticalHits & M_ARM_RIGHT) ){
-          if( (self.unitModFlags & MOD_HAS_TOR_R) && (self.unitModFlags & MOD_HAS_ARM_R) ){
-            self.armR_org = predraw_unit_part_and_angle(self.armR_compOffset, armR_angl) + (CLIENT_mech_armR_org2 - CLIENT_mech_armR_org1) * self.lerpfrac;
-            self.armR_angl = [0, self.rootAngle_y, 0];
-            if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
-              self.armR_angl_x = self.rootAngle_x * -1;
-            }
-            self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / self.armR_hpMax)  * 2;
-            setmodel(self, self.armR_mdl);
-            self.angles = self.armR_angl;
-            self.origin = self.armR_org;
-            addentity(self);
-          }
-        }
-        if(self.deadflag == DEAD_NO){
-          if(self.cl_lod_weapon){
-            //client_event_burn();  //placing this here because weapon-LoD is a fairly tight radius.
-            render_mech_effect_burning();
-  
-            if(self.weaponEnt1.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt1);
-            }
-            if(self.weaponEnt2.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt2);
-            }
-            if(self.weaponEnt3.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt3);
-            }
-            if(self.weaponEnt4.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt4);
-            }
-            if(self.weaponEnt5.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt5);
-            }
-            if(self.weaponEnt6.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt6);
-            }
-            if(self.weaponEnt7.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt7);
-            }
-            if(self.weaponEnt8.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt8);
-            }
-            if(self.weaponEnt9.data_idx > 0){
-              predraw_unit_weapon(self.weaponEnt9);
-            }
-          }
-          if( self.isLocalPlayer ){
-            //apparently when menu running, these just get STACCCCCCKED and murder framerate.
-            if(MENU_PROG_OFF && HUD_HEADLIGHT_ACTIVE){
-              self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
-              particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
-              if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-                adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
-              }
-            }
-          }
-          else{
-            if(self.headlight && MENU_PROG_OFF){
-              self.unit_light_org = self.unit_light_org1 + (self.unit_light_org2-self.unit_light_org1)*self.lerpfrac;
-              particleDraw = vlen(self.rootOrigin - CLIENT_vis_org);
-              if( particleDraw <= PARTICLE_HAZ_DISTANCE ){ 
-                adddynamiclight2(self.unit_light_org, 150, '1.0 1.0 1.0', 0, "", PFLAGS_NOSHADOW);
-              }
-            }
-          }
-          //RAMSHOCKS EFFECT
-          particleDraw = vlen(CLIENT_vis_org - self.origin);
-          if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
-            if( self.moveState > MOVE_SPRINT ){
-              makevectors(self.legs_angl);
-              
-              boostLeft = self.legs_org + (v_up * (self.cache_mins_z * 0.75)); 
-              boostRight = self.legs_org + (v_up * (self.cache_mins_z * 0.75));
-              
-              boostLeft = self.legs_org + (v_right * self.cache_mins_x * 0.5);
-              boostRight = self.legs_org + (v_right * self.cache_maxs_x * 0.5);
-              
-              traceline(boostLeft, boostLeft + (v_up * (self.cache_mins_z * 0.75)), TRUE, self);
-              boostLeft = trace_endpos;
-  
-              traceline(boostRight, boostRight + (v_up * (self.cache_mins_z * 0.75)), TRUE, self);
-              boostRight = trace_endpos;
-  
-              backLeft = boostLeft - (v_forward * 16);
-              backRight = boostRight - (v_forward * 16);
-              
-              pointparticles(particleeffectnum("TE_RAM_MOVE"), boostLeft, normalize(backLeft - boostLeft) * 4, random()*2);
-              pointparticles(particleeffectnum("TE_RAM_MOVE"), boostRight, normalize(backRight - boostRight) * 4, random()*2);
-              
-              vfxVel = self.legs_org + (v_forward * 64);
-              vfxVel = normalize(vfxVel - (self.legs_org + (v_forward * -64)) );
-  
-              pointparticles(particleeffectnum("TE_RAM_RING"), self.rootOrigin + (v_up * self.cache_maxs_z/2) + (v_forward * self.cache_maxs_x), vfxVel , 1);
-  
-              traceline(self.legs_org, self.legs_org + (v_up * self.cache_mins_z * 2), TRUE, self);
-              adddynamiclight2(trace_endpos + (v_up * 15), self.vec_size * 200, '0.50 2.0 1.25', 4, "", PFLAGS_NOSHADOW);
-            }
-          }
+      }
+      //RAMSHOCKS EFFECT
+      particleDraw = vlen(CLIENT_vis_org - self.origin);
+      if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2 ){
+        if( self.moveState > MOVE_SPRINT ){
+          makevectors(self.legs_angl);
+          
+          boostLeft = self.legs_org + (v_up * (self.cache_mins_z * 0.75)); 
+          boostRight = self.legs_org + (v_up * (self.cache_mins_z * 0.75));
+          
+          boostLeft = self.legs_org + (v_right * self.cache_mins_x * 0.5);
+          boostRight = self.legs_org + (v_right * self.cache_maxs_x * 0.5);
+          
+          traceline(boostLeft, boostLeft + (v_up * (self.cache_mins_z * 0.75)), TRUE, self);
+          boostLeft = trace_endpos;
+
+          traceline(boostRight, boostRight + (v_up * (self.cache_mins_z * 0.75)), TRUE, self);
+          boostRight = trace_endpos;
+
+          backLeft = boostLeft - (v_forward * 16);
+          backRight = boostRight - (v_forward * 16);
+          
+          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostLeft, normalize(backLeft - boostLeft) * 4, random()*2);
+          pointparticles(particleeffectnum("TE_RAM_MOVE"), boostRight, normalize(backRight - boostRight) * 4, random()*2);
+          
+          vfxVel = self.legs_org + (v_forward * 64);
+          vfxVel = normalize(vfxVel - (self.legs_org + (v_forward * -64)) );
+
+          pointparticles(particleeffectnum("TE_RAM_RING"), self.rootOrigin + (v_up * self.cache_maxs_z/2) + (v_forward * self.cache_maxs_x), vfxVel , 1);
+
+          traceline(self.legs_org, self.legs_org + (v_up * self.cache_mins_z * 2), TRUE, self);
+          adddynamiclight2(trace_endpos + (v_up * 15), self.vec_size * 200, '0.50 2.0 1.25', 4, "", PFLAGS_NOSHADOW);
         }
       }
     }
