@@ -13,7 +13,7 @@ void() data_projectile_ion_touch;
 void() data_projectile_ion_think_;
 void() data_projectile_ion_explode;
 
-float DAT_PRJ_ION_EXPRAD = 100;
+#define DAT_PRJ_ION_EXPRAD 100
 #endif
 
 #ifdef CSQC
@@ -76,6 +76,7 @@ void() data_projectile_ion_think_={
 void()data_projectile_ion_explode={
   local entity lst;
   local float ln;
+  local float radius;
   
   self.touch = SUB_Null;
   self.solid = SOLID_NOT;
@@ -83,7 +84,13 @@ void()data_projectile_ion_explode={
   
   self.SendFlags = self.SendFlags | SENDFLAG_IMPACT;
   self.impactType = IMPACT_SKY;
-  for(lst = findradius(self.origin, DAT_PRJ_ION_EXPRAD); lst != world; lst = lst.chain){
+
+  radius = DAT_PRJ_ION_EXPRAD;
+  if((self.owner.flags & FL_MONSTER) && cvar("skill") < SKILL_ELT){
+    radius = radius * 0.5;
+  }
+
+  for(lst = findradius(self.origin, radius); lst != world; lst = lst.chain){
     if(lst.takedamage <= 0){
       continue;
     }
@@ -92,7 +99,7 @@ void()data_projectile_ion_explode={
       continue;
     }
     ln = vlen(trace_endpos - self.origin);
-    if(ln > DAT_PRJ_ION_EXPRAD){
+    if(ln > radius){
       continue;
     }
     if( other.shield > 0 ){

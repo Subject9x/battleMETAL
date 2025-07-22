@@ -15,30 +15,25 @@ void() data_ini_attack_quantum_;
 #endif
 #ifdef CSQC
 void() te_muzzle_qrf={
-  local vector startOrg;
-  local vector endOrg;
-  
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
-  
   local vector ang;
   local vector prtclRail_org;
   local vector prtclRail_end;
   local vector prtclSpark_org;
   
-  ang = vectoangles(endOrg - startOrg);
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
+  
+  ang = vectoangles(trace_endpos - self.wepFireOffset);
   makevectors(ang);
-  prtclRail_org = startOrg + (v_forward * 2);
-  prtclRail_end = startOrg + (v_forward * 48);
-  prtclSpark_org = startOrg + (v_forward * 22);
+  prtclRail_org = self.wepFireOffset + (v_forward * 2);
+  prtclRail_end = self.wepFireOffset + (v_forward * 48);
+  prtclSpark_org = self.wepFireOffset + (v_forward * 22);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
-    pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( endOrg - startOrg ), 1 ) ;
-    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
-    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( endOrg - startOrg ) * 30, 1) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( trace_endpos - self.wepFireOffset ), 1 ) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( trace_endpos - self.wepFireOffset ) * 30, 1) ;
+    pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( trace_endpos - self.wepFireOffset ) * 30, 1) ;
   
     trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5) );
     trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5) );

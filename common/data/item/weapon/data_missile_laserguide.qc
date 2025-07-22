@@ -16,25 +16,21 @@ void() data_ini_attack_missile_laserguide_;
 
 #ifdef CSQC
 void() te_muzzle_lgm={
-  local vector startOrg;
-  local vector endOrg;
-  
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, startOrg + (v_forward * 2.1), FALSE, self.owner);
-  endOrg = trace_endpos;
-  
   local vector ang;
-  ang = vectoangles(endOrg - startOrg);
+
+  traceline(self.wepFireOffset, self.wepFireOffset + (v_forward * 2.1), FALSE, self.owner);
+  
+  ang = vectoangles(trace_endpos - self.wepFireOffset);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 80, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * -0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
-    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_right * 0.65), normalize((startOrg + v_up * 2) - startOrg), 1);
-    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), startOrg + (v_forward * 2) + (v_up * 1), normalize((startOrg + v_up * 2) - startOrg), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), self.wepFireOffset + (v_forward * 2) + (v_right * -0.65), normalize((self.wepFireOffset + v_up * 2) - self.wepFireOffset), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), self.wepFireOffset + (v_forward * 2) + (v_right * 0.65), normalize((self.wepFireOffset + v_up * 2) - self.wepFireOffset), 1);
+    pointparticles( particleeffectnum("TE_LGM_MUZZLE"), self.wepFireOffset + (v_forward * 2) + (v_up * 1), normalize((self.wepFireOffset + v_up * 2) - self.wepFireOffset), 1);
   
-    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * 0.5), endOrg + (v_forward * 16) + (v_right * 0.5) );
-    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), endOrg + (v_right * -0.5), endOrg + (v_forward * 16) + (v_right * -0.5) );
+    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), trace_endpos + (v_right * 0.5), trace_endpos + (v_forward * 16) + (v_right * 0.5) );
+    trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), trace_endpos + (v_right * -0.5), trace_endpos + (v_forward * 16) + (v_right * -0.5) );
   }
 };
 #endif

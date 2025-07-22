@@ -16,17 +16,13 @@ void() data_ini_attack_ion_;
 
 #ifdef CSQC
 void() te_muzzle_ion={
-  local vector startOrg;
-  local vector endOrg;
-  
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
+
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_ION_MUZZLE"), startOrg, normalize( endOrg - startOrg) * 4, 1);
+    pointparticles( particleeffectnum("TE_ION_MUZZLE"), self.wepFireOffset, normalize( trace_endpos - self.wepFireOffset) * 4, 1);
   }
 };
 #endif
@@ -46,7 +42,7 @@ void() data_ini_ion_={
   self.techLevel = 1;
   self.equipSize = ENE2;
   
-  self.spreadDefault = '0.025 0.05 0';
+  self.spreadDefault = '2.0 4.0 0.0';
   self.wepFireOffset = '0 0 4';
   self.burstRate = 1;
   

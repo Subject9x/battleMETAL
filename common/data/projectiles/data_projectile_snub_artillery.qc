@@ -9,7 +9,7 @@ Overview:
       
 */
 #ifdef SSQC
-float DAT_PRJ_SFGA_RAD        = 300;
+#define DAT_PRJ_SFGA_RAD 300
 void() data_projectile_snub_artillery_radiusDamage;
 void() data_projectile_snub_artillery_touch_;
 void() data_projectile_snub_artillery_th;

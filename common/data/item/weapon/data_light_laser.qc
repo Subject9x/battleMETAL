@@ -11,7 +11,7 @@ Overview:
 
 */
 #ifdef SSQC
-#define LIGHT_LAS_SHIELD_BONUS 2.0
+#define LIGHT_LAS_ARMOR_TAX 0.5
 void() data_ini_attack_laser_;
 #endif
  
@@ -20,17 +20,12 @@ void() te_beam_las={
   Draw_CylindricLine(self.wepFireOffset, self.beamEnd, self.beamWidth, "particles/laserbeam", 0.5, time * (random() * -6), '1.0 0.33 0.67', 0.75, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
 };
 void() te_muzzle_las={
-  local vector startOrg;
-  local vector endOrg;
-  local float impactStyle;
   local vector norm;
   
-  startOrg = self.wepFireOffset;
-  endOrg = self.beamEnd;
-
-  norm = normalize(endOrg - startOrg);
+  norm = normalize(self.beamEnd - self.wepFireOffset);
   
-  if( vlen(endOrg - startOrg) >= 1500 ){
+  particleDraw = vlen(CLIENT_vis_org - self.beamEnd);
+  if( vlen(self.beamEnd - self.wepFireOffset) >= 1500 ){
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, 0 );
   }
   else{
@@ -38,19 +33,18 @@ void() te_muzzle_las={
   }
 
   self.beamTime = time + 0.2;
-  self.beamOrg = startOrg;
+  self.beamOrg = self.wepFireOffset;
   self.beamWidth = 2.0;
   self.beamActive = TRUE;
 
-  //trailparticles( world, particleeffectnum("TE_LAS_RAIL"), startOrg, endOrg );
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_LAS_MUZZLE"), startOrg, norm * -2, 1);
+    pointparticles( particleeffectnum("TE_LAS_MUZZLE"), self.wepFireOffset, norm * -2, 1);
     if(self.pcl_count == IMPACT_ARMOR){
-        pointparticles(particleeffectnum("TE_LAS_HIT"), endOrg + (norm * -2), norm, 1);
+        pointparticles(particleeffectnum("TE_LAS_HIT"), self.beamEnd + (norm * -2), norm, 1);
     }
     else if(self.pcl_count == IMPACT_DIRT){
-      pointparticles(particleeffectnum("TE_LAS_DIRT"), endOrg + (norm * -2), norm, 1);
-      pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+      pointparticles(particleeffectnum("TE_LAS_DIRT"), self.beamEnd + (norm * -2), norm, 1);
+      pointparticles(PTC_HIT_DIRT_ENE_SML, self.beamEnd, trace_plane_normal * -1, 1);
     }
   }
 };
@@ -62,10 +56,10 @@ void() data_ini_light_laser_={
   self.w_clipsize = 1;
   self.reloadRate = 1.5;
   self.reloadMax = 1.5;
-  self.energyRate = 20;   //v3.7.4 - 18
+  self.energyRate = 14;
 
   self.w_range = 3000;
-  self.damageValue = 27;  //v5.4.0 - 30
+  self.damageValue = 10;
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
@@ -84,16 +78,18 @@ void() data_ini_light_laser_={
   self.fire_sound = "sound/weapons/laser_fire.ogg";
   self.model = "models/weapons/w_laser.md3";
   self.abbrev = "LAS";
-  self.description = "+ Instant-impact weapon. + bonus damage against <shields>.";
+  self.description = "+ Instant-impact weapon. + damage halved against <Armor>.";
   self.icon = "gfx/ui/wep_icons/wi_las.png";
   self.itemMuzzleFlash = te_muzzle_las;
   self.effect_beam = te_beam_las;
+  self.beamActive = FALSE;
 #endif
 
 #ifdef SSQC
   self.w_isburst = FALSE;
   self.think = default_weapon_think;
   self.w_attack = data_ini_attack_laser_;
+  
 #endif
 };
 
@@ -118,11 +114,11 @@ void() data_ini_attack_laser_={
       impactStyle = IMPACT_ARMOR;
 
       if( trace_ent.shield > 0 ){
-        t_damage_shield(trace_ent, self,self.owner, self.damageValue * LIGHT_LAS_SHIELD_BONUS, trace_endpos, FALSE); 
+        t_damage_shield(trace_ent, self,self.owner, self.damageValue, trace_endpos, FALSE); 
         impactStyle = IMPACT_SHIELD;
       }
       else{
-        HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, FIRE_ENDPOINT, '0 0 0');
+        HIT_LOCATION = t_damage(trace_ent, self, FIRE_ENT, self.damageValue * LIGHT_LAS_ARMOR_TAX, FIRE_ENDPOINT, '0 0 0');
         if( HIT_LOCATION && !(self.owner.statTargetHitParts & HIT_LOCATION) ){
           self.owner.statTargetHitParts = self.owner.statTargetHitParts | HIT_LOCATION;
         }

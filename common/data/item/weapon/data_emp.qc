@@ -15,17 +15,13 @@ void() data_ini_attack_emp_;
 #endif
 #ifdef CSQC
 void() te_muzzle_emp={
-  local vector startOrg;
-  local vector endOrg;
   
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_EMP_MUZZLE"), startOrg, normalize( startOrg - endOrg ) * 4, 1);
+    pointparticles( particleeffectnum("TE_EMP_MUZZLE"), self.wepFireOffset, normalize( self.wepFireOffset - trace_endpos ) * 4, 1);
   }
 };
 #endif

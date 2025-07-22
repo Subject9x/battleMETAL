@@ -10,7 +10,7 @@ Overview:
 */
 
 #ifdef SSQC
-float PROJ_MARH_TURN_FADE = 0.02; //turn speed decay rate.
+#define PROJ_MARH_TURN_FADE 0.02 //turn speed decay rate.
 void() data_projectile_missile_activeradar_think;
 void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;

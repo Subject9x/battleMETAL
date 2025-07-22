@@ -15,18 +15,14 @@ void() data_ini_attack_rockets_;
 
 #ifdef CSQC
 void() te_muzzle_rck={
-  local vector startOrg;
-  local vector endOrg;
+
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
-  
-  pointsound( startOrg, self.fire_sound, 1, ATTN_NORM);
+  pointsound( self.wepFireOffset, self.fire_sound, 1, ATTN_NORM);
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.25 + (random() * 0.75)) * 133, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
-    pointparticles( particleeffectnum("TE_MIS_MUZZLE"), startOrg, normalize(endOrg - startOrg), 1);
+    pointparticles( particleeffectnum("TE_MIS_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset), 1);
   }
 }
 #endif
@@ -40,14 +36,14 @@ void() data_ini_rockets_={
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 45;  //55
+  self.damageValue = 43;  //55
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;
   self.equipSize = MIS1;
   
   self.wepFireOffset = '0 0 3';
-  self.spreadDefault = '0.02 0.025 0';
+  self.spreadDefault = '6.0 6.0 0';
   self.burstRate = 1.75;
   
 #ifdef CSQC

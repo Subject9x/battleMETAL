@@ -6,7 +6,7 @@ Overview:
   Data File - Item - Weapon
     Rotary Plasma Chamber
       Range: Medium
-      8rnd Burst.
+      2rnd Burst.
       medium accuracy.
       projectiles burn unshielded targets.
 */
@@ -15,16 +15,12 @@ void() data_ini_attack_plasma_;
 #endif
 #ifdef CSQC
 void() te_muzzle_rpc={
-  local vector startOrg;
-  local vector endOrg;
-  
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
+
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
-    pointparticles( particleeffectnum("TE_RPC_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+    pointparticles( particleeffectnum("TE_RPC_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 2, 1);
   }
 }
 #endif
@@ -36,28 +32,25 @@ void() data_ini_plasma_={
     self.w_clipsize = 2;
     self.reloadRate = 0.4;
     self.reloadMax = 1.0;
-    self.damageValue = 7.0;
     self.count = 0.4; //burn-chance
   }
   else{
     self.w_clipsize = 1;
-    self.reloadRate = 1;
-    self.reloadMax = 1;
-    self.damageValue = 3.0;
+    self.reloadRate = 1.25;
+    self.reloadMax = 1.25;
     self.count = 0; //burn-chance
   }
 
+  self.damageValue = 16.0; //7.0
   self.count1 = 1.0; // rotate shot pattern;
-
   self.w_range = 1800;
-  //self.damageValue = 15;  //18 -> 20
   self.damageType = DMG_BAL;
   
   self.techLevel = 3;
   self.equipSize = BAL2;
   
   self.wepFireOffset = '0 0 6';
-  self.spreadDefault = '0.04 0.01 0';
+  self.spreadDefault = '2.0 6.0 0';
   self.burstRate = 1;
   
 #ifdef CSQC  

@@ -24,17 +24,13 @@ void() data_ini_attack_missile_swarm_;
 
 #ifdef CSQC
 void() te_muzzle_swrm={
-  local vector startOrg;
-  local vector endOrg;
   
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 165, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), startOrg, normalize( endOrg - startOrg ) * 3, 1);
+    pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), self.wepFireOffset, normalize( trace_endpos - self.wepFireOffset ) * 3, 1);
   }
 }
 #endif

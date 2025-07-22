@@ -14,17 +14,13 @@ void() data_ini_attack_snub_artillery_;
 #endif
 #ifdef CSQC
 void() te_muzzle_sfg={
-  local vector startOrg;
-  local vector endOrg;
-  
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
+
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.75 + (random() * 0.33)) * 100, 0 );
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
-    pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 2, 1);
+    pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 2, 1);
   }
 }
 #endif
@@ -84,5 +80,6 @@ void() data_ini_attack_snub_artillery_={
   }
   
   self.owner.attackFlag = self.owner.attackFlag | self.w_group;
+  self.SendFlags = self.SendFlags | SENDFLAG_ATTACK;
 };
 #endif

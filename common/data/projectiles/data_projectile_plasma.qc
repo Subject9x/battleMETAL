@@ -43,7 +43,7 @@ void() projectile_plasma_expl={
 
 void() data_projectile_ini_plasma_={
   self.classname = "missile";
-  //self.data_velocity = 1200;  //vel = Range / lifetime || vel * lifetime = Range / lifetime * lifetime
+  //vel = Range / lifetime || vel * lifetime = Range / lifetime * lifetime
   self.data_velocity = 1400;  //toss velocity
   self.data_lifetime = 1.5;
   self.scale = 1.25;

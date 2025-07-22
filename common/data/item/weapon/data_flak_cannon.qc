@@ -10,7 +10,7 @@ Overview:
       low accuracy
       small AoE when shields are gone
 */
-float DAT_FLAK_SHRAP_TOTAL = 6;
+#define DAT_FLAK_SHRAP_TOTAL 10
 
 #ifdef SSQC
   vector DAT_FLAK_SHRAP_SPREAD  = '0.15 0.15 64';
@@ -19,37 +19,13 @@ float DAT_FLAK_SHRAP_TOTAL = 6;
 
 #ifdef CSQC
 void() te_muzzle_flk={
-  local vector startOrg;
-  local vector endOrg;
-  local float impactStyle;
-  local float shrap;
-  local vector norm;
-  local vector ang;
-  local vector v;
   
-  startOrg = self.wepFireOffset;
-  traceline(startOrg, self.owner.laser_sight_org, FALSE, self.owner);
-  endOrg = trace_endpos;
-  
-  norm = normalize(endOrg - startOrg);
-  ang = vectoangles(endOrg - startOrg);
+  traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
   
   if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_FLK_MUZZLE"), startOrg, normalize(endOrg - startOrg) * 4, 1);
-  
-    makevectors(ang);
-    shrap = DAT_FLAK_SHRAP_TOTAL;
-    while( shrap > 0 ){
-      v = norm + ((crandom()*self.spreadDefault_x)*v_right) + ((crandom()*self.spreadDefault_y)*v_up);
-      
-      traceline (startOrg, startOrg + (v * self.w_range), FALSE, self.owner);
-      impactStyle = te_impact_type(trace_endpos, trace_ent, trace_dphitcontents);
-      
-      trailparticles(world, particleeffectnum("TE_FLK_TRAIL"), startOrg, startOrg + (v * 32));
-      shrap = shrap - 1;
-    }
+    pointparticles( particleeffectnum("TE_FLK_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 4, 1);
   }
 };
 #endif
@@ -58,17 +34,18 @@ void() data_ini_flak_cannon_={
   self.data_idx = UID_ITEM_flak;
   
   self.w_clipsize = 1;
-  self.reloadRate = 1.5;
-  self.reloadMax = 1.5;
   self.energyRate = 0;
   
   self.w_range = 500;
-  self.damageValue = 1.0; //2.5
   if((self.owner.flags & FL_CLIENT)){
-    self.damageValue = 4.5; //3.0 - v5.4.0
-    self.w_clipsize = 3;
-    self.reloadRate = 0.15;
-    self.reloadMax = 3;
+    self.damageValue = 7.5;
+    self.reloadRate = 3.0;
+    self.reloadMax = 3.0;
+  }
+  else{
+    self.damageValue = 2.5;
+    self.reloadRate = 4.0;
+    self.reloadMax = 4.0;
   }
   self.damageType = DMG_BAL;
   
@@ -90,13 +67,9 @@ void() data_ini_flak_cannon_={
   self.model = "models/weapons/w_flk.md3";
   self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL * 3 / 3;
   self.abbrev = "FLAK";
-  self.description = "+ Instant-impact weapon. + 3-rnd burst and 6 pellets per shot. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
+  self.description = "+ Instant-impact weapon. + shotgun damage pattern. + Stronger against <shields> AND [small] targets.";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";
   self.itemMuzzleFlash = te_muzzle_flk;
-  self.damageValue = 4;
-  self.w_clipsize = 3;
-  self.reloadRate = 0.15;
-  self.reloadMax = 3;
 #endif
 
 #ifdef SSQC
@@ -133,8 +106,13 @@ void() data_ini_attack_flak_={
   dir = normalize(FIRE_ENDPOINT - src);
   
   while (totes > 0){
-    direction = dir + crandom()*self.spreadDefault_x*v_right + crandom()*self.spreadDefault_y*v_up;
+    direction = dir + ((crandom() * self.spreadDefault_x) * v_right) + ((crandom() * self.spreadDefault_y) *v_up);
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
+
+
+
+    pointparticles( particleeffectnum("TE_FLK_TRAIL"), src + normalize(trace_endpos - src) * 32, normalize(trace_endpos - src) * 10, 1 );
+
     if( trace_ent.takedamage ){
       if( trace_ent.shield > 0){
         t_damage_shield(trace_ent, self,self.owner, self.damageValue * 1.5, trace_endpos, FALSE);
@@ -154,7 +132,7 @@ void() data_ini_attack_flak_={
         pointparticles( particleeffectnum("TE_FLK_IMPACT"), trace_endpos + (v_forward * -16), dir * -4, 1);
       }
     }
-    else if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitq3surfaceflags & DPCONTENTS_BODY) ){
+    else{
       pointparticles( particleeffectnum("TE_FLK_DIRT"), trace_endpos + (v_forward * -4), dir * -8, 1);
     }
     

@@ -13,8 +13,8 @@ void() data_prj_emp_touch;
 void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
 
-float DAT_PRJ_EMP_PROXYRAD    = 30;  //200
-float DAT_PRJ_EMP_EXPRAD      = 300;
+#define DAT_PRJ_EMP_PROXYRAD 30  //200
+#define DAT_PRJ_EMP_EXPRAD 300
 #endif
 
 #ifdef CSQC
@@ -61,6 +61,10 @@ void() data_projectile_ini_emp_={
 #ifdef SSQC
 void() data_projectile_emp_think_={
   local float explode;
+  local entity proxy;
+  local float radius;
+  local entity f;
+  local float ln;
 
   if( self.last_origin != self.origin ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
@@ -68,8 +72,12 @@ void() data_projectile_emp_think_={
   }
   explode = FALSE;
   if(time > self.w_firetime){
-    local entity proxy;
-    for(proxy = findradius(self.origin, DAT_PRJ_EMP_PROXYRAD); proxy != world; proxy = proxy.chain){
+    radius = DAT_PRJ_EMP_PROXYRAD;
+    if((self.owner.flags & FL_MONSTER) && cvar("skill") < SKILL_ELT){
+      radius = radius * 0.5;
+    }
+
+    for(proxy = findradius(self.origin, radius); proxy != world; proxy = proxy.chain){
       if( explode ){
         continue;
       }
@@ -86,16 +94,14 @@ void() data_projectile_emp_think_={
       if(trace_ent == world){
         continue;
       }
-      local entity f;
       if(trace_ent.partTypeId > 0){
         f = trace_ent.owner;
       }
       else{
         f = trace_ent;
       }
-      local float ln;
       ln = vlen(trace_endpos - self.origin);
-      if(ln > DAT_PRJ_EMP_PROXYRAD){
+      if(ln > radius){
         continue;
       }
       explode = TRUE;

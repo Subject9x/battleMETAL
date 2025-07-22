@@ -9,7 +9,7 @@ Overview:
 */
 
 #ifdef SSQC
-float DAT_ROCKET_PROXY_RAD = 25;
+#define DAT_ROCKET_PROXY_RAD 25
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
 #endif
@@ -76,17 +76,17 @@ void(entity theOther ) data_prj_mis_hit={
     damage = self.damageValue;
     if( theOther.shield > 0 ){
       if( theOther.shield > (theOther.shieldMax * 0.5) ){
-        damage = damage * 0.33;
+        damage = damage * 0.25;
       }
       else{
-        damage = damage * 0.67;
+        damage = damage * 0.45;
       }
       t_damage_shield(trace_ent, self, self.owner, damage, FIRE_ENDPOINT, FALSE );
       self.impactType = IMPACT_SHIELD;
     }
     else{
       if(theOther.data_type == DATA_BLD){
-        damage = damage + (damage * 0.33);
+        damage = damage + (damage * 0.55);
       }
       
       HIT_LOCATION = t_damage(theOther, self, self.owner, damage, self.origin, '0 0 0');
@@ -125,7 +125,9 @@ void() data_prj_mis_touch={
 
 void() data_projectile_rocket_think_={
   local entity close;
+  local float radius;
   local float hit;
+
   if( self.last_origin != self.origin ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.last_origin = self.origin;
@@ -141,7 +143,12 @@ void() data_projectile_rocket_think_={
   }
   if( (self.owner.flags & FL_CLIENT) ){
     hit = FALSE;
-    for( close = findradius(self.origin, DAT_ROCKET_PROXY_RAD); close != world; close = close.chain ){
+    radius = DAT_ROCKET_PROXY_RAD;
+    if((self.owner.flags & FL_MONSTER) && cvar("skill")  < SKILL_ELT){
+      radius = radius * 0.5;
+    }
+
+    for( close = findradius(self.origin, radius); close != world; close = close.chain ){
       if( hit ){
         continue;
       }

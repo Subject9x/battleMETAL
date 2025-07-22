@@ -24,33 +24,26 @@ void() te_pac_beam={
 
 };
 void() te_muzzle_pac={
-  local vector startOrg;
-  local vector endOrg;
   local vector norm;
-  local float impactStyle;
+
+  norm = normalize(self.beamEnd - self.wepFireOffset);
   
-  startOrg = self.wepFireOffset;
-  endOrg = self.beamEnd;
-  norm = normalize(endOrg - startOrg);
-  
-  if( vlen(endOrg - startOrg) >= 1500 ){
+  if( vlen(self.beamEnd - self.wepFireOffset) >= 1500 ){
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 185, 0 );
   }
   else{
     sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.2 + (random() * 0.8)) * 100, 0 );
   }
   
-  //trailparticles( world, particleeffectnum("TE_PAC_RAIL"), startOrg, endOrg );
-  
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_PAC_MUZZLE"), startOrg, norm * 2, 1);
+    pointparticles( particleeffectnum("TE_PAC_MUZZLE"), self.wepFireOffset, norm * 2, 1);
     
     if(self.pcl_count == IMPACT_ARMOR){
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), endOrg, norm * -6, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), self.beamEnd, norm * -6, 1);
     }
     else if(self.pcl_count == IMPACT_DIRT){
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), endOrg, norm * -4, 1);
-      pointparticles(PTC_HIT_DIRT_ENE_LRG, endOrg, trace_plane_normal * -1, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), self.beamEnd, norm * -4, 1);
+      pointparticles(PTC_HIT_DIRT_ENE_LRG, self.beamEnd, trace_plane_normal * -1, 1);
     }
   }
 
@@ -95,6 +88,7 @@ void() data_ini_particle_cannon_={
   self.icon = "gfx/ui/wep_icons/wi_pac.png";
   self.itemMuzzleFlash = te_muzzle_pac;
   self.effect_beam = te_pac_beam;
+  self.beamActive = FALSE;
 #endif 
 
 #ifdef SSQC

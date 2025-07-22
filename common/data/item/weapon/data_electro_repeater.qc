@@ -12,31 +12,18 @@ Overview:
       spin up and cooldown
 */
 #ifdef SSQC
-// last fire time == self.count1
-// cooldown check == self.count2;
-// last fire rate = self.count3
-// next cool check == self.count4
-// reload counter = self.count
-// overheat counter = self.count5
-//float DATA_ESR_COOLDOWN_MAX = 2;
 
-/*float ESR_HEAT_UP = 0.05;    //count5
-float ESR_MAX_RATE = 0.09;  //count3
-float ESR_RATE_UP = 0.0065;   //count3
-float ESR_RATE_DN = 0.01;   //count3
-float ESR_SPREAD_UP = 1.15;
-float ESR_SPREAD_DN = 0.95;*/
+#define DATA_ESR_COOLDOWN_MAX 2
 
-float DATA_ESR_COOLDOWN_MAX = 2;
+#define ESR_HEAT_UP 0.05    //count5
 
-float ESR_HEAT_UP = 0.05;    //count5
+#define ESR_MAX_RATE 0.09  //count3
+#define ESR_RATE_UP 0.003   //count3 - was 65
+#define ESR_RATE_DN 0.01  //count3
 
-float ESR_MAX_RATE = 0.09;  //count3
-float ESR_RATE_UP = 0.003;   //count3 - was 65
-float ESR_RATE_DN = 0.01;   //count3
-
-float ESR_SPREAD_UP = 1.15; //1.15
-float ESR_SPREAD_DN = 0.9;  //0.95
+#define ESR_SPREAD_MAX 12
+#define ESR_SPREAD_OUT 2.5 //1.15
+#define ESR_SPREAD_IN 0.33  //0.95
 
 void() weapon_esr_think={
   local float lim;
@@ -81,9 +68,9 @@ void() weapon_esr_think={
             self.count3 = self.reloadRate;
           }
           //unfocus the spread lens
-          self.spreadDefault = self.spreadDefault * ESR_SPREAD_UP;
-          if( self.spreadDefault_x > self.spreadCache_x * 4 ){
-            self.spreadDefault = self.spreadCache * 4;
+          self.spreadDefault = self.spreadDefault * ESR_SPREAD_OUT;
+          if( self.spreadDefault_x > self.spreadCache_x * ESR_SPREAD_MAX ){
+            self.spreadDefault = self.spreadCache * ESR_SPREAD_MAX;
           }
           //take off some heat
           if( self.w_currentammo < self.reloadMax ){
@@ -149,39 +136,36 @@ void() te_beam_esr={
   }
   Draw_CylindricLine(segOrg, self.beamEnd, width, "particles/electro_beam", 0.1, time * 0.1, '0.17 0.33 1.0', 0.95, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
 };
+
 void() te_muzzle_esr={
-  local vector startOrg;
-  local vector endOrg;
   local vector norm;
   local float impactStyle;
-  
-  startOrg = self.wepFireOffset;
-  endOrg = self.beamEnd;
 
-  norm = normalize(endOrg - startOrg);
+  norm = normalize(self.beamEnd - self.wepFireOffset);
   
   sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
   
+  particleDraw = vlen(CLIENT_vis_org - self.beamEnd);
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
-    pointparticles( particleeffectnum("TE_ESR_MUZZLE"), startOrg,  norm* 1, 1);
+    pointparticles( particleeffectnum("TE_ESR_MUZZLE"), self.wepFireOffset,  norm* 1, 1);
 
     traceline(self.wepFireOffset, self.beamEnd, FALSE, self.owner);
     impactStyle  = te_impact_type(self.beamEnd, trace_ent, trace_dphitcontents);
 
     if(impactStyle == IMPACT_ARMOR){
-        pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), endOrg, norm * -6, 1);
+        pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), self.beamEnd, norm * -6, 1);
     }
     if(impactStyle == IMPACT_DIRT){
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), endOrg, norm * -4, 1);
-      pointparticles(PTC_HIT_DIRT_ENE_SML, endOrg, trace_plane_normal * -1, 1);
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), self.beamEnd, norm * -4, 1);
+      pointparticles(PTC_HIT_DIRT_ENE_SML, self.beamEnd, trace_plane_normal * -1, 1);
     }
     if(impactStyle == IMPACT_SHIELD){
-      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), endOrg, norm * -4, 1);
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), self.beamEnd, norm * -4, 1);
     }
   }
 
   self.beamTime = time + 0.02;
-  self.beamOrg = startOrg;
+  self.beamOrg = self.wepFireOffset;
   self.beamWidth = 4.0;
   self.beamActive = TRUE;
 };
@@ -202,7 +186,7 @@ void() data_ini_electro_repeater_={
   self.techLevel = 2;
   self.equipSize = ENE2;
 
-  self.spreadDefault = '0.1 0.1 0';
+  self.spreadDefault = '1.0 1.0 0.0';
   self.wepFireOffset = '0 0 8'; 
   self.burstRate = 0;
   self.beamFlag = TRUE;
@@ -221,6 +205,7 @@ void() data_ini_electro_repeater_={
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
   self.itemMuzzleFlash = te_muzzle_esr;
   self.effect_beam = te_beam_esr;
+  self.beamActive = FALSE;
 #endif
 
 #ifdef SSQC
@@ -265,7 +250,7 @@ void() data_ini_attack_electro_repeater_={
   
   self.w_firetime = time + self.count3;
 
-  self.spreadDefault = self.spreadDefault * ESR_SPREAD_DN;
+  self.spreadDefault = self.spreadDefault * ESR_SPREAD_IN;
   if( self.spreadDefault_x < self.spreadCache_x ){
     self.spreadDefault = self.spreadCache;
   }
@@ -279,6 +264,7 @@ void() data_ini_attack_electro_repeater_={
     self.count3 = self.reloadRate;
     self.spreadDefault = self.spreadCache * 4;
   }
+
   ctrl_weapon_fireOffset();
   shotOrg = FIRE_ORIGIN;
   endOrg = FIRE_ENDPOINT;
