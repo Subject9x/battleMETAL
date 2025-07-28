@@ -22,7 +22,7 @@ void() te_muzzle_flk={
   
   traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 175, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.5 + (random() * 0.5)) * 125, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw <= PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_FLK_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 4, 1);
@@ -58,11 +58,12 @@ void() data_ini_flak_cannon_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/flak_fire.ogg");
+  precache_sound("sound/weapons/flak_fire_int.ogg");
   precache_sound("sound/weapons/flak_reload.ogg");
   precache_model("models/weapons/w_flk.md3");
   precache_file( "gfx/ui/wep_icons/wi_flak.png");
   self.w_name = "Flak Cannon";
-  self.fire_sound = "sound/weapons/flak_fire.ogg";
+  self.fire_sound = "sound/weapons/flak_fire%s.ogg";
   self.reload_sound = "sound/weapons/flak_reload.ogg";
   self.model = "models/weapons/w_flk.md3";
   self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL * 3 / 3;
@@ -102,7 +103,8 @@ void() data_ini_attack_flak_={
   
   totes = DAT_FLAK_SHRAP_TOTAL;
   
-  src = self.origin + v_forward*2;
+  src = self.origin + v_forward * 2;
+
   dir = normalize(FIRE_ENDPOINT - src);
   
   while (totes > 0){
@@ -110,7 +112,9 @@ void() data_ini_attack_flak_={
     traceline (src, src + direction*self.w_range, FALSE, self.owner);
 
 
-
+    if((self.owner.flags & FL_CLIENT) && self.owner.chaseActive){
+      
+    }
     pointparticles( particleeffectnum("TE_FLK_TRAIL"), src + normalize(trace_endpos - src) * 32, normalize(trace_endpos - src) * 10, 1 );
 
     if( trace_ent.takedamage ){

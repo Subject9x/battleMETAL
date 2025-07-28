@@ -752,38 +752,42 @@ void(float isnew, float existCrits) handle_existing_crits={
   EVENT - CRITICAL =====================================
 */
 void( float critical ) sendevent_mech_crit={
-  if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE){
-     traceline(self.rootOrigin, CLIENT_vis_org, TRUE, self);
+  if( vlen(self.rootOrigin - CLIENT_vis_org) < PARTICLE_HAZ_DISTANCE ){
+     traceline( self.rootOrigin, CLIENT_vis_org, TRUE, self );
     
     if( trace_ent != world || trace_fraction == 1.0){
-      sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
-
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_L) && !(self.unitModFlags & MOD_MODEL_NO_TOR_L)) && (self.critBits & M_TOR_LEFT) ){
-        te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        te_missile_explode( self.torL_org, self.vec_size, '0.9 0.75 0.45', 0.01 );
+        PointSound_Dynamic( self.torL_org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+
         if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_LEFT, 1);
         }
       }
       if( ((self.unitModFlags & MOD_EXPLODE_TOR_R) && !(self.unitModFlags & MOD_MODEL_NO_TOR_R)) && (self.critBits & M_TOR_RIGHT) ){
-        te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        te_missile_explode( self.torR_org, self.vec_size, '0.9 0.75 0.45', 0.01 );
+        PointSound_Dynamic( self.torR_org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
         if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_TORSO_RIGHT, 1);
         }
       }
       if( (self.unitModFlags & MOD_EXPLODE_ARM_L) && (self.critBits & M_ARM_LEFT) ){
-        te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        te_missile_explode( self.armL_org, self.vec_size, '0.9 0.75 0.45', 0.01 );
+        PointSound_Dynamic( self.armL_org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
         if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_LEFT, 1);
         }
       }
       if( (self.unitModFlags & MOD_EXPLODE_ARM_R) && (self.critBits & M_ARM_RIGHT) ){
-        te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        te_missile_explode( self.armR_org, self.vec_size, '0.9 0.75 0.45', 0.01 );
+        PointSound_Dynamic( self.armR_org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
         if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_ARM_RIGHT, 1);
         }
       }
       if( (self.critBits & M_LEGS) && !(self.criticalHits & M_LEGS) ){
-        te_missile_explode( self.legs_org, self.vec_size, '0.9 0.75 0.45', 0.01 ) ;
+        te_missile_explode( self.legs_org, self.vec_size * 2, '0.9 0.75 0.45', 0.05 );
+        PointSound_Dynamic( self.legs_org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
         if( self.isLocalPlayer ){
           hud_event_enqueue(HUD_EVENT_CRITICAL_LEGS, 1);
         }

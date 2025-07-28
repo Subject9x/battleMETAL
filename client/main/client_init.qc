@@ -28,6 +28,7 @@ void() CSQC_Init =
   registercvar("sv_campaign", "", CF_SERVER_FROM_CLIENT );
   registercvar("sv_singlemap", "0", CF_SERVER_FROM_CLIENT);
   registercvar("cl_loremap", "0", CF_CLIENT);
+  registercvar("snd_cockpit_effect", "1", CF_CLIENT | CF_ARCHIVE);
   cvar_set("con_chat", "0");  //force old chat system off
   
 	maxclients = 0;

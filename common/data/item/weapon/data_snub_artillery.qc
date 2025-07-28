@@ -17,7 +17,7 @@ void() te_muzzle_sfg={
 
   traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.75 + (random() * 0.33)) * 100, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.75 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
     pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 2, 1);
@@ -46,11 +46,12 @@ void() data_ini_snub_artillery_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/sfga_fire.ogg");
+  precache_sound("sound/weapons/sfga_fire_int.ogg");
   precache_sound("sound/weapons/sfga_reload.ogg");
   precache_model("models/weapons/w_sfga.md3");
   precache_file( "gfx/ui/wep_icons/wi_sfg.png");
   self.w_name = "Snub Field Artillery";
-  self.fire_sound = "sound/weapons/sfga_fire.ogg";
+  self.fire_sound = "sound/weapons/sfga_fire%s.ogg";
   self.reload_sound = "sound/weapons/sfga_reload.ogg";
   self.model = "models/weapons/w_sfga.md3";
   self.abbrev = "SFGA";

@@ -18,7 +18,8 @@ void() te_muzzle_rpc={
 
   traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.65 + (random() * 0.35)) * 125, SOUNDFLAG_DYNAMIC_INT);
+
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
     pointparticles( particleeffectnum("TE_RPC_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 2, 1);
   }
@@ -55,10 +56,11 @@ void() data_ini_plasma_={
   
 #ifdef CSQC  
   precache_sound("sound/weapons/rpls_fire.ogg");
+  precache_sound("sound/weapons/rpls_fire_int.ogg");
   precache_model("models/weapons/w_rpc.md3");
   precache_file( "gfx/ui/wep_icons/wi_rpc.png");
   self.w_name = "Rotary Plasma Chamber";
-  self.fire_sound = "sound/weapons/rpls_fire.ogg";
+  self.fire_sound = "sound/weapons/rpls_fire%s.ogg";
   self.model = "models/weapons/w_rpc.md3";
   self.abbrev = "RPC";
   self.description = "+ semi-auto. + 30% chance burn over time on unshielded hit. + inhibits target shield regen when burning.";

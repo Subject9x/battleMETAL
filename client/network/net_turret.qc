@@ -23,7 +23,7 @@ void() sendevent_turret_die={
   setorigin(self, self.origin);
   
   te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  PointSound_Dynamic(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   sendent_handle_remove(self.effect1);
   sendent_handle_remove(self.effect2);

@@ -68,7 +68,7 @@ void() cs_precache={
   HUD_DMG_PIP_H = precache_pic("gfx/hud/ret/dmg_pip_hrz.png", 0);
 
   //cockpit voice
-  SND_MCH_SFX_REACT = precache_sound2("sound/mech_react.ogg");
+  SND_MCH_SFX_REACT = "sound/mech_react.ogg";
   SND_HUD_VFX_ONLINE = precache_sound2("sound/comp/online.ogg");
   SND_HUD_VFX_ENELOW = precache_sound2("sound/comp/en_low.ogg");
   SND_HUD_VFX_SHDLOW = precache_sound2("sound/comp/sh_low.ogg");
@@ -95,8 +95,8 @@ void() cs_precache={
   
   SND_HUD_SHLD_DN = precache_sound2("sound/comp/shld_down.ogg");
   SND_HUD_CRIT_DMG = precache_sound2("sound/comp/crt_dmg.ogg");
-  SND_HUD_SHLD_DN_SFX = precache_sound2("sound/fx_shld_down.ogg");
-  SND_HUD_SHLD_UP_SFX = precache_sound2("sound/fx_shld_up.ogg");
+  SND_HUD_SHLD_DN_SFX = "sound/fx_shld_down%s.ogg";
+  SND_HUD_SHLD_UP_SFX = "sound/fx_shld_up%s.ogg";
   SND_HUD_TRG_NEW = precache_sound2("sound/comp/trg_new.ogg");
 
   

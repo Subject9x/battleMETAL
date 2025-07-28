@@ -22,15 +22,16 @@ void() projectile_sfga_expl={
   }
   if( self.impactType == IMPACT_SHIELD ){
     pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+   
     te_missile_explode( self.origin, 2, '0 0 1', -0.05 ); 
   }
   else if( self.impactType == IMPACT_ARMOR ){
-    pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
+    PointSound_Dynamic(self.origin, "sound/fx_boom%s.ogg",  1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
     pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.1 ); 
   }
   else{
-    pointsound(self.origin, "sound/fx_boom.ogg", 1, ATTN_NORM);
+    PointSound_Dynamic(self.origin, "sound/fx_boom%s.ogg",  1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
     te_missile_explode( self.origin, 2, '0.99 0.8 0.5', 0.05 );
     self.angles = vectoangles(self.velocity);
     makevectors(self.angles);

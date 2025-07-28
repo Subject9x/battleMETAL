@@ -342,7 +342,6 @@ void() hazard_quant_think={
   local vector adj;
   local vector rando;
   
-  
   makevectors(self.angles);  
   
   adj = self.origin;
@@ -409,6 +408,15 @@ void(float dataIdx) hazard_ini_rad={
 };
 
 
+void() hazard_crs_die={
+  local vector shoot;
+  shoot = self.origin + '0 0 5';
+  
+  te_missile_explode( shoot, rint(ceil(self.vec_size * 1.5)), '0.33 0.67 1.33', 0.001 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_shieldhit%s.ogg", 1.0, ATTN_NORM, 1.0, SOUNDFLAG_DYNAMIC_INT);
+
+};
+
 void(float dataIdx) hazard_ini_static={
   switch( dataIdx ){
     case 2:
@@ -430,6 +438,7 @@ void(float dataIdx) hazard_ini_static={
       setsize( self, '-20 -20 0', '20 20 25' );
       break;
   }
+  self.th_die = hazard_crs_die;
   self.effects = self.effects | EF_NOSHADOW;
   if( self.isActive ){
     self.think = hazard_crs_think;

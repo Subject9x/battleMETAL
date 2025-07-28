@@ -69,7 +69,9 @@ void() sendevent_building_die={
   sendent_handle_remove(self.effect1);
   sendent_handle_remove(self.effect2);
   sendent_handle_remove(self.effect3);
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  
+  PointSound_Dynamic(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1%s.ogg", 1.0 , ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+
   self.think = SUB_Null;
   self.nextthink = time + 0.01;
 };

@@ -395,6 +395,7 @@ void() te_missile_explode_th={
   }
   self.nextthink = time + 0.01;
 };
+//NOTE - calling function must provide desired sound effect (or no sound)
 void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
   local entity explode;
   local float debris;
@@ -427,8 +428,7 @@ void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missi
     }
   
     te_customflash( org, explodeSize * 50, 1, explodeColor);
-    
-    
+
     makevectors(vectoangles(self.velocity));
     back = org + (v_forward * -10);
     back = normalize(back - org);
@@ -573,7 +573,7 @@ void() te_shield_hit={
   }
   
   te_customflash( self.origin, self.shield * 1.5, 0.33, flashCol);
-  sound7(self, CHAN_AUTO, "sound/fx_shieldhit.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 125, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_shieldhit%s.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 };
 
 
@@ -741,8 +741,9 @@ void( vector org, float explodeSize, vector explodeColor, float onShield  ) part
     
     setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
     setorigin( explode, org);
-    
-    sound7(explode, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 110, 0 );
+
+    Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 110, SOUNDFLAG_DYNAMIC_INT);
+
     te_customflash( org, explodeSize * 50, 1.5, explodeColor); 
   }
 };
@@ -776,7 +777,7 @@ void( float modelIndex, float skinNum, float lifetime, float vecSize, vector ent
   local entity this;
   local float sizeAdjust;
   
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1.0, ATTN_NORM, 90 - (self.vec_size * 10), 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM,  90 - (self.vec_size * 10), SOUNDFLAG_DYNAMIC_INT);
   
   if( PARTICLE_WRECK_TANK > PARTICLE_MAX_WRECK_TANK ){
     PARTICLE_WRECK_TANK = PARTICLE_WRECK_TANK - 1;

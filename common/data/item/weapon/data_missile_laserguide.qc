@@ -22,7 +22,7 @@ void() te_muzzle_lgm={
   
   ang = vectoangles(trace_endpos - self.wepFireOffset);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 80, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.33 + (random() * 0.67)) * 100, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_LGM_MUZZLE"), self.wepFireOffset + (v_forward * 2) + (v_right * -0.65), normalize((self.wepFireOffset + v_up * 2) - self.wepFireOffset), 1);
@@ -56,10 +56,11 @@ void() data_ini_missile_laserguide_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/mis_fire.ogg");
+  precache_sound("sound/weapons/mis_fire_int.ogg");
   precache_model("models/weapons/w_lgm.md3");
   precache_file( "gfx/ui/wep_icons/wi_mlgd.png");
   self.w_name = "Missile - Guided";
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.fire_sound = "sound/weapons/mis_fire%s.ogg";
   self.model = "models/weapons/w_lgm.md3"; 
   self.abbrev = "MLGD";
   self.description = "+ Bonus 33% damage to BUILDINGS. + target <shields> reduce damage. + Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";

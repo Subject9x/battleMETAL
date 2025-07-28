@@ -28,7 +28,7 @@ void() te_muzzle_qrf={
   prtclRail_end = self.wepFireOffset + (v_forward * 48);
   prtclSpark_org = self.wepFireOffset + (v_forward * 22);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.1 + (random() * 0.9)) * 200, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.1 + (random() * 0.9)) * 150, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
     pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( trace_endpos - self.wepFireOffset ), 1 ) ;
@@ -62,10 +62,11 @@ void() data_ini_quantum_={
 
 #ifdef CSQC
   precache_sound("sound/weapons/qrfl_fire.ogg");
+  precache_sound("sound/weapons/qrfl_fire_int.ogg");
   precache_model("models/weapons/w_qrf.md3");
   precache_file( "gfx/ui/wep_icons/wi_qrf.png");
   self.w_name = "Quantum Rifle";
-  self.fire_sound = "sound/weapons/qrfl_fire.ogg";
+  self.fire_sound = "sound/weapons/qrfl_fire%s.ogg";
   self.model = "models/weapons/w_qrf.md3";
   self.abbrev = "QRF";
   self.description = "+ Single-fire projectile. + Better against <Armor> + Targets without <Shields> will cause projectile to shatter and deal additional radius damage to nearby targets. + small amount of Energy damage to target.";

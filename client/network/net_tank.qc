@@ -15,10 +15,10 @@ Overview:
 void() sendevent_tank_die={
   
   data_vehicle_wreck();
-  
-  traceline(self.origin + (v_up * self.maxs_z * 0.67), self.origin + (v_up * -128), TRUE, self);
-  te_missile_explode( trace_endpos + (v_up * 4) , self.vec_size + 1, '0.9 0.75 0.45', 0.01 ) ;
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fx_boom.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+  makevectors([0, self.cacheGroundAngle_y, 0]);
+  traceline(self.cacheGroundPos + (v_up * ((self.maxs_z * 0.67) * 4)), self.cacheGroundPos + (v_up * -128), TRUE, self );
+  te_missile_explode( trace_endpos,  self.vec_size + 1, '0.9 0.75 0.45', 0.01 ) ;
+  PointSound_Dynamic( trace_endpos, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
 };
 
 
@@ -161,6 +161,9 @@ void( float isNew, float changeFlags ) sendent_handle_tank={
   
   //HANDLE EVENT - dead
   if( self.deadflag > DEAD_NO && prevDeadFlag == DEAD_NO ){
+    if( self.deadflag == DEAD_RAMMED ){
+      Sound7_Dynamic(self, CHAN_BODY, "sound/fx_ram_hit%s.ogg", 1.0, ATTN_NORM, (0.5 + random()/2) * 125, SOUNDFLAG_DYNAMIC_INT);
+    }
     sendevent_tank_die();
   }
 };

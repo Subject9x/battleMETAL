@@ -49,7 +49,7 @@ void() sendevent_mech_ai_die={
   
   makevectors(self.angles);
   te_missile_explode( self.origin + (v_up * self.maxs_z * 0.67), self.vec_size * 2, '0.9 0.75 0.45', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.75)) * 100, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.75 + (random() * 0.25)) * 110 , SOUNDFLAG_DYNAMIC_INT);  
   
   self.colormod = '0.45 0.45 0.45';
   self.solid = SOLID_NOT;

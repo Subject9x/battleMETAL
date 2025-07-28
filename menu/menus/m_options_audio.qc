@@ -24,6 +24,10 @@ entity audio_music_vol_lbl;
 entity audio_music_up;
 entity audio_music_dn;
 
+entity audio_effect_cockpit_lbl;
+entity audio_effect_cockpit_on;
+entity audio_effect_cockpit_off;
+
 //headphone friendly cvar
 //snd_spatialization_control
 entity audio_speakers_lbl;
@@ -38,6 +42,8 @@ entity audio_mute_idle_off;
 entity audio_quality_lbl;
 entity audio_quality_up;
 entity audio_quality_dn;
+
+
 
 entity audio_back;
 entity audio_save;
@@ -351,6 +357,22 @@ void() click_quality_dn={
   audio_quality_up.drawme = TRUE;
 };
 
+
+void() click_audio_cockpit_off={
+  audio_effect_cockpit_lbl.len = 0;
+  audio_effect_cockpit_lbl.label = "OFF";
+  audio_effect_cockpit_lbl.color = CLR_DEF_TXT_NONSELECT;
+  audio_effect_cockpit_on.drawme = TRUE;
+  audio_effect_cockpit_off.drawme = FALSE;
+};
+void() click_audio_cockpit_on={
+  audio_effect_cockpit_lbl.len = 1;
+  audio_effect_cockpit_lbl.label = "ON";
+  audio_effect_cockpit_lbl.color = CLR_DEF_ARM_OK;
+  audio_effect_cockpit_on.drawme = FALSE;
+  audio_effect_cockpit_off.drawme = TRUE;
+};
+
 void() click_audio_back={
   menu_clear_items(M_STATE);
   m_options_f();
@@ -363,6 +385,7 @@ void() click_audio_save={
   audio_speakers_mode_setcvar(audio_speakers_lbl.len);
   cvar_set("snd_mutewhenidle", ftos(audio_mute_idle_lbl.len));  
   audio_speed_set(audio_quality_lbl.len);
+  cvar_set("snd_cockpit_effect", ftos(audio_effect_cockpit_lbl.len));
   
   localcmd("saveconfig\n");
 
@@ -453,11 +476,28 @@ void() m_audio_i={
     audio_music_up.drawme = FALSE;
     audio_music_dn.drawme = FALSE;
   }
+
+  //muffled cockpit audio effect
+  audio_effect_cockpit_lbl = lbl_text(MENU_ORG + '162 149', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_effect_cockpit_on = btn_img_callback(MENU_ORG + '180 148', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_audio_cockpit_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_effect_cockpit_off = btn_img_callback(MENU_ORG + '140 148', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_audio_cockpit_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
+  audio_effect_cockpit_lbl.len = cvar("snd_cockpit_effect");
+  if( cvar("snd_cockpit_effect") == 1){
+    audio_effect_cockpit_lbl.label = "ON";
+    audio_effect_cockpit_lbl.color = CLR_DEF_ARM_OK;
+    audio_effect_cockpit_on.drawme = FALSE;
+  }
+  else{
+    audio_effect_cockpit_lbl.label = "OFF";
+    audio_effect_cockpit_lbl.color = CLR_DEF_TXT_NONSELECT;
+    audio_effect_cockpit_off.drawme = FALSE;
+  }
+
   //speaker mode
-  audio_speakers_lbl = lbl_text(MENU_ORG + '162 182', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
-  audio_speakers_more = btn_img_callback(MENU_ORG + '240 181', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_speakers_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_speakers_less = btn_img_callback(MENU_ORG + '140 181', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_speakers_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_speakers_lbl = lbl_text(MENU_ORG + '162 204', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_speakers_more = btn_img_callback(MENU_ORG + '240 203', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_speakers_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_speakers_less = btn_img_callback(MENU_ORG + '140 203', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_speakers_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   audio_speakers_lbl.len = audio_speakers_mode_get(cvar("snd_channels"), cvar("snd_spatialization_control"));
   audio_speakers_lbl.label = audio_speakers_mode_val(audio_speakers_lbl.len);
@@ -469,10 +509,10 @@ void() m_audio_i={
     audio_speakers_more.drawme = FALSE;
   }
 
-  audio_mute_idle_lbl = lbl_text(MENU_ORG + '162 204', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, UI_FLAG_LBL_BOOL_ON);
+  audio_mute_idle_lbl = lbl_text(MENU_ORG + '162 226', '14 14',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, UI_FLAG_LBL_BOOL_ON);
   audio_mute_idle_lbl.len = cvar("snd_mutewhenidle");
-  audio_mute_idle_on = btn_img_callback(MENU_ORG + '184 203', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_mute_idle_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_mute_idle_off = btn_img_callback(MENU_ORG + '140 203', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_mute_idle_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_mute_idle_on = btn_img_callback(MENU_ORG + '184 225', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_mute_idle_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_mute_idle_off = btn_img_callback(MENU_ORG + '140 225', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_mute_idle_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(audio_mute_idle_lbl.len){
     audio_mute_idle_on.drawme = FALSE;
@@ -481,9 +521,9 @@ void() m_audio_i={
     audio_mute_idle_off.drawme = FALSE;
   }
 
-  audio_quality_lbl = lbl_text(MENU_ORG + '162 226', '14 14 0',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
-  audio_quality_up = btn_img_callback(MENU_ORG + '200 225', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_quality_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  audio_quality_dn = btn_img_callback(MENU_ORG + '140 225', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_quality_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_quality_lbl = lbl_text(MENU_ORG + '162 248', '14 14 0',"", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_AUDIO, 1, 0);
+  audio_quality_up = btn_img_callback(MENU_ORG + '200 247', '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_AUDIO, click_quality_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  audio_quality_dn = btn_img_callback(MENU_ORG + '140 247', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_AUDIO, click_quality_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   audio_quality_lbl.len = audio_speed_get(cvar("snd_speed"));
   
@@ -531,7 +571,9 @@ void() m_audio_d={
   gui_renderString("Sound Volume :", audio_sfx_dn.origin - [stringwidth("Sound Volume :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   gui_renderString("Music On/Off :", audio_music_toggle_off.origin - [stringwidth("Music On/Off :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   gui_renderString("Music Volume :", audio_music_dn.origin - [stringwidth("Music Volume :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
-  
+
+  gui_renderString("Cockpit Effect :", audio_effect_cockpit_off.origin - [stringwidth("Cockpit Effect :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
+
   local string lbl;
   if( !isdemo() && clientstate() == CS_CONNECTED){
     lbl = "Advanced Settings - changes will require restart";
@@ -539,7 +581,7 @@ void() m_audio_d={
   else{
     lbl = "Advanced Settings";
   }
-  gui_renderString(lbl, MENU_ORG + '25 160', CLR_DEF_ARM_THREEQ, '12 12', 1, 0);
+  gui_renderString(lbl, MENU_ORG + '25 182', CLR_DEF_ARM_THREEQ, '12 12', 1, 0);
   gui_renderString("Speaker Mode :", audio_speakers_less.origin - [stringwidth("Speaker Mode :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   gui_renderString("Mute Minimized :", audio_mute_idle_off.origin - [stringwidth("Mute Minimized :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);
   gui_renderString("Sound Quality :", audio_quality_dn.origin  - [stringwidth("Sound Quality :  ", 0, '12 12'),-1], CLR_DEF_TXT_NONSELECT, '12 12', 1, 0);  

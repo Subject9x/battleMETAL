@@ -48,14 +48,18 @@ sound/mech_start.ogg
 
 sound/fx_boom.ogg
 sound/fx_shieldhit.ogg
-sound/fx_armorhit.ogg
+sound/fx_shieldhit.ogg
+sound/fx_armorhit1.ogg
+sound/fx_armorhit2.ogg
+sound/fx_armorhit3.ogg
+sound/fx_hit_dirt.ogg
+sound/fx_ram_hit.ogg
 
 sound/demon/dland2.wav
 
 sound/fx_tank_idle.ogg
 sound/fx_tank_move.ogg
 
-sound/fx_ram_hit.ogg
 sound/weapons/esr_ovrht.ogg
 
 //MAPS

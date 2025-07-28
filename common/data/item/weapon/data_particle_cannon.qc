@@ -20,20 +20,16 @@ void() te_pac_beam={
   
   self.beamWidth = self.beamWidth + (3 * frametime);
   self.beamAlpha = self.beamAlpha - (0.1 * frametime);
-  Draw_CylindricLine(self.wepFireOffset, self.beamEnd, self.beamWidth, "particles/pac_beam", 1.0, time * -3.0, '0.98 0.68 0.23', self.beamAlpha, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
+  //255, 239, 138
+  Draw_CylindricLine(self.wepFireOffset, self.beamEnd, self.beamWidth, "particles/pac_beam", 1.0, time * -3.0, '0.98 0.91 0.37', self.beamAlpha, DRAWFLAG_NORMAL | DRAWFLAG_MIPMAP, CLIENT_vis_org);
 
 };
 void() te_muzzle_pac={
   local vector norm;
 
   norm = normalize(self.beamEnd - self.wepFireOffset);
-  
-  if( vlen(self.beamEnd - self.wepFireOffset) >= 1500 ){
-    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 185, 0 );
-  }
-  else{
-    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.2 + (random() * 0.8)) * 100, 0 );
-  }
+
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.75 + (random() * 0.5)) * 125, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_PAC_MUZZLE"), self.wepFireOffset, norm * 2, 1);
@@ -49,8 +45,8 @@ void() te_muzzle_pac={
 
   self.beamActive = TRUE;
   self.beamWidth = 3.0;
-  self.beamTime = time + 1.0;
-  self.beamAlpha = 0.8;
+  self.beamTime = time + 0.8;
+  self.beamAlpha = 0.95;
 };
 #endif
 void() data_ini_particle_cannon_={
@@ -76,11 +72,12 @@ void() data_ini_particle_cannon_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/pac_fire.ogg");
+  precache_sound("sound/weapons/pac_fire_int.ogg");
   precache_sound("sound/weapons/pac_reload.ogg");
   precache_model("models/weapons/w_pac.md3");
   precache_file( "gfx/ui/wep_icons/wi_pac.png");
   self.w_name = "PAC";
-  self.fire_sound = "sound/weapons/pac_fire.ogg";
+  self.fire_sound = "sound/weapons/pac_fire%s.ogg";
   self.reload_sound = "sound/weapons/pac_reload.ogg";
   self.model = "models/weapons/w_pac.md3";
   self.abbrev = "PAC";

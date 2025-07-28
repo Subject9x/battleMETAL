@@ -14,6 +14,9 @@ void() data_projectile_latc_th;
 
 #ifdef CSQC
 void() projectile_latc_hit={
+  local float r;
+  local string snd;
+
   if( self.impactType == IMPACT_SKY ){
     return;
   }
@@ -21,11 +24,21 @@ void() projectile_latc_hit={
     pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), self.origin, self.velocity, 1);
   }
   else if( self.impactType == IMPACT_ARMOR ){
-    pointsound(self.origin, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+    r = random() * 1.0;
+    if(r < 0.4){
+      snd = "sound/fx_armorhit1.ogg";
+    }
+    else if(r < 0.8 ){
+      snd = "sound/fx_armorhit2.ogg";
+    }
+    else{
+      snd = "sound/fx_armorhit3.ogg";
+    }
+    sound7(self, CHAN_AUTO, snd, (0.67 + random() * 0.3), ATTN_NORM, (67 + (random() * 33)), 0);
     pointparticles( particleeffectnum("TE_ATC_ARMOR"), self.origin, normalize(self.velocity) * 10, 1);
   }
   else{
-    pointsound(self.origin, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+    Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_hit_dirt.ogg", (0.67 + random() * 0.33), ATTN_NORM, (67 + (random() * 33)), SOUNDFLAG_DYNAMIC_INT);
     self.angles = vectoangles(self.velocity);
     makevectors(self.angles);
     pointparticles( particleeffectnum("TE_ATC_DIRT"), self.origin + (v_up *1) + (v_forward * -4), normalize( self.velocity) * -20, 1);
@@ -43,7 +56,7 @@ void() data_projectile_ini_latc_={
     //cosmetics
     self.model = "models/proj/mdl_proj_atc.md3";
     self.colormod = '3.0 3.0 3.0';
-    self.alpha = 0.7;
+    self.alpha = 0.75;
     self.data_traileff = particleeffectnum("TE_ATC_BULLET_TRAIL");
     self.pcl_explode = projectile_latc_hit;
     self.scale = 4.0;
@@ -67,6 +80,17 @@ void() data_projectile_latc_th={
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.last_origin = self.origin;
   }
+
+  if( time > self.data_lifetime){
+    self.velocity = self.velocity * 0.95;
+    self.damageValue = max(0, self.damageValue * 0.95);
+    if( vlen(self.velocity) <= 100 ){
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.01;
+      return;
+    }
+  }
+
   self.think = data_projectile_latc_th;
   self.nextthink = time + 0.01;
 };

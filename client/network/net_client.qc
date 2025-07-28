@@ -726,15 +726,15 @@ void( float isNew, float changeFlags ) sendent_handle_client={
       }
       if( self.shieldHitFlag > SHIELD_HIT_EMP){
         if( servertime > SFX_SHLD_TIME){
-          SFX_SHLD_TIME = servertime + soundlength(SND_HUD_SHLD_DN) + 3;
+          SFX_SHLD_TIME = servertime + soundlength("sound/fx_shld_down.ogg") + 3;
           pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN, 0.5, ATTN_NONE);
-          pointsound(CLIENT_vis_org, SND_HUD_SHLD_DN_SFX, 1.0, ATTN_NONE);
+          PointSound_Dynamic(CLIENT_vis_org, SND_HUD_SHLD_DN_SFX, 1.0, ATTN_NONE, SOUNDFLAG_DYNAMIC_INT);
         }
       }
       else if( self.prevShield == 101) {
         if(servertime > SFX_SHLD_TIME){
-          pointsound(CLIENT_vis_org, SND_HUD_SHLD_UP_SFX, 1.0, ATTN_NONE);
-          SFX_SHLD_TIME = servertime + soundlength(SND_HUD_SHLD_UP_SFX);
+          SFX_SHLD_TIME = servertime + soundlength("sound/fx_shld_up.ogg");
+          PointSound_Dynamic(CLIENT_vis_org, SND_HUD_SHLD_UP_SFX, 1.0, ATTN_NONE, SOUNDFLAG_DYNAMIC_INT);
         }
       }
       

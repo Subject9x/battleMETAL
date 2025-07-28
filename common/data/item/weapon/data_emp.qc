@@ -18,7 +18,7 @@ void() te_muzzle_emp={
   
   traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_EMP_MUZZLE"), self.wepFireOffset, normalize( self.wepFireOffset - trace_endpos ) * 4, 1);
@@ -47,11 +47,12 @@ void() data_ini_emp_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/emp_fire.ogg");
+  precache_sound("sound/weapons/emp_fire_int.ogg");
   precache_sound("sound/weapons/emp_reload.ogg");
   precache_model("models/weapons/w_emp.md3");
   precache_file( "gfx/ui/wep_icons/wi_emp.png");
   self.w_name = "EMP Cannon";
-  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.fire_sound = "sound/weapons/emp_fire%s.ogg";
   self.reload_sound = "sound/weapons/emp_reload.ogg";
   self.model = "models/weapons/w_emp.md3";
   self.abbrev = "EMP";

@@ -19,7 +19,7 @@ void() te_muzzle_ion={
 
   traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (1.0 + (random() * 0.4)) * 100, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_ION_MUZZLE"), self.wepFireOffset, normalize( trace_endpos - self.wepFireOffset) * 4, 1);
@@ -48,11 +48,12 @@ void() data_ini_ion_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/emp_fire.ogg");
+  precache_sound("sound/weapons/emp_fire_int.ogg");
   precache_sound("sound/weapons/ion_reload.ogg");
   precache_model("models/weapons/w_ion.md3");
   precache_file( "gfx/ui/wep_icons/wi_ion.png");
   self.w_name = "Ion Coil";
-  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.fire_sound = "sound/weapons/emp_fire%s.ogg";
   self.reload_sound = "sound/weapons/ion_reload.ogg";
   self.model = "models/weapons/w_ion.md3";
   self.abbrev = "ION";

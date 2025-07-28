@@ -13,6 +13,7 @@ void() building_anim_death_norm9={
   vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  PointSound_Dynamic(vfx, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   
 };
@@ -27,6 +28,7 @@ void() building_anim_death_norm7={
   vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
+  PointSound_Dynamic(vfx, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   building_sound_explode();
   if( self.vec_size > 2 ){
@@ -215,7 +217,8 @@ void() building_sound_explode={
   
   sizeMod = self.vec_size / 10;
   sizeMod = 1.0 - (1.0 - (sizeMod * 2) / 2);
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (sizeMod + (random() * sizeMod)) * 90, 0 );
+
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (sizeMod + (random() * sizeMod)) * 100, SOUNDFLAG_DYNAMIC_INT);
 };
 
 

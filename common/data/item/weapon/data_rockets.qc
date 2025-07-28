@@ -18,8 +18,7 @@ void() te_muzzle_rck={
 
   traceline(self.wepFireOffset, self.owner.laser_sight_org, FALSE, self.owner);
   
-  pointsound( self.wepFireOffset, self.fire_sound, 1, ATTN_NORM);
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.25 + (random() * 0.75)) * 133, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.25 + (random() * 0.75)) * 133, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){  
     pointparticles( particleeffectnum("TE_MIS_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset), 1);
@@ -48,10 +47,11 @@ void() data_ini_rockets_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/rckt_fire.ogg");
+  precache_sound("sound/weapons/rckt_fire_int.ogg");
   precache_model("models/weapons/w_mis.md3");
   precache_file( "gfx/ui/wep_icons/wi_rck.png");
   self.w_name = "Rocket Launcher";
-  self.fire_sound = "sound/weapons/rckt_fire.ogg";
+  self.fire_sound = "sound/weapons/rckt_fire%s.ogg";
   self.model = "models/weapons/w_mis.md3";
   self.abbrev = "RCK";
   self.description = "+ Bonus 33% damage to BUILDINGS. + target <shields> reduce damage. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";

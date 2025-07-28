@@ -74,22 +74,21 @@ void() model_misc_building_ruins_set={
   sendent_handle_remove(self.effect3);
 };
 
-
-
-
 /*
   EVENT - Death
 */
 void() misc_build_die8={
-
   local vector xOrg;
+
   xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
   xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
   xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
-  te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
+
+  te_missile_explode(self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic(self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   model_misc_building_ruins_set();
-  pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+
   self.origin = self.origin;
   self.solid = SOLID_NOT;
 };
@@ -103,15 +102,19 @@ void() misc_build_die6={
   xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
   xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
   xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
+  
   te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic( self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   if( self.vec_size > 2 ){
     self.think = misc_build_die7;
-  self.nextthink = time + 0.25;
+    self.nextthink = time + 0.25;
   }
   else{
     model_misc_building_ruins_set();
-    pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+    PointSound_Dynamic( self.origin + xOrg, "sound/fire/debris1%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+    
+
     self.origin = self.origin;
     self.solid = SOLID_NOT;
   }
@@ -128,7 +131,9 @@ void() misc_build_die4={
   xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
   xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
   xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
+
   te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic( self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   self.think = misc_build_die5;
   self.nextthink = time + 0.25;
@@ -137,11 +142,12 @@ void() misc_build_die3={
   
   if( self.vec_size > 1 ){
     self.think = misc_build_die4;
-  self.nextthink = time + 0.25;
+    self.nextthink = time + 0.25;
   }
   else{
     model_misc_building_ruins_set();
-    pointsound(self.origin + (v_up * self.maxs_z * 0.67), "sound/fire/debris1.ogg", 0.33 + (random() * 0.67) , ATTN_NORM);
+    PointSound_Dynamic( self.origin, "sound/fire/debris1%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+    
     self.origin = self.origin;
     self.solid = SOLID_NOT;
   }
@@ -152,7 +158,9 @@ void() misc_build_die2={
   xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
   xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
   xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
+
   te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic( self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   self.think = misc_build_die3;
   self.nextthink = time + 0.25;
@@ -168,11 +176,11 @@ void() misc_build_die1={
 };
 
 void() model_misc_building_die={
-  local vector xOrg;
-  xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
-  xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
-  xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
-  te_missile_explode( randompos(self.origin + self.mins, self.origin + self.maxs), self.vec_size, CLR_DEF_RED, 0.01 );
+  local vector org;
+
+  org = randompos(self.origin + self.mins, self.origin + self.maxs);
+  te_missile_explode( org, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic(org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   if(CLIENT_target_ent.entnum == self.entnum ){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;

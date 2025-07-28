@@ -34,7 +34,8 @@ void() projectile_swarm_expl={
     hitColor = '0.663 0.886 0.953';
     hitBloom = 0.01;
     hitScale = 1;
-    pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
+    
+    PointSound_Dynamic(self.origin, "sound/fx_boom%s.ogg",  1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   }
   if(self.impactType == IMPACT_DIRT){
     self.angles = vectoangles(self.velocity);

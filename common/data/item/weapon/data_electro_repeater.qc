@@ -142,9 +142,10 @@ void() te_muzzle_esr={
   local float impactStyle;
 
   norm = normalize(self.beamEnd - self.wepFireOffset);
+
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.5 + (random() * 0.5)) * 120, SOUNDFLAG_DYNAMIC_INT);
   
-  sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
-  
+
   particleDraw = vlen(CLIENT_vis_org - self.beamEnd);
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_ESR_MUZZLE"), self.wepFireOffset,  norm* 1, 1);
@@ -195,9 +196,10 @@ void() data_ini_electro_repeater_={
 #ifdef CSQC
   precache_model("models/weapons/w_esr.md3");
   precache_sound("sound/weapons/esr_fire.ogg");
+  precache_sound("sound/weapons/esr_fire_int.ogg");
   precache_file( "gfx/ui/wep_icons/wi_esr.png");
   self.w_name = "Electro-Static Repeater";
-  self.fire_sound = "sound/weapons/esr_fire.ogg";
+  self.fire_sound = "sound/weapons/esr_fire%s.ogg";
   // self.reload_sound = "sound/weapons/esr_ovrht.ogg";
   self.model = "models/weapons/w_esr.md3";
   self.abbrev = "ESR";

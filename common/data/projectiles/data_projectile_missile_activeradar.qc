@@ -37,7 +37,7 @@ void() projectile_marh_expl={
     hitColor = '0.969 0.996 0.18';
     hitBloom = 0.01;
     hitScale = 0.66;
-    pointsound(self.origin, "sound/fx_boom.ogg",  0.8, ATTN_NORM);
+    PointSound_Dynamic(self.origin, "sound/fx_boom%s.ogg",  1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   }
   if(self.impactType == IMPACT_DIRT){
     self.angles = vectoangles(self.velocity);

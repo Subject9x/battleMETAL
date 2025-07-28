@@ -130,17 +130,31 @@ sound/misc/menu3.wav
 sound/ui/not_allow.ogg
 sound/ui/itm_loaded.ogg
 
+
+sound/fx_shld_down.ogg
+sound/fx_shld_down_int.ogg
+sound/fx_shld_up.ogg
+sound/fx_shld_up_int.ogg
+
 sound/demon/dland2.wav
 
 sound/fire/debris1.ogg
+sound/fire/debris1_int.ogg
 sound/mech_stomp.ogg
 sound/fx_boom.ogg
+sound/fx_boom_int.ogg
 sound/fx_shieldhit.ogg
-sound/fx_armorhit.ogg
+sound/fx_shieldhit_int.ogg
+sound/fx_armorhit1.ogg
+sound/fx_armorhit2.ogg
+sound/fx_armorhit3.ogg
+sound/fx_hit_dirt.ogg
+sound/fx_ram_hit.ogg
 
 sound/demon/dland2.wav
 
 sound/mech_react.ogg
+sound/mech_react_int.ogg
 sound/mech_start.ogg
 
 //AI voices

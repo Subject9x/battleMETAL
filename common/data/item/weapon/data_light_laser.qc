@@ -25,12 +25,8 @@ void() te_muzzle_las={
   norm = normalize(self.beamEnd - self.wepFireOffset);
   
   particleDraw = vlen(CLIENT_vis_org - self.beamEnd);
-  if( vlen(self.beamEnd - self.wepFireOffset) >= 1500 ){
-    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, 0 );
-  }
-  else{
-    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.45 + (random() * 0.55)) * 175, 0 );
-  }
+
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.33 + (random() * 0.67)) * 115, SOUNDFLAG_DYNAMIC_INT);
 
   self.beamTime = time + 0.2;
   self.beamOrg = self.wepFireOffset;
@@ -39,8 +35,16 @@ void() te_muzzle_las={
 
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_LAS_MUZZLE"), self.wepFireOffset, norm * -2, 1);
+  }
+  if( particleDraw < PARTICLE_HAZ_DISTANCE){
     if(self.pcl_count == IMPACT_ARMOR){
         pointparticles(particleeffectnum("TE_LAS_HIT"), self.beamEnd + (norm * -2), norm, 1);
+    }
+    else if(self.pcl_count == IMPACT_SHIELD){
+        //find if beam is hitting local player.
+        if(particleDraw <= 16 && !CLIENT_server_ent.chaseActive){
+          pointparticles(particleeffectnum("TE_SHIELD_HIT_HIGH"), self.beamEnd + (norm * -2), norm, 1);
+        }
     }
     else if(self.pcl_count == IMPACT_DIRT){
       pointparticles(particleeffectnum("TE_LAS_DIRT"), self.beamEnd + (norm * -2), norm, 1);
@@ -72,10 +76,11 @@ void() data_ini_light_laser_={
   
 #ifdef CSQC
   precache_sound("sound/weapons/laser_fire.ogg");
+  precache_sound("sound/weapons/laser_fire_int.ogg");
   precache_model("models/weapons/w_laser.md3");
   precache_file( "gfx/ui/wep_icons/wi_las.png");
   self.w_name = "Laser";
-  self.fire_sound = "sound/weapons/laser_fire.ogg";
+  self.fire_sound = "sound/weapons/laser_fire%s.ogg";
   self.model = "models/weapons/w_laser.md3";
   self.abbrev = "LAS";
   self.description = "+ Instant-impact weapon. + damage halved against <Armor>.";

@@ -16,7 +16,7 @@ void() guard_tower_die2={
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.4 + (random() * 0.5)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 
@@ -35,7 +35,7 @@ void() guard_tower_die1={
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.4 + (random() * 0.5)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
   self.think = guard_tower_die2;
   self.nextthink = time + 0.1;

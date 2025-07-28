@@ -36,6 +36,7 @@ void() mech_ai_die_stand1={
   ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   self.think = mech_ai_die_stand2;
   self.nextthink = servertime + 0.2;
@@ -57,6 +58,7 @@ void() mech_ai_die_stand2={
   ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
 
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   self.think = mech_ai_die_stand3;
   self.nextthink = servertime + 0.2;
@@ -78,6 +80,7 @@ void() mech_ai_die_stand3={
   ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
 
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   self.think = mech_ai_die_stand4;
   self.nextthink = servertime + 0.2;
@@ -99,6 +102,7 @@ void() mech_ai_die_stand4={
   ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   self.think = mech_ai_die_stand5;
   self.nextthink = servertime + 0.2;
@@ -114,6 +118,7 @@ void() mech_ai_die_stand5={
   ofs = ofs + (v_up * (crandom() * self.maxs_z));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   self.think = mech_ai_die_stand6;
   self.nextthink = servertime + 0.2;
@@ -128,6 +133,7 @@ void() mech_ai_die_stand6={
   ofs = ofs + (v_up * (crandom() * self.maxs_z));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.think = mech_ai_die_stand7;
   self.nextthink = servertime + 0.2;
 };
@@ -141,6 +147,7 @@ void() mech_ai_die_stand7={
   ofs = ofs + (v_up * (crandom() * self.maxs_z));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.think = mech_ai_die_stand8;
   self.nextthink = servertime + 0.2;
 };
@@ -154,6 +161,7 @@ void() mech_ai_die_stand8={
   ofs = ofs + (v_up * (crandom() * self.maxs_z));
   
   te_missile_explode( ofs, self.vec_size * 2, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   self.think = mech_ai_die_stand9;
   self.nextthink = servertime + 0.2;
@@ -168,6 +176,7 @@ void() mech_ai_die_stand9={
   ofs = ofs + (v_up * (crandom() * self.maxs_z));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.think = mech_ai_die_stand10;
   self.nextthink = servertime + 0.2;
 };
@@ -181,5 +190,6 @@ void() mech_ai_die_stand10={
   ofs = ofs + (v_up * (crandom() * self.maxs_y));
   
   te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.data_lifetime = servertime + 360 + (random() * 180);
 };

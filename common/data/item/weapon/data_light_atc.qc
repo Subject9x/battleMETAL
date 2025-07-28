@@ -22,12 +22,8 @@ void() te_muzzle_latc={
   ang = vectoangles(trace_endpos - self.wepFireOffset);
   
   particleDraw = vlen(trace_endpos - self.wepFireOffset);
-  if( particleDraw >= 1500 ){
-    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.33 + (random() * 0.67)) * 100, 0 );
-  }
-  else{
-    sound7(self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM, (0.67 + (random() * 0.33)) * 125, 0 );
-  }
+
+  Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.33 + (random() * 0.67)) * 100, SOUNDFLAG_DYNAMIC_INT);
   
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_ATC_MUZZLE"), self.wepFireOffset, normalize(trace_endpos - self.wepFireOffset) * 4, 1);
@@ -40,8 +36,8 @@ void() data_ini_light_atc_={
   
   if( (self.owner.flags & FL_CLIENT) ){
     self.w_clipsize = 1;
-    self.reloadRate = 0.32;
-    self.reloadMax = 0.32;
+    self.reloadRate = 0.4;
+    self.reloadMax = 0.4;
   }
   else{
     self.w_clipsize = 3;
@@ -62,19 +58,20 @@ void() data_ini_light_atc_={
   
 #ifdef CSQC  
   precache_sound("sound/weapons/atc_fire.ogg");
+  precache_sound("sound/weapons/atc_fire_int.ogg");
   precache_model("models/weapons/w_atc.md3");
   precache_file( "gfx/ui/wep_icons/wi_atc.png");
   self.w_name = "Light Autocannon";
   self.abbrev = "ATC";
-  self.description = "+ Instant-impact weapon. + fully automatic, hold down trigger to fire. + Better against <Armor>.";
+  self.description = "+ fully automatic, hold down trigger to fire. + Weaker against <Shields>. + Weak against <Buildings>.";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
   self.model = "models/weapons/w_atc.md3";
-  self.fire_sound = "sound/weapons/atc_fire.ogg";
+  self.fire_sound = "sound/weapons/atc_fire%s.ogg";
   self.itemMuzzleFlash = te_muzzle_latc;
   self.w_clipsize = 1;
-  self.reloadRate = 0.3;
-  self.reloadMax = 0.3;
-  self.damageValue = 5;
+  self.reloadRate = 0.4;
+  self.reloadMax = 0.4;
+  self.damageValue = 9.0;
 #endif
 
 #ifdef SSQC  
