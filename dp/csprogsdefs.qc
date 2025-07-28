@@ -559,7 +559,7 @@ const float LP_RTWORLD = 2;
 const float LP_DYNLIGHT = 4;
 const float LP_COMPLETE = 7;
 
-float(string name, string value) registercvar = #93;
+float(string name, string value, float flags) registercvar = #93;
 float( float a, ... ) min = #94;
 float( float b, ... ) max = #95;
 float(float minimum, float val, float maximum) bound = #96;
@@ -1258,7 +1258,15 @@ float(float i) argv_end_index = #516;
 //darkplaces implementation: divVerent
 //builtin definitions:
 void(entity e, float chan, string samp, float vol, float atten, float speed, float flags) sound7 = #8;
-float SOUNDFLAG_RELIABLE = 1;
+#define SOUNDFLAG_RELIABLE 1
+#define SOUNDFLAG_FORCELOOP	2 // force looping even if the sound is not looped
+#define SOUNDFLAG_LOCALSOUND 4 // INTERNAL USE. Not settable by S_SetChannelFlag
+#define SOUNDFLAG_PAUSED 8 // pause status
+#define SOUNDFLAG_FULLVOLUME 16 // isn't affected by the general volume
+
+//WARN: battleMETAL exclusive flag that may need changing if ever more flags are addded!
+#define SOUNDFLAG_DYNAMIC_INT 65536
+
 //description:
 //plays a sound, with some more flags
 //extensions to sound():
@@ -1819,3 +1827,6 @@ void() CS_PlayerPhysics;
 
 #define cacheGlobalString(var, val) if(val!="" && strlen(val) > 0){if (var!="" && strlen(val) > 0){strunzone(var);} var = strzone(val);}
 #define freeGlobalString(var) if (var!="" && strlen(var) > 0){strunzone(var); var = "";}
+
+void(entity ent, float channel, string soundname, float volume, float attenuation, float speed100, float sflags) Sound7_Dynamic;
+void(vector pos, string soundname, float volume, float attenuation, float sflags) PointSound_Dynamic;
