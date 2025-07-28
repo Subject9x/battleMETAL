@@ -471,12 +471,12 @@ void() ctrl_player_mech_touch={
       self.ramCool = time + self.ramUp;
       self.velocity_x = self.velocity_x * 0.65;
       self.velocity_y = self.velocity_y * 0.65;
-      return;
     }
     return;
   }  
 
-  if( other.deadflag < DEAD_NO && other.data_type == DATA_VEHC){
+  if( other.deadflag > DEAD_NO && other.data_type == DATA_VEHC){
+    self.deadflag = DEAD_RAMMED;
     self.velocity_x = self.velocity_x * 0.75;
     self.velocity_y = self.velocity_y * 0.75;
     self.ramCharge = time;

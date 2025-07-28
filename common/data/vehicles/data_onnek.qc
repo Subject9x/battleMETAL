@@ -21,7 +21,7 @@ void() data_ini_onnek_={
   self.vec_name = "Onnek";
  
   self.max_health = 300;
-  setsize(self, '-28 -28 -9', '28 28 12');
+  setsize(self, '-28 -28 -9', '28 28 16');
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   
 //ENERGY AND SHIELDS===================

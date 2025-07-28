@@ -40,7 +40,6 @@ void() ai_wreck_vec={
   wreck.vec_size = self.vec_size;
   wreck.flags = self.flags;
   if(self.deadflag == DEAD_RAMMED){
-    sound7(wreck, CHAN_BODY, "sound/fx_ram_hit.ogg", 1, ATTN_NORM, (0.5 + random()/2) * 125, 0);
     wreck.movetype = MOVETYPE_BOUNCE;
     wreck.solid = SOLID_CORPSE;
     wreck.velocity = normalize(self.ramAngle) * 300 ;
@@ -107,7 +106,9 @@ void() ai_tank_sk_die={
   self.enemy = world;
   self.th_pain = ai_NULL_pain;
   self.th_missile = ai_NULL_missile;
-  self.deadflag = DEAD_DEAD;
+  if( self.deadflag != DEAD_RAMMED ){
+    self.deadflag = DEAD_DEAD;
+  }
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.attack_state = -1;
