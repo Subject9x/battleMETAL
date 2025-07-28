@@ -71,7 +71,7 @@ void() snd_hud_vfx_frame;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
 void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_trnsmsn_addtoqueue;
 
-void(float lockstate) snd_hud_vfx_locklistener;
+//void(float lockstate) snd_hud_vfx_locklistener;
 void(float curEn) snd_hud_vfx_enelistener;
 void(float curSh) snd_hud_vfx_shdlistener;
 void( string critSound, float limiter ) snd_hud_vfx_criticalHit;

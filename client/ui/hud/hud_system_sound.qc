@@ -19,10 +19,10 @@ void() snd_hud_vfx_frame={
   local string nextSound;
   local float nextEnt;
   
-  if( cvar("bgmvolume") <= 0 ){
+  if( cvar("bgmvolume") <= 0  && !CLIENT_server_ent.chaseActive){
     if( time > SFX_REACT_TIME ){
-      SFX_REACT_TIME = time + 30;
-      pointsound(CLIENT_vis_org, SND_MCH_SFX_REACT, 1, ATTN_NONE);
+      SFX_REACT_TIME = time + soundlength(SND_MCH_SFX_REACT);
+      pointsound( CLIENT_vis_org, SND_MCH_SFX_REACT, 1, ATTN_NONE );
     }
   }
   
@@ -171,8 +171,8 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
 };
 
 
-void(float lockstate) snd_hud_vfx_locklistener={
-};
+// void(float lockstate) snd_hud_vfx_locklistener={
+// };
 
 void(float curEn) snd_hud_vfx_enelistener={
   if( (curEn > 15) && (curEn <= 15.99) ){
@@ -204,9 +204,7 @@ void() te_mission_lose={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
 };
 
-void() te_msn_boundary={
-  
-};
+void() te_msn_boundary={};
 
 void(float dedflg) snd_hud_vfx_targkill={
   if(dedflg == DEAD_DYING){

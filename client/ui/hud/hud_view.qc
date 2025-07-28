@@ -324,7 +324,7 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon={
     
     wepState = '1 1 1';
     if( theWeapon.equipSize < MSC1 ){
-      if(theWeapon.reloadValue == 100 && theWeapon.wepReloadState != theWeapon.reloadValue){
+      if(theWeapon.reloadValue == 70 && theWeapon.wepReloadState != theWeapon.reloadValue){
         if(strlen(theWeapon.reload_sound) > 0){
           pointsound(CLIENT_vis_org, theWeapon.reload_sound, 1, ATTN_NONE);
         }
@@ -403,7 +403,8 @@ void(vector torg, vector imgSz, float algn, float w_bit) hud_renderWeapon2={
     }*/
     wepState = '1 1 1';
     if( theWeapon.equipSize < MSC1 ){
-      if(theWeapon.reloadValue == 100 && theWeapon.wepReloadState != theWeapon.reloadValue){
+      
+      if(theWeapon.reloadValue == 70 && theWeapon.wepReloadState != theWeapon.reloadValue){
         if(strlen(theWeapon.reload_sound) > 0){
           pointsound(CLIENT_vis_org, theWeapon.reload_sound, 1.0, ATTN_NONE);
         }
