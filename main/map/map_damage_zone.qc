@@ -82,9 +82,6 @@ void(float entSize, void() thFunc, float defDmg, float defWait, string modelName
       self.nextthink = time + (random() * self.wait);
     }
   }
-  
-
-
 
   self.angles_y = anglemod( (random() * 180) + (random() * 180) );
   self.angles_x = anglemod( crandom() * 5);
@@ -92,25 +89,19 @@ void(float entSize, void() thFunc, float defDmg, float defWait, string modelName
 
 void() map_damage_zone_rad_think={
   local entity unit;
-  local vector mechHit;
-  local vector partclPoint;
-  local vector adj;
   local vector rando;
   
   if( self.isActive ){
     if(random() > 0.9){
-      makevectors(self.angles);  
-      
-      adj = self.origin;
-      adj = adj + (v_up * (self.maxs_z * 0.15));
-      
+      makevectors(self.angles); 
+
       rando = randomvec();
-      partclPoint = self.origin;
-      partclPoint = partclPoint + (v_up * (self.maxs_z * 0.5));
-      partclPoint_x = partclPoint_x + (self.maxs_x * rando_x);
-      partclPoint_y = partclPoint_y + (self.maxs_x * rando_y);
+      TEMP_VEC3 = self.origin;
+      TEMP_VEC3 = TEMP_VEC3 + (v_up * (self.maxs_z * 0.5));
+      TEMP_VEC3_x = TEMP_VEC3_x + (self.maxs_x * rando_x);
+      TEMP_VEC3_y = TEMP_VEC3_y + (self.maxs_x * rando_y);
     
-      pointparticles( particleeffectnum("TE_FIELD_RAD"), partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 2, 1);
+      pointparticles( particleeffectnum("TE_FIELD_RAD"), TEMP_VEC3, normalize((TEMP_VEC3 + (v_up * 5)) - self.origin) * 2, 1);
     }
     
     unit = findradius(self.view_ofs, self.maxs_x);
@@ -118,8 +109,8 @@ void() map_damage_zone_rad_think={
       if(unit.deadflag == DEAD_NO){
         if((unit.flags & FL_UNIT)){
           if( unit.data_type == DATA_MECH ){
-            mechHit = unit.origin + randompos(unit.maxs, unit.mins);
-            t_damage(unit, self, world, self.damageValue, mechHit, '0 0 0');
+            TEMP_VEC2 = unit.origin + randompos(unit.maxs, unit.mins);
+            t_damage(unit, self, world, self.damageValue, TEMP_VEC2, '0 0 0');
           }
           else{
             t_damage(unit, self, world, self.damageValue, unit.origin, '0 0 0');  
@@ -148,27 +139,18 @@ void() map_damage_zone_rad_think={
 
 void() map_damage_zone_crs_think={
   local entity unit;
-  local vector org;
-  local vector hit;
-
-  local vector partclPoint;
-  local vector adj;
   local vector rando;
-  
   
   if( self.isActive ){
     if( random() > 0.9){
-      makevectors(self.angles);  
-      
-      adj = self.origin;
-      adj = adj + (v_up * (self.maxs_z * 0.15));
-      
+      makevectors(self.angles); 
+
       rando = randomvec();
-      partclPoint = self.origin;
-      partclPoint = partclPoint + (v_up * (self.maxs_z * 0.5));
-      partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
-      partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
-      pointparticles(particleeffectnum("TE_FIELD_MINERAL"), partclPoint, normalize((partclPoint + (v_up * 5)) - self.origin) * 25, 1);
+      TEMP_VEC3 = self.origin;
+      TEMP_VEC3 = TEMP_VEC3 + (v_up * (self.maxs_z * 0.5));
+      TEMP_VEC3_x = TEMP_VEC3_x + ((self.maxs_x * 2) * rando_x);
+      TEMP_VEC3_y = TEMP_VEC3_y + ((self.maxs_y * 2) * rando_y);
+      pointparticles(particleeffectnum("TE_FIELD_MINERAL"), TEMP_VEC3, normalize((TEMP_VEC3 + (v_up * 5)) - self.origin) * 25, 1);
     }
 
     unit = findradius(self.view_ofs, self.maxs_x * 3);
@@ -178,10 +160,10 @@ void() map_damage_zone_crs_think={
 
           t_damage_shield(unit, self, world, self.damageValue, unit.origin, TRUE);
 
-          org = self.view_ofs + (randompos(self.maxs, self.mins) * 0.5);
-          hit = unit.origin + (randompos(unit.maxs, unit.mins) * 0.85);
-          traceline(org, hit, MOVE_NORMAL, self);
-          client_send_particle_rail( BEAM_ESR, FALSE, org, trace_endpos, 4, 0 );
+          TEMP_VEC1 = self.view_ofs + (randompos(self.maxs, self.mins) * 0.5);
+          TEMP_VEC2 = unit.origin + (randompos(unit.maxs, unit.mins) * 0.85);
+          traceline(TEMP_VEC1, TEMP_VEC2, MOVE_NORMAL, self);
+          client_send_particle_rail( BEAM_ESR, FALSE, TEMP_VEC1, trace_endpos, 4, 0 );
 
           if( (unit.flags & FL_CLIENT) ){
             self.SendFlags = self.SendFlags | SENDFLAG_CRIT;
@@ -206,28 +188,23 @@ void() map_damage_zone_crs_think={
 
 void() map_damage_zone_qtm_think={
   local entity unit;
-  local vector partclPoint;
-  local vector adj;
   local vector rando;
   local vector v;
   
   
   if( self.isActive ){ 
     if( random() > 0.9){
-      makevectors(self.angles);  
-      
-      adj = self.origin;
-      adj = adj + (v_up * (self.maxs_z * 0.15));
+      makevectors(self.angles);
       
       rando = randomvec();
-      partclPoint = self.origin;
-      partclPoint = partclPoint + (v_up * (self.maxs_z * 0.5));
-      partclPoint_x = partclPoint_x + ((self.maxs_x * 2) * rando_x);
-      partclPoint_y = partclPoint_y + ((self.maxs_y * 2) * rando_y);
+      TEMP_VEC3 = self.origin;
+      TEMP_VEC3 = TEMP_VEC3 + (v_up * (self.maxs_z * 0.5));
+      TEMP_VEC3_x = TEMP_VEC3_x + ((self.maxs_x * 2) * rando_x);
+      TEMP_VEC3_y = TEMP_VEC3_y + ((self.maxs_y * 2) * rando_y);
   
-      pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), partclPoint, normalize( v - partclPoint ), 1);
-      pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), partclPoint, normalize( v - partclPoint ) * 30, 1);
-      trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), partclPoint, v);
+      pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), TEMP_VEC3, normalize( v - TEMP_VEC3 ), 1);
+      pointparticles( particleeffectnum("TE_FIELD_QUANTUM"), TEMP_VEC3, normalize( v - TEMP_VEC3 ) * 30, 1);
+      trailparticles( world, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), TEMP_VEC3, v);
     }
 
     unit = findradius(self.view_ofs, self.maxs_x);
@@ -315,20 +292,13 @@ void() map_hazard_rad_large={
 //=================================================================================================
 
 void() map_hazard_crys_die={
-  local vector shoot;
-  
   self.solid = SOLID_NOT;
   self.takedamage = DAMAGE_NO;
-  
-  //TODO - crystal explode effect.
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.deadflag = DEAD_DEAD;
-  
-  shoot = self.origin + '0 0 5';
-  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 6, 1 );
-  te_missile_explode( shoot, rint(ceil(self.vec_size * 1.5)), '0.33 0.67 1.33', 0.000005 );
-  sound(self, CHAN_AUTO, "sound/fx_shieldhit.ogg", ATTN_NORM, 1.0);
-  
+
+  te_debris( self.origin + [0,0, self.maxs_z * 0.5], normalize((self.origin + [0,0, self.maxs_z * 0.5]) - self.origin) * 5, '0 0 0', 6, 1 );
+
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
 };

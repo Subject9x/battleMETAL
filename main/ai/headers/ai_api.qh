@@ -12,21 +12,21 @@ Overview:
 
 // ticrates for AI
 float AI_RATE;
-float AI_RATE_LOCAL         = 0.05;
-float AI_RATE_NET           = 0.075;
+#define AI_RATE_LOCAL 0.05
+#define AI_RATE_NET 0.075
 //AI STATE (LEGACY) CONSTANTS
-float ST_WALK               = 2;  //th_walk
-float ST_RUN                = 4;  //th_run
-float ST_MISSILE            = 7;  //th_missile
-float ST_MELEE              = 8;  //th_melee
+#define ST_WALK 2  //th_walk
+#define ST_RUN 4  //th_run
+#define ST_MISSILE 7  //th_missile
+#define ST_MELEE 8  //th_melee
 
 //AI TURRET CONSTANTS
-float TR_NORM               = 0;  //Turret follows the angles of its parent
-float TR_TARG               = 1;  //Turret ideal yaw is the parent's .enemy
-float TR_GOAL               = 3;  //Turret ideal yaw = parent's .goalentity
-float TR_YAW                = 4;  //Turret ideal yaw set by outside source
-float TR_LEFT               = 5;  //Turret ideal yaw is left-side away from ai_dir
-float TR_RIGHT              = 6;  //Turret ideal yaw is right-side awa from ai_dir;
+#define TR_NORM 0  //Turret follows the angles of its parent
+#define TR_TARG 1  //Turret ideal yaw is the parent's .enemy
+#define TR_GOAL 3  //Turret ideal yaw = parent's .goalentity
+#define TR_YAW 4  //Turret ideal yaw set by outside source
+#define TR_LEFT 5  //Turret ideal yaw is left-side away from ai_dir
+#define TR_RIGHT 6  //Turret ideal yaw is right-side awa from ai_dir;
 
 //VIS CONSTANTS
 #define VIS_FAIL 0  //complete LOS block via map, building, doodad
@@ -140,19 +140,19 @@ void() ai_nodegraph_debug_queue;  //just dump queue to console
 
 //AI TETHER FUNCTIONALITY
  //no valid targets, AI will chill in a spot if it loses target, it  looks for new ones near it. no real fixed position.
-float TETHER_NONE   = 0; 
+#define TETHER_NONE 0
 
 //must have valid {ai_node_tether} to target, and will maintain that area. (ai_tether.qc).
-float TETHER_NODE   = 1;  //no target, default -> TETHER_NONE || skill > REG on mechs, TETHER_NOMAD;
+#define TETHER_NODE 1  //no target, default -> TETHER_NONE || skill > REG on mechs, TETHER_NOMAD;
 
 //must have valid {ai_node} to target, this will give it a patrol path (ai_patrol.qc).
-float TETHER_PATROL = 2;  
+#define TETHER_PATROL 2  
 
 //will wander the map randomly, finding random nodes to move to.  TODO
-float TETHER_NOMAD   = 3; 
+#define TETHER_NOMAD 3 
 
 //marks its own starting origin as the original point to move back to.
-float TETHER_SELF   = 4;  
+#define TETHER_SELF 4 
 .float tether;      //can be set by mapper too
 .vector tetherOrg;        //either closest tether-node, patrol node, or starting origin.
 
@@ -236,8 +236,8 @@ float( vector testA, vector testB ) ai_check_dist_node; // discard _z because we
 .float ai_movewait;   //  set by ai_calc_move when entering a new move, this will be checked for completed move.
 .float ai_movedist;   //  AI-CODE-SET to desired number of frames for desired movement
 
-float ST_STAND                = 1;  //th_stand
-float ST_PTR                  = 2;
+#define ST_STAND 1  //th_stand
+#define ST_PTR 2
 
 ////////////////////////////////
 //AI STATE FUNCTIONS - ai_state.qc

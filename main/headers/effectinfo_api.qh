@@ -13,7 +13,7 @@
   solution: poorly network debris chunks that only last a few frames AND
     a limit controller to max sure the network doesn't die.
 */
-float MAX_DEBRIS_COUNT = 64;
+#define MAX_DEBRIS_COUNT 64
 float DEBRIS_COUNT;
 
 .float pcl_effectnum;

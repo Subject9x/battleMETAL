@@ -8,17 +8,17 @@ Overview:
 	ID in the unit's data file under self.data_idx
 */
 
-float UID_VEHICLE_truck_convoy = 1;
-float UID_VEHICLE_truck_hauler = 2;
-float UID_VEHICLE_truck_cs = 3;
+// #define UID_VEHICLE_truck_convoy 1
+// #define UID_VEHICLE_truck_hauler 2
+// #define UID_VEHICLE_truck_cs 3
 
-float UID_VEHICLE_dozer = 4;
-float UID_VEHICLE_loader = 5;
-float UID_VEHICLE_excavator = 6;
+// #define UID_VEHICLE_dozer 4
+// #define UID_VEHICLE_loader 5
+// #define UID_VEHICLE_excavator  6
 
-float UID_VEHICLE_foslager = 7;
-float UID_VEHICLE_trowel = 8;
-float UID_VEHICLE_onnek = 9;
-float UID_VEHICLE_sorcerer = 10;
-float UID_VEHICLE_dunerunner = 11;
+#define UID_VEHICLE_foslager 7
+#define UID_VEHICLE_trowel 8
+#define UID_VEHICLE_onnek 9
+#define UID_VEHICLE_sorcerer 10
+#define UID_VEHICLE_dunerunner 11
 

@@ -19,16 +19,16 @@ Overview:
 */
 
 float NODEGRAPH_LOADED;
-float NODEGRAPH_MAX = 1024;
+#define NODEGRAPH_MAX 1024
 //Edge validation rules
-float NODEGRAPH_DBG_ID1 = 6;
-float NODEGRAPH_DBG_ID2 = 5;
+#define NODEGRAPH_DBG_ID1 6
+#define NODEGRAPH_DBG_ID2 5
 
-float NODEGRAPH_EDGE_GRID = 16; // when checking edge links
-float NODEGRAPH_EDGE_ANGLE_MAX = 315;
-float NODEGRAPH_EDGE_ANGLE_MIN = 45;
-float NODEGRAPH_EDGE_MAX = 6;
-float NODEGRAPH_EDGE_DIST = 512;
+#define NODEGRAPH_EDGE_GRID 16 // when checking edge links
+#define NODEGRAPH_EDGE_ANGLE_MAX 315
+#define NODEGRAPH_EDGE_ANGLE_MIN 45
+#define NODEGRAPH_EDGE_MAX 6
+#define NODEGRAPH_EDGE_DIST 512
 
 entity NODEGRAPH_EXPORT_NODE[1024];
 vector NODEGRAPH_EXPORT_EDGE[1024]; //used by exporter to find closest nodes
@@ -64,10 +64,10 @@ float NODEGRAPH_MAX_REQUEST; //how many ents can use the system at a time? needs
                                   //this very costly code behind some limits.
 //16
 
-float NODEGRAPH_QUEUE_TIMEOUT_NET = 8;
-float NODEGRAPH_MAX_REQUEST_NET = 4;
-float NODEGRAPH_QUEUE_TIMEOUT_LOCAL = 2;
-float NODEGRAPH_MAX_REQUEST_LOCAL = 16;
+#define NODEGRAPH_QUEUE_TIMEOUT_NET 8
+#define NODEGRAPH_MAX_REQUEST_NET 4
+#define NODEGRAPH_QUEUE_TIMEOUT_LOCAL 2
+#define NODEGRAPH_MAX_REQUEST_LOCAL 16
 
 float NODE_ID_COUNT;
 float NODE_ID_EXPORT_COUNT; //specific for ai_node_path entities

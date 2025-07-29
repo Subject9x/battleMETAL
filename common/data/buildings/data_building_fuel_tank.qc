@@ -6,6 +6,11 @@ Overview: data file for building
   type: radar tower
   faction: humans
   func: provides radar scanning to all friendly units in radius
+
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 //Death Animation
@@ -15,180 +20,139 @@ void() fuel_tank_die1 = [1, fuel_tank_die2]{
   if( self.deadflag > DEAD_NO ){
     return;
   } 
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-
-  te_missile_explode( pos, 1, '1 0.67 0.67', 0.01 );
-  
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 1, '1 0.67 0.67', 0.01 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die2 = [2, fuel_tank_die3]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die3 = [3, fuel_tank_die4]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 5, 3 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 5, 3 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  
-  te_missile_explode( pos, 5, '1 0.67 0.67', 0.0015 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 5, '1 0.67 0.67', 0.0015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die4 = [4, fuel_tank_die5]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 4, 2 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 4, 2 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 3, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die5 = [5, fuel_tank_die6]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 1 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 1 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 3, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die6 = [6, fuel_tank_die7]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 3, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
-  
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 3, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die7 = [7, fuel_tank_die8]{
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die8 = [8, fuel_tank_die9]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die9 = [9, fuel_tank_die10]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die10 = [10, fuel_tank_die11]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
+  TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
 
-  local vector shoot;
-  shoot = randompos(self.origin, vfx);
-  te_debris( shoot, normalize(vfx - self.origin) * 5, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die11 = [11, fuel_tank_die12]{
 #ifdef CSQC
-  local vector pos;
-  makevectors(self.angles);
-  pos = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
-  te_missile_explode( pos, 2, '1 0.67 0.67', 0.0025 );
-  building_sound_explode();
+  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die12 = [12, fuel_tank_die12]{
@@ -197,7 +161,7 @@ void() fuel_tank_die12 = [12, fuel_tank_die12]{
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.75 + (random() * 0.25)) * 100, SOUNDFLAG_DYNAMIC_INT );
 #endif
 };
 

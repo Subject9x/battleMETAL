@@ -1161,15 +1161,15 @@ void(float beamType, float entId, vector particleOrg, vector particleEnd, float 
     }
     if(beamType == BEAM_LAS){
       ent.predraw = particle_beam_las_draw;
-      ent.nextthink = time + 0.2;
+      ent.nextthink = time + 0.2 * frametime;
     }
     else if(beamType == BEAM_ESR){
       ent.predraw = particle_beam_lightning_draw;
-      ent.nextthink = time + 0.075;
+      ent.nextthink = time + 0.1 * frametime;
     }
     else if( beamType == BEAM_PAC){
       ent.predraw = particle_beam_pac_draw;
-      ent.nextthink = 0.5;
+      ent.nextthink = 0.5 * frametime;
     }
     else{
       //no-op, bad beam type

@@ -22,8 +22,8 @@ Overview:
 .float shieldHitFlag;   //sent over network.
 
 //saving this for future work: have ion damage accrue over time, and then an AI mech will get stun-locked for a certain amount of time.
-.float stunTimeStart;
-.float stunTimeTotal;
+// .float stunTimeStart; //deprecated / unused for now
+// .float stunTimeTotal;
 
 .float attackFlag;  //a bitflag set every frame that a unit has fired weapons, where it is weapon bits, WEAPON1 | WEAPON2 etc
                     //the csqc then processes the rest of the particle attacks.

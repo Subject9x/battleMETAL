@@ -146,9 +146,9 @@ void(float w, float h, float menuView) CSQC_UpdateView =
   
   setproperty(VF_FOV, VIEW_FOV);
   if( MENU_ACTIVE && CLIENT_MENU_menu_choice != MENU_REBIND_ACTIVE ){
+
   }
   else if( ANM_FILE_STATUS == 1){
-
     setproperty(VF_DRAWWORLD, ANM_SHOW_WORLD);
   }
   else{

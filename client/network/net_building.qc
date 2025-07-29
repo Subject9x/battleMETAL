@@ -230,8 +230,15 @@ void( float isNew, float changeFlags) sendent_handle_building={
   if( isNew ){
     self.rootOrigin = self.origin;
     self.data_type = DATA_BLD;
+    makevectors(self.angles); //cache here, buildings don't move.
+
+    self.viewAngle = v_right;
+    self.viewAngle1 = v_up;
+    self.viewAngle2 = v_forward;
+
     self.predraw = predraw_building;
-    data_sync_new_building(self.data_idx); 
+    data_sync_new_building(self.data_idx);
+    
     if( self.deadflag == DEAD_NO ){
       self.health = hp;
       if( (self.spawnflags & IS_MAPKEY) ){

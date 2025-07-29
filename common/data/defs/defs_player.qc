@@ -99,9 +99,9 @@ float input_sequence;
 .float playerDeaths;      //tracked in TDM / DM for personal score.
 .float playerDMdamage;    //fun tracker for total damage output over a match.
 
-.float i_reserve; //how many reserve points does the unit cost?
-
-.float max_armor; //why wasn't this ever included!?
+//deprecated / unused for now
+// .float i_reserve; //how many reserve points does the unit cost?
+// .float max_armor; //why wasn't this ever included!? 
 
 .float	dmgtime; //pulled from client.qc
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc

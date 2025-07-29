@@ -118,15 +118,13 @@ void() data_projectile_missile_laserguide_touch={
 };
 
 void() data_projectile_missile_laserguide_think={
-  local vector vtemp;
   
   if( self.last_origin != self.origin ){
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
     self.last_origin = self.origin;
   }
   
-  vtemp = normalize(self.owner.laser_sight_org - self.origin);
-  self.velocity = vtemp * 0.5;
+  self.velocity = normalize(self.owner.laser_sight_org - self.origin) * 0.5;
   self.velocity = self.velocity * self.data_velocity;
   self.angles = vectoangles(self.velocity);
   self.SendFlags = self.SendFlags | SENDFLAG_VELOCITY;

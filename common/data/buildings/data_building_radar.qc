@@ -8,37 +8,41 @@ Overview: data file for building
   type: radar tower
   faction: humans
   func: provides radar scanning to all friendly units in radius
+
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 
 void() building_radar_die2={
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
   building_die();
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 
 void() building_radar_die1={
 #ifdef SSQC
-  local vector shoot;
   if( self.deadflag > DEAD_NO ){
     return;
   }
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   
-  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3 + rint(random() * 5), 1 );
   ai_alert_close(self.enemy);
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
   
   self.think = building_radar_die2;

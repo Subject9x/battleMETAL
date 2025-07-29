@@ -6,17 +6,21 @@ Overview: data file for building
   type: Shield Generator
   faction: humans
   func: provides shields to all friendly units in its radius, but requires a nearby power plant.
+
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 #ifdef CSQC
 void() shield_gen_die_vfx={
-  local vector margin;
-  
+
   particleDraw = vlen(CLIENT_vis_org - self.origin);      
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
-    margin = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));  
+    TEMP_VEC1 = randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5));  
     te_field_quantum( randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)), randompos(self.origin + (self.mins * 1.5), self.origin + (self.maxs * 1.5)) );
-    te_field_quantum_light( margin, rint(random()*5) ) ;
+    te_field_quantum_light( TEMP_VEC1, rint(random()*5) ) ;
   }
   
   self.scale = self.scale - (0.05 * frametime);
@@ -31,109 +35,102 @@ void() shield_gen_die = [0, shield_gen_die1]{
     return;
   }
   ai_alert_close(self.enemy);
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die1 = [1, shield_gen_die2]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die2 = [2, shield_gen_die3]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die3 = [3, shield_gen_die4]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die4 = [4, shield_gen_die5]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die5 = [5, shield_gen_die6]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die6 = [6, shield_gen_die7]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die7 = [7, shield_gen_die8]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die8 = [8, shield_gen_die9]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() shield_gen_die9 = [9, shield_gen_die10]{
@@ -167,8 +164,7 @@ void() shield_gen_die9 = [9, shield_gen_die10]{
       if( head.data_type == DATA_BLD ){
         head.SendFlags = head.SendFlags | SENDFLAG_IMPACT;
       }
-      
-    
+
       head.shieldHitDelay = time + ((self.energy / self.energyMax) / 2);
       self.energy  = self.energy - ((self.energy / self.energyMax) / 5);
     }
@@ -177,7 +173,8 @@ void() shield_gen_die9 = [9, shield_gen_die10]{
 #ifdef CSQC
   shield_gen_die_vfx();
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.85 0.45 0.8', 0.085 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, SOUNDFLAG_DYNAMIC_INT);
+  
 #endif
 };
 void() shield_gen_die10 = [10, shield_gen_die11]{};
@@ -263,8 +260,7 @@ void() shield_gen_idle={
 };
 
 void() shield_gen_active={
-  local vector vfx, vfx2;
-  
+
   if( self.energy <= 0 ){
     self.think = shield_gen_idle;
     self.nextthink = servertime + 0.1;
@@ -273,11 +269,11 @@ void() shield_gen_active={
   
   particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){  
-    vfx = randompos(self.compOffset, self.compAltOffset);
-    vfx2= randompos(self.compOffset, self.compAltOffset);
-    te_field_quantum( vfx2, vfx );
+    TEMP_VEC1 = randompos(self.compOffset, self.compAltOffset);
+    TEMP_VEC2 = randompos(self.compOffset, self.compAltOffset);
+    te_field_quantum( TEMP_VEC2, TEMP_VEC1 );
     if( random() > 0.85 ){
-      te_field_quantum_light( vfx2, 0.5) ;
+      te_field_quantum_light( TEMP_VEC2, 0.5) ;
     } 
   }
 
@@ -373,8 +369,8 @@ void() building_shield={
 #ifdef CSQC
   self.th_walk = shield_gen_active;
   //local vfx
-  self.compOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * self.mins_x) + (v_forward * self.mins_y);
-  self.compAltOffset = self.origin + (v_up * self.maxs_z) + (v_right * (self.mins_x * 0.15)) + (v_forward * (self.mins_y * 0.15));
+  self.compOffset = self.origin + (self.viewAngle1 * (self.maxs_z * 0.15)) + (self.viewAngle * self.mins_x) + (self.viewAngle2 * self.mins_y);
+  self.compAltOffset = self.origin + (self.viewAngle1 * self.maxs_z) + (self.viewAngle * (self.mins_x * 0.15)) + (self.viewAngle2 * (self.mins_y * 0.15));
 #endif
   
 #ifdef SSQC

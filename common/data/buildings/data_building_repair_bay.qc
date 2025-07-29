@@ -15,6 +15,11 @@ Overview:
   REPAIR_STATE_COOLDOWN  = repair bay cooldown
   
   REPAIR_STATE_IDLE = idle, recharge .reloadValue
+
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 #define REPAIR_STATE_START 1
@@ -794,210 +799,174 @@ void() hrepair_die = [0, hrepair_die1]{
     return;
   }
   ai_alert_close(self.enemy);
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 0) + (v_right * random() *32) + (v_forward * random() *-32)), 1, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 0) + (self.viewAngle * random() *32) + (v_forward * random() *-32)), 1, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die1 = [1, hrepair_die2]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
-  local vector ouch;
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 2 );
+
   if( self.goalentity != world ){
-    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
-    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
+    TEMP_VEC2 = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, TEMP_VEC2, normalize(TEMP_VEC2 - self.goalentity.origin) * 1);
   }
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 4) + (v_right * random() *32) + (v_forward * random() *-32)), 1, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 4) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 1, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die2 = [2, hrepair_die3]{
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 8) + (v_right * random() *32) + (v_forward * random() *-32)), 1, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 8) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 1, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die3 = [3, hrepair_die4]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
-  local vector ouch;
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 2 );
+
   if( self.goalentity != world ){
-    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
-    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
+    TEMP_VEC2 = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, TEMP_VEC2, normalize(TEMP_VEC2 - self.goalentity.origin) * 1);
   }
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 12) + (v_right * random() *32) + (v_forward * random() *-32)), 1, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 12) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 1, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die4 = [4, hrepair_die5]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
-  local vector ouch;
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 2 );
+
   if( self.goalentity != world ){
-    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
-    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
+    TEMP_VEC2 = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, TEMP_VEC2, normalize(TEMP_VEC2 - self.goalentity.origin) * 1);
   }
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 16) + (v_right * random() *32) + (v_forward * random() *-32)), 2, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 16) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 2, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die5 = [5, hrepair_die6]{
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 20) + (v_right * random() *32) + (v_forward * random() *-32)), 2, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 20) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 2, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die6 = [6, hrepair_die7]{
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 24) + (v_right * random() *32) + (v_forward * random() *-32)), 2, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 24) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 2, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die7 = [7, hrepair_die8]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 2 );
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 28) + (v_right * random() *32) + (v_forward * random() *-32)), 2, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 28) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 2, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die8 = [8, hrepair_die9]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 2 );
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 32) + (v_right * random() *32) + (v_forward * random() *-32)), 3, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 32) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 3, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die9 = [9, hrepair_die10]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 2 );
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 36) + (v_right * random() *32) + (v_forward * random() *-32)), 3, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 36) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 3, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die10 = [10, hrepair_die11]{
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 40) + (v_right * random() *32) + (v_forward * random() *-32)), 3, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 40) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 3, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die11 = [11, hrepair_die12]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 3 );
 #endif
 #ifdef CSQC
-  makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 48) + (v_right * random() *32) + (v_forward * random() *-32)), 3, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 48) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 3, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die12 = [12, hrepair_die13]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
-  local vector ouch;
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 3 );
+
   if( self.goalentity != world ){
-    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
-    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
+    TEMP_VEC2 = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, TEMP_VEC2, normalize(TEMP_VEC2 - self.goalentity.origin) * 1);
   }
 #endif
 #ifdef CSQC
   makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 52) + (v_right * random() *32) + (v_forward * random() *-32)), 4, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 52) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 4, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die13 = [13, hrepair_die14]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
-  local vector ouch;
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 3 );
+  local vector TEMP_VEC2;
   if( self.goalentity != world ){
-    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
-    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
+    TEMP_VEC2 = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, TEMP_VEC2, normalize(TEMP_VEC2 - self.goalentity.origin) * 1);
   }
 #endif
 #ifdef CSQC
   makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 56) + (v_right * random() *32) + (v_forward * random() *-32)), 4, '1 0.7 0.1', 0.015 );
-  
-  building_sound_explode();
+  te_missile_explode( (self.origin + (self.viewAngle1 * 56) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 4, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hrepair_die14 = [14, hrepair_die15]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 3 );
 #endif
 #ifdef CSQC
   makevectors(self.angles);
-  te_missile_explode( (self.origin + (v_up * 60) + (v_right * random() *32) + (v_forward * random() *-32)), 4, '1 0.7 0.1', 0.015 );
-
+  te_missile_explode( (self.origin + (self.viewAngle1 * 60) + (self.viewAngle * random() *32) + (self.viewAngle2 * random() *-32)), 4, '1 0.7 0.1', 0.015 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   self.think = sendevent_building_die;
 #endif
 };
 void() hrepair_die15 = [15, hrepair_die16]{};
 void() hrepair_die16 = [16, SUB_Null]{
 #ifdef SSQC
-  local vector ouch;
   if( self.goalentity != world ){
-    ouch = randompos( self.goalentity.absmin, self.goalentity.absmax);
-    t_damage( self.goalentity, self, world, random() * self.max_health, ouch, normalize(ouch - self.goalentity.origin) * 1);
+    TEMP_VEC2 = randompos( self.goalentity.absmin, self.goalentity.absmax);
+    t_damage( self.goalentity, self, world, random() * self.max_health, TEMP_VEC2, normalize(TEMP_VEC2 - self.goalentity.origin) * 1);
   }
   building_die();
 #endif

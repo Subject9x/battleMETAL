@@ -139,28 +139,25 @@ void() te_beam_esr={
 
 void() te_muzzle_esr={
   local vector norm;
-  local float impactStyle;
 
   norm = normalize(self.beamEnd - self.wepFireOffset);
 
   Sound7_Dynamic(self, CHAN_AUTO, self.fire_sound, 1.0, ATTN_NORM, (0.5 + (random() * 0.5)) * 120, SOUNDFLAG_DYNAMIC_INT);
   
-
   particleDraw = vlen(CLIENT_vis_org - self.beamEnd);
   if( particleDraw < PARTICLE_HAZ_DISTANCE / 2){
     pointparticles( particleeffectnum("TE_ESR_MUZZLE"), self.wepFireOffset,  norm* 1, 1);
 
     traceline(self.wepFireOffset, self.beamEnd, FALSE, self.owner);
-    impactStyle  = te_impact_type(self.beamEnd, trace_ent, trace_dphitcontents);
 
-    if(impactStyle == IMPACT_ARMOR){
+    if(self.pcl_count == IMPACT_ARMOR){
         pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), self.beamEnd, norm * -6, 1);
     }
-    if(impactStyle == IMPACT_DIRT){
+    if(self.pcl_count == IMPACT_DIRT){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), self.beamEnd, norm * -4, 1);
       pointparticles(PTC_HIT_DIRT_ENE_SML, self.beamEnd, trace_plane_normal * -1, 1);
     }
-    if(impactStyle == IMPACT_SHIELD){
+    if(self.pcl_count == IMPACT_SHIELD){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), self.beamEnd, norm * -4, 1);
     }
   }

@@ -27,53 +27,47 @@ Overview:
 //  servertime is new packet time, 
 //so the tick time between packets is servertime - time and the interpolation should begin 
 //the new move at servertime and end at servertime + (servertime - time)
-void(float isnew) CSQC_Ent_Update =
-{
-  local float entType;
-  local float entFlags;
-  
-  entType = ReadByte();
-  entFlags = ReadLong(); //expanding entFlags values -> data/common
-  
-  switch(entType){
+void(float isnew) CSQC_Ent_Update={
+
+  switch( ReadByte() ){
     case SENDTYPE_TANK:
-      sendent_handle_tank( isnew, entFlags );
+      sendent_handle_tank( isnew, ReadLong() );
       break;
     case SENDTYPE_SPG:
-      sendent_handle_spg( isnew, entFlags );
+      sendent_handle_spg( isnew, ReadLong() );
       break;
     case SENDTYPE_GEV:
-      sendent_handle_gev( isnew, entFlags );
+      sendent_handle_gev( isnew, ReadLong() );
       break;
     case SENDTYPE_TURRET:
-      sendent_handle_turret( isnew, entFlags );
+      sendent_handle_turret( isnew, ReadLong() );
       break;
     case SENDTYPE_BUILD:
-      sendent_handle_building( isnew, entFlags );
+      sendent_handle_building( isnew, ReadLong() );
       break;
     case SENDTYPE_MECH_AI:
-      sendent_handle_mech_ai( isnew, entFlags );
+      sendent_handle_mech_ai( isnew, ReadLong() );
       break;
     case SENDTYPE_PROJ:
-      sendent_handle_missile( isnew, entFlags );
+      sendent_handle_missile( isnew, ReadLong() );
       break;
     case SENDTYPE_MAP:
-      sendent_handle_map( isnew, entFlags );
+      sendent_handle_map( isnew, ReadLong() );
       break;
     case SENDTYPE_TERRAIN:
-      sendent_handle_terrain( isnew, entFlags );
+      sendent_handle_terrain( isnew, ReadLong() );
       break;
     //case SENDTYPE_MISC: //note: see main/map/map_scenery
-      //sendent_handle_misc( isnew, entFlags );
+      //sendent_handle_misc( isnew, ReadLong() );
       //break;
     case SENDTYPE_MISC_BLD:
-      sendent_handle_misc_bld( isnew, entFlags );
+      sendent_handle_misc_bld( isnew, ReadLong() );
       break;
     case SENDTYPE_ITEM:
-      sendent_handle_item( isnew, entFlags );
+      sendent_handle_item( isnew, ReadLong() );
       break;
     case SENDTYPE_CLIENT:
-      sendent_handle_client( isnew, entFlags );
+      sendent_handle_client( isnew, ReadLong() );
       break;
   }
 };

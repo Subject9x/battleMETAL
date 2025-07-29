@@ -64,10 +64,10 @@ void() ai_nodegraph_hunter_frame={
         }
         else{
           if( moveYaw > 10 && moveYaw < 350){
-            moveSpeed = moveSpeed * 0.33; //0.15
+            moveSpeed = moveSpeed * 0.33;
           }
           else if( moveYaw > 5 && moveYaw < 355 ){
-            moveSpeed = moveSpeed * 0.67; //0.33
+            moveSpeed = moveSpeed * 0.67;
           }
           self.yaw_speed = self.yaw_speed * 2;
         }

@@ -8,6 +8,10 @@ Overview:
 */
 
 
+vector TEMP_VEC1;
+vector TEMP_VEC2;
+vector TEMP_VEC3;
+
 //============================
 //   FILE PATHS           
 //============================
@@ -298,9 +302,9 @@ float TEAM_MILITAR_TOTAL;
 //============================
 //     GETSTAT() TYPES
 //============================
-float AS_STRING = 1;
-float AS_FLOAT = 2;
-float AS_INT = 8;
+#define AS_STRING 1
+#define AS_FLOAT 2
+#define AS_INT 8
 //============================
 //     SEND ENTITY SHARED
 //============================

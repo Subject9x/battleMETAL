@@ -6,17 +6,23 @@ Overview: data file for building
   type: Power Plant
   faction: any
   func: provides radar scanning to all friendly units and buildings in radius.
+
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 #ifdef CSQC
 void() power_plant_die_vfx={
   local vector margin;
+
   particleDraw = vlen(CLIENT_vis_org - self.origin);
   if( particleDraw <= PARTICLE_HAZ_DISTANCE ){
     te_field_mineral( margin, normalize(margin - self.origin) * rint(random() * 32), rint(random()*3) );
     te_field_mineral_light( margin, rint(random()*3) );
   }
-  sound7(self, CHAN_AUTO, "sound/weapons/esr_fire.ogg", 1, ATTN_NORM, (0.5 + (random() * 0.5)) * 175, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/weapons/esr_fire%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 };
 #endif
 
@@ -25,9 +31,20 @@ void() power_plant_die = [0, power_plant_die1]{
   if( self.deadflag > DEAD_NO){
     return;
   }
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   ai_alert_close(self.enemy);
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
 #endif
 #ifdef CSQC
   power_plant_die_vfx();
@@ -36,47 +53,143 @@ void() power_plant_die = [0, power_plant_die1]{
 };
 void() power_plant_die1 = [1, power_plant_die2]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 1 );
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.60 0.7 0.75', 0.1 );
   power_plant_die_vfx();
 #endif
 };
-void() power_plant_die2 = [2, power_plant_die3]{};
-void() power_plant_die3 = [3, power_plant_die4]{};
+void() power_plant_die2 = [2, power_plant_die3]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
+void() power_plant_die3 = [3, power_plant_die4]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
 void() power_plant_die4 = [4, power_plant_die5]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 4, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 4, 1 );
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.60 0.7 0.75', 0.1 );
   power_plant_die_vfx();
 #endif
 };
-void() power_plant_die5 = [5, power_plant_die6]{};
-void() power_plant_die6 = [6, power_plant_die7]{};
+void() power_plant_die5 = [5, power_plant_die6]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
+void() power_plant_die6 = [6, power_plant_die7]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
 void() power_plant_die7 = [7, power_plant_die8]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 3, 2 );
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.60 0.7 0.75', 0.1 );
   power_plant_die_vfx();
 #endif
 };
-void() power_plant_die8 = [8, power_plant_die9]{};
+void() power_plant_die8 = [8, power_plant_die9]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
 void() power_plant_die9 = [9, power_plant_die10]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 3, 2 );
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.60 0.7 0.75', 0.1 );
@@ -84,40 +197,80 @@ void() power_plant_die9 = [9, power_plant_die10]{
 #endif
 
 };
-void() power_plant_die10 = [10, power_plant_die11]{};
-void() power_plant_die11 = [11, power_plant_die12]{};
+void() power_plant_die10 = [10, power_plant_die11]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
+void() power_plant_die11 = [11, power_plant_die12]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
 void() power_plant_die12 = [12, power_plant_die13]{
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 2, 3 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 2, 3 );
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '0.60 0.7 0.75', 0.1 );
   power_plant_die_vfx();
 #endif
 };
-void() power_plant_die13 = [13, power_plant_die14]{};
+void() power_plant_die13 = [13, power_plant_die14]{
+  #ifdef SSQC
+    TEMP_VEC1 = self.origin;
+    TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+    TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+    TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+    traceline(self.origin, TEMP_VEC1, FALSE, self);
+    client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+    if(trace_ent && trace_ent.energyMax != 0.0){
+      trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+    }
+  #endif
+};
 void() power_plant_die14 = [14, power_plant_die15]{
 #ifdef SSQC
-  local vector shoot;
   local entity head;
   
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, '0 0 0', '0 0 0', 5, 3 );
-  
-  //EMP bomb
-  for( head = nextent(world); head != world; head = nextent(head) ){
-    if( vlen(head.origin - self.origin) > (self.ai_minrange / 2) ){
-      continue;
-    }
-    if( !(head.flags & FL_UNIT) && !(head.flags & FL_CLIENT) ){
-      continue;
-    }
-    head.energy = head.energy - self.energy * 0.25;
-    if( head.energy < 0 ){
-      head.energy = 0;
-    }
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, '0 0 0', '0 0 0', 5, 3 );
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
   }
 #endif
 #ifdef CSQC
@@ -127,6 +280,16 @@ void() power_plant_die14 = [14, power_plant_die15]{
 };
 void() power_plant_die15 = [15, SUB_Null]{
 #ifdef SSQC
+
+  TEMP_VEC1 = self.origin;
+  TEMP_VEC1_x = TEMP_VEC1_x + (crandom() * self.maxs_x * 1.25);
+  TEMP_VEC1_y = TEMP_VEC1_y + (crandom() * self.maxs_y * 1.25); 
+  TEMP_VEC1_z = TEMP_VEC1_z + (random() * self.maxs_z);
+  traceline(self.origin, TEMP_VEC1, FALSE, self);
+  client_send_particle_rail( BEAM_ESR, FALSE, self.origin, trace_endpos, 4, 0 );
+  if(trace_ent && trace_ent.energyMax != 0.0){
+    trace_ent.energy = trace_ent.energy - (trace_ent.energy * 0.15);
+  }
   building_die();
 #endif
 #ifdef CSQC
@@ -203,7 +366,7 @@ void() power_plant_idle={
 };
 
 void() power_plant_active={
-  local vector vfx, vfx2, vfx3;
+  local vector vfx;
   
   if( self.energy <= 0 ){
     self.think = power_plant_idle;
@@ -218,12 +381,12 @@ void() power_plant_active={
     te_field_rad( vfx, normalize(self.origin - vfx), 0.5 );
     
     //local vfx - blue vent front
-    vfx2 = randompos(self.wepFireOffset, self.wepFireOffsetCache);
-    te_field_mineral( vfx2, normalize(self.origin - vfx2), 1 );
+    vfx = randompos(self.wepFireOffset, self.wepFireOffsetCache);
+    te_field_mineral( vfx, normalize(self.origin - vfx), 1 );
       
     //local vfx - blue vent front
-    vfx3 = randompos(self.cockpitOffset, self.w_adj_ang);
-    te_field_mineral( vfx3, normalize(self.origin - vfx3), 1 );
+    vfx = randompos(self.cockpitOffset, self.w_adj_ang);
+    te_field_mineral( vfx, normalize(self.origin - vfx), 1 );
   }
   self.think = power_plant_active;
   self.nextthink = time + (random() * 1);
@@ -269,14 +432,14 @@ void() building_power={
   //FIXME
   self.th_walk = power_plant_active;
   //local vfx - green ball
-  self.compOffset = self.origin + (v_up * (self.maxs_z * 0.8)) + (v_right * self.mins_x * 0.85) + (v_forward * (self.mins_y * 0.65));
-  self.compAltOffset = self.origin + (v_up * (self.maxs_z * 0.85)) + (v_right * (self.mins_x * 0.67)) + (v_forward * (self.mins_y * 0.45));
+  self.compOffset = self.origin + (self.viewAngle1 * (self.maxs_z * 0.8)) + (self.viewAngle * self.mins_x * 0.85) + (self.viewAngle2 * (self.mins_y * 0.65));
+  self.compAltOffset = self.origin + (self.viewAngle1 * (self.maxs_z * 0.85)) + (self.viewAngle * (self.mins_x * 0.67)) + (self.viewAngle2 * (self.mins_y * 0.45));
   //local vfx - blue vent front
-  self.wepFireOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * 0) + (v_forward * self.maxs_y * 0.9);
-  self.wepFireOffsetCache = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.maxs_y * 0.9);
+  self.wepFireOffset = self.origin + (self.viewAngle1 * (self.maxs_z * 0.15)) + (self.viewAngle * 0) + (self.viewAngle2 * self.maxs_y * 0.9);
+  self.wepFireOffsetCache = self.origin + (self.viewAngle1 * (self.maxs_z * 0.45)) + (self.viewAngle * (self.maxs_x * 0.25)) + (self.viewAngle2 * self.maxs_y * 0.9);
   //local vfx - blue vent front
-  self.cockpitOffset = self.origin + (v_up * (self.maxs_z * 0.15)) + (v_right * 0) + (v_forward * self.mins_y * 0.9);
-  self.w_adj_ang = self.origin + (v_up * (self.maxs_z * 0.45)) + (v_right * (self.maxs_x * 0.25)) + (v_forward * self.mins_y * 0.9);
+  self.cockpitOffset = self.origin + (self.viewAngle1 * (self.maxs_z * 0.15)) + (self.viewAngle * 0) + (self.viewAngle2 * self.mins_y * 0.9);
+  self.w_adj_ang = self.origin + (self.viewAngle1 * (self.maxs_z * 0.45)) + (self.viewAngle * (self.maxs_x * 0.25)) + (self.viewAngle2 * self.mins_y * 0.9);
 
 #endif
 #ifdef SSQC

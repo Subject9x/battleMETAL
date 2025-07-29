@@ -202,6 +202,10 @@ void( float isNew, float changeFlags ) sendent_handle_misc_bld={
   }
   
   if(isNew){
+    makevectors(self.angles);
+    self.viewAngle = v_right;
+    self.viewAngle1 = v_up;
+    self.viewAngle2 = v_forward;
     model_misc_building_set();
     self.predraw = predraw_building_msc;
     if( self.deadflag == DEAD_NO ){

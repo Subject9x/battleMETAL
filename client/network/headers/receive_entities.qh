@@ -12,7 +12,7 @@ Overview:
 
 
 //Globals
-float MISSION_NAME_TIME = 5;
+#define MISSION_NAME_TIME 5
 float MISSION_NAME_TIME_RATE; //time calls in the render_view method must be gated against the refresh-rate
 float MISSION_NAME_START;
 float MISSION_NAME_ON;

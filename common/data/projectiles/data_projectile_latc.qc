@@ -34,11 +34,11 @@ void() projectile_latc_hit={
     else{
       snd = "sound/fx_armorhit3.ogg";
     }
-    sound7(self, CHAN_AUTO, snd, (0.67 + random() * 0.3), ATTN_NORM, (67 + (random() * 33)), 0);
+    Sound7_Dynamic(self, CHAN_AUTO, snd, (0.67 + random() * 0.3), ATTN_NORM, (67 + (random() * 33)), 0);
     pointparticles( particleeffectnum("TE_ATC_ARMOR"), self.origin, normalize(self.velocity) * 10, 1);
   }
   else{
-    Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_hit_dirt.ogg", (0.67 + random() * 0.33), ATTN_NORM, (67 + (random() * 33)), SOUNDFLAG_DYNAMIC_INT);
+    Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_hit_dirt%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (67 + (random() * 33)), SOUNDFLAG_DYNAMIC_INT);
     self.angles = vectoangles(self.velocity);
     makevectors(self.angles);
     pointparticles( particleeffectnum("TE_ATC_DIRT"), self.origin + (v_up *1) + (v_forward * -4), normalize( self.velocity) * -20, 1);

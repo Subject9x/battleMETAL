@@ -144,8 +144,6 @@ entity( float radiius) ai_find_friend={
 void( entity t) ai_alert_close={
   local entity ally;
   local float rng;
-  local float fog;
-  local float fogLen;
   local float vis;
   
   if( alarm_ent == world ){
@@ -418,47 +416,6 @@ entity(float checkDir) ai_get_next_node={
   }
   return foundNode;
 };
-
-//OLD NODE CODE=========================================
-
-/*
-  DEPRECATED - release v1.0.0
-  Check if entity <toCheck> is outside of 
-  
-  AI's current patrolNode.ai_view radius.
-  
-  returns a percentage of distance to node.
-  
-  a value > 1 is out of node radius
-*/
-/*float(entity toCheck) ai_check_node_radius={
-  local float distance;
-  distance = vlen(toCheck.origin - self.patrolNode.origin);
-  if( self.patrolNode.ai_view != 0 ){
-    distance = max(distance / self.patrolNode.ai_view, 0.01);
-  }
-  else{
-    distance = max(distance / AI_RANGE_S, 0.01);
-  }
-  return distance;
-};*/
-
-/*
-  DEPRECATED - release v1.0.0
-  A soft-wrapper for ai_check_node_radius();
-    this converts self.stat_trg_dst (target distance to self)
-    in a percentage of node radius.
-*/
-/*float() ai_check_node_radius_targdist={
-  local float distance;
-  if( self.patrolNode.ai_view != 0 ){
-    distance = max(self.stat_trg_dist / self.patrolNode.ai_view, 0.01);
-  }
-  else{
-    distance = 1.0;
-  }
-  return distance;
-};*/
 
 /*
   Attempts to find the closest allowable <ai_node_tether> entity.

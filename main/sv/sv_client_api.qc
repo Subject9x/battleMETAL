@@ -385,7 +385,7 @@ void() ClientConnect = {
   self.ramUpMax = 1;
   self.repair_request = 0;
   self.playerState = PLAYER_CONNECT;  //so we can detect a first-connect state.
-  self.i_reserve = world.i_reserve;
+  // self.i_reserve = world.i_reserve; //deprecated / unused for now
   self.enemy = world; //explicit assignment here
   self.stat_plr_rep = -1;
   

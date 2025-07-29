@@ -78,14 +78,13 @@ void() model_misc_building_ruins_set={
   EVENT - Death
 */
 void() misc_build_die8={
-  local vector xOrg;
+  TEMP_VEC1 = '0 0 0';
+  TEMP_VEC1_x = (crandom() * self.maxs_x) * (random() * 0.5);
+  TEMP_VEC1_y = (crandom() * self.maxs_y) * (random() * 0.5);
+  TEMP_VEC1_z = (crandom() * self.maxs_z) * (random() * 0.5);
 
-  xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
-  xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
-  xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
-
-  te_missile_explode(self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
-  PointSound_Dynamic(self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+  te_missile_explode(self.origin + TEMP_VEC1, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic(self.origin + TEMP_VEC1, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   model_misc_building_ruins_set();
 
@@ -98,13 +97,13 @@ void() misc_build_die7={
   self.nextthink = time + 0.25;
 };
 void() misc_build_die6={
-  local vector xOrg;
-  xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
-  xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
-  xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
+  TEMP_VEC1 = '0 0 0';
+  TEMP_VEC1_x = (crandom() * self.maxs_x) * (random() * 0.5);
+  TEMP_VEC1_y = (crandom() * self.maxs_y) * (random() * 0.5);
+  TEMP_VEC1_z = (crandom() * self.maxs_z) * (random() * 0.5);
   
-  te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
-  PointSound_Dynamic( self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+  te_missile_explode( self.origin + TEMP_VEC1, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic( self.origin + TEMP_VEC1, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   if( self.vec_size > 2 ){
     self.think = misc_build_die7;
@@ -112,7 +111,7 @@ void() misc_build_die6={
   }
   else{
     model_misc_building_ruins_set();
-    PointSound_Dynamic( self.origin + xOrg, "sound/fire/debris1%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+    PointSound_Dynamic( self.origin + TEMP_VEC1, "sound/fire/debris1%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
     
 
     self.origin = self.origin;
@@ -127,13 +126,13 @@ void() misc_build_die5={
 };
 
 void() misc_build_die4={
-  local vector xOrg;
-  xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
-  xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
-  xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
+  TEMP_VEC1 = '0 0 0';
+  TEMP_VEC1_x = (crandom() * self.maxs_x) * (random() * 0.5);
+  TEMP_VEC1_y = (crandom() * self.maxs_y) * (random() * 0.5);
+  TEMP_VEC1_z = (crandom() * self.maxs_z) * (random() * 0.5);
 
-  te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
-  PointSound_Dynamic( self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+  te_missile_explode( self.origin + TEMP_VEC1, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic( self.origin + TEMP_VEC1, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   self.think = misc_build_die5;
   self.nextthink = time + 0.25;
@@ -154,13 +153,13 @@ void() misc_build_die3={
 };
 
 void() misc_build_die2={
-  local vector xOrg;
-  xOrg_x = (crandom() * self.maxs_x) * (random() * 0.5);
-  xOrg_y = (crandom() * self.maxs_y) * (random() * 0.5);
-  xOrg_z = (crandom() * self.maxs_z) * (random() * 0.5);
+  TEMP_VEC1 = '0 0 0';
+  TEMP_VEC1_x = (crandom() * self.maxs_x) * (random() * 0.5);
+  TEMP_VEC1_y = (crandom() * self.maxs_y) * (random() * 0.5);
+  TEMP_VEC1_z = (crandom() * self.maxs_z) * (random() * 0.5);
 
-  te_missile_explode( self.origin + xOrg, self.vec_size, CLR_DEF_RED, 0.01 );
-  PointSound_Dynamic( self.origin + xOrg, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
+  te_missile_explode( self.origin + TEMP_VEC1, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic( self.origin + TEMP_VEC1, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT );
   
   self.think = misc_build_die3;
   self.nextthink = time + 0.25;
@@ -176,11 +175,9 @@ void() misc_build_die1={
 };
 
 void() model_misc_building_die={
-  local vector org;
-
-  org = randompos(self.origin + self.mins, self.origin + self.maxs);
-  te_missile_explode( org, self.vec_size, CLR_DEF_RED, 0.01 );
-  PointSound_Dynamic(org, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  TEMP_VEC1 = randompos(self.origin + self.mins, self.origin + self.maxs);
+  te_missile_explode( TEMP_VEC1, self.vec_size, CLR_DEF_RED, 0.01 );
+  PointSound_Dynamic(TEMP_VEC1, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   if(CLIENT_target_ent.entnum == self.entnum ){
     hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;

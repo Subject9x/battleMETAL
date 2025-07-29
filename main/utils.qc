@@ -132,7 +132,6 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
   local vector wepAim;
   local vector targVel;
   
-  
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
     targVel = '0 0 0';
@@ -580,7 +579,9 @@ void() BecomeExplosion={
   //TODO - replace
   //te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
   precache_sound("sound/fx_boom.ogg");
+
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
+
   self.deadflag = DEAD_DEAD;
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';

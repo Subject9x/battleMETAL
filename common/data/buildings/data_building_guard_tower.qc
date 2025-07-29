@@ -4,14 +4,18 @@ Author: Peter Roohr
 Date: 09/11/2019
 Overview: 
   data file for the simple guard tower building
+
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 
 void() guard_tower_die2={
 #ifdef SSQC
-  local vector shoot;
-  shoot = randompos(self.absmin, self.absmax);
-  te_debris( shoot, normalize(shoot - self.origin) * 5, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
   building_die();
 #endif
 #ifdef CSQC
@@ -22,15 +26,15 @@ void() guard_tower_die2={
 
 void() guard_tower_die1={
 #ifdef SSQC
-  local vector vfx;
   if( self.deadflag > DEAD_NO ){
     return;
   }
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+  TEMP_VEC1 = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 6, 3 );
   ai_alert_close(self.enemy);
 #endif
 #ifdef CSQC

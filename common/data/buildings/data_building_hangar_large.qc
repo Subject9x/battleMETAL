@@ -3,6 +3,11 @@ battleMETAL
 Author: Peter Roohr
 Date: 5/10/2017
 Overview: data file for building
+  
+  CSQC
+    self.viewAngle = cached V_RIGHT when building initialized on client
+    self.viewAngle1 = cached V_UP when building initialized on client
+    self.viewAngle2 = cached V_FORWARD when building initialized on client
 */
 
 void() hangar_die2;
@@ -25,17 +30,17 @@ void() hangar_die1=[0, hangar_die2]{
   if( self.deadflag > DEAD_NO ){
     return;
   }
+  self.solid = SOLID_NOT;
   self.deadflag = DEAD_DYING;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+  TEMP_VEC1 = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 6, 3 );
   ai_alert_close(self.enemy);
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
   
 };
@@ -44,14 +49,13 @@ void() hangar_die2=[0, hangar_die3]{
 };
 void() hangar_die3=[0, hangar_die4]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.mins_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+  TEMP_VEC1 = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.mins_y) + (v_right * (crandom() * (self.maxs_x * 0.15)));
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 6, 3 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die4=[0, hangar_die5]{
@@ -59,14 +63,13 @@ void() hangar_die4=[0, hangar_die5]{
 };
 void() hangar_die5=[0, hangar_die6]{
 #ifdef SSQC
-  local vector vfx;
   makevectors(self.angles);
-  vfx = self.origin + (v_up * self.maxs_z) + (v_forward * (self.mins_y * 0.18)) + (v_right * (self.mins_x * 0.15));
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 6, 3 );
+  TEMP_VEC1 = self.origin + (v_up * self.maxs_z) + (v_forward * (self.mins_y * 0.18)) + (v_right * (self.mins_x * 0.15));
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 6, 3 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die6=[0, hangar_die7]{
@@ -74,57 +77,52 @@ void() hangar_die6=[0, hangar_die7]{
 };
 void() hangar_die7=[0, hangar_die8]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die8=[0, hangar_die9]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 4, 2 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die9=[0, hangar_die10]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die10=[0, hangar_die11]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 2, 2 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 2, 2 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die11=[0, hangar_die12]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 3, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 3, 1 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die12=[0, hangar_die13]{
@@ -132,13 +130,12 @@ void() hangar_die12=[0, hangar_die13]{
 };
 void() hangar_die13=[0, hangar_die14]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 4, 1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 4, 1 );
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() hangar_die14=[0, hangar_die15]{
@@ -146,14 +143,13 @@ void() hangar_die14=[0, hangar_die15]{
 };
 void() hangar_die15=[0, SUB_Null]{
 #ifdef SSQC
-  local vector vfx;
-  vfx = randompos(self.absmin, self.absmax);
-  te_debris( vfx, normalize(vfx - self.origin) * 6, '0 0 0', 5,1 );
+  TEMP_VEC1 = randompos(self.absmin, self.absmax);
+  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 6, '0 0 0', 5,1 );
   building_die();
 #endif
 #ifdef CSQC
   te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.1 );
-  sound7(self, CHAN_AUTO, "sound/fx_boom.ogg", (0.67 + random() * 0.3), ATTN_NORM, (0.4 + (random() * 0.5)) * 90, 0 );
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, (0.67 + (random() * 0.33)) * 100, SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 

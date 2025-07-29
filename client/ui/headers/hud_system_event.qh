@@ -10,7 +10,7 @@ Overview:
 //GLOBALS
 float HUD_EVENT_ID;
 float HUD_EVENT_TIME_NEXT;
-float HUD_EVENT_SIZE = 8;
+#define HUD_EVENT_SIZE 8
 float HUD_EVENTS[8];
 
 float HUD_EVENT_SOUND_START;

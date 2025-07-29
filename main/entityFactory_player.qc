@@ -15,7 +15,7 @@ void() player_makeObserver={
   self.max_health = 1;
   self.armortype = 1;
   self.armorvalue = 1;
-  self.max_armor = 0;
+  // self.max_armor = 0; //deprecated / unused for now
 
   macro_set_collider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY)
   self.weaponmodel = "";

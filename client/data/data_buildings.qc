@@ -4,13 +4,18 @@ Author: Peter Roohr
 Date: 03/10/2020
 Overview: 
   CSQC-side ini function for synced buildings.
-*/
 
+  cached make vectors
+    self.viewAngle = v_right;
+    self.viewAngle1 = v_up;
+    self.viewAngle2 = v_forward;
+
+*/
 
 void() building_anim_death_norm9={
   local vector vfx;
-  makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  vfx = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
   PointSound_Dynamic(vfx, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
@@ -24,13 +29,13 @@ void() building_anim_death_norm8={
 };
 void() building_anim_death_norm7={
   local vector vfx;
-  makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  vfx = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
   PointSound_Dynamic(vfx, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
-  building_sound_explode();
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   if( self.vec_size > 2 ){
     self.think = building_anim_death_norm8;
     self.nextthink = time + 0.1*frametime;
@@ -38,12 +43,12 @@ void() building_anim_death_norm7={
 };
 void() building_anim_death_norm6={
   local vector vfx;
-  makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  vfx = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
   
-  building_sound_explode();
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   
   self.think = building_anim_death_norm7;
   self.nextthink = time + 0.1*frametime;
@@ -57,12 +62,12 @@ void() building_anim_death_norm5={
 
 void() building_anim_death_norm4={
   local vector vfx;
-  makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  vfx = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
   
-  building_sound_explode();
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   if( self.vec_size > 1 ){
     self.think = building_anim_death_norm5;
     self.nextthink = time + 0.1*frametime;
@@ -70,12 +75,12 @@ void() building_anim_death_norm4={
 };
 void() building_anim_death_norm3={
   local vector vfx;
-  makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+  vfx = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
   
-  building_sound_explode();
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   self.think = building_anim_death_norm4;
   self.nextthink = time + 0.1*frametime;
 };
@@ -89,12 +94,13 @@ void() building_anim_death_norm2={
 
 void() building_anim_death_norm1={
   local vector vfx;
-  makevectors(self.angles);
-  vfx = self.origin + (v_up * (self.maxs_z * 0.5)) + (v_forward * self.maxs_y) + (v_right * (crandom() * (self.maxs_x * 0.25)));
+
+
+  vfx = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
 
   te_missile_explode( vfx, 1, '1 0.67 0.67', 0.01 );
   
-  building_sound_explode();
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   
   self.think = building_anim_death_norm2;
   self.nextthink = time + 0.1*frametime;
@@ -176,18 +182,14 @@ void( float dataID ) data_sync_new_building={
   ANIMATION - Death
 */
 void() data_building_death1={
-  
-  
-  
-  te_missile_explode( self.origin + (v_up * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
+  te_missile_explode( self.origin + (self.viewAngle1 * self.maxs_z), self.vec_size + 1, '0.9 0.67 0.33', 0.01 ) ;
+  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
   
   self.think = data_building_death2;
   self.nextthink = time + (0.1 * frametime);
 };
 
 void() data_building_death2={
-  
-  building_sound_explode();
   
   self.think = data_building_death1;
   self.nextthink = time + (0.1 * frametime);
@@ -209,16 +211,6 @@ void() building_floor_th={
   
   self.think = building_floor_th;
   self.nextthink = time + 1;
-};
-
-
-void() building_sound_explode={
-  local float sizeMod;
-  
-  sizeMod = self.vec_size / 10;
-  sizeMod = 1.0 - (1.0 - (sizeMod * 2) / 2);
-
-  Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (sizeMod + (random() * sizeMod)) * 100, SOUNDFLAG_DYNAMIC_INT);
 };
 
 

@@ -184,207 +184,204 @@ vector dmg_origin;
 ==============================================================================
 */
 
-const float MASK_ENGINE			= 1;
-const float MASK_ENGINEVIEWMODELS	= 2;
-const float MASK_NORMAL			= 4;//casts no shadows.
-const float MASK_HUD        = 8; //custom, used to turn model on/off for hud draws.
+#define MASK_ENGINE 1
+#define MASK_ENGINEVIEWMODELS 2
+#define MASK_NORMAL 4 //casts no shadows.
+#define MASK_HUD  8 //custom, used to turn model on/off for hud draws.
 
 
 //no proof these render flags are accessible by DP's flavor of QuakeC - Roohr :|
-const float RF_VIEWMODEL	= 1; // REQUIRES TAG! The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
-const float RF_EXTERNALMODEL	= 2; // The entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
-const float RF_DEPTHHACK	= 4; // The entity appears closer to the view than normal, either by scaling it wierdly or by just using a depthrange. This will usually be found in conjunction with RF_VIEWMODEL
-const float RF_ADDITIVE		= 8;// Add the entity acording to it's alpha values instead of the normal blend
-const float RF_USEAXIS		= 16; // When set, the entity will use the v_forward, v_right and v_up globals instead of it's angles field for orientation. Angles will be ignored compleatly.
+#define RF_VIEWMODEL 1 // REQUIRES TAG! The entity is never drawn in mirrors. In engines with realtime lighting, it he entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
+#define RF_EXTERNALMODEL 2 // The entity is appears in mirrors but not in the normal view. It does still cast shadows in engines with realtime lighting.
+#define RF_DEPTHHACK 4 // The entity appears closer to the view than normal, either by scaling it wierdly or by just using a depthrange. This will usually be found in conjunction with RF_VIEWMODEL
+#define RF_ADDITIVE 8 // Add the entity acording to it's alpha values instead of the normal blend
+#define RF_USEAXIS  16 // When set, the entity will use the v_forward, v_right and v_up globals instead of it's angles field for orientation. Angles will be ignored compleatly.
 // Note that to use this properly, you'll NEED to use the predraw function to set the globals.
-const float RF_FULLBRIGHT	= 256;
-const float RF_NOSHADOW	= 512;
-const float RF_DYNAMICMODELLIGHT = 8192;
+#define RF_FULLBRIGHT 256
+#define RF_NOSHADOW	512
+#define RF_DYNAMICMODELLIGHT 8192
 
-const float VF_MIN		= 1;	//(vector)
-const float VF_MIN_X		= 2;	//(float)
-const float VF_MIN_Y		= 3;	//(float)
-const float VF_SIZE		= 4;	//(vector) (viewport size)
-const float VF_SIZE_Y		= 5;	//(float)
-const float VF_SIZE_X		= 6;	//(float)
-const float VF_VIEWPORT		= 7;	//(vector, vector)
-const float VF_FOV		= 8;	//(vector)
-const float VF_FOVX		= 9;	//(float)
-const float VF_FOVY		= 10;	//(float)
-const float VF_ORIGIN		= 11;	//(vector)
-const float VF_ORIGIN_X		= 12;	//(float)
-const float VF_ORIGIN_Y		= 13;	//(float)
-const float VF_ORIGIN_Z		= 14;	//(float)
-const float VF_ANGLES		= 15;	//(vector)
-const float VF_ANGLES_X		= 16;	//(float)
-const float VF_ANGLES_Y		= 17;	//(float)
-const float VF_ANGLES_Z		= 18;	//(float)
-const float VF_DRAWWORLD	= 19;	//(float)
-const float VF_DRAWENGINESBAR	= 20;	//(float)
-const float VF_DRAWCROSSHAIR	= 21;	//(float)
+#define VF_MIN 1	//(vector)
+#define VF_MIN_X 2	//(float)
+#define VF_MIN_Y 3	//(float)
+#define VF_SIZE	4	//(vector) (viewport size)
+#define VF_SIZE_Y 5	//(float)
+#define VF_SIZE_X 6	//(float)
+#define VF_VIEWPORT	7	//(vector, vector)
+#define VF_FOV 8	//(vector)
+#define VF_FOVX	9	//(float)
+#define VF_FOVY	10	//(float)
+#define VF_ORIGIN 11	//(vector)
+#define VF_ORIGIN_X	12	//(float)
+#define VF_ORIGIN_Y	13	//(float)
+#define VF_ORIGIN_Z	14	//(float)
+#define VF_ANGLES 15	//(vector)
+#define VF_ANGLES_X	16	//(float)
+#define VF_ANGLES_Y	17	//(float)
+#define VF_ANGLES_Z	18	//(float)
+#define VF_DRAWWORLD 19	//(float)
+#define VF_DRAWENGINESBAR 20	//(float)
+#define VF_DRAWCROSSHAIR 21	//(float)
 
-const float VF_CL_VIEWANGLES	= 33;	//(vector)
-const float VF_CL_VIEWANGLES_X	= 34;	//(float)
-const float VF_CL_VIEWANGLES_Y	= 35;	//(float)
-const float VF_CL_VIEWANGLES_Z	= 36;	//(float) 
+#define VF_CL_VIEWANGLES 33	//(vector)
+#define VF_CL_VIEWANGLES_X 34	//(float)
+#define VF_CL_VIEWANGLES_Y 35	//(float)
+#define VF_CL_VIEWANGLES_Z 36	//(float) 
 
-const float VF_PERSPECTIVE      = 200;
+#define VF_PERSPECTIVE 200
 
-const float VF_FOG_DENSITY  = 202; //(float)
-const float VF_FOG_COLOR    = 203; //(vector)
-const float VF_FOG_COLOR_R  = 204; //(float)
-const float VF_FOG_COLOR_G  = 205; //(float)
-const float VF_FOG_COLOR_B  = 206; //(float)
-const float VF_FOG_ALPHA    = 207; //(float)
-const float VF_FOG_START    = 208; //(float)
-const float VF_FOG_END      = 209; //(float)
-const float VF_FOG_HEIGHT   = 210; //(float)
-const float VF_FOG_FADEDEPTH= 211; //(float)
-
-const float VF_MAINVIEW     = 400; //(float)
-const float VF_MINFPS_QUALITY = 401; //float)
+#define VF_FOG_DENSITY 202 //(float)
+#define VF_FOG_COLOR 203 //(vector)
+#define VF_FOG_COLOR_R 204 //(float)
+#define VF_FOG_COLOR_G 205 //(float)
+#define VF_FOG_COLOR_B 206 //(float)
+#define VF_FOG_ALPHA 207 //(float)
+#define VF_FOG_START 208 //(float)
+#define VF_FOG_END 209 //(float)
+#define VF_FOG_HEIGHT 210 //(float)
+#define VF_FOG_FADEDEPTH 211 //(float)
 
 /*
   Having the full list of these would have helped from the start...
   quakedef.h - Line - 218
   Max Stats = 256
 */
-float STAT_HEALTH		            = 0;
-float STAT_WEAPONMODEL          = 2;
-float STAT_AMMO                 = 3;
-float STAT_ARMOR		            = 4;
-float STAT_WEAPONFRAME	        = 5;
-float STAT_SHELLS		            = 6;
-float STAT_NAILS		            = 7;
-float STAT_ROCKETS	            = 8;
-float STAT_CELLS		            = 9;
-float STAT_ACTIVEWEAPON	        = 10;
-float STAT_TOTALSECRETS	        = 11;
-float STAT_TOTALMONSTERS	      = 12;
-float STAT_SECRETS		          = 13;
-float STAT_MONSTERS		          = 14;
-float STAT_ITEMS		            = 15;
-float STAT_VIEWHEIGHT	          = 16;
+#define STAT_HEALTH 0
+#define STAT_WEAPONMODEL 2
+#define STAT_AMMO 3
+#define STAT_ARMOR 4
+#define STAT_WEAPONFRAME 5
+#define STAT_SHELLS 6
+#define STAT_NAILS 7
+#define STAT_ROCKETS 8
+#define STAT_CELLS 9
+#define STAT_ACTIVEWEAPON 10
+#define STAT_TOTALSECRETS 11
+#define STAT_TOTALMONSTERS 12
+#define STAT_SECRETS 13
+#define STAT_MONSTERS 14
+#define STAT_ITEMS 15
+#define STAT_VIEWHEIGHT	16
 
-float STAT_VIEWZOOM             = 21;
+#define STAT_VIEWZOOM 21
 
-float STAT_MOVEVARS_AIRACCEL_QW_STRETCHFACTOR = 220;
-float STAT_MOVEVARS_AIRCONTROL_PENALTY  =  221;
-float STAT_MOVEVARS_AIRSPEEDLIMIT_NONQW =  222;
-float STAT_MOVEVARS_AIRSTRAFEACCEL_QW   =  223;
-float STAT_MOVEVARS_AIRCONTROL_POWER    =  224;
-float STAT_MOVEFLAGS                    = 225;
+#define STAT_MOVEVARS_AIRACCEL_QW_STRETCHFACTOR 220
+#define STAT_MOVEVARS_AIRCONTROL_PENALTY 221
+#define STAT_MOVEVARS_AIRSPEEDLIMIT_NONQW 222
+#define STAT_MOVEVARS_AIRSTRAFEACCEL_QW 223
+#define STAT_MOVEVARS_AIRCONTROL_POWER 224
+#define STAT_MOVEFLAGS 225
 
-float STAT_MOVEVARS_WARSOWBUNNY_AIRFORWARDACCEL = 226;
-float STAT_MOVEVARS_WARSOWBUNNY_ACCEL   =  227;
-float STAT_MOVEVARS_WARSOWBUNNY_TOPSPEED =   228;
-float STAT_MOVEVARS_WARSOWBUNNY_TURNACCEL =  229;
-float STAT_MOVEVARS_WARSOWBUNNY_BACKTOSIDERATIO = 230;
+#define STAT_MOVEVARS_WARSOWBUNNY_AIRFORWARDACCEL 226
+#define STAT_MOVEVARS_WARSOWBUNNY_ACCEL 227
+#define STAT_MOVEVARS_WARSOWBUNNY_TOPSPEED 228
+#define STAT_MOVEVARS_WARSOWBUNNY_TURNACCEL 229
+#define STAT_MOVEVARS_WARSOWBUNNY_BACKTOSIDERATIO = 230
 
-float STAT_MOVEVARS_AIRSTOPACCELERATE   =  231;
-float STAT_MOVEVARS_AIRSTRAFEACCELERATE =  232;
-float STAT_MOVEVARS_MAXAIRSTRAFESPEED   =  233;
-float STAT_MOVEVARS_AIRCONTROL          =  234;
+#define STAT_MOVEVARS_AIRSTOPACCELERATE 231
+#define STAT_MOVEVARS_AIRSTRAFEACCELERATE 232
+#define STAT_MOVEVARS_MAXAIRSTRAFESPEED 233
+#define STAT_MOVEVARS_AIRCONTROL 234
 
-float	STAT_FRAGLIMIT                  = 235;
-float	STAT_TIMELIMIT                  = 236;
+#define	STAT_FRAGLIMIT 235
+#define	STAT_TIMELIMIT 236
 
-float	STAT_MOVEVARS_WALLFRICTION    = 237;
-float STAT_MOVEVARS_FRICTION            = 238;
-float STAT_MOVEVARS_WATERFRICTION       = 239;
-float		STAT_MOVEVARS_TICRATE   = 240;
-float		STAT_MOVEVARS_TIMESCALE = 241;
-float   STAT_MOVEVARS_GRAVITY   = 242;
+#define	STAT_MOVEVARS_WALLFRICTION 237
+#define STAT_MOVEVARS_FRICTION  238
+#define STAT_MOVEVARS_WATERFRICTION 239
+#define	STAT_MOVEVARS_TICRATE 240
+#define STAT_MOVEVARS_TIMESCALE 241
+#define STAT_MOVEVARS_GRAVITY 242
 
-float STAT_MOVEVARS_STOPSPEED           = 243;
-float STAT_MOVEVARS_MAXSPEED            = 244;
-float STAT_MOVEVARS_SPECTATORMAXSPEED   = 245;// FIXME: QW has a separate cvar for this
-float STAT_MOVEVARS_ACCELERATE          =  246;
-float STAT_MOVEVARS_AIRACCELERATE       =  247;
-float STAT_MOVEVARS_WATERACCELERATE     =  248;
-float STAT_MOVEVARS_ENTGRAVITY          =  249;
-float STAT_MOVEVARS_JUMPVELOCITY        =  250;
-float STAT_MOVEVARS_EDGEFRICTION        =  251;
-float STAT_MOVEVARS_MAXAIRSPEED         =  252;
-float STAT_MOVEVARS_STEPHEIGHT          =  253;
-float STAT_MOVEVARS_AIRACCEL_QW         =  254;
-float STAT_MOVEVARS_AIRACCEL_SIDEWAYS_FRICTION = 255;
+#define STAT_MOVEVARS_STOPSPEED 243
+#define STAT_MOVEVARS_MAXSPEED 244
+#define STAT_MOVEVARS_SPECTATORMAXSPEED 245// FIXME: QW has a separate cvar for this
+#define STAT_MOVEVARS_ACCELERATE 246
+#define STAT_MOVEVARS_AIRACCELERATE 247
+#define STAT_MOVEVARS_WATERACCELERATE 248
+#define STAT_MOVEVARS_ENTGRAVITY 249
+#define STAT_MOVEVARS_JUMPVELOCITY 250
+#define STAT_MOVEVARS_EDGEFRICTION 251
+#define STAT_MOVEVARS_MAXAIRSPEED 252
+#define STAT_MOVEVARS_STEPHEIGHT 253
+#define STAT_MOVEVARS_AIRACCEL_QW 254
+#define STAT_MOVEVARS_AIRACCEL_SIDEWAYS_FRICTION 255
 
 // Quake Sound Constants
-const float CHAN_AUTO			= 0;
-const float CHAN_WEAPON			= 1;
-const float CHAN_VOICE			= 2;
-const float CHAN_ITEM			= 3;
-const float CHAN_BODY			= 4;
+#define CHAN_AUTO 0
+#define CHAN_WEAPON 1
+#define CHAN_VOICE 2
+#define CHAN_ITEM 3
+#define CHAN_BODY 4
 
-const float ATTN_NONE			= 0;
-const float ATTN_NORM			= 1;
-const float ATTN_IDLE			= 2;
-const float ATTN_STATIC			= 3;
+#define ATTN_NONE 0
+#define ATTN_NORM 1
+#define ATTN_IDLE 2
+#define ATTN_STATIC 3
 
 // Frik File Constants
-const float FILE_READ			= 0;
-const float FILE_APPEND			= 1;
-const float FILE_WRITE			= 2;
+#define FILE_READ 0
+#define FILE_APPEND 1
+#define FILE_WRITE 2
 
 // Quake Point Contents
-const float CONTENT_EMPTY					= -1;
-const float CONTENT_SOLID					= -2;
-const float CONTENT_WATER					= -3;
-const float CONTENT_SLIME					= -4;
-const float CONTENT_LAVA					= -5;
-const float CONTENT_SKY						= -6;
+#define CONTENT_EMPTY -1
+#define CONTENT_SOLID -2
+#define CONTENT_WATER -3
+#define CONTENT_SLIME -4
+#define CONTENT_LAVA -5
+#define CONTENT_SKY -6
 
 // takedamage values
-const float DAMAGE_NO				= 0;
-const float DAMAGE_YES				= 1;
-const float DAMAGE_AIM				= 2;
+#define DAMAGE_NO 0
+#define DAMAGE_YES 1
+#define DAMAGE_AIM 2
 
 // edict.flags
-const float	FL_FLY					= 1;
-const float	FL_SWIM					= 2;
-const float	FL_CLIENT				= 8;	// set for all client edicts
-const float	FL_INWATER				= 16;	// for enter / leave water splash
-const float	FL_MONSTER				= 32;
-const float	FL_GODMODE				= 64;	// player cheat
-const float	FL_NOTARGET				= 128;	// player cheat
-const float	FL_ITEM					= 256;	// extra wide size for bonus items
-const float	FL_ONGROUND				= 512;	// standing on something
-const float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
-const float	FL_WATERJUMP			= 2048;	// player jumping out of water
-const float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
-const float FL_DISARMED      = 8192;    //used for FL_MONSTER, tells the AI they have no more guns left
-const float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
-const float FL_NOSHOOT        = 32768;  //shuts off FL_CLIENT ability to use their weapons
-const float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
-const float FL_NODE           = 131072; //kinda ugly but used for non unit things
+#define	FL_FLY 1
+#define	FL_SWIM 2
+#define	FL_CLIENT 8	// set for all client edicts
+#define	FL_INWATER 16	// for enter / leave water splash
+#define	FL_MONSTER 32
+#define	FL_GODMODE 64	// player cheat
+#define	FL_NOTARGET 128	// player cheat
+#define	FL_ITEM 256	// extra wide size for bonus items
+#define	FL_ONGROUND 512	// standing on something
+#define	FL_PARTIALGROUND 1024	// not all corners are valid
+#define	FL_WATERJUMP 2048	// player jumping out of water
+#define	FL_JUMPRELEASED 4096	// for jump debouncing
+#define FL_DISARMED 8192    //used for FL_MONSTER, tells the AI they have no more guns left
+#define FL_UNIT 16384  //kinda ugly but used for all clients and monsters
+#define FL_NOSHOOT 32768  //shuts off FL_CLIENT ability to use their weapons
+#define FL_TURRET 65536  //the FL_MONSTER has a Turret
+#define FL_NODE 131072 //kinda ugly but used for non unit things
 
 // edict.movetype values
-const float	MOVETYPE_NONE			= 0;	// never moves
-//float	MOVETYPE_ANGLENOCLIP	= 1;
-//float	MOVETYPE_ANGLECLIP		= 2;
-const float	MOVETYPE_WALK			= 3;	// players only
-const float	MOVETYPE_STEP			= 4;	// discrete, not real time unless fall
-const float	MOVETYPE_FLY			= 5;
-const float	MOVETYPE_TOSS			= 6;	// gravity
-const float	MOVETYPE_PUSH			= 7;	// no clip to world, push and crush
-const float	MOVETYPE_NOCLIP			= 8;
-const float	MOVETYPE_FLYMISSILE		= 9;	// fly with extra size against monsters
-const float	MOVETYPE_BOUNCE			= 10;
-const float	MOVETYPE_BOUNCEMISSILE	= 11;	// bounce with extra size
+#define	MOVETYPE_NONE 0	// never moves
+//#define MOVETYPE_ANGLENOCLIP 1
+//#define MOVETYPE_ANGLECLIP 2
+#define	MOVETYPE_WALK 3	// players only
+#define	MOVETYPE_STEP 4	// discrete, not real time unless fall
+#define	MOVETYPE_FLY 5
+#define	MOVETYPE_TOSS 6	// gravity
+#define	MOVETYPE_PUSH 7	// no clip to world, push and crush
+#define	MOVETYPE_NOCLIP 8
+#define	MOVETYPE_FLYMISSILE 9	// fly with extra size against monsters
+#define	MOVETYPE_BOUNCE 10
+#define	MOVETYPE_BOUNCEMISSILE 11	// bounce with extra size
 
 // Quake Solid Constants
-const float SOLID_NOT						= 0;
-const float SOLID_TRIGGER					= 1;
-const float SOLID_BBOX						= 2;
-const float SOLID_SLIDEBOX					= 3;
-const float SOLID_BSP						= 4;
-const float SOLID_CORPSE					= 5;
+#define SOLID_NOT 0
+#define SOLID_TRIGGER 1
+#define SOLID_BBOX 2
+#define SOLID_SLIDEBOX 3
+#define SOLID_BSP 4
+#define SOLID_CORPSE 5
 
 // Quake Move Constants
-const float MOVE_NORMAL						= 0;
-const float MOVE_NOMONSTERS					= 1;
-const float MOVE_MISSILE					= 2;
+#define MOVE_NORMAL 0
+#define MOVE_NOMONSTERS 1
+#define MOVE_MISSILE 2
 
 // Boolean Constants
 const float true	= 1;
@@ -392,79 +389,79 @@ const float false	= 0;
 const float TRUE	= 1;
 const float FALSE	= 0;
 
-const float EXTRA_LOW = -99999999;
-const float EXTRA_HIGH = 99999999;
+#define EXTRA_LOW -99999999
+#define EXTRA_HIGH 99999999
 
-const vector VEC_1	= '1 1 1';
-const vector VEC_0	= '0 0 0';
-const vector VEC_M1	= '-1 -1 -1';
+#define VEC_1 '1 1 1'
+#define VEC_0 '0 0 0'
+#define VEC_M1 '-1 -1 -1'
 
 const float M_PI = 3.14159265358979323846;
 
-vector	VEC_HULL_MIN = '-16 -16 -24';
-vector	VEC_HULL_MAX = '16 16 32';
+#define VEC_HULL_MIN '-16 -16 -24'
+#define VEC_HULL_MAX '16 16 32'
 
 // Quake Temporary Entity Constants
-const float TE_SPIKE						= 0;
-const float TE_SUPERSPIKE					= 1;
-const float TE_GUNSHOT						= 2;
-const float TE_EXPLOSION					= 3;
-const float TE_TAREXPLOSION					= 4;
-const float TE_LIGHTNING1					= 5;
-const float TE_LIGHTNING2					= 6;
-const float TE_WIZSPIKE						= 7;
-const float TE_KNIGHTSPIKE					= 8;
-const float TE_LIGHTNING3					= 9;
-const float TE_LAVASPLASH					= 10;
-const float TE_TELEPORT						= 11;
-const float TE_EXPLOSION2					= 12;
-	// Darkplaces Additions
-	const float TE_EXPLOSIONRGB					= 53;
-	const float TE_GUNSHOTQUAD					= 57;
-	const float TE_EXPLOSIONQUAD 				= 70;
-	const float TE_SPIKEQUAD					= 58;
-	const float TE_SUPERSPIKEQUAD				= 59;
+#define TE_SPIKE 0
+#define TE_SUPERSPIKE 1
+#define TE_GUNSHOT 2
+#define TE_EXPLOSION 3
+#define TE_TAREXPLOSION 4
+#define TE_LIGHTNING1 5
+#define TE_LIGHTNING2 6
+#define TE_WIZSPIKE	7
+#define TE_KNIGHTSPIKE 8
+#define TE_LIGHTNING3 9
+#define TE_LAVASPLASH 10
+#define TE_TELEPORT	11
+#define TE_EXPLOSION2 12
+// Darkplaces Additions
+#define TE_EXPLOSIONRGB 53
+#define TE_GUNSHOTQUAD 57
+#define TE_EXPLOSIONQUAD 70
+#define TE_SPIKEQUAD 58
+#define TE_SUPERSPIKEQUAD 59
 	
 // PFlags for Dynamic Lights
-const float PFLAGS_NOSHADOW					= 1;
-const float PFLAGS_CORONA					= 2;
-const float PFLAGS_FULLDYNAMIC				= 128;
+#define PFLAGS_NOSHADOW  1
+#define PFLAGS_CORONA  2
+#define PFLAGS_FULLDYNAMIC 128
 
-const float EF_ADDITIVE		= 32;
-const float EF_BLUE		= 64;
-const float EF_FLAME		= 1024;
-const float EF_FULLBRIGHT	= 512;
-const float EF_NODEPTHTEST	= 8192;
-const float EF_NODRAW		= 16;
-const float EF_NOSHADOW		= 4096;
-const float EF_RED		= 128;
-const float EF_STARDUST		= 2048;
-const float EF_SELECTABLE 	= 16384;
-const float EF_DOUBLESIDED = 32768;
+#define EF_ADDITIVE	32
+#define EF_BLUE	64
+#define EF_FLAME 1024
+#define EF_FULLBRIGHT 512
+#define EF_NODEPTHTEST 8192
+#define EF_NODRAW 16
+#define EF_NOSHADOW	 4096
+#define EF_RED 128
+#define EF_STARDUST	2048
+#define EF_SELECTABLE 16384
+#define EF_DOUBLESIDED 32768
 
-const float PFL_ONGROUND	= 1;
-const float PFL_CROUCH		= 2;
-const float PFL_DEAD		= 4;
-const float PFL_GIBBED		= 8;
+#define PFL_ONGROUN 1
+#define PFL_CROUCH 2
+#define PFL_DEAD 4
+#define PFL_GIBBED 8
 
 // draw flags
-const float DRAWFLAG_NORMAL = 0;
-const float DRAWFLAG_ADDITIVE = 1;
-const float DRAWFLAG_MODULATE = 2;
-const float DRAWFLAG_2XMODULATE = 3;
-const float DRAWFLAG_SCREEN = 4;
-const float DRAWFLAG_MIPMAP = 0x100; // only for R_BeginPolygon
+#define DRAWFLAG_NORMAL 0
+#define DRAWFLAG_ADDITIVE 1
+#define DRAWFLAG_MODULATE  2
+#define DRAWFLAG_2XMODULATE 3
+#define DRAWFLAG_SCREEN 4
+#define DRAWFLAG_MIPMAP  0x100 // only for R_BeginPolygon
 
 //model flags - just to satisfy data sharing - PR
-float EF_NOMODELFLAGS = 8388608; // ignore any effects in a model file and substitute your own
-float MF_ROCKET  =   1; // leave a trail
-float MF_GRENADE =   2; // leave a trail
-float MF_GIB     =   4; // leave a trail
-float MF_ROTATE  =   8; // rotate (bonus items)
-float MF_TRACER  =  16; // green split trail
-float MF_ZOMGIB  =  32; // small blood trail
-float MF_TRACER2 =  64; // orange split trail
-float MF_TRACER3 = 128; // purple trail
+#define EF_NOMODELFLAGS 8388608 // ignore any effects in a model file and substitute your own
+#define MF_ROCKET  1 // leave a trail
+#define MF_GRENADE 2 // leave a trail
+#define MF_GIB 4 // leave a trail
+#define MF_ROTATE 8 // rotate (bonus items)
+#define MF_TRACER 16 // green split trail
+#define MF_ZOMGIB 32 // small blood trail
+#define MF_TRACER2 64 // orange split trail
+#define MF_TRACER3 128 // purple trail
 /*
 ==============================================================================
 
@@ -554,10 +551,10 @@ vector(vector org, float lpflags) getlight2 = #92;
 vector getlight_dir;
 vector getlight_ambient;
 vector getlight_diffuse;
-const float LP_LIGHTMAP	= 1;
-const float LP_RTWORLD = 2;
-const float LP_DYNLIGHT = 4;
-const float LP_COMPLETE = 7;
+#define LP_LIGHTMAP 1
+#define LP_RTWORLD 2
+#define LP_DYNLIGHT 4
+#define LP_COMPLETE 7
 
 float(string name, string value, float flags) registercvar = #93;
 float( float a, ... ) min = #94;
@@ -842,27 +839,27 @@ vector gecko_get_texture_extent( string name ) = #493;
 // darkplaces implementation: VorteX
 // constant definitions:
 // particle base behavior:
-float PT_ALPHASTATIC = 1;
-float PT_STATIC = 2;
-float PT_SPARK = 3;
-float PT_BEAM = 4;
-float PT_RAIN = 5;
-float PT_RAINDECAL = 6;
-float PT_SNOW = 7;
-float PT_BUBBLE = 8;
-float PT_BLOOD = 9;
-float PT_SMOKE = 10;
-float PT_DECAL = 11;
-float PT_ENTITYPARTICLE = 12;
+#define PT_ALPHASTATIC 1
+#define PT_STATIC 2
+#define PT_SPARK 3
+#define PT_BEAM 4
+#define PT_RAIN 5
+#define PT_RAINDECAL 6
+#define PT_SNOW 7;
+#define PT_BUBBLE 8
+#define PT_BLOOD 9
+#define PT_SMOKE 10
+#define PT_DECAL 11
+#define PT_ENTITYPARTICLE 12
 // particle blendtypes:
-float PBLEND_ALPHA = 0;
-float PBLEND_ADD = 1;
-float PBLEND_INVMOD = 2;
+#define PBLEND_ALPHA 0
+#define PBLEND_ADD 1
+#define PBLEND_INVMOD 2
 // particle orientation:
-float PARTICLE_BILLBOARD = 0;
-float PARTICLE_SPARK = 1;
-float PARTICLE_ORIENTED_DOUBLESIDED = 2;
-float PARTICLE_BEAM = 3;
+#define PARTICLE_BILLBOARD 0
+#define PARTICLE_SPARK 1
+#define PARTICLE_ORIENTED_DOUBLESIDED 2
+#define PARTICLE_BEAM 3
 // global definitions:
 float particle_type; // one of PT_
 float particle_blendmode; // one of PBLEND_ values
@@ -967,7 +964,7 @@ float transparent_offset; // should be set before entity is added
 // DP_CSQC_ENTITYMODELLIGHT
 // idea: VorteX
 // darkplaces implementation: VorteX
-const float RF_MODELLIGHT = 4096;
+#define RF_MODELLIGHT 4096
 .vector modellight_ambient;
 .vector modellight_diffuse;
 .vector modellight_dir;
@@ -986,23 +983,23 @@ void(float ispaused) setpause = #531;
 // darkplaces implementation: VorteX
 // constant definitions:
 // render entity fields:
-float E_ACTIVE 	    = 0; // float 0/1
-float E_ORIGIN      = 1; // vector
-float E_FORWARD     = 2; // vector
-float E_RIGHT       = 3; // vector
-float E_UP          = 4; // vector
-float E_SCALE       = 5; // float
-float E_ORIGINANDVECTORS = 6; // returns origin, + sets v_* vectors to orientation
-float E_ALPHA       = 7; // float
-float E_COLORMOD    = 8; // vector
-float E_PANTSCOLOR  = 9; // vector
-float E_SHIRTCOLOR  = 10; // vector
-float E_SKIN        = 11; // float
-float E_MINS        = 12; // vector
-float E_MAXS        = 13; // vector
-float E_ABSMIN      = 14; // vector
-float E_ABSMAX      = 15; // vector
-float E_LIGHT       = 16; // vector - modellight
+#define E_ACTIVE 0 // float 0/1
+#define E_ORIGIN 1 // vector
+#define E_FORWARD 2 // vector
+#define E_RIGHT 3 // vector
+#define E_UP 4 // vector
+#define E_SCALE 5 // float
+#define E_ORIGINANDVECTORS 6 // returns origin, + sets v_* vectors to orientation
+#define E_ALPHA 7 // float
+#define E_COLORMOD 8 // vector
+#define E_PANTSCOLOR 9 // vector
+#define E_SHIRTCOLOR 10 // vector
+#define E_SKIN 11 // float
+#define E_MINS 12 // vector
+#define E_MAXS 13 // vector
+#define E_ABSMIN 14 // vector
+#define E_ABSMAX 15 // vector
+#define E_LIGHT 16 // vector - modellight
 // builtin definitions:
 float(float entitynum, float fldnum) getentity = #504;
 vector(float entitynum, float fldnum) getentityvec = #504;
@@ -1027,22 +1024,22 @@ vector(float entitynum, float fldnum) getentityvec = #504;
 //   for slots see:
 //constant definitions:
 float drawfont;            // set it before drawstring()/drawchar() calls
-float FONT_DEFAULT = 0;    // 'default'
-float FONT_CONSOLE = 1;    // 'console', REALLY should be fixed width (ls!)
-float FONT_SBAR = 2;       // 'sbar', used on hud, must be fixed width
-float FONT_NOTIFY = 3;     // 'notify', used on sprint/bprint
-float FONT_CHAT = 4;       // 'chat'
-float FONT_CENTERPRINT = 5;// 'centerprint'
-float FONT_INFOBAR = 6;    // 'infobar'
-float FONT_MENU = 7;       // 'menu', should be fixed width
-float FONT_USER0 = 8;      // 'user0', userdefined fonts
-float FONT_USER1 = 9;      // 'user1', userdefined fonts
-float FONT_USER2 = 10;     // 'user2', userdefined fonts
-float FONT_USER3 = 11;     // 'user3', userdefined fonts
-float FONT_USER4 = 12;     // 'user4', userdefined fonts
-float FONT_USER5 = 13;     // 'user5', userdefined fonts
-float FONT_USER6 = 14;     // 'user6', userdefined fonts
-float FONT_USER7 = 15;     // 'user7' slot, userdefined fonts
+#define FONT_DEFAULT 0   // 'default'
+#define FONT_CONSOLE 1   // 'console', REALLY should be fixed width (ls!)
+#define FONT_SBAR 2      // 'sbar', used on hud, must be fixed width
+#define FONT_NOTIFY 3    // 'notify', used on sprint/bprint
+#define FONT_CHAT 4      // 'chat'
+#define FONT_CENTERPRINT 5// 'centerprint'
+#define FONT_INFOBAR 6    // 'infobar'
+#define FONT_MENU 7;      // 'menu', should be fixed width
+#define FONT_USER0 8      // 'user0', userdefined fonts
+#define FONT_USER1 9      // 'user1', userdefined fonts
+#define FONT_USER2 10    // 'user2', userdefined fonts
+#define FONT_USER3 11    // 'user3', userdefined fonts
+#define FONT_USER4 12    // 'user4', userdefined fonts
+#define FONT_USER5 13    // 'user5', userdefined fonts
+#define FONT_USER6 14    // 'user6', userdefined fonts
+#define FONT_USER7 15    // 'user7' slot, userdefined fonts
 //builtin definitions:
 float findfont(string s) = #356; // find font by fontname and return it's index
 float loadfont(string fontname, string fontmaps, string sizes, float slot, float fix_scale, float fix_voffset) = #357; 
@@ -1105,7 +1102,7 @@ float(string url, float id, string content_type, string delim, float buf, float 
 //idea: divVerent
 //darkplaces implementation: divVerent
 //constant definitions:
-const float VF_MAINVIEW         = 400;
+#define VF_MAINVIEW 400
 //use setproperty(VF_MAINVIEW, 1); before calling R_RenderView for the render
 //that shall become the "main" view, which is e.g. used by PRYDON_CLIENTCURSOR 
 //this flag is set for the first scene, and not cleared by R_ClearScene
@@ -1116,7 +1113,7 @@ const float VF_MAINVIEW         = 400;
 //idea: divVerent
 //darkplaces implementation: divVerent
 //constant definitions:
-const float VF_MINFPS_QUALITY   = 401;
+#define VF_MINFPS_QUALITY 401
 //use getproperty(VF_MINFPS_QUALITY); to do CSQC based LOD based on cl_minfps
 //1 should lead to an unmodified view
 
@@ -1127,12 +1124,12 @@ const float VF_MINFPS_QUALITY   = 401;
 //builtin definitions:
 void(entity e, float refdefflags) V_CalcRefdef = #640;
 //constant definitions:
-float PMF_DUCKED = 4;
-float PMF_ONGROUND = 8;
-float REFDEFFLAG_TELEPORTED = 1;
-float REFDEFFLAG_JUMPING = 2;
-float REFDEFFLAG_DEAD = 4;
-float REFDEFFLAG_INTERMISSION = 8;
+#define PMF_DUCKED 4
+#define PMF_ONGROUND 8
+#define REFDEFFLAG_TELEPORTED 1
+#define REFDEFFLAG_JUMPING 2
+#define REFDEFFLAG_DEAD 4
+#define REFDEFFLAG_INTERMISSION 8
 //- use this on the player entity after performing prediction
 //- pass REFDEFFLAG_TELEPORTED if the player teleported since last frame
 //- pass REFDEFFLAG_JUMPING if jump button is pressed
@@ -1211,10 +1208,10 @@ string(string format, ...) sprintf = #627;
 //idea: tZork
 //darkplaces implementation: tZork, divVerent
 //constant definitions:
-float GETTIME_FRAMESTART = 0; // time of start of frame
-float GETTIME_REALTIME = 1; // current time (may be OS specific)
-float GETTIME_HIRES = 2; // like REALTIME, but may reset between QC invocations and thus can be higher precision
-float GETTIME_UPTIME = 3; // time since start of the engine
+#define GETTIME_FRAMESTART 0 // time of start of frame
+#define GETTIME_REALTIME 1 // current time (may be OS specific)
+#define GETTIME_HIRES 2 // like REALTIME, but may reset between QC invocations and thus can be higher precision
+#define GETTIME_UPTIME 3 // time since start of the engine
 //builtin definitions:
 float(float tmr) gettime = #519;
 //description:
@@ -1224,7 +1221,7 @@ float(float tmr) gettime = #519;
 //idea: divVerent
 //darkplaces implementation: divVerent
 //constant definitions:
-float GETTIME_CDTRACK = 4;
+#define GETTIME_CDTRACK 4
 //description:
 //returns the playing time of the current cdtrack when passed to gettime()
 //see DP_END_GETSOUNDTIME for similar functionality but for entity sound channels
@@ -1293,7 +1290,7 @@ void(entity e, float chan, string samp, float vol, float atten, float speed, flo
 //idea: Samual
 //darkplaces implementation: Samual
 //movetype definitions:
-float MOVETYPE_FLY_WORLDONLY = 33;
+#define MOVETYPE_FLY_WORLDONLY 33
 //description:
 //like MOVETYPE_FLY, but does all traces with MOVE_WORLDONLY, and is ignored by MOVETYPE_PUSH. Should only be combined with SOLID_NOT and SOLID_TRIGGER.
 
@@ -1301,16 +1298,16 @@ float MOVETYPE_FLY_WORLDONLY = 33;
 //idea: divVerent
 //darkplaces implementation: divVerent
 //constant definitions:
-float PRECACHE_PIC_FROMWAD = 1; // this one actually is part of EXT_CSQC
-float PRECACHE_PIC_NOTPERSISTENT = 2; // picture may get deallocated when unused
-float PRECACHE_PIC_MIPMAP = 8; // mipmap the texture for possibly better downscaling at memory expense
+#define PRECACHE_PIC_FROMWAD 1 // this one actually is part of EXT_CSQC
+#define PRECACHE_PIC_NOTPERSISTENT 2 // picture may get deallocated when unused
+#define PRECACHE_PIC_MIPMAP 8 // mipmap the texture for possibly better downscaling at memory expense
 //notes: these constants are given as optional second argument to precache_pic()
 
 //DP_QC_TRACE_MOVETYPE_WORLDONLY
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //constant definitions:
-float MOVE_WORLDONLY = 3;
+#define MOVE_WORLDONLY 3
 //description:
 //allows traces to hit only world (ignoring all entities, unlike MOVE_NOMONSTERS which hits all bmodels), use as the nomonsters parameter to trace functions
 
@@ -1345,39 +1342,39 @@ float trace_dphitcontents; // DPCONTENTS_ value of impacted surface (not content
 float trace_dphitq3surfaceflags; // Q3SURFACEFLAG_ value of impacted surface
 string trace_dphittexturename; // texture name of impacted surface
 //constants:
-float DPCONTENTS_SOLID = 1; // hit a bmodel, not a bounding box
-float DPCONTENTS_WATER = 2;
-float DPCONTENTS_SLIME = 4;
-float DPCONTENTS_LAVA = 8;
-float DPCONTENTS_SKY = 16;
-float DPCONTENTS_BODY = 32; // hit a bounding box, not a bmodel
-float DPCONTENTS_CORPSE = 64; // hit a SOLID_CORPSE entity
-float DPCONTENTS_NODROP = 128; // an area where backpacks should not spawn
-float DPCONTENTS_PLAYERCLIP = 256; // blocks player movement
-float DPCONTENTS_MONSTERCLIP = 512; // blocks monster movement
-float DPCONTENTS_DONOTENTER = 1024; // AI hint brush
-float DPCONTENTS_LIQUIDSMASK = 14; // WATER | SLIME | LAVA
-float DPCONTENTS_BOTCLIP = 2048; // AI hint brush
-float DPCONTENTS_OPAQUE = 4096; // only fully opaque brushes get this (may be useful for line of sight checks)
-float Q3SURFACEFLAG_NODAMAGE = 1;
-float Q3SURFACEFLAG_SLICK = 2; // low friction surface
-float Q3SURFACEFLAG_SKY = 4; // sky surface (also has NOIMPACT and NOMARKS set)
-float Q3SURFACEFLAG_LADDER = 8; // climbable surface
-float Q3SURFACEFLAG_NOIMPACT = 16; // projectiles should remove themselves on impact (this is set on sky)
-float Q3SURFACEFLAG_NOMARKS = 32; // projectiles should not leave marks, such as decals (this is set on sky)
-float Q3SURFACEFLAG_FLESH = 64; // projectiles should do a fleshy effect (blood?) on impact
-float Q3SURFACEFLAG_NODRAW = 128; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_HINT = 256; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_SKIP = 512; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_NOLIGHTMAP = 1024; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_POINTLIGHT = 2048; // compiler hint (not important to qc)
-float Q3SURFACEFLAG_METALSTEPS = 4096; // walking on this surface should make metal step sounds
-float Q3SURFACEFLAG_NOSTEPS = 8192; // walking on this surface should not make footstep sounds
-float Q3SURFACEFLAG_NONSOLID = 16384; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_LIGHTFILTER = 32768; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_ALPHASHADOW = 65536; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_NODLIGHT = 131072; // compiler hint (not important to qc)
-//float Q3SURFACEFLAG_DUST = 262144; // translucent 'light beam' effect (not important to qc)
+#define DPCONTENTS_SOLID 1 // hit a bmodel, not a bounding box
+#define DPCONTENTS_WATER 2
+#define DPCONTENTS_SLIME 4
+#define DPCONTENTS_LAVA 8
+#define DPCONTENTS_SKY 16
+#define DPCONTENTS_BODY 32 // hit a bounding box, not a bmodel
+#define DPCONTENTS_CORPSE 64 // hit a SOLID_CORPSE entity
+#define DPCONTENTS_NODROP 128 // an area where backpacks should not spawn
+#define DPCONTENTS_PLAYERCLIP 256 // blocks player movement
+#define DPCONTENTS_MONSTERCLIP 512 // blocks monster movement
+#define DPCONTENTS_DONOTENTER 1024 // AI hint brush
+#define DPCONTENTS_LIQUIDSMASK 14 // WATER | SLIME | LAVA
+#define DPCONTENTS_BOTCLIP 2048 // AI hint brush
+#define DPCONTENTS_OPAQUE 4096 // only fully opaque brushes get this (may be useful for line of sight checks)
+#define Q3SURFACEFLAG_NODAMAGE 1
+#define Q3SURFACEFLAG_SLICK 2 // low friction surface
+#define Q3SURFACEFLAG_SKY 4 // sky surface (also has NOIMPACT and NOMARKS set)
+#define Q3SURFACEFLAG_LADDER 8 // climbable surface
+#define Q3SURFACEFLAG_NOIMPACT 16 // projectiles should remove themselves on impact (this is set on sky)
+#define Q3SURFACEFLAG_NOMARKS 32 // projectiles should not leave marks, such as decals (this is set on sky)
+#define Q3SURFACEFLAG_FLESH 64 // projectiles should do a fleshy effect (blood?) on impact
+#define Q3SURFACEFLAG_NODRAW 128 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_HINT 256 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_SKIP 512 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_NOLIGHTMAP 1024 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_POINTLIGHT 2048 // compiler hint (not important to qc)
+#define Q3SURFACEFLAG_METALSTEPS 4096 // walking on this surface should make metal step sounds
+#define Q3SURFACEFLAG_NOSTEPS 8192 // walking on this surface should not make footstep sounds
+#define Q3SURFACEFLAG_NONSOLID 16384 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_LIGHTFILTER 32768 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_ALPHASHADOW 65536 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_NODLIGHT 131072 // compiler hint (not important to qc)
+//#define Q3SURFACEFLAG_DUST 262144 // translucent 'light beam' effect (not important to qc)
 //description:
 //adds additional information after a traceline/tracebox/tracetoss call.
 //also (very important) sets trace_* globals before calling .touch functions,
@@ -1392,29 +1389,29 @@ float Q3SURFACEFLAG_NONSOLID = 16384; // compiler hint (not important to qc)
 //DarkPlaces implementation: divVerent
 //builtin definitions:
 float(string name) cvar_type = #495;
-float CVAR_TYPEFLAG_EXISTS = 1;
-float CVAR_TYPEFLAG_SAVED = 2;
-float CVAR_TYPEFLAG_PRIVATE = 4;
-float CVAR_TYPEFLAG_ENGINE = 8;
-float CVAR_TYPEFLAG_HASDESCRIPTION = 16;
-float CVAR_TYPEFLAG_READONLY = 32;
+#define CVAR_TYPEFLAG_EXISTS 1
+#define CVAR_TYPEFLAG_SAVED 2
+#define CVAR_TYPEFLAG_PRIVATE 4
+#define CVAR_TYPEFLAG_ENGINE 8
+#define CVAR_TYPEFLAG_HASDESCRIPTION 16
+#define CVAR_TYPEFLAG_READONLY 32
 
 // CVAR Command BitFlags
 //  cmd.h - Line 60
-float CF_NONE                 = 0;
-float CF_CLIENT               = 1;  // cvar/command that only the client can change/execute
-float CF_SERVER               = 2;  // cvar/command that only the server can change/execute
-float CF_CLIENT_FROM_SERVER   = 4;  // command that the server is allowed to execute on the client
-float CF_SERVER_FROM_CLIENT   = 8;  // command the client is allowed to execute on the server as a stringcmd
-float CF_CHEAT                = 16;  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
-float CF_ARCHIVE              = 32;  // cvar should have its set value saved to config.cfg and persist across sessions
-float CF_READONLY             = 64; // cvar cannot be changed from the console or the command buffer
-float CF_NOTIFY               = 128;  // cvar should trigger a chat notification to all connected clients when changed
-float CF_SERVERINFO           = 256;  // command or cvar relevant to serverinfo string handling
-float CF_USERINFO             = 512;  // command or cvar used to communicate userinfo to the server
-float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
-float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
-float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
+#define CF_NONE 0
+#define CF_CLIENT 1  // cvar/command that only the client can change/execute
+#define CF_SERVER 2  // cvar/command that only the server can change/execute
+#define CF_CLIENT_FROM_SERVER 4  // command that the server is allowed to execute on the client
+#define CF_SERVER_FROM_CLIENT 8 // command the client is allowed to execute on the server as a stringcmd
+#define CF_CHEAT 16  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
+#define CF_ARCHIVE 32  // cvar should have its set value saved to config.cfg and persist across sessions
+#define CF_READONLY 64 // cvar cannot be changed from the console or the command buffer
+#define CF_NOTIFY 128  // cvar should trigger a chat notification to all connected clients when changed
+#define CF_SERVERINFO 256;  // command or cvar relevant to serverinfo string handling
+#define CF_USERINFO 512  // command or cvar used to communicate userinfo to the server
+#define CF_PERSISTENT 1024 // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
+#define CF_PRIVATE 2048 // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
+#define CF_MAXFLAGSVAL 4095    // used to determine if flags is valid
 
 
 //DP_QC_CRC16
@@ -1677,11 +1674,11 @@ string(float fieldnum, entity ent) getentityfieldstring = #499;
 float(float fieldnum, entity ent, string s) putentityfieldstring = #500;
 //constants:
 //Returned by entityfieldtype
-float FIELD_STRING   = 1;
-float FIELD_FLOAT    = 2;
-float FIELD_VECTOR   = 3;
-float FIELD_ENTITY   = 4;
-float FIELD_FUNCTION = 6;
+#define FIELD_STRING 1
+#define FIELD_FLOAT 2
+#define FIELD_VECTOR 3
+#define FIELD_ENTITY 4
+#define FIELD_FUNCTION 6
 //description:
 //Versatile functions intended for storing data from specific entities between level changes, but can be customized for some kind of partial savegame.
 //WARNING: .entity fields cannot be saved and restored between map loads as they will leave dangling pointers.
@@ -1715,24 +1712,20 @@ float(string pattern, float caseinsensitive, float quiet, string packfile) searc
 //only searches for files within the specified packfile, which is expected to match the results of whichpack().
 
 // assorted builtins
-const float		STAT_MOVEVARS_TICRATE           = 240;
-const float		STAT_MOVEVARS_TIMESCALE         = 241;
-const float		STAT_FRAGLIMIT					= 235;
-const float		STAT_TIMELIMIT					= 236;
-const float     STAT_MOVEVARS_GRAVITY           = 242;                                                 
+                                            
 string(void)						ReadPicture = #501;
-float PARTICLES_USEALPHA = 1;
+#define PARTICLES_USEALPHA 1
 float particles_alphamin, particles_alphamax;
-float PARTICLES_USECOLOR = 2;
+#define PARTICLES_USECOLOR 2
 vector particles_colormin, particles_colormax;
-float PARTICLES_USEFADE = 4;  // fades the COUNT (fade alpha using alphamin/alphamax)
+#define PARTICLES_USEFADE 4 // fades the COUNT (fade alpha using alphamin/alphamax)
 float particles_fade;
-float PARTICLES_DRAWASTRAIL = 128;                                                                                     
+#define PARTICLES_DRAWASTRAIL 128                                                                                    
 void(float effectindex, entity own, vector org_from, vector org_to, vector dir_from, vector dir_to, float countmultiplier, float flags) boxparticles = #502;
 float trace_networkentity;
-const float RF_FULLBRIGHT	= 256;
-const float RF_NOSHADOW	= 512;
-float RF_DYNAMICMODELLIGHT = 8192;
+#define RF_FULLBRIGHT 256
+#define RF_NOSHADOW 512
+#define RF_DYNAMICMODELLIGHT 8192
 
 float gettaginfo_parent;
 string gettaginfo_name;

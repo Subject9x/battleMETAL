@@ -60,7 +60,7 @@ void() DecodeLevelParms={
 	self.faction = parm1;
   
   
-	//self.i_reserve = parm1;
+	//self.i_reserve = parm1;	//deprecated / unused for now
 	self.health = 100;
 	//self.ammo_shells = parm4;
 	//self.ammo_nails = parm5;

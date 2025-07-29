@@ -6,9 +6,9 @@
 
 //definitions that id Software left out:
 //these are passed as the 'nomonsters' parameter to traceline/tracebox (yes really this was supported in all quake engines, nomonsters is misnamed)
-float MOVE_NORMAL = 0; // same as FALSE
-float MOVE_NOMONSTERS = 1; // same as TRUE
-float MOVE_MISSILE = 2; // save as movement with .movetype == MOVETYPE_FLYMISSILE
+#define MOVE_NORMAL 0 // same as FALSE
+#define MOVE_NOMONSTERS 1 // same as TRUE
+#define MOVE_MISSILE 2 // save as movement with .movetype == MOVETYPE_FLYMISSILE
 
 //checkextension function
 //idea: expected by almost everyone
@@ -93,7 +93,7 @@ float(string s) checkextension = #99;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_ADDITIVE     = 32;
+#define EF_ADDITIVE 32
 //description:
 //additive blending when this object is rendered
 
@@ -101,7 +101,7 @@ float   EF_ADDITIVE     = 32;
 //idea: id Software
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_BLUE         = 64;
+#define EF_BLUE 64
 //description:
 //entity emits blue light (used for quad)
 
@@ -109,7 +109,7 @@ float   EF_BLUE         = 64;
 //idea: LordHavoc
 //darkplaces implementation: [515] and LordHavoc
 //effects bit:
-float EF_DOUBLESIDED = 32768;
+#define EF_DOUBLESIDED 32768
 //description:
 //render entity as double sided (backfaces are visible, I.E. you see the 'interior' of the model, rather than just the front), can be occasionally useful on transparent stuff.
 
@@ -117,7 +117,7 @@ float EF_DOUBLESIDED = 32768;
 //idea: C.Brutail, divVerent, maikmerten
 //darkplaces implementation: divVerent
 //effects bit:
-float   EF_DYNAMICMODELLIGHT     = 131072;
+#define EF_DYNAMICMODELLIGHT 131072
 //description:
 //force dynamic model light on the entity, even if it's a BSP model (or anything else with lightmaps or light colors)
 
@@ -125,7 +125,7 @@ float   EF_DYNAMICMODELLIGHT     = 131072;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_FLAME        = 1024;
+#define EF_FLAM 1024
 //description:
 //entity is on fire
 
@@ -133,7 +133,7 @@ float   EF_FLAME        = 1024;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_FULLBRIGHT   = 512;
+#define EF_FULLBRIGHT 512
 //description:
 //entity is always brightly lit
 
@@ -141,7 +141,7 @@ float   EF_FULLBRIGHT   = 512;
 //idea: Supa
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_NODEPTHTEST       = 8192;
+#define EF_NODEPTHTEST 8192
 //description:
 //makes entity show up to client even through walls, useful with EF_ADDITIVE for special indicators like where team bases are in a map, so that people don't get lost
 
@@ -149,7 +149,7 @@ float   EF_NODEPTHTEST       = 8192;
 //idea: id Software
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_NODRAW       = 16;
+#define EF_NODRAW 16
 //description:
 //prevents server from sending entity to client (forced invisible, even if it would have been a light source or other such things)
 
@@ -157,7 +157,7 @@ float   EF_NODRAW       = 16;
 //idea: Chris Page, Dresk
 //darkplaces implementation: LordHAvoc
 //effects bit:
-float   EF_NOGUNBOB     = 256;
+#define EF_NOGUNBOB 256
 //description:
 //this has different meanings depending on the entity it is used on:
 //player entity - prevents gun bobbing on player.viewmodel
@@ -187,7 +187,7 @@ float   EF_NOGUNBOB     = 256;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_NOSHADOW     = 4096;
+#define EF_NOSHADOW 4096
 //description:
 //realtime lights will not cast shadows from this entity (but can still illuminate it)
 
@@ -195,7 +195,7 @@ float   EF_NOSHADOW     = 4096;
 //idea: id Software
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_RED          = 128;
+#define EF_RED 128
 //description:
 //entity emits red light (used for invulnerability)
 
@@ -203,7 +203,7 @@ float   EF_RED          = 128;
 //idea: id software
 //darkplaces implementation: divVerent
 //effects bit:
-float   EF_RESTARTANIM_BIT = 1048576;
+#define EF_RESTARTANIM_BIT 1048576
 //description:
 //when toggled, the current animation is restarted. Useful for weapon animation.
 //to toggle this bit in QC, you can do:
@@ -213,7 +213,7 @@ float   EF_RESTARTANIM_BIT = 1048576;
 //idea: MythWorks Inc
 //darkplaces implementation: LordHavoc
 //effects bit:
-float   EF_STARDUST     = 2048;
+#define EF_STARDUST 2048
 //description:
 //entity emits bouncing sparkles in every direction
 
@@ -221,7 +221,7 @@ float   EF_STARDUST     = 2048;
 //idea: id software
 //darkplaces implementation: divVerent
 //effects bit:
-float   EF_TELEPORT_BIT = 2097152;
+#define EF_TELEPORT_BIT 2097152
 //description:
 //when toggled, interpolation of the entity is skipped for one frame. Useful for teleporting.
 //to toggle this bit in QC, you can do:
@@ -295,7 +295,7 @@ float EF_DELTA = 8388608;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //effects bit:
-float EF_LOWPRECISION = 4194304;
+#define EF_LOWPRECISION 4194304
 //description:
 //uses low quality origin coordinates, reducing network traffic compared to the default high precision, intended for numerous objects (projectiles/gibs/bullet holes/etc).
 
@@ -321,12 +321,12 @@ float EF_LOWPRECISION = 4194304;
 //idea: Res2k, BlackHC
 //darkplaces implementation: Res2k, BlackHC
 //constant definitions:
-float GECKO_BUTTON_DOWN         = 0;
-float GECKO_BUTTON_UP           = 1;
+#define GECKO_BUTTON_DOWN 0
+#define GECKO_BUTTON_UP 1
 // either use down and up or just press but not all of them!
-float GECKO_BUTTON_PRESS        = 2;
+#define GECKO_BUTTON_PRESS 2
 // use this for mouse events if needed?
-float GECKO_BUTTON_DOUBLECLICK  = 3;
+#define GECKO_BUTTON_DOUBLECLICK 3
 //builtin definitions:
 /*float(string name) gecko_create( string name ) = #487;
 void(string name) gecko_destroy( string name ) = #488;
@@ -571,7 +571,7 @@ void(entity e, entity tagentity, string tagname) setattachment = #443; // attach
 //idea: Samual
 //darkplaces implementation: Samual
 //movetype definitions:
-float MOVETYPE_FLY_WORLDONLY = 33;
+#define MOVETYPE_FLY_WORLDONLY 33
 //description:
 //like MOVETYPE_FLY, but does all traces with MOVE_WORLDONLY, and is ignored by MOVETYPE_PUSH. Should only be combined with SOLID_NOT and SOLID_TRIGGER.
 //DP_NULL_MODEL
@@ -587,7 +587,7 @@ float MOVETYPE_FLY_WORLDONLY = 33;
 //idea: id Software, LordHavoc (redesigned)
 //darkplaces implementation: LordHavoc
 //movetype definitions:
-float MOVETYPE_FOLLOW = 12;
+#define MOVETYPE_FOLLOW 12
 //description:
 //MOVETYPE_FOLLOW implemented, this uses existing entity fields in unusual ways:
 //aiment - the entity this is attached to.
@@ -703,12 +703,12 @@ string(string s) cvar_string = #448;
 //DarkPlaces implementation: divVerent
 //builtin definitions:
 float(string name) cvar_type = #495;
-float CVAR_TYPEFLAG_EXISTS = 1;
-float CVAR_TYPEFLAG_SAVED = 2;
-float CVAR_TYPEFLAG_PRIVATE = 4;
-float CVAR_TYPEFLAG_ENGINE = 8;
-float CVAR_TYPEFLAG_HASDESCRIPTION = 16;
-float CVAR_TYPEFLAG_READONLY = 32;
+#define CVAR_TYPEFLAG_EXISTS 1
+#define CVAR_TYPEFLAG_SAVED 2
+#define CVAR_TYPEFLAG_PRIVATE 4
+#define CVAR_TYPEFLAG_ENGINE 8
+#define CVAR_TYPEFLAG_HASDESCRIPTION 16
+#define CVAR_TYPEFLAG_READONLY 32
 
 //DP_QC_DIGEST
 //idea: motorsep, Spike
@@ -748,11 +748,11 @@ string(float fieldnum, entity ent) getentityfieldstring = #499;
 float(float fieldnum, entity ent, string s) putentityfieldstring = #500;
 //constants:
 //Returned by entityfieldtype
-float FIELD_STRING   = 1;
-float FIELD_FLOAT    = 2;
-float FIELD_VECTOR   = 3;
-float FIELD_ENTITY   = 4;
-float FIELD_FUNCTION = 6;
+#define FIELD_STRING 1
+#define FIELD_FLOAT 2
+#define FIELD_VECTOR 3
+#define FIELD_ENTITY 4
+#define FIELD_FUNCTION 6
 //description:
 //Versatile functions intended for storing data from specific entities between level changes, but can be customized for some kind of partial savegame.
 //WARNING: .entity fields cannot be saved and restored between map loads as they will leave dangling pointers.
@@ -886,13 +886,13 @@ vector(entity e, float s, vector p) getsurfaceclippedpoint = #439;
 //idea: BlackHC
 //darkplaces implementation: BlackHC
 // constants
-float SPA_POSITION = 0;
-float SPA_S_AXIS = 1;
-float SPA_T_AXIS = 2;
-float SPA_R_AXIS = 3; // same as SPA_NORMAL
-float SPA_TEXCOORDS0 = 4;
-float SPA_LIGHTMAP0_TEXCOORDS = 5;
-float SPA_LIGHTMAP0_COLOR = 6;
+#define SPA_POSITION 0
+#define SPA_S_AXIS 1
+#define SPA_T_AXIS 2
+#define SPA_R_AXIS 3 // same as SPA_NORMAL
+#define SPA_TEXCOORDS0 4
+#define SPA_LIGHTMAP0_TEXCOORDS 5
+#define SPA_LIGHTMAP0_COLOR 6
 //builtin definitions:
 vector(entity e, float s, float n, float a) getsurfacepointattribute = #486;
 
@@ -938,10 +938,10 @@ vector gettaginfo_up;
 //idea: tZork
 //darkplaces implementation: tZork, divVerent
 //constant definitions:
-float GETTIME_FRAMESTART = 0; // time of start of frame
-float GETTIME_REALTIME = 1; // current time (may be OS specific)
-float GETTIME_HIRES = 2; // like REALTIME, but may reset between QC invocations and thus can be higher precision
-float GETTIME_UPTIME = 3; // time since start of the engine
+#define GETTIME_FRAMESTART 0 // time of start of frame
+#define GETTIME_REALTIME 1 // current time (may be OS specific)
+#define GETTIME_HIRES 2 // like REALTIME, but may reset between QC invocations and thus can be higher precision
+#define GETTIME_UPTIME 3 // time since start of the engine
 //builtin definitions:
 float(float tmr) gettime = #519;
 //description:
@@ -951,7 +951,7 @@ float(float tmr) gettime = #519;
 //idea: divVerent
 //darkplaces implementation: divVerent
 //constant definitions:
-float GETTIME_CDTRACK = 4;
+#define GETTIME_CDTRACK 4
 //description:
 //returns the playing time of the current cdtrack when passed to gettime()
 //see DP_END_GETSOUNDTIME for similar functionality but for entity sound channels
@@ -1162,7 +1162,7 @@ void(entity ent, entity ignore) tracetoss = #64;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //constant definitions:
-float MOVE_HITMODEL = 4;
+#define MOVE_HITMODEL 4
 //description:
 //allows traces to hit alias models (not sprites!) instead of entity boxes, use as the nomonsters parameter to trace functions, note that you can hit invisible model entities (alpha < 0 or EF_NODRAW or model "", it only checks modelindex)
 
@@ -1170,7 +1170,7 @@ float MOVE_HITMODEL = 4;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //constant definitions:
-float MOVE_WORLDONLY = 3;
+#define MOVE_WORLDONLY 3
 //description:
 //allows traces to hit only world (ignoring all entities, unlike MOVE_NOMONSTERS which hits all bmodels), use as the nomonsters parameter to trace functions
 
@@ -1297,7 +1297,7 @@ float(string url, float id, string content_type, string delim, float buf) uri_po
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //builtin definitions:
-float(string name, string value, float norm) registercvar = #93;
+float(string name, string value, float flags) registercvar = #93;
 //description:
 //adds a new console cvar to the server console (in singleplayer this is the player's console), the cvar exists until the mod is unloaded or the game quits.
 //NOTE: DP_CON_SET is much better.
@@ -1315,13 +1315,25 @@ float(string name, string value, float norm) registercvar = #93;
 //the engine plays sound/cdtracks/track001.wav instead of cd track 1 and so on if found, this allows games and mods to have music tracks without using ambientsound.
 //Note: also plays .ogg with DP_SND_OGGVORBIS extension.
 
+
+// SOUNDFLAG_RELIABLE 1
+// SOUNDFLAG_FORCELOOP	2 // force looping even if the sound is not looped
+// SOUNDFLAG_LOCALSOUND 4 // INTERNAL USE. Not settable by S_SetChannelFlag
+// SOUNDFLAG_PAUSED 8 // pause status
+// SOUNDFLAG_FULLVOLUME 16 // isn't affected by the general volume
+//WARN: battleMETAL exclusive flag that may need changing if ever more flags are addded!
+
 //DP_SND_SOUND7_WIP1
 //DP_SND_SOUND7_WIP2
 //idea: divVerent
 //darkplaces implementation: divVerent
 //builtin definitions:
 void(entity e, float chan, string samp, float vol, float atten, float speed, float flags) sound7 = #8;
-float SOUNDFLAG_RELIABLE = 1;
+#define SOUNDFLAG_RELIABLE 1
+#define SOUNDFLAG_FORCELOOP 2
+#define SOUNDFLAG_PAUSED 8
+#define SOUNDFLAG_FULLVOLUME 16
+#define SOUNDFLAG_DYNAMIC_INT 65536
 //description:
 //plays a sound, with some more flags
 //extensions to sound():
@@ -1409,7 +1421,7 @@ float(string sample) soundlength = #534; // returns length of sound sample in se
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //solid definitions:
-float SOLID_CORPSE = 5;
+#define SOLID_CORPSE 5
 //description:
 //the entity will not collide with SOLID_CORPSE and SOLID_SLIDEBOX entities 
 //(and likewise they will not collide with it), this is useful if you want dead bodies that are 
@@ -1429,10 +1441,10 @@ float SOLID_CORPSE = 5;
 //idea: LordHavoc
 //darkplaces implementation: LordHavoc
 //constants:
-float CLIENTTYPE_DISCONNECTED = 0;
-float CLIENTTYPE_REAL = 1;
-float CLIENTTYPE_BOT = 2;
-float CLIENTTYPE_NOTACLIENT = 3;
+#define CLIENTTYPE_DISCONNECTED 0
+#define CLIENTTYPE_REAL 1
+#define CLIENTTYPE_BOT 2
+#define CLIENTTYPE_NOTACLIENT 3
 //builtin definitions:
 entity() spawnclient = #454; // like spawn but for client slots (also calls relevant connect/spawn functions), returns world if no clients available
 float(entity clent) clienttype = #455; // returns one of the CLIENTTYPE_* constants
@@ -1656,15 +1668,15 @@ void(vector origin, string sample, float volume, float attenuation) pointsound =
 //field definitions:
 .float modelflags;
 //constant definitions:
-float EF_NOMODELFLAGS = 8388608; // ignore any effects in a model file and substitute your own
-float MF_ROCKET  =   1; // leave a trail
-float MF_GRENADE =   2; // leave a trail
-float MF_GIB     =   4; // leave a trail
-float MF_ROTATE  =   8; // rotate (bonus items)
-float MF_TRACER  =  16; // green split trail
-float MF_ZOMGIB  =  32; // small blood trail
-float MF_TRACER2 =  64; // orange split trail
-float MF_TRACER3 = 128; // purple trail
+#define EF_NOMODELFLAGS 8388608 // ignore any effects in a model file and substitute your own
+#define MF_ROCKET 1 // leave a trail
+#define MF_GRENADE 2 // leave a trail
+#define MF_GIB 4 // leave a trail
+#define MF_ROTATE 8 // rotate (bonus items)
+#define MF_TRACER 16 // green split trail
+#define MF_ZOMGIB 32 // small blood trail
+#define MF_TRACER2 64 // orange split trail
+#define MF_TRACER3 128 // purple trail
 //description:
 //this extension allows model flags to be specified on entities so you can add a rocket trail and glow to any entity, etc.
 //setting any of these will override the flags the model already has, to disable the model's flags without supplying any of your own you must use EF_NOMODELFLAGS.
@@ -1753,42 +1765,42 @@ void() SV_PlayerPhysics;
 //darkplaces implementation: LadyHavoc
 //globals:
 //new movetypes:
-const float MOVETYPE_PHYSICS = 32; // need to be set before any physics_* builtins applied
+#define MOVETYPE_PHYSICS 32 // need to be set before any physics_* builtins applied
 //new solid types (deprecated):
-const float SOLID_PHYSICS_BOX = 32;
-const float SOLID_PHYSICS_SPHERE = 33;
-const float SOLID_PHYSICS_CAPSULE = 34;
-const float SOLID_PHYSICS_TRIMESH = 35;
-const float SOLID_PHYSICS_CYLINDER = 36;
+#define SOLID_PHYSICS_BOX 32
+#define SOLID_PHYSICS_SPHERE 33
+#define SOLID_PHYSICS_CAPSULE 34
+#define SOLID_PHYSICS_TRIMESH 35
+#define SOLID_PHYSICS_CYLINDER 36
 //geometry types:
-const float GEOMTYPE_NONE = -1;       // entity will be entirely skipped by ODE
-const float GEOMTYPE_SOLID = 0;       // geometry type will be set based on .solid field
-const float GEOMTYPE_BOX = 1;         // entity bound box
-const float GEOMTYPE_SPHERE = 2;      // sphere with radius picked from x axis of entity bound box
-const float GEOMTYPE_CAPSULE = 3;     // with leading axis automatically determined from longest one, radius is picked as minimal of the rest 2 axes
-const float GEOMTYPE_TRIMESH = 4;     // triangle mesh
-const float GEOMTYPE_CYLINDER = 5;    // like capsule but not capped
+#define GEOMTYPE_NONE -1      // entity will be entirely skipped by ODE
+#define GEOMTYPE_SOLID 0       // geometry type will be set based on .solid field
+#define GEOMTYPE_BOX  1        // entity bound box
+#define GEOMTYPE_SPHERE 2      // sphere with radius picked from x axis of entity bound box
+#define GEOMTYPE_CAPSULE 3    // with leading axis automatically determined from longest one, radius is picked as minimal of the rest 2 axes
+#define GEOMTYPE_TRIMESH 4    // triangle mesh
+#define GEOMTYPE_CYLINDER 5    // like capsule but not capped
                                       // note that ODE's builtin cylinder support is experimental, somewhat bugged and unfinished (no cylinder-cylinder collision)
 									  // to use properly working cylinder should build ODE with LIBCCD extension
-const float GEOMTYPE_CAPSULE_X = 6;   // capsule with fixed leading axis
-const float GEOMTYPE_CAPSULE_Y = 7;
-const float GEOMTYPE_CAPSULE_Z = 8;
-const float GEOMTYPE_CYLINDER_X	= 9;  // cylinder with fixed leading axis
-const float GEOMTYPE_CYLINDER_Y	= 10;
-const float GEOMTYPE_CYLINDER_Z	= 11;
+#define GEOMTYPE_CAPSULE_X 6   // capsule with fixed leading axis
+#define GEOMTYPE_CAPSULE_Y 7
+#define GEOMTYPE_CAPSULE_Z 8
+#define GEOMTYPE_CYLINDER_X	9 // cylinder with fixed leading axis
+#define GEOMTYPE_CYLINDER_Y 10
+#define GEOMTYPE_CYLINDER_Z	11
 //joint types:
-const float JOINTTYPE_NONE = 0;
-const float JOINTTYPE_POINT = 1;
-const float JOINTTYPE_HINGE = 2;
-const float JOINTTYPE_SLIDER = 3;
-const float JOINTTYPE_UNIVERSAL = 4;
-const float JOINTTYPE_HINGE2 = 5;
-const float JOINTTYPE_FIXED = -1;
+#define JOINTTYPE_NONE 0
+#define JOINTTYPE_POINT 1
+#define JOINTTYPE_HINGE 2
+#define JOINTTYPE_SLIDER 3
+#define JOINTTYPE_UNIVERSAL 4
+#define JOINTTYPE_HINGE2 5
+#define JOINTTYPE_FIXED -1
 //force types:
-const float FORCETYPE_NONE = 0;
-const float FORCETYPE_FORCE = 1; // applied at center of mass
-const float FORCETYPE_FORCEATPOS = 2;
-const float FORCETYPE_TORQUE = 3;
+#define FORCETYPE_NONE 0
+#define FORCETYPE_FORCE 1 // applied at center of mass
+#define FORCETYPE_FORCEATPOS 2
+#define FORCETYPE_TORQUE 3
 // common joint properties:
 // .entity aiment; // connected objects
 // .entity enemy; // connected objects, forces
@@ -1914,7 +1926,7 @@ void(float to, string s) WriteUnterminatedString = #456;
 //builtin definitions:
 void(vector org, vector velocity, float howmany) te_blood = #405;
 //temp entity definitions:
-float TE_BLOOD = 50;
+#define TE_BLOOD 50
 //protocol:
 //vector origin
 //byte xvelocity (-128 to +127)
@@ -1930,7 +1942,7 @@ float TE_BLOOD = 50;
 //builtin definitions:
 void(vector mincorner, vector maxcorner, float explosionspeed, float howmany) te_bloodshower = #406;
 //temp entity definitions:
-float TE_BLOODSHOWER = 52;
+#define TE_BLOODSHOWER 52
 //protocol:
 //vector mins (minimum corner of the cube)
 //vector maxs (maximum corner of the cube)
@@ -1945,7 +1957,7 @@ float TE_BLOODSHOWER = 52;
 //builtin definitions:
 void(vector org, float radius, float lifetime, vector color) te_customflash = #417;
 //temp entity definitions:
-float TE_CUSTOMFLASH = 73;
+#define TE_CUSTOMFLASH 73
 //protocol:
 //vector origin
 //byte radius ((MSG_ReadByte() + 1) * 8, meaning 8-2048 unit radius)
@@ -1962,7 +1974,7 @@ float TE_CUSTOMFLASH = 73;
 //builtin definitions:
 void(vector org, vector color) te_explosionrgb = #407;
 //temp entity definitions:
-float TE_EXPLOSIONRGB = 53;
+#define TE_EXPLOSIONRGB 53
 //protocol:
 //vector origin
 //byte red (0.0 to 1.0 converted to 0 to 255)
@@ -1977,7 +1989,7 @@ float TE_EXPLOSIONRGB = 53;
 //builtin definitions:
 void(vector org, vector vel, float howmany) te_flamejet = #457;
 //temp entity definitions:
-float TE_FLAMEJET = 74;
+#define TE_FLAMEJET 74
 //protocol:
 //vector origin
 //vector velocity
@@ -1991,7 +2003,7 @@ float TE_FLAMEJET = 74;
 //builtin definitions:
 void(vector mincorner, vector maxcorner, vector vel, float howmany, float color, float gravityflag, float randomveljitter) te_particlecube = #408;
 //temp entity definitions:
-float TE_PARTICLECUBE = 54;
+#define TE_PARTICLECUBE 54
 //protocol:
 //vector mins (minimum corner of the cube)
 //vector maxs (maximum corner of the cube)
@@ -2009,7 +2021,7 @@ float TE_PARTICLECUBE = 54;
 //builtin definitions:
 void(vector mincorner, vector maxcorner, vector vel, float howmany, float color) te_particlerain = #409;
 //temp entity definitions:
-float TE_PARTICLERAIN = 55;
+#define TE_PARTICLERAIN 55
 //protocol:
 //vector mins (minimum corner of the cube)
 //vector maxs (maximum corner of the cube)
@@ -2025,7 +2037,7 @@ float TE_PARTICLERAIN = 55;
 //builtin definitions:
 void(vector mincorner, vector maxcorner, vector vel, float howmany, float color) te_particlesnow = #410;
 //temp entity definitions:
-float TE_PARTICLESNOW = 56;
+#define TE_PARTICLESNOW 56
 //protocol:
 //vector mins (minimum corner of the cube)
 //vector maxs (maximum corner of the cube)
@@ -2041,7 +2053,7 @@ float TE_PARTICLESNOW = 56;
 //builtin definitions:
 void(vector org) te_plasmaburn = #433;
 //temp entity definitions:
-float TE_PLASMABURN = 75;
+#define TE_PLASMABURN 75
 //protocol:
 //vector origin
 //description:
@@ -2071,7 +2083,7 @@ void(vector org) te_explosionquad = #415;
 //builtin definitions:
 void(vector org) te_smallflash = #416;
 //temp entity definitions:
-float TE_SMALLFLASH = 72;
+#define TE_SMALLFLASH 72
 //protocol:
 //vector origin
 //description:
@@ -2083,7 +2095,7 @@ float TE_SMALLFLASH = 72;
 //builtin definitions:
 void(vector org, vector vel, float howmany) te_spark = #411;
 //temp entity definitions:
-float TE_SPARK = 51;
+#define TE_SPARK 51
 //protocol:
 //vector origin
 //byte xvelocity (-128 to 127)
@@ -2124,35 +2136,35 @@ float trace_dphitcontents; // DPCONTENTS_ value of impacted surface (not content
 float trace_dphitq3surfaceflags; // Q3SURFACEFLAG_ value of impacted surface
 string trace_dphittexturename; // texture name of impacted surface
 //constants:
-float DPCONTENTS_SOLID = 1; // hit a bmodel, not a bounding box
-float DPCONTENTS_WATER = 2;
-float DPCONTENTS_SLIME = 4;
-float DPCONTENTS_LAVA = 8;
-float DPCONTENTS_SKY = 16;
-float DPCONTENTS_BODY = 32; // hit a bounding box, not a bmodel
-float DPCONTENTS_CORPSE = 64; // hit a SOLID_CORPSE entity
-float DPCONTENTS_NODROP = 128; // an area where backpacks should not spawn
-float DPCONTENTS_PLAYERCLIP = 256; // blocks player movement
-float DPCONTENTS_MONSTERCLIP = 512; // blocks monster movement
-float DPCONTENTS_DONOTENTER = 1024; // AI hint brush
-float DPCONTENTS_LIQUIDSMASK = 14; // WATER | SLIME | LAVA
-float DPCONTENTS_BOTCLIP = 2048; // AI hint brush
-float DPCONTENTS_OPAQUE = 4096; // only fully opaque brushes get this (may be useful for line of sight checks)
-float Q3SURFACEFLAG_NODAMAGE = 1;
-float Q3SURFACEFLAG_SLICK = 2; // low friction surface
-float Q3SURFACEFLAG_SKY = 4; // sky surface (also has NOIMPACT and NOMARKS set)
-float Q3SURFACEFLAG_LADDER = 8; // climbable surface
-float Q3SURFACEFLAG_NOIMPACT = 16; // projectiles should remove themselves on impact (this is set on sky)
-float Q3SURFACEFLAG_NOMARKS = 32; // projectiles should not leave marks, such as decals (this is set on sky)
-float Q3SURFACEFLAG_FLESH = 64; // projectiles should do a fleshy effect (blood?) on impact
-float Q3SURFACEFLAG_NODRAW = 128; // compiler hint (not important to qc)
+#define DPCONTENTS_SOLID 1 // hit a bmodel, not a bounding box
+#define DPCONTENTS_WATER 2
+#define DPCONTENTS_SLIME 4
+#define DPCONTENTS_LAVA 8
+#define DPCONTENTS_SKY 16
+#define DPCONTENTS_BODY 32 // hit a bounding box, not a bmodel
+#define DPCONTENTS_CORPSE 64 // hit a SOLID_CORPSE entity
+#define DPCONTENTS_NODROP 128 // an area where backpacks should not spawn
+#define DPCONTENTS_PLAYERCLIP 256 // blocks player movement
+#define DPCONTENTS_MONSTERCLIP 512 // blocks monster movement
+#define DPCONTENTS_DONOTENTER 1024 // AI hint brush
+#define DPCONTENTS_LIQUIDSMASK 14 // WATER | SLIME | LAVA
+#define DPCONTENTS_BOTCLIP 2048 // AI hint brush
+#define DPCONTENTS_OPAQUE 4096 // only fully opaque brushes get this (may be useful for line of sight checks)
+#define Q3SURFACEFLAG_NODAMAGE 1
+#define Q3SURFACEFLAG_SLICK 2 // low friction surface
+#define Q3SURFACEFLAG_SKY 4 // sky surface (also has NOIMPACT and NOMARKS set)
+#define Q3SURFACEFLAG_LADDER 8 // climbable surface
+#define Q3SURFACEFLAG_NOIMPACT 16 // projectiles should remove themselves on impact (this is set on sky)
+#define Q3SURFACEFLAG_NOMARKS 32 // projectiles should not leave marks, such as decals (this is set on sky)
+#define Q3SURFACEFLAG_FLESH 64 // projectiles should do a fleshy effect (blood?) on impact
+#define Q3SURFACEFLAG_NODRAW 128 // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_HINT = 256; // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_SKIP = 512; // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_NOLIGHTMAP = 1024; // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_POINTLIGHT = 2048; // compiler hint (not important to qc)
-float Q3SURFACEFLAG_METALSTEPS = 4096; // walking on this surface should make metal step sounds
-float Q3SURFACEFLAG_NOSTEPS = 8192; // walking on this surface should not make footstep sounds
-float Q3SURFACEFLAG_NONSOLID = 16384; // compiler hint (not important to qc)
+#define Q3SURFACEFLAG_METALSTEPS 4096 // walking on this surface should make metal step sounds
+#define Q3SURFACEFLAG_NOSTEPS 8192 // walking on this surface should not make footstep sounds
+#define Q3SURFACEFLAG_NONSOLID 16384 // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_LIGHTFILTER = 32768; // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_ALPHASHADOW = 65536; // compiler hint (not important to qc)
 //float Q3SURFACEFLAG_NODLIGHT = 131072; // compiler hint (not important to qc)
@@ -2200,9 +2212,9 @@ vector(string s) stov = #117; // returns vector value from a string
 string(string s, ...) strzone = #118; // makes a copy of a string into the string zone and returns it, this is often used to keep around a tempstring for longer periods of time (tempstrings are replaced often)
 void(string s) strunzone = #119; // removes a copy of a string from the string zone (you can not use that string again or it may crash!!!)
 //constants:
-float FILE_READ = 0;
-float FILE_APPEND = 1;
-float FILE_WRITE = 2;
+#define FILE_READ 0
+#define FILE_APPEND 1
+#define FILE_WRITE 2
 //cvars:
 //pr_zone_min_strings : default 64 (64k), min 64 (64k), max 8192 (8mb)
 //description:
@@ -2445,7 +2457,7 @@ string(float n) argv = #442;
 //idea: FrikaC
 //darkplaces implementation: LordHavoc
 //effects bit:
-float EF_SELECTABLE = 16384; // allows cursor to highlight entity (brighten)
+#define EF_SELECTABLE 16384 // allows cursor to highlight entity (brighten)
 //field definitions:
 .float cursor_active; // true if cl_prydoncursor mode is on
 .vector cursor_screen; // screen position of cursor as -1 to +1 in _x and _y (_z unused)
@@ -2472,9 +2484,9 @@ float EF_SELECTABLE = 16384; // allows cursor to highlight entity (brighten)
 .vector angles; // orientation of the light
 .float skin; // cubemap filter number, can be 1-255 (0 is assumed to be none, and tenebrae only allows 16-255), this selects a projective light filter, a value of 1 loads cubemaps/1posx.tga and cubemaps/1negx.tga and posy, negy, posz, and negz, similar to skybox but some sides need to be rotated or flipped
 //constants:
-float PFLAGS_NOSHADOW = 1; // light does not cast shadows
-float PFLAGS_CORONA = 2; // light has a corona flare
-float PFLAGS_FULLDYNAMIC = 128; // light enable (without this set no light is produced!)
+#define PFLAGS_NOSHADOW 1 // light does not cast shadows
+#define PFLAGS_CORONA 2 // light has a corona flare
+#define PFLAGS_FULLDYNAMIC 128 // light enable (without this set no light is produced!)
 //description:
 //more powerful dynamic light settings
 //warning: it is best not to use cubemaps on a light entity that has a model, as using a skin number that a model does not have will cause issues in glquake, and produce warnings in darkplaces (use developer 1 to see them)
@@ -2586,12 +2598,12 @@ void(float bufhandle, string pattern, string antipattern) buf_cvarlist = #517;
 //idea: VorteX
 //darkplaces implementation: VorteX
 //constant definitions:
-const float MATCH_AUTO = 0;
-const float MATCH_WHOLE = 1;
-const float MATCH_LEFT = 2;
-const float MATCH_RIGHT = 3;
-const float MATCH_MIDDLE = 4;
-const float MATCH_PATTERN = 5;
+#define MATCH_AUTO 0
+#define MATCH_WHOLE 1
+#define MATCH_LEFT 2
+#define MATCH_RIGHT 3
+#define MATCH_MIDDLE 4
+#define MATCH_PATTERN 5
 //builtin definitions:
 float(string filename, float bufhandle) buf_loadfile = #535; // append each line of file as new buffer string, return 1 if succesful
 float(float filehandle, float bufhandle, float startpos, float numstrings) buf_writefile = #536; // writes buffer strings as lines, returns 1 if succesful
@@ -2698,20 +2710,20 @@ void(float buf, float fl) WriteFloat = #280;
 
 // CVAR Command BitFlags
 //  cmd.h - Line 60
-float CF_NONE                 = 0;
-float CF_CLIENT               = 1;  // cvar/command that only the client can change/execute
-float CF_SERVER               = 2;  // cvar/command that only the server can change/execute
-float CF_CLIENT_FROM_SERVER   = 4;  // command that the server is allowed to execute on the client
-float CF_SERVER_FROM_CLIENT   = 8;  // command the client is allowed to execute on the server as a stringcmd
-float CF_CHEAT                = 16;  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
-float CF_ARCHIVE              = 32;  // cvar should have its set value saved to config.cfg and persist across sessions
-float CF_READONLY             = 64; // cvar cannot be changed from the console or the command buffer
-float CF_NOTIFY               = 128;  // cvar should trigger a chat notification to all connected clients when changed
-float CF_SERVERINFO           = 256;  // command or cvar relevant to serverinfo string handling
-float CF_USERINFO             = 512;  // command or cvar used to communicate userinfo to the server
-float CF_PERSISTENT           = 1024; // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
-float CF_PRIVATE              = 2048; // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
-float CF_MAXFLAGSVAL          = 4095;    // used to determine if flags is valid
+#define CF_NONE 0
+#define CF_CLIENT 1  // cvar/command that only the client can change/execute
+#define CF_SERVER 2  // cvar/command that only the server can change/execute
+#define CF_CLIENT_FROM_SERVER 4 // command that the server is allowed to execute on the client
+#define CF_SERVER_FROM_CLIENT 8 // command the client is allowed to execute on the server as a stringcmd
+#define CF_CHEAT 16  // command or cvar that gives an unfair advantage over other players and is blocked unless sv_cheats is 1
+#define CF_ARCHIVE 32  // cvar should have its set value saved to config.cfg and persist across sessions
+#define CF_READONLY 64 // cvar cannot be changed from the console or the command buffer
+#define CF_NOTIFY 128  // cvar should trigger a chat notification to all connected clients when changed
+#define CF_SERVERINFO 256  // command or cvar relevant to serverinfo string handling
+#define CF_USERINFO 512  // command or cvar used to communicate userinfo to the server
+#define CF_PERSISTENT 1024 // cvar must not be reset on gametype switch (such as scr_screenshot_name, which otherwise isn't set to the mod name properly)
+#define CF_PRIVATE 2048 // cvar should not be $ expanded or sent to the server under any circumstances (rcon_password, etc)
+#define CF_MAXFLAGSVAL 4095    // used to determine if flags is valid
 //and relink a new instance using RestoreGame() function.
 
 #define cacheGlobalString(var, val) if(val!=""){if (var!=""){strunzone(var); var="";} var = strzone(val);}

@@ -88,7 +88,7 @@ void() data_projectile_plasma_burn_th={
 
   
   if( getsoundtime(self, CHAN_BODY) == -1){
-    sound(self, CHAN_BODY, "sound/weapons/rpls_burn.ogg", 1.0, ATTN_NORM);
+    sound7(self, CHAN_BODY, "sound/weapons/rpls_burn%s.ogg", 1.0, ATTN_NORM, (0.6 + (random() * 0.4)), SOUNDFLAG_DYNAMIC_INT);  
   }
 
 
@@ -165,7 +165,7 @@ void() data_projectile_plasma_touch={
     }
 	}
   else{
-    makevectors(self.angles);
+    makevectors(vectoangles(self.angles));
     traceline(self.origin + (v_forward * -4), self.origin + (v_forward * 4), MOVE_WORLDONLY, self);
     if( (trace_dpstartcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_SOLID) ){
       self.impactType = IMPACT_DIRT;

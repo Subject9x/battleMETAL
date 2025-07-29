@@ -20,176 +20,165 @@ void() mech_ai_die_stand10;
 
 
 void() mech_ai_die_stand1={
-  local vector ofs;
-  local vector org;
   
   makevectors(self.angles);
+
   if( !(self.criticalHits & M_ARM_RIGHT)){
-    org = self.armR_org;
+    TEMP_VEC2 = self.armR_org;
   }
   else{
-    org = self.origin;
+    TEMP_VEC2 = self.origin;
   }
+  TEMP_VEC3 = '0 0 0';
+  TEMP_VEC3 = TEMP_VEC2 + (v_forward * (crandom() * self.maxs_x / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_right * (crandom() * self.maxs_y / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_up * (crandom() * self.maxs_z / 2));
   
-  ofs = org + (v_forward * (crandom() * self.maxs_x / 2));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y / 2));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
-  
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC3, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC3, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   self.think = mech_ai_die_stand2;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand2={
-  local vector ofs;
-  local vector org;
-  
   makevectors(self.angles);
+
   if( !(self.criticalHits & M_ARM_LEFT)){
-    org = self.armL_org;
+    TEMP_VEC2 = self.armL_org;
   }
   else{
-    org = self.origin;
+    TEMP_VEC2 = self.origin;
   }
-  ofs = org + (v_forward * (crandom() * self.maxs_x / 2));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y / 2));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
+  TEMP_VEC3 = '0 0 0';
+  TEMP_VEC3 = TEMP_VEC2 + (v_forward * (crandom() * self.maxs_x / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_right * (crandom() * self.maxs_y / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_up * (crandom() * self.maxs_z / 2));
 
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC3, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC3, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   self.think = mech_ai_die_stand3;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand3={
-  local vector ofs;
-  local vector org;
-  
   makevectors(self.angles);
+
   if( !(self.criticalHits & M_ARM_LEFT)){
-    org = self.armL_org;
+    TEMP_VEC2 = self.armL_org;
   }
   else{
-    org = self.origin;
+    TEMP_VEC2 = self.origin;
   }
-  ofs = org + (v_forward * (crandom() * self.maxs_x / 2));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y / 2));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
+  TEMP_VEC3 = '0 0 0';
+  TEMP_VEC3 = TEMP_VEC2 + (v_forward * (crandom() * self.maxs_x / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_right * (crandom() * self.maxs_y / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_up * (crandom() * self.maxs_z / 2));
 
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC3, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC3, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   self.think = mech_ai_die_stand4;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand4={
-  local vector ofs;
-  local vector org;
-  
   makevectors(self.angles);
+
   if( !(self.criticalHits & M_ARM_LEFT)){
-    org = self.armL_org;
+    TEMP_VEC2 = self.armL_org;
   }
   else{
-    org = self.origin;
+    TEMP_VEC2 = self.origin;
   }
-  ofs = org + (v_forward * (crandom() * self.maxs_x / 2));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y / 2));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z / 2));
+  TEMP_VEC3 = '0 0 0';
+  TEMP_VEC3 = TEMP_VEC2 + (v_forward * (crandom() * self.maxs_x / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_right * (crandom() * self.maxs_y / 2));
+  TEMP_VEC3 = TEMP_VEC3 + (v_up * (crandom() * self.maxs_z / 2));
   
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC3, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC3, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   self.think = mech_ai_die_stand5;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand5={
-  local vector ofs;
-  
   makevectors(self.angles);
   
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y / 2));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z));
+  TEMP_VEC2 = self.origin + (v_forward * (crandom() * self.maxs_x));
+  TEMP_VEC2 = TEMP_VEC2 + (v_right * (crandom() * self.maxs_y / 2));
+  TEMP_VEC2 = TEMP_VEC2 + (v_up * (crandom() * self.maxs_z));
   
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC2, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC2, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   
   self.think = mech_ai_die_stand6;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand6={
-  local vector ofs;
   makevectors(self.angles);
   
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z));
+  TEMP_VEC2 = self.origin + (v_forward * (crandom() * self.maxs_x));
+  TEMP_VEC2 = TEMP_VEC2 + (v_right * (crandom() * self.maxs_y));
+  TEMP_VEC2 = TEMP_VEC2 + (v_up * (crandom() * self.maxs_z));
   
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC2, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC2, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.think = mech_ai_die_stand7;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand7={
-  local vector ofs;
   makevectors(self.angles);
   
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z));
+  TEMP_VEC2 = self.origin + (v_forward * (crandom() * self.maxs_x));
+  TEMP_VEC2 = TEMP_VEC2 + (v_right * (crandom() * self.maxs_y));
+  TEMP_VEC2 = TEMP_VEC2 + (v_up * (crandom() * self.maxs_z));
   
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC2, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC2, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.think = mech_ai_die_stand8;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand8={
-  local vector ofs;
   makevectors(self.angles);
   
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z));
+  TEMP_VEC2 = self.origin + (v_forward * (crandom() * self.maxs_x));
+  TEMP_VEC2 = TEMP_VEC2 + (v_right * (crandom() * self.maxs_y));
+  TEMP_VEC2 = TEMP_VEC2 + (v_up * (crandom() * self.maxs_z));
   
-  te_missile_explode( ofs, self.vec_size * 2, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC2, self.vec_size * 2, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC2, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
 
   self.think = mech_ai_die_stand9;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand9={
-  local vector ofs;
   makevectors(self.angles);
     
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_x));
-  ofs = ofs + (v_right * (crandom() * self.maxs_y));
-  ofs = ofs + (v_up * (crandom() * self.maxs_z));
+  TEMP_VEC2 = self.origin + (v_forward * (crandom() * self.maxs_x));
+  TEMP_VEC2 = TEMP_VEC2 + (v_right * (crandom() * self.maxs_y));
+  TEMP_VEC2 = TEMP_VEC2 + (v_up * (crandom() * self.maxs_z));
   
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC2, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC2, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.think = mech_ai_die_stand10;
   self.nextthink = servertime + 0.2;
 };
 
 void() mech_ai_die_stand10={
-  local vector ofs;
   makevectors(self.angles);
   
-  ofs = self.origin + (v_forward * (crandom() * self.maxs_z));
-  ofs = ofs + (v_right * (crandom() * self.maxs_x));
-  ofs = ofs + (v_up * (crandom() * self.maxs_y));
+  TEMP_VEC2 = self.origin + (v_forward * (crandom() * self.maxs_z));
+  TEMP_VEC2 = TEMP_VEC2 + (v_right * (crandom() * self.maxs_x));
+  TEMP_VEC2 = TEMP_VEC2 + (v_up * (crandom() * self.maxs_y));
   
-  te_missile_explode( ofs, self.vec_size, '0.5 0.85 0.96', 0.001 );
-  PointSound_Dynamic(ofs, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
+  te_missile_explode( TEMP_VEC2, self.vec_size, '0.5 0.85 0.96', 0.001 );
+  PointSound_Dynamic(TEMP_VEC2, "sound/fx_boom%s.ogg", 1.0, ATTN_NORM, SOUNDFLAG_DYNAMIC_INT);
   self.data_lifetime = servertime + 360 + (random() * 180);
 };
