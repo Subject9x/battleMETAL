@@ -83,10 +83,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
   local float prevShield;
   local float prevDeadflag;
   local float prevBurn;
-  local float voiceId;
-  local float mapKey;
-  local float vipKey;
-  local float muted;
   local float hp;
   
   prevShield = self.shield;
@@ -111,16 +107,13 @@ void( float isNew, float changeFlags) sendent_handle_building={
     self.vec_size = ReadChar();
     self.data_idx = ReadByte();
     self.canTarget = ReadChar();
-    mapKey = ReadChar();
-    vipKey = ReadChar();
-    muted = ReadChar();
-    if( mapKey ){
+    if( ReadChar() ){
       self.spawnflags = self.spawnflags | IS_MAPKEY;
     }
-    if( vipKey ){
+    if( ReadChar() ){
       self.spawnflags = self.spawnflags | IS_VIP;
     }
-    if( muted ){
+    if( ReadChar() ){
       self.spawnflags = self.spawnflags | MUTE_ME;
     }
     self.deadflag = ReadByte();
@@ -222,8 +215,7 @@ void( float isNew, float changeFlags) sendent_handle_building={
   //EVENT - voice chatter
   if( (changeFlags & SENDFLAG_VOICE) ){
     if( !(changeFlags & SENDFLAG_UPDATE_FULL) ){
-      voiceId = ReadByte();
-      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, ReadByte(), self.ai_voice_limit, self.entnum);
     }
   }
   
@@ -318,7 +310,6 @@ void( float isNew, float changeFlags) sendent_handle_building={
 };
 
 void() predraw_building={
-  local vector cacheOrg;
   
   self.rootOrigin = self.origin;
 

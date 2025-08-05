@@ -19,14 +19,14 @@ void(entity enEntity) GetAlignedSurfaceAngles=
 	
 	if(trace_fraction != 1)
 	{ // Trace Found Surface; Continue
-		local vector vNormal;
-			vNormal = trace_plane_normal;
+		// local vector vNormal;
+    // vNormal = trace_plane_normal;
 		
 		// Derive Vectors
 		makevectors(enEntity.angles);
 			
 		// Assign Aligned Angles
-		enEntity.angles = vectoangles( normalize(v_forward - ( (v_forward * vNormal) / (v_up * vNormal)) * v_up) );
+		enEntity.angles = vectoangles( normalize(v_forward - ( (v_forward * trace_plane_normal) / (v_up * trace_plane_normal)) * v_up) );
     //enEntity.cacheGroundAngle = enEntity.angles;
 	}
 }
@@ -38,12 +38,12 @@ void(entity enEntity) GetAlignedSurfaceAngles=
   Z coord.
 */
 vector(vector angl, vector org, float zAdjust) util_dropToGround={
-  local vector spot;
+
   makevectors(angl);
   traceline(org, org + (v_up * -3000), FALSE, self);
-  spot = trace_endpos;
-  spot_z = spot_z - zAdjust;
-  return spot;
+  TEMP_VEC1 = trace_endpos;
+  TEMP_VEC1_z = TEMP_VEC1_z - zAdjust;
+  return TEMP_VEC1;
 };
 
 /*
@@ -69,6 +69,7 @@ float(float numOfSides) util_roll_dice={
 float(entity t) util_getMechHpAverage={
   local float total, cur;
   
+  total = FALSE;
   if(t != world){
     if( t.data_type == DATA_MECH ){
       total = t.max_health;
@@ -89,9 +90,8 @@ float(entity t) util_getMechHpAverage={
       cur = t.health;
     }
     total = cur / total;
-    return total;
   }
-  return FALSE;
+  return total;
 };
 
 float(entity t) util_getMechHpTotal={
@@ -104,7 +104,6 @@ float(entity t) util_getMechHpTotal={
 };
 
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea={
-  local vector locus;
   local float dist, side, dir, box;
   
   box = sz_max_x * 2;
@@ -119,8 +118,8 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
     dir = -1;
   }
   makevectors(facing);
-  locus = centerpoint + (v_forward * (dir * dist) ) + (v_right * (side * dist) );
-  traceline(centerpoint, locus, FALSE, self);
+  TEMP_VEC3 = centerpoint + (v_forward * (dir * dist) ) + (v_right * (side * dist) );
+  traceline(centerpoint, TEMP_VEC3, FALSE, self);
   return trace_endpos;
 };
 
@@ -129,32 +128,10 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
 vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
   local vector direction;
   local vector acc;
-  local vector wepAim;
-  local vector targVel;
-  
+
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
-    targVel = '0 0 0';
-    if( (self.owner.enemy.flags & FL_CLIENT) ){
-      targVel = self.owner.enemy.velocity;
-    }
-    //AI aiming
-    if( self.beamFlag ){
-      if( self.owner.enemy.data_type == DATA_BLD ){
-        direction = self.owner.enemy.hitOffset;
-      }
-      else{
-        direction = self.owner.enemy.origin;
-      }
-    }
-    else{
-      if( self.owner.enemy.data_type == DATA_BLD ){
-        direction = self.owner.enemy.hitOffset - (targVel * self.owner.ai_leading);
-      }
-      else{
-        direction = (self.owner.enemy.origin + '0 0 10') - (targVel * self.owner.ai_leading);
-      }
-    }
+    direction = self.owner.enemy.hitOffset - (self.owner.enemy.velocity * self.owner.ai_leading);
   }
   else{
     direction = self.owner.laser_sight_org;
@@ -175,10 +152,10 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
   }
   direction = direction + ((crandom() * self.spreadDefault_x) * v_right) + ((crandom() * self.spreadDefault_y) * v_up);
 
-  wepAim = normalize( direction - fireOrg ); 
+  direction = normalize( direction - fireOrg ); 
 
   self.owner.dphitcontentsmask =  (DPCONTENTS_OPAQUE | Q3SURFACEFLAG_SKY | DPCONTENTS_SOLID | DPCONTENTS_BODY) ;
-    traceline (fireOrg, fireOrg + (wepAim * idealRange), MOVE_MISSILE, self.owner);
+    traceline (fireOrg, fireOrg + (direction * idealRange), MOVE_MISSILE, self.owner);
   self.owner.dphitcontentsmask = 0;
 
   return trace_endpos;
@@ -186,17 +163,13 @@ vector( vector fireOrg, float idealRange ) util_applySpreadToTrace={
 
 //simply returns a vector offset from an origin along a given angle
 vector( vector start, vector offsets, vector viewAngle) util_getOffsetOfVector={
-  local vector v;
   makevectors( viewAngle );
-  v = start + (v_forward * offsets_z) + (v_up * offsets_y) +(v_right * offsets_x);
-  return v;
+  return start + (v_forward * offsets_z) + (v_up * offsets_y) +(v_right * offsets_x);
 };
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle={
-  local float toSender;
-  toSender = util_checkPointAngleImpl(trg.origin);
-  return toSender;
+  return util_checkPointAngleImpl(trg.origin);
 };
 
 //inspired by original inFront function
@@ -254,16 +227,14 @@ float(vector orig) util_lockOnChoke={
 };
 
 void(entity targetEnt, vector hitOrigin) util_checkPointToHitDir={
-  local vector normal;
   local float fwd;
   local float side;
-  local float entViewYaw;
-  local float checkYaw = 0;
 
   makevectors(targetEnt.v_angle);
-  normal = normalize(hitOrigin - targetEnt.origin);
-  fwd = normal * v_forward;
-  side = normal * v_right;
+
+  TEMP_VEC2 = normalize(hitOrigin - targetEnt.origin);
+  fwd = TEMP_VEC2 * v_forward;
+  side = TEMP_VEC2 * v_right;
   
   if(fwd < 0.5){
     //right side hit
@@ -296,10 +267,9 @@ void(entity targetEnt, vector hitOrigin) util_checkPointToHitDir={
 
 
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
-  local vector next;
   makevectors(src.angles);
-  next = src.origin + (v_up * ofs_y) + (v_right * ofs_x) + (v_forward * ofs_z);
-  setorigin(targ, next);
+  TEMP_VEC3 = src.origin + (v_up * ofs_y) + (v_right * ofs_x) + (v_forward * ofs_z);
+  setorigin(targ, TEMP_VEC3);
 };
 
 
@@ -576,11 +546,7 @@ void(string msg, string s1, string split, string s2) cons_log2Strings={
 
 void() BecomeExplosion={
   makevectors( self.angles );
-  //TODO - replace
-  //te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
-  precache_sound("sound/fx_boom.ogg");
-
-  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
+  sound7(self, CHAN_VOICE, "sound/fx_boom%s.ogg", 0.95, ATTN_NORM, (0.4 + (random() * 0.5)) * 100, SOUNDFLAG_DYNAMIC_INT );
 
   self.deadflag = DEAD_DEAD;
 	self.movetype = MOVETYPE_NONE;
@@ -619,25 +585,23 @@ void() util_DeveloperNodeMark={
 */
 vector(vector org, entity filter, float len, float useHeight) util_find_random_farpoint={
   local float itr;
-  local vector ang;
-  local vector landing;
   
-  ang = self.angles;
+  TEMP_VEC2 = self.angles;
   //quantize rays into semi-random 60deg increments, then correct for 0==360
   itr = rint(random()*10);
   itr = itr * (random() * 18);
   itr = itr + 18;
   itr = itr - 90;
-  ang_y = anglemod(ang_y + itr);
-  makevectors(ang);
+  TEMP_VEC2_y = anglemod(TEMP_VEC2_y + itr);
+  makevectors(TEMP_VEC2);
   traceline(org, org + (v_forward * len), MOVE_NORMAL, filter);
 
-  landing = trace_endpos + (v_up * useHeight);
+  TEMP_VEC3 = trace_endpos + (v_up * useHeight);
   if( trace_fraction < 1 ){
-    landing = landing - (v_forward * (trace_fraction * len)) ;
+    TEMP_VEC3 = TEMP_VEC3 - (v_forward * (trace_fraction * len)) ;
   }
 
-  return landing;
+  return TEMP_VEC3;
 };
 
 /*

@@ -38,10 +38,6 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   local float prevShield;
   local float prevDeadFlag;
   local float prevBurn;
-  local float voiceId;
-  local float mapKey;
-  local float vipKey;
-  local float muted;
   local float hp;
 
   hp = 0;
@@ -68,16 +64,13 @@ void( float isNew, float changeFlags) sendent_handle_turret={
     self.vec_size = ReadByte();
     self.data_idx = ReadByte();
     self.canTarget = ReadByte();
-    mapKey = ReadChar();
-    vipKey = ReadChar();
-    muted = ReadChar();
-    if( mapKey ){
+    if( ReadChar() ){
       self.spawnflags = self.spawnflags | IS_MAPKEY;
     }
-    if( vipKey ){
+    if( ReadChar() ){
       self.spawnflags = self.spawnflags | IS_VIP;
     }
-    if( muted ){
+    if( ReadChar() ){
       self.spawnflags = self.spawnflags | MUTE_ME;
     }
     self.subType = ReadChar();
@@ -148,8 +141,7 @@ void( float isNew, float changeFlags) sendent_handle_turret={
   //EVENT - voice chatter
   if( (changeFlags & SENDFLAG_VOICE) ){
     if( !(changeFlags & SENDFLAG_UPDATE_FULL) ){
-      voiceId = ReadByte();
-      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, ReadByte(), self.ai_voice_limit, self.entnum);
     }
   }
   

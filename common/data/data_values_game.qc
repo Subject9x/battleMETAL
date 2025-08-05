@@ -7,10 +7,15 @@ Overview:
   all the miscellaneous shared values between client and server.
 */
 
-
+//temp globals to ease up on function locals.
 vector TEMP_VEC1;
 vector TEMP_VEC2;
 vector TEMP_VEC3;
+
+entity TEMP_ENT1;
+entity TEMP_ENT2;
+entity TEMP_ENT3;
+entity TEMP_ENT_PLAYER;
 
 //============================
 //   FILE PATHS           

@@ -25,7 +25,7 @@ void() fuel_tank_die1 = [1, fuel_tank_die2]{
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.85))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.85)) + (self.viewAngle1 * -10);
   te_missile_explode( TEMP_VEC1, 1, '1 0.67 0.67', 0.01 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -34,12 +34,11 @@ void() fuel_tank_die2 = [2, fuel_tank_die3]{
 #ifdef SSQC
   makevectors(self.angles);
   TEMP_VEC1 = self.origin + (v_up * (0.25 + (self.maxs_z * 0.5))) + (v_right * (crandom() * self.maxs_x)) + (v_forward * (crandom() * self.maxs_y));
-
   TEMP_VEC1 = randompos(self.origin, TEMP_VEC1);
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 5, 1 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.85))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.85)) + (self.viewAngle1 * -10);
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
@@ -52,7 +51,7 @@ void() fuel_tank_die3 = [3, fuel_tank_die4]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 5, 3 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.85))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.85)) + (self.viewAngle1 * -10);
   te_missile_explode( TEMP_VEC1, 5, '1 0.67 0.67', 0.0015 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -66,7 +65,7 @@ void() fuel_tank_die4 = [4, fuel_tank_die5]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 4, 2 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.85))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.85)) + (self.viewAngle2 * 1);
   te_missile_explode( TEMP_VEC1, 3, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -80,7 +79,7 @@ void() fuel_tank_die5 = [5, fuel_tank_die6]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 1 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.67))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.67)) + (self.viewAngle1 * 10);
   te_missile_explode( TEMP_VEC1, 3, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -94,14 +93,14 @@ void() fuel_tank_die6 = [6, fuel_tank_die7]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.67))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.67)) + (self.viewAngle1 * 20);
   te_missile_explode( TEMP_VEC1, 3, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die7 = [7, fuel_tank_die8]{
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.5))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.5)) + (self.viewAngle1 * 30);
   te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -115,7 +114,7 @@ void() fuel_tank_die8 = [8, fuel_tank_die9]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.4))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.4)) + (self.viewAngle1 * 40);
   te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -129,7 +128,7 @@ void() fuel_tank_die9 = [9, fuel_tank_die10]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.3))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.3)) + (self.viewAngle1 * 50);
   te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -143,14 +142,14 @@ void() fuel_tank_die10 = [10, fuel_tank_die11]{
   te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 3, 2 );
 #endif
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.2))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.2)) + (self.viewAngle1 * 60);
   te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
 };
 void() fuel_tank_die11 = [11, fuel_tank_die12]{
 #ifdef CSQC
-  TEMP_VEC1 = self.origin + (self.viewAngle1 * (self.maxs_z * 0.5)) + (self.viewAngle2 * self.maxs_y) + (self.viewAngle * (crandom() * (self.maxs_x * 0.25)));
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.2))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.2)) + (self.viewAngle1 * 60);
   te_missile_explode( TEMP_VEC1, 2, '1 0.67 0.67', 0.0025 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.75 + random() * 0.25), ATTN_NORM, (60 + (random() * 40)), SOUNDFLAG_DYNAMIC_INT);
 #endif
@@ -160,7 +159,8 @@ void() fuel_tank_die12 = [12, fuel_tank_die12]{
   building_die();
 #endif
 #ifdef CSQC
-  te_missile_explode( randompos(self.absmin, self.absmax), 1, '1 0.67 0.67', 0.01 );
+  TEMP_VEC1 = self.origin + (self.viewAngle * (crandom() * (self.maxs_x * 0.15))) + (self.viewAngle2 * (crandom() * self.maxs_y * 0.15)) + (self.viewAngle2 * 60);
+  te_missile_explode( TEMP_VEC1, 1, '1 0.67 0.67', 0.01 );
   Sound7_Dynamic(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.75 + (random() * 0.25)) * 100, SOUNDFLAG_DYNAMIC_INT );
 #endif
 };

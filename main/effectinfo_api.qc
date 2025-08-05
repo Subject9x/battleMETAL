@@ -56,34 +56,31 @@ float( entity to, float changedFlags ) te_send_missile={
 };
 
 //ported over from classice Quake C
-void(string gibname, float dm) ThrowGib =
-{
-	local	entity new;
-	new = spawn();
-  if( new ){
-    new.origin = self.origin;
-    setmodel (new, gibname);
-    setsize (new, '0 0 0', '0 0 0');
-    new.velocity = VelocityForDamage (dm);
-    new.movetype = MOVETYPE_BOUNCE;
-    new.solid = SOLID_NOT;
-    new.avelocity_x = random()*600;
-    new.avelocity_y = random()*600;
-    new.avelocity_z = random()*600;
-    new.think = SUB_Remove;
-    new.ltime = time;
-    new.nextthink = time + 10 + random()*10;
-    new.frame = 0;
-    new.flags = 0;
-    new.effects = new.effects | EF_LOWPRECISION;
+void(string gibname, float dm) ThrowGib ={
+	newmis = spawn();
+  if( newmis ){
+    newmis.origin = self.origin;
+    setmodel (newmis, gibname);
+    setsize (newmis, '0 0 0', '0 0 0');
+    newmis.velocity = VelocityForDamage (dm);
+    newmis.movetype = MOVETYPE_BOUNCE;
+    newmis.solid = SOLID_NOT;
+    newmis.avelocity_x = random()*600;
+    newmis.avelocity_y = random()*600;
+    newmis.avelocity_z = random()*600;
+    newmis.think = SUB_Remove;
+    newmis.ltime = time;
+    newmis.nextthink = time + 10 + random()*10;
+    newmis.frame = 0;
+    newmis.flags = 0;
+    newmis.effects = newmis.effects | EF_LOWPRECISION;
   }
 };
 
 //TE_SMOKE_TEST
 void(vector org, float total) te_smoke={
-  local vector smoke;
-  smoke = te_apply_wind( org );
-  client_send_particle(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
+  TEMP_VEC1 = te_apply_wind( org );
+  client_send_particle(particleeffectnum("SMOKE_TEST"), org , normalize(TEMP_VEC1 - org) * WINDDIR_z, total);
 };
 
 /*
@@ -221,14 +218,12 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
 };
 
 void( vector org, vector angl, vector vel, float total) te_unit_dust={
-  local vector dir;
-  local vector torg;
   local float partcle;
   
   makevectors(self.angles);
-  torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
-  dir = te_apply_wind( torg );
-  dir = normalize( dir - org ) * WINDDIR_z;
+  TEMP_VEC2 = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
+  TEMP_VEC3 = te_apply_wind( TEMP_VEC2 );
+  TEMP_VEC3 = normalize( TEMP_VEC3 - org ) * WINDDIR_z;
   
   switch( world.worldtype ){
     default:
@@ -248,7 +243,7 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
       break;
   }
   
-  client_send_particle( partcle, torg , dir * 2, total);
+  client_send_particle( partcle, TEMP_VEC2 , TEMP_VEC3 * 2, total);
 };
 
 void() te_flame_th={
@@ -286,46 +281,43 @@ void() te_missile_explode_th={
   self.nextthink = time + 0.01;
 };
 void( vector org, float explodeSize, vector explodeColor, float bloom ) te_missile_explode={
-  local entity explode;
-  local vector back;
-  local vector launch;
-  
-  explode = spawn();
-  if( explode ){
-    explode.movetype = MOVETYPE_NONE;
-    explode.solid = SOLID_NOT;
-    explode.think = te_missile_explode_th;
-    explode.nextthink = time + 0.05;
-    explode.scale = explodeSize;
-    explode.alpha = 1;
-    explode.effects = explode.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_LOWPRECISION;
-    explode.avelocity = randomvec() * 300;
-    explode.angles = randomvec() * 30;
-    explode.data_lifetime = bloom;
+
+  newmis = spawn();
+  if( newmis ){
+    newmis.movetype = MOVETYPE_NONE;
+    newmis.solid = SOLID_NOT;
+    newmis.think = te_missile_explode_th;
+    newmis.nextthink = time + 0.05;
+    newmis.scale = explodeSize;
+    newmis.alpha = 1;
+    newmis.effects = newmis.effects | EF_NOSHADOW | EF_FULLBRIGHT | EF_LOWPRECISION;
+    newmis.avelocity = randomvec() * 300;
+    newmis.angles = randomvec() * 30;
+    newmis.data_lifetime = bloom;
     
     if( explodeColor != '0 0 0' ){
-      explode.colormod = explodeColor;
+      newmis.colormod = explodeColor;
     }
     
-    setmodel( explode, "models/fx/explosions/te_missile_explode.md3");
-    setorigin( explode, org);
+    setmodel( newmis, "models/fx/explosions/te_missile_explode.md3");
+    setorigin( newmis, org);
   }
 
   te_customflash( org, explodeSize * 50, 1, explodeColor);
   
   
   makevectors(vectoangles(self.velocity));
-  back = org + (v_forward * -10);
-  back = normalize(back - org);
+  TEMP_VEC2 = org + (v_forward * -10);
+  TEMP_VEC2 = normalize(TEMP_VEC2 - org);
   
   if(explodeSize < 2 ){
-    pointparticles( particleeffectnum("TE_HIT_EXPL_SML"), org, back, 1);
+    pointparticles( particleeffectnum("TE_HIT_EXPL_SML"), org, TEMP_VEC2, 1);
   }
   if(explodeSize == 2){
-    pointparticles( particleeffectnum("TE_HIT_EXPL_MED"), org, back, 1);
+    pointparticles( particleeffectnum("TE_HIT_EXPL_MED"), org, TEMP_VEC2, 1);
   }
   else{
-    pointparticles( particleeffectnum("TE_HIT_EXPL_LRG"), org, back, 1);
+    pointparticles( particleeffectnum("TE_HIT_EXPL_LRG"), org, TEMP_VEC2, 1);
   }
 };
 
@@ -360,53 +352,51 @@ void() te_vehicle_chunk_th={
     self = calling unit
 */
 void( string mdl, vector startOrg, vector wishVel, vector wishAngl, float trailnum, float lifetime, float grav ) te_vehicle_chunk={
-  local entity piece;
-  
-  piece = spawn();
-  if( piece ){
-    piece.effects = piece.effects | (EF_NOSHADOW | EF_LOWPRECISION);
-    piece.movetype = MOVETYPE_TOSS;
-    piece.solid = SOLID_NOT;
-    piece.frame = 0;
-    piece.angles = wishAngl;
-    piece.skin = 3;
+
+  newmis = spawn();
+  if( newmis ){
+    newmis.effects = newmis.effects | (EF_NOSHADOW | EF_LOWPRECISION);
+    newmis.movetype = MOVETYPE_TOSS;
+    newmis.solid = SOLID_NOT;
+    newmis.frame = 0;
+    newmis.angles = wishAngl;
+    newmis.skin = 3;
     
-    setmodel(piece, mdl);
-    setsize (piece, '-4 -4 -4', '4 4 4');
-    setorigin(piece, startOrg);
+    setmodel(newmis, mdl);
+    setsize (newmis, '-4 -4 -4', '4 4 4');
+    setorigin(newmis, startOrg);
     
-    piece.traileffectnum = trailnum;
+    newmis.traileffectnum = trailnum;
     if( wishVel != '0 0 0' ){
-      piece.velocity = wishVel;
+      newmis.velocity = wishVel;
     }
     else{
-      piece.velocity_x = 100 * crandom();
-      piece.velocity_y = 100 * crandom();
-      piece.velocity_z = 50 + 100 * random();
+      newmis.velocity_x = 100 * crandom();
+      newmis.velocity_y = 100 * crandom();
+      newmis.velocity_z = 50 + 100 * random();
     }
-    piece.avelocity_x = random()*100;
-    piece.avelocity_y = random()*100;
-    piece.avelocity_z = random()*150;
+    newmis.avelocity_x = random()*100;
+    newmis.avelocity_y = random()*100;
+    newmis.avelocity_z = random()*150;
     if( lifetime ){
-      piece.data_lifetime = lifetime;
-      piece.ai_action_time = time + lifetime;
+      newmis.data_lifetime = lifetime;
+      newmis.ai_action_time = time + lifetime;
     }
     else{
-      piece.data_lifetime = 30;
-      piece.ai_action_time = time + lifetime;
+      newmis.data_lifetime = 30;
+      newmis.ai_action_time = time + lifetime;
     }
     if( grav ){
-      piece.gravity = grav;
+      newmis.gravity = grav;
     }
     else{
-      piece.gravity = 0.67;
+      newmis.gravity = 0.67;
     }
-    piece.think = te_vehicle_chunk_th;
-    piece.nextthink = time + 0.1;
-    piece.ai_movewait = time + 3;
+    newmis.think = te_vehicle_chunk_th;
+    newmis.nextthink = time + 0.1;
+    newmis.ai_movewait = time + 3;
   }
 };
-
 
 void() te_msn_boundary={
   msg_entity = self;
@@ -414,24 +404,10 @@ void() te_msn_boundary={
   WriteByte( MSG_ONE, TE_MSN_BOUND );
 };
 
-
-
 //passive shield effects
 void(entity e) te_shields_active={
-  
-  local vector v1, v2;
-  v1 = e.origin + randomvec2() * e.maxs_x;
- 
-  pointparticles(particleeffectnum("TE_SHIELD_ON"), v1 , '0 0 0', 1);
-  
+  pointparticles(particleeffectnum("TE_SHIELD_ON"), e.origin + randomvec2() * e.maxs_x , '0 0 0', 1);
 };
 void(entity e) te_shields_down={
-
-  local vector v1, v2;
-  
-  v1 = randompos(e.origin + e.mins, e.origin + e.maxs); 
-  v2 = randompos(e.origin + e.mins, e.origin + e.maxs); 
-  
-  trailparticles( e, particleeffectnum("TE_SHIELD_DOWN"), v1, v2) ;
-
+  trailparticles( e, particleeffectnum("TE_SHIELD_DOWN"), randompos(e.origin + e.mins, e.origin + e.maxs), randompos(e.origin + e.mins, e.origin + e.maxs)) ;
 };

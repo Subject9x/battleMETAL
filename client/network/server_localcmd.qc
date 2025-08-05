@@ -41,7 +41,6 @@ void() cl_ini_infostring={
     only sends delta of CLIENT_INFO_STRING changes via flag valeues
 */
 void(float changeFlags) cl_send_infostring={
-  local string serverCmd;
   local string updateInfoString;
   local float keyFlags;
   
@@ -107,10 +106,8 @@ void(float changeFlags) cl_send_infostring={
   
   keyFlags = keyFlags | changeFlags;
   updateInfoString = infoadd(updateInfoString, KEY_FLAGS, ftos(keyFlags));
-  
-  serverCmd = strcat("cmd ", CMD_CLIENT_INFO, " ", updateInfoString, "\n");
-  
-  localcmd(serverCmd);
+
+  localcmd(strcat("cmd ", CMD_CLIENT_INFO, " ", updateInfoString, "\n"));
 };
 
 
@@ -166,6 +163,7 @@ void() cl_set_faction_colors={
   local string factionColors;
   local string infoString;
   local float color1, color2, color3, color4, color5, color6;
+
   switch( CLIENT_faction ){
     case FACTION_SURVEST:
       factionColors = PLAYER_COLOR_SRV;
@@ -222,9 +220,7 @@ void(float nav_id) cl_setspawnpoint={
 };
 
 void(float nextMissionBool) cl_set_mission={
-  local string cmd;
-  cmd = strcat("cmd nextmission ", ftos(nextMissionBool),"\n");
-  localcmd(cmd);
+  localcmd(strcat("cmd nextmission ", ftos(nextMissionBool),"\n"));
 };
 
 /*
@@ -415,10 +411,8 @@ void() cl_get_new_fog={
 //use normal keybinds and cvars to track chase_active, this is here for when
 // the player specfically spawns into their mech.
 void() cl_set_chase={
-  local string cmd;
   if(CLIENT_server_ent.chaseActive == TRUE ){
-    cmd = "impulse 30\n";
-    localcmd(cmd);
+    localcmd("impulse 30\n");
   }
   HUD_EXTERNAL_CAM_ACTIVE = CLIENT_server_ent.chaseActive ;
 };
@@ -427,10 +421,7 @@ void() cl_set_chase={
   Replaces the stuffcmd() thing
 */
 void() cl_set_menu={
-  local float menuFlag;
-   
-  menuFlag = ReadByte();
-  if( menuFlag ){
+  if( ReadByte() ){
     setcursormode(0);
     localcmd("togglemenu\n");
   }

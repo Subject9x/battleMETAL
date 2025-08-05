@@ -30,7 +30,6 @@ void() client_get_info={
 void() receive_ent_bindData={
   local string name;
   local float prevFaction;
-  local entity deploy;
   local entity previous;
   
   name = cvar_string("_cl_name");

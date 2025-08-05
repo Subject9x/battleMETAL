@@ -21,9 +21,6 @@ void() projectile_marh_expl={
   local vector hitColor;
   local float hitBloom;
   local float hitScale;
-  local entity cluster;
-  local entity rem;
-  
   
   if( self.impactType == IMPACT_SKY ){
     return;
@@ -89,14 +86,14 @@ void() data_projectile_missile_activeradar_think={
 	if (self.enemy.health < 1){
     self.solid = SOLID_NOT;
     self.touch = SUB_Null;
-    self.think = BecomeExplosion;
+    self.think = ctrl_missile_dud;
     self.nextthink = time + 1 + random();
     return;
   }
   if(self.enemy == world){
     self.solid = SOLID_NOT;
     self.touch = SUB_Null;
-    self.think = BecomeExplosion;
+    self.think = ctrl_missile_dud;
     self.nextthink = time + 1 + random();
     return;
   }

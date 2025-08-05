@@ -73,11 +73,9 @@ void() sendevent_mech_ai_die={
   SendEntity - MECH AI =====================================
 */
 void( float isNew, float changeFlags ) sendent_handle_mech_ai={
-  local vector turretAng;
   local string newName;
   local float prevShield;
   local float prevDeadFlag;
-  local float voiceId;
 
   local float cthp, lthp, rthp, lahp, raph, lghp;
   cthp = 0;
@@ -207,8 +205,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
   //EVENT - voice chatter
   if( (changeFlags & SENDFLAG_VOICE) ){
     if( !(changeFlags & SENDFLAG_UPDATE_FULL) ){
-      voiceId = ReadByte();
-      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, voiceId, self.ai_voice_limit, self.entnum);
+      snd_hud_trnsmsn_addtoqueue(self.ai_voice_group, ReadByte(), self.ai_voice_limit, self.entnum);
     }
   }
 
