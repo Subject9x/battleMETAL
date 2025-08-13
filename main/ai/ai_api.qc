@@ -240,12 +240,12 @@ float() ai_find_target_visual={
 };
 
 float() ai_find_target_radar={
-  if( ai_valid_target(self.enemy) ){
-    return FALSE;
-  }
   local entity targ, found;
   local float rng, ndist;
   local float vis;
+  if( ai_valid_target(self.enemy) ){
+    return FALSE;
+  }
   
   rng = self.ai_view;
   for(targ = findradius(self.origin, self.ai_view); targ != world; targ = targ.chain){
@@ -287,9 +287,8 @@ float() ai_find_target_radar={
 };
 
 void( entity ally, entity targ, float override ) ai_give_target={
-  local entity this;
-  
-  this = self;
+
+  TEMP_ENT1 = self;
   //validTarg = ai_valid_target(ally.enemy);  note: every other func calling this one already involes ai_valid_target()
   self = ally;
   //providing clause where ally has no target
@@ -306,7 +305,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
         ai_sfx_roger();
       }
     }
-  self = this;
+  self = TEMP_ENT1;
 };
 
 void() ai_unit_make_trigger={
@@ -330,14 +329,13 @@ void() ai_unit_make_trigger={
     should free up any given volume, allowing more bots to move easier.
 */
 float(vector destOrg, float wishSpeed) ai_calc_move={
-  local vector distDiff;
   local float len;
   local float travel;
   local vector tMins;
   local vector tMaxs;
   
-  distDiff = destOrg - self.origin;
-  len = vlen (distDiff);
+  TEMP_VEC3 = destOrg - self.origin;
+  len = vlen (TEMP_VEC3);
   tMaxs = self.maxs;
   tMins = self.mins;
   tMins_z = tMins_z * 0.75; //adjust for slope
@@ -347,8 +345,8 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   if( trace_fraction <= 0.1 ){
     return 0;
   }
-  distDiff = trace_endpos + (v_forward * (tMins_x * 2));
-  len = vlen(distDiff - self.origin);
+  TEMP_VEC3 = trace_endpos + (v_forward * (tMins_x * 2));
+  len = vlen(TEMP_VEC3 - self.origin);
   
   // divide by speed to get time to reach dest
   travel = len / wishSpeed;
@@ -401,20 +399,19 @@ float(vector destOrg, float wishSpeed) ai_calc_move={
   Simply moves up/down the AI's patrolNode chain (if possible)
 */
 entity(float checkDir) ai_get_next_node={
-  local entity foundNode;
   
-  foundNode = world;
+  TEMP_ENT2 = world;
   if( checkDir ){
     if( self.patrolNode.partNext ){
-      foundNode = self.patrolNode.partNext;
+      TEMP_ENT2 = self.patrolNode.partNext;
     }
   }
   else{
     if( self.patrolNode.partPrev ){
-      foundNode = self.patrolNode.partPrev;
+      TEMP_ENT2 = self.patrolNode.partPrev;
     }
   }
-  return foundNode;
+  return TEMP_ENT2;
 };
 
 /*

@@ -16,20 +16,19 @@ Overview:
 void() sv_getTarget={
   local entity src;
   local string targName;
-  local vector viewOfs;
   
   makevectors(self.v_angle);
   src = self;
 
   if( self.chaseActive ){
-    viewOfs = src.origin + (v_up * 22) + (v_forward * -96);
-    traceline(src.origin, viewOfs, FALSE, self);
-    viewOfs = trace_endpos;
+    TEMP_VEC2 = src.origin + (v_up * 22) + (v_forward * -96);
+    traceline(src.origin, TEMP_VEC2, FALSE, self);
+    TEMP_VEC2 = trace_endpos;
   }
   else{
-    viewOfs = self.cameraOrigin;
+    TEMP_VEC2 = self.cameraOrigin;
   }
-  traceline(viewOfs, viewOfs + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
+  traceline(TEMP_VEC2, TEMP_VEC2 + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   
   if( !trace_ent || trace_ent == self){
     return;

@@ -12,24 +12,23 @@ mod: 07/15/2019
 
 
 void() building_ruin_smoke={
-  local vector v;
-  
-  v = self.origin + [0,0, self.maxs_z + 5] + WeatherDominator.wind;
+
+  TEMP_VEC2 = self.origin + [0,0, self.maxs_z + 5] + WeatherDominator.wind;
   if( time > self.ai_action_time ){
     if( self.vec_size > 1 ){
-      pointparticles( particleeffectnum("TE_WRECK_SMOKE"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+      pointparticles( particleeffectnum("TE_WRECK_SMOKE"), self.origin, normalize(TEMP_VEC2 - self.origin) * 10, self.vec_size/2);
     }
     else{
-      pointparticles( particleeffectnum("TE_WRECK_SMOKE_SM"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+      pointparticles( particleeffectnum("TE_WRECK_SMOKE_SM"), self.origin, normalize(TEMP_VEC2 - self.origin) * 10, self.vec_size/2);
     
     }
   }
   else{
     if( self.vec_size > 1 ){
-      pointparticles( particleeffectnum("TE_WRECK_SMOKE_LG"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+      pointparticles( particleeffectnum("TE_WRECK_SMOKE_LG"), self.origin, normalize(TEMP_VEC2 - self.origin) * 10, self.vec_size/2);
     }
     else{
-      pointparticles( particleeffectnum("TE_WRECK_SMOKE"), self.origin, normalize(v - self.origin) * 10, self.vec_size/2);
+      pointparticles( particleeffectnum("TE_WRECK_SMOKE"), self.origin, normalize(TEMP_VEC2 - self.origin) * 10, self.vec_size/2);
     }
   }
   
@@ -41,9 +40,6 @@ void() building_ruin_smoke={
 
 
 void() building_die={
-  local vector destOrg;
-  local entity ruins;
-  
   if( self.deadflag == DEAD_NO || self.deadflag == DEAD_DEAD){
     return;
   }
@@ -56,8 +52,8 @@ void() building_die={
   self.touch = SUB_Null;
   
   //traceline(self.origin, self.origin + (v_up * self.mins_z), TRUE, self);
-  destOrg = self.origin;
-  destOrg_z = destOrg_z + self.mins_z;
+  TEMP_VEC3 = self.origin;
+  TEMP_VEC3_z = TEMP_VEC3_z + self.mins_z;
   
   switch( self.vec_size ){
     case 2:
@@ -71,7 +67,7 @@ void() building_die={
       break;
   }
   setsize(self, self.mins, self.maxs);
-  setorigin(self, destOrg);
+  setorigin(self, TEMP_VEC3);
   
   self.enemy = world;
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD | SENDFLAG_MOVE;
@@ -79,23 +75,23 @@ void() building_die={
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
   
-  ruins = spawn();
-  if( !ruins ){return;}
+  newmis = spawn();
+  if( !newmis ){return;}
   
-  ruins.movetype = MOVETYPE_NONE;
-  ruins.solid = SOLID_NOT;
-  ruins.takedamage = DAMAGE_NO;
-  ruins.vec_size = self.vec_size;
+  newmis.movetype = MOVETYPE_NONE;
+  newmis.solid = SOLID_NOT;
+  newmis.takedamage = DAMAGE_NO;
+  newmis.vec_size = self.vec_size;
   
-  ruins.ai_viewtime = time + 180 + (random() * 180);
-  ruins.ai_action_time = time + 90 + (random() * self.vec_size * 45 );
+  newmis.ai_viewtime = time + 180 + (random() * 180);
+  newmis.ai_action_time = time + 90 + (random() * self.vec_size * 45 );
   
-  setmodel(ruins, self.model);
-  setsize(ruins, ruins.mins, ruins.maxs);
-  setorigin(ruins, destOrg);
+  setmodel(newmis, self.model);
+  setsize(newmis, newmis.mins, newmis.maxs);
+  setorigin(newmis, TEMP_VEC3);
   
-  ruins.think = building_ruin_smoke;
-  ruins.nextthink = time + 0.1;
+  newmis.think = building_ruin_smoke;
+  newmis.nextthink = time + 0.1;
 };
 
 

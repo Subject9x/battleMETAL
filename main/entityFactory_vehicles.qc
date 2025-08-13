@@ -13,7 +13,6 @@ void() build_unit_weapon_list={
   local entity weaponMount;
   local entity prevWeapon;
   local float weaponCount;
-  local entity unit;
   
   prevWeapon = self;
   weaponMount = self.w_slot;
@@ -57,7 +56,7 @@ void() build_unit_weapon_list={
     }
     //run upgrades now because per-weapon updates need the full list.
     weaponMount = self.w_slot;
-    unit = self;
+    TEMP_ENT1 = self;
     while( weaponMount ){
       self = weaponMount;
       if( weaponMount.item_run_upgrade ){
@@ -65,53 +64,50 @@ void() build_unit_weapon_list={
       }
       weaponMount = weaponMount.w_slot;
     }
-    self = unit;
+    self = TEMP_ENT1;
   }
 };
 
 void( float nex_wep, entity own ) build_unit_weapon={
-  local entity parentEntity, partParent;
-  local vector ofs;
-  parentEntity = self;
-  
-  self = weaponBuild;
-    self.owner = own;
-    self.data_idx = nex_wep;
-    self.damageType = 0; //zero-out this stat
-    initialize_data_item_(nex_wep);
+  TEMP_ENT1 = self;
+    self = weaponBuild;
+      self.owner = own;
+      self.data_idx = nex_wep;
+      self.damageType = 0; //zero-out this stat
+      initialize_data_item_(nex_wep);
+      
+      self.reloadMaxCache = self.reloadMax; //bug fix - might as well stash it here, regardless of player choosing upgrades.
+      self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
+      self.w_firetime = 0;
+      self.w_currentammo = self.w_clipsize;
+      self.wepReloadState = READY;
+      self.health = 1;
+      self.max_health = 1;
     
-    self.reloadMaxCache = self.reloadMax; //bug fix - might as well stash it here, regardless of player choosing upgrades.
-    self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
-    self.w_firetime = 0;
-    self.w_currentammo = self.w_clipsize;
-    self.wepReloadState = READY;
-    self.health = 1;
-    self.max_health = 1;
-  
-    self.deadflag = DEAD_NO;
-    self.classname = MECH_PIECE; 
-    self.partTypeId = M_ITEM;
+      self.deadflag = DEAD_NO;
+      self.classname = MECH_PIECE; 
+      self.partTypeId = M_ITEM;
 
-    if( (own.flags & FL_MONSTER) ){
-      self.damageValue = ai_pilot_mod_damage( own.ai_rank, self.damageValue);
-      if(self.w_clipsize > 1){
-        self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
+      if( (own.flags & FL_MONSTER) ){
+        self.damageValue = ai_pilot_mod_damage( own.ai_rank, self.damageValue);
+        if(self.w_clipsize > 1){
+          self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
+        }
       }
-    }
-    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
-    setmodel(self, "models/testball.md3");
-    setsize(self, '-1 -1 -1','1 1 1');
-    ofs = self.compOffset + self.compAltOffset;
-    
-    macro_set_offset(own, ofs)
-    
-    
-    self.wepFireOffsetCache = self.wepFireOffset;
-    self.th_die = ctrl_die_weapon;
-    self.w_think = self.think;
-    self.SendEntity = ctrl_send_weapon;
-    self.SendFlags = self.SendFlags | SENDFLAG_NEWUNIT;
-  self = parentEntity;
+      macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
+      setmodel(self, "models/testball.md3");
+      setsize(self, '-1 -1 -1','1 1 1');
+      TEMP_VEC1 = self.compOffset + self.compAltOffset;
+      
+      macro_set_offset(own, TEMP_VEC1)
+      
+      
+      self.wepFireOffsetCache = self.wepFireOffset;
+      self.th_die = ctrl_die_weapon;
+      self.w_think = self.think;
+      self.SendEntity = ctrl_send_weapon;
+      self.SendFlags = self.SendFlags | SENDFLAG_NEWUNIT;
+    self = TEMP_ENT1;
 };
 
 /*
@@ -205,7 +201,6 @@ void() build_mech_unit={
 };
 
 void() build_mech_torsoCenter={
-  local entity this;
   local vector hmins, hmaxs;
   
   if( (self.flags & FL_CLIENT) ){

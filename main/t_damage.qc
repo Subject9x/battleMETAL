@@ -8,10 +8,11 @@ Overview: header for t_damage class
 according to the original source code, there should only be one 
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
+entity TEMP_DMG_TARG;
+entity TEMP_DMG_SELF;
 
 float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, vector force) t_damage={
-  local entity dmgTrg, dmgInflictor;
-  local entity notTarg;
+  local entity dmgInflictor;
   local float dmgAmt;
   local float dmgPartId;
   
@@ -27,7 +28,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
     return dmgPartId;
   }
   
-  dmgTrg = trg;
+  TEMP_DMG_TARG = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
   
@@ -45,7 +46,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
     }
   }
   
-  dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
+  TEMP_DMG_TARG.SendFlags = TEMP_DMG_TARG.SendFlags | SENDFLAG_IMPACT;
               
   trg.dmg_inflictor = inflictor;
   trg.was_hit = time + 0.5;
@@ -65,11 +66,11 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.playerDMdamage = attacker.playerDMdamage + dmgAmt;
-    if( attacker != dmgTrg ){
+    if( attacker != TEMP_DMG_TARG ){
       //make sure can't target self.
-      if( !attacker.enemy && dmgTrg.canTarget ){
-        attacker.enemy = dmgTrg;
-        attacker.targetEntId = num_for_edict(dmgTrg);
+      if( !attacker.enemy && TEMP_DMG_TARG.canTarget ){
+        attacker.enemy = TEMP_DMG_TARG;
+        attacker.targetEntId = num_for_edict(TEMP_DMG_TARG);
         attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
         //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
       }
@@ -80,10 +81,10 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
                         
      //------------>TODO: Damage Buffer system
     //AI react to Damage
-    if( (dmgTrg.flags & FL_MONSTER) ){
-      notTarg = self;
-      self = dmgTrg;
-      if( self.th_pain && self.faction != notTarg.faction){  
+    if( (TEMP_DMG_TARG.flags & FL_MONSTER) ){
+      TEMP_DMG_SELF = self;
+      self = TEMP_DMG_TARG;
+      if( self.th_pain && self.faction != TEMP_DMG_SELF.faction){  
         self.th_pain( attacker );
       }
       if( attacker.faction != self.faction ){
@@ -91,7 +92,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
           ai_call_for_help(attacker);
         }
       }
-      self = notTarg;
+      self = TEMP_DMG_SELF;
     }
     else{
       //calculate hit time and angle for clients
@@ -104,108 +105,108 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   }
   
   //the special hit-location calculator is only run for DATA_MECH units
-  if( dmgTrg.data_type == DATA_MECH ){
+  if( TEMP_DMG_TARG.data_type == DATA_MECH ){
     //filter out leg hits
-    if( !(dmgTrg.legs_flags & FL_DISARMED) && (dmg_point_z < (trg.origin_z - 5)) ){
+    if( !(TEMP_DMG_TARG.legs_flags & FL_DISARMED) && (dmg_point_z < (trg.origin_z - 5)) ){
       dmgPartId = M_LEGS;
     }
     else{
       if(dmg_point_z < (trg.origin_z - 5) ){
         dmgAmt = dmgAmt * 0.33;  //NOTE: indirect hit to not completely punished wasted leg shots
       }
-      dmgPartId = t_find_part(dmg_point, dmgTrg);
+      dmgPartId = t_find_part(dmg_point, TEMP_DMG_TARG);
     }
   }
   
   //TODO: this goes to damage buffer
-  if( dmgTrg.health > 0 ){
-    if( dmgTrg.data_type == DATA_MECH ){
-      if( (dmgTrg.criticalHits & M_TOR_LEFT) ){
+  if( TEMP_DMG_TARG.health > 0 ){
+    if( TEMP_DMG_TARG.data_type == DATA_MECH ){
+      if( (TEMP_DMG_TARG.criticalHits & M_TOR_LEFT) ){
         dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
       }
-      if( (dmgTrg.criticalHits & M_TOR_RIGHT) ){
+      if( (TEMP_DMG_TARG.criticalHits & M_TOR_RIGHT) ){
         dmgAmt = dmgAmt * DMG_TORSO_CRIT_MULTI;
       }
       if( dmgPartId > 0 ){
         switch( dmgPartId ){
           case M_TOR_LEFT:
-            dmgTrg.torL_hp = max(0, dmgTrg.torL_hp - dmgAmt);
-            if(dmgTrg.torL_hp <= 0){
-              dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_LEFT;
-              dmgTrg.torL_hp = 0;
-              if( (dmgTrg.unitModFlags & MOD_HAS_ARM_L) && !(dmgTrg.criticalHits & M_ARM_LEFT) ){
-                dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
-                dmgTrg.armL_hp = 0;
+            TEMP_DMG_TARG.torL_hp = max(0, TEMP_DMG_TARG.torL_hp - dmgAmt);
+            if(TEMP_DMG_TARG.torL_hp <= 0){
+              TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_TOR_LEFT;
+              TEMP_DMG_TARG.torL_hp = 0;
+              if( (TEMP_DMG_TARG.unitModFlags & MOD_HAS_ARM_L) && !(TEMP_DMG_TARG.criticalHits & M_ARM_LEFT) ){
+                TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_ARM_LEFT;
+                TEMP_DMG_TARG.armL_hp = 0;
               }
             }
             break;
           case M_TOR_RIGHT:
-            dmgTrg.torR_hp = max(0, dmgTrg.torR_hp - dmgAmt);
-            if(dmgTrg.torR_hp <= 0){
-              dmgTrg.critBuffer = dmgTrg.critBuffer | M_TOR_RIGHT;
-              dmgTrg.torR_hp = 0;
-              if( (dmgTrg.unitModFlags & MOD_HAS_ARM_R) && !(dmgTrg.criticalHits & M_ARM_RIGHT) ){
-                dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
-                dmgTrg.armR_hp = 0;
+            TEMP_DMG_TARG.torR_hp = max(0, TEMP_DMG_TARG.torR_hp - dmgAmt);
+            if(TEMP_DMG_TARG.torR_hp <= 0){
+              TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_TOR_RIGHT;
+              TEMP_DMG_TARG.torR_hp = 0;
+              if( (TEMP_DMG_TARG.unitModFlags & MOD_HAS_ARM_R) && !(TEMP_DMG_TARG.criticalHits & M_ARM_RIGHT) ){
+                TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_ARM_RIGHT;
+                TEMP_DMG_TARG.armR_hp = 0;
               }
             }
             break;
           case M_ARM_RIGHT:
-            dmgTrg.armR_hp = max(0, dmgTrg.armR_hp - dmgAmt);
-            if(dmgTrg.armR_hp <= 0){
-              dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_RIGHT;
-              dmgTrg.armR_hp = 0;
+            TEMP_DMG_TARG.armR_hp = max(0, TEMP_DMG_TARG.armR_hp - dmgAmt);
+            if(TEMP_DMG_TARG.armR_hp <= 0){
+              TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_ARM_RIGHT;
+              TEMP_DMG_TARG.armR_hp = 0;
             }
             break;
           case M_ARM_LEFT:
-            dmgTrg.armL_hp = max(0, dmgTrg.armL_hp - dmgAmt);
-            if(dmgTrg.armL_hp <= 0){
-              dmgTrg.armL_hp = 0;
-              dmgTrg.critBuffer = dmgTrg.critBuffer | M_ARM_LEFT;
+            TEMP_DMG_TARG.armL_hp = max(0, TEMP_DMG_TARG.armL_hp - dmgAmt);
+            if(TEMP_DMG_TARG.armL_hp <= 0){
+              TEMP_DMG_TARG.armL_hp = 0;
+              TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_ARM_LEFT;
             }
             break;
           case M_LEGS:
-            if((dmgTrg.criticalHits & M_LEGS)){
+            if((TEMP_DMG_TARG.criticalHits & M_LEGS)){
               //legs already crit.
-              dmgTrg.health = dmgTrg.health - dmgAmt;
+              TEMP_DMG_TARG.health = TEMP_DMG_TARG.health - dmgAmt;
             }
             else{
-              dmgTrg.legs_hp = max(0, dmgTrg.legs_hp - dmgAmt);
-              if(dmgTrg.legs_hp <= 0){
-                dmgTrg.legs_hp = 0;
-                dmgTrg.critBuffer = dmgTrg.critBuffer | M_LEGS;
+              TEMP_DMG_TARG.legs_hp = max(0, TEMP_DMG_TARG.legs_hp - dmgAmt);
+              if(TEMP_DMG_TARG.legs_hp <= 0){
+                TEMP_DMG_TARG.legs_hp = 0;
+                TEMP_DMG_TARG.critBuffer = TEMP_DMG_TARG.critBuffer | M_LEGS;
               }
             }
             break;
           default:
-            dmgTrg.health = max(0, dmgTrg.health - dmgAmt);
+            TEMP_DMG_TARG.health = max(0, TEMP_DMG_TARG.health - dmgAmt);
             break;
         }
       }
     }
     else{
-      dmgTrg.health = dmgTrg.health - dmgAmt;
+      TEMP_DMG_TARG.health = TEMP_DMG_TARG.health - dmgAmt;
     }
   }
   //=====================================
   
   
   //TODO - count-gate this so its not spammed on every single weapon hit
-  if( (dmgTrg.flags & FL_MONSTER) && dmgTrg.data_type != DATA_BLD ){
-    if( util_getMechHpAverage(dmgTrg) < 0.5){
+  if( (TEMP_DMG_TARG.flags & FL_MONSTER) && TEMP_DMG_TARG.data_type != DATA_BLD ){
+    if( util_getMechHpAverage(TEMP_DMG_TARG) < 0.5){
       if( attacker.faction != self.faction ){
-        notTarg = self;
-        self = dmgTrg;
+        TEMP_DMG_SELF = self;
+        self = TEMP_DMG_TARG;
           ai_call_for_help( attacker );
-        self = notTarg;
+        self = TEMP_DMG_SELF;
       }
     }
   }
   //=====================================
   
-  if( dmgTrg.health <= 0 ){
-    if( dmgTrg.th_die ){
-      killed(dmgTrg, attacker);
+  if( TEMP_DMG_TARG.health <= 0 ){
+    if( TEMP_DMG_TARG.th_die ){
+      killed(TEMP_DMG_TARG, attacker);
     }
   }
   //---------------------------------
@@ -217,8 +218,7 @@ float(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_p
   you've already checked shield levels before calling this.
 */
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_point, float shieldBreaker) t_damage_shield={
-  local entity dmgTrg, dmgInflictor;
-  local entity notTarg;
+  local entity dmgInflictor;
   local float dmgAmt;
   
   if( !trg.takedamage ){
@@ -231,7 +231,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     return world;
   }
   
-  dmgTrg = trg;
+  TEMP_DMG_TARG = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
   
@@ -249,37 +249,37 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
     }
   }
   
-  dmgTrg.shield = dmgTrg.shield - dmgAmt;
-  if( dmgTrg.shield < 0 ){
-    dmgTrg.shield = 0;
+  TEMP_DMG_TARG.shield = TEMP_DMG_TARG.shield - dmgAmt;
+  if( TEMP_DMG_TARG.shield < 0 ){
+    TEMP_DMG_TARG.shield = 0;
     if(shieldBreaker){
-      dmgTrg.shieldHitFlag = SHIELD_HIT_IXP;
+      TEMP_DMG_TARG.shieldHitFlag = SHIELD_HIT_IXP;
     }
     else{
-      dmgTrg.shieldHitFlag = SHIELD_HIT_EXP;
+      TEMP_DMG_TARG.shieldHitFlag = SHIELD_HIT_EXP;
     }
   }
   else{
     if(shieldBreaker){
-      dmgTrg.shieldHitFlag = SHIELD_HIT_EMP;
+      TEMP_DMG_TARG.shieldHitFlag = SHIELD_HIT_EMP;
     }
     else{
-      dmgTrg.shieldHitFlag = SHIELD_HIT_REG;
+      TEMP_DMG_TARG.shieldHitFlag = SHIELD_HIT_REG;
     }
   }
   
-  dmgTrg.SendFlags = dmgTrg.SendFlags | SENDFLAG_IMPACT;
+  TEMP_DMG_TARG.SendFlags = TEMP_DMG_TARG.SendFlags | SENDFLAG_IMPACT;
   
-  dmgTrg.dmg_inflictor = inflictor;
-  dmgTrg.was_hit = time + 0.5;
+  TEMP_DMG_TARG.dmg_inflictor = inflictor;
+  TEMP_DMG_TARG.was_hit = time + 0.5;
 
   
   if( (attacker.flags & FL_CLIENT) ){
     attacker.timer_hittarg = time + 0.2;
-    if( attacker != dmgTrg ){
-      if( !attacker.enemy && dmgTrg.canTarget ){
-        attacker.enemy = dmgTrg;
-        attacker.targetEntId = num_for_edict(dmgTrg);
+    if( attacker != TEMP_DMG_TARG ){
+      if( !attacker.enemy && TEMP_DMG_TARG.canTarget ){
+        attacker.enemy = TEMP_DMG_TARG;
+        attacker.targetEntId = num_for_edict(TEMP_DMG_TARG);
         //attacker.targLockState = attacker.targLockState | LOCK_TARG_START; //2.0.0: lock-on not timer-based anymore
         attacker.SendFlags = attacker.SendFlags | SENDFLAG_TARGET;
       }
@@ -296,46 +296,46 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
   */
   //shield delay should be communicated to the player
   //ION / EMP should be better than most for messing with delay
-  if( dmgTrg.shield <= 0 ){
-    if( time > dmgTrg.shieldHitRegen ){
+  if( TEMP_DMG_TARG.shield <= 0 ){
+    if( time > TEMP_DMG_TARG.shieldHitRegen ){
       //fresh hit
       if( shieldBreaker ){
-        dmgTrg.shieldHitRegen = time + (SHIELD_DELAY * 2);
+        TEMP_DMG_TARG.shieldHitRegen = time + (SHIELD_DELAY * 2);
       }
       else{
-        dmgTrg.shieldHitRegen = time + SHIELD_DELAY;
+        TEMP_DMG_TARG.shieldHitRegen = time + SHIELD_DELAY;
       }
-      dmgTrg.shieldHitRegenStart = time;
+      TEMP_DMG_TARG.shieldHitRegenStart = time;
     }
   }
   else{
-    if( time > dmgTrg.shieldHitDelay ){
+    if( time > TEMP_DMG_TARG.shieldHitDelay ){
       if( shieldBreaker ){
-        dmgTrg.shieldHitDelay = time + (SHIELD_DELAY * 0.75);
+        TEMP_DMG_TARG.shieldHitDelay = time + (SHIELD_DELAY * 0.75);
       }
       else{
-        dmgTrg.shieldHitDelay = time + (SHIELD_DELAY * 0.33);
+        TEMP_DMG_TARG.shieldHitDelay = time + (SHIELD_DELAY * 0.33);
       }
-      dmgTrg.shieldHitDelayStart = time;
+      TEMP_DMG_TARG.shieldHitDelayStart = time;
     }
     else{
-      if( (dmgTrg.shieldHitDelay - dmgTrg.shieldHitDelayStart ) < SHIELD_DELAY ){
+      if( (TEMP_DMG_TARG.shieldHitDelay - TEMP_DMG_TARG.shieldHitDelayStart ) < SHIELD_DELAY ){
         if( shieldBreaker ){
-          dmgTrg.shieldHitDelay = dmgTrg.shieldHitDelay + (SHIELD_DELAY * 0.75);
+          TEMP_DMG_TARG.shieldHitDelay = TEMP_DMG_TARG.shieldHitDelay + (SHIELD_DELAY * 0.75);
         }
         else{
-          dmgTrg.shieldHitDelay = dmgTrg.shieldHitDelay + (SHIELD_DELAY * 0.33);
+          TEMP_DMG_TARG.shieldHitDelay = TEMP_DMG_TARG.shieldHitDelay + (SHIELD_DELAY * 0.33);
         }
-        dmgTrg.shieldHitDelayStart = time;
+        TEMP_DMG_TARG.shieldHitDelayStart = time;
       }
     }
   }
   //================================================
   
   //AI react to Damage
-  if( (dmgTrg.flags & FL_MONSTER) ){
-    notTarg = self;
-    self = dmgTrg;
+  if( (TEMP_DMG_TARG.flags & FL_MONSTER) ){
+    TEMP_DMG_SELF = self;
+    self = TEMP_DMG_TARG;
     if( self.th_pain ){  
       if( time > self.ai_react_buffer ){
         self.th_pain( attacker );
@@ -348,13 +348,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, vector dmg_
         }
       }
     }
-    self = notTarg;
+    self = TEMP_DMG_SELF;
   }
   else{
     //calculate hit time and angle for clients
-    util_checkPointToHitDir(dmgTrg, inflictor.origin);
+    util_checkPointToHitDir(TEMP_DMG_TARG, inflictor.origin);
   }
-  return dmgTrg;
+  return TEMP_DMG_TARG;
 }
 
 

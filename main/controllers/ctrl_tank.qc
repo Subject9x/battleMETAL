@@ -8,11 +8,8 @@ Overview:
 */
 
 void() ctrl_updateTank={
-  local entity wep;
-  local vector v1;
   local float hp;
   local float myShield;
-  local vector offsetAngl;
   
   if( !(self.flags & FL_TURRET) ){
     //Unit lacks a turret.
@@ -26,9 +23,11 @@ void() ctrl_updateTank={
   self.legs_org = self.tankChassisOrg + (v_right * self.legs_compOffset_x) + (v_up * self.legs_compOffset_y) + (v_forward * self.legs_compOffset_z);
   self.torC_org = self.tankChassisOrg + (v_right * self.torC_compOffset_x) + (v_up * self.torC_compOffset_y) + (v_forward * self.torC_compOffset_z);
   
+  self.hitOffset = self.tankChassisOrg + [0, self.torC_compOffset_y, 0];
+
   makevectors(self.v_angle);
-  v1 = self.tankChassisOrg + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
-  traceline(v1, v1 + v_forward * 10000, FALSE, self);
+  TEMP_VEC3 = self.tankChassisOrg + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
+  traceline(TEMP_VEC3, TEMP_VEC3 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;
   
@@ -68,22 +67,21 @@ void() ctrl_updateTank={
   self.ai_weaponEnergy = 0;
   self.currentWeaponGroup = 0;
   
-  wep = self.w_slot;
-  while(wep){
-    if( wep.owner != self ){
+  TEMP_ENT3 = self.w_slot;
+  while(TEMP_ENT3){
+    if( TEMP_ENT3.owner != self ){
       continue;
     }
     if( (self.flags & FL_MONSTER) ){
-      ctrl_weapon_think_ai(wep);
+      ctrl_weapon_think_ai(TEMP_ENT3);
     }
-    util_getPartFromName(wep.partParentId, self);
+    util_getPartFromName(TEMP_ENT3.partParentId, self);
 
-    offsetAngl = T_PART_PARENT_ANGL; 
-    makevectors(offsetAngl);
-    wep.origin = self.origin + (v_up * wep.compOffset_y) + (v_forward * wep.compOffset_z) + (v_right * wep.compOffset_x);
-    wep.angles = T_PART_PARENT_ANGL;
-    setorigin(wep, wep.origin);
-    wep = wep.w_slot;
+    makevectors(T_PART_PARENT_ANGL);
+    TEMP_ENT3.origin = self.origin + (v_up * TEMP_ENT3.compOffset_y) + (v_forward * TEMP_ENT3.compOffset_z) + (v_right * TEMP_ENT3.compOffset_x);
+    TEMP_ENT3.angles = T_PART_PARENT_ANGL;
+    setorigin(TEMP_ENT3, TEMP_ENT3.origin);
+    TEMP_ENT3 = TEMP_ENT3.w_slot;
   }
 
   

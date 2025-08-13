@@ -7,7 +7,6 @@ Overview:
 */
 
 void() ctrl_mech_update={
-  local entity weapon;
   local vector rootAngl;
   local vector rootTorCAngl;
   local vector offsetAngl;
@@ -16,7 +15,13 @@ void() ctrl_mech_update={
     ctrl_updateCenterTorso(); 
     ctrl_updateLegs();
     rootAngl = self.angles;
-    rootTorCAngl = [0, self.v_angle_y, 0];
+    rootTorCAngl_y = self.v_angle_y;
+    if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
+      rootTorCAngl_x = self.v_angle_x;
+    }
+    else{
+      rootTorCAngl_x = 0.0;
+    }
   }
   else{
     ai_ctrl_updateCenterTorso();
@@ -38,6 +43,9 @@ void() ctrl_mech_update={
   if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_C)){
     self.torC_angl_x = self.v_angle_x;
   }
+  else{
+    self.torC_angl_x = 0.0;
+  }
 
   self.legs_hitOffset = self.origin + (v_right * self.legs_compAltOffset_x) + (v_up * self.legs_compAltOffset_y) + (v_forward * self.legs_compAltOffset_z);
   self.legs_org = self.origin + (v_right * self.legs_compOffset_x) + (v_up * self.legs_compOffset_y) + (v_forward * self.legs_compOffset_z);
@@ -50,6 +58,9 @@ void() ctrl_mech_update={
     if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_L) ){
       self.torL_angl_x = self.torC_angl_x;
     }
+    else{
+      self.torL_angl_x = 0.0;
+    }
   }
   if( (self.unitModFlags & MOD_HAS_TOR_R) ){
     self.torR_hitOffset = self.origin + (v_right * self.torR_compAltOffset_x) + (v_up * self.torR_compAltOffset_y) + (v_forward * self.torR_compAltOffset_z);
@@ -57,6 +68,9 @@ void() ctrl_mech_update={
     self.torR_angl_y = self.torC_angl_y;
     if( (self.unitModFlags & MOD_MODEL_PITCH_TOR_R) ){
       self.torR_angl_x = self.torC_angl_x;
+    }
+    else{
+      self.torR_angl_x = 0.0;
     }
   }
 
@@ -71,22 +85,24 @@ void() ctrl_mech_update={
     self.armL_angl = [self.v_angle_x, self.torC_angl_y, 0];
   }
 
-  weapon = self.w_slot;
-  while(weapon){
-    if( weapon.owner != self ){
+  self.hitOffset = self.torC_hitOffset;
+
+  TEMP_ENT1 = self.w_slot;
+  while(TEMP_ENT1){
+    if( TEMP_ENT1.owner != self ){
       continue;
     }
     if( (self.flags & FL_MONSTER) ){
-      ctrl_weapon_think_ai(weapon);
+      ctrl_weapon_think_ai(TEMP_ENT1);
     }
-    util_getPartFromName(weapon.partParentId, self);
+    util_getPartFromName(TEMP_ENT1.partParentId, self);
 
     offsetAngl = T_PART_PARENT_ANGL; 
     makevectors(offsetAngl);
-    weapon.origin = self.origin + (v_up * weapon.compOffset_y) + (v_forward * weapon.compOffset_z) + (v_right * weapon.compOffset_x);
-    weapon.angles = T_PART_PARENT_ANGL;
-    setorigin(weapon, weapon.origin);
-    weapon = weapon.w_slot;
+    TEMP_ENT1.origin = self.origin + (v_up * TEMP_ENT1.compOffset_y) + (v_forward * TEMP_ENT1.compOffset_z) + (v_right * TEMP_ENT1.compOffset_x);
+    TEMP_ENT1.angles = T_PART_PARENT_ANGL;
+    setorigin(TEMP_ENT1, TEMP_ENT1.origin);
+    TEMP_ENT1 = TEMP_ENT1.w_slot;
   }
 
   if(self.critBuffer > 0){
@@ -174,15 +190,15 @@ void() ctrl_updateCenterTorso={
 };
 
 void() ai_ctrl_updateCenterTorso={
-  local entity cam;
-  local vector v1;
   
   makevectors(self.torC_angl);
-  v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);
-  traceline(v1, v1 + v_forward * 10000, FALSE, self);
+  TEMP_VEC3 = self.origin + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
+
+  trailparticles( world , particleeffectnum("TE_REPAIR_RAIL"), self.origin + (v_up * 50), TEMP_VEC3); //debug
+
+  traceline(TEMP_VEC3, TEMP_VEC3 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;
-  
 };
 
 /*
@@ -291,12 +307,10 @@ void() ctrl_unit_update_frame={
   Case: player is killed in combat.
 */
 void() ctrl_mech_die_player={
-  local entity w_chain;
-
-  w_chain = self.w_slot;
-  while(w_chain){
-    ctrl_unit_part_death(w_chain);
-    w_chain = w_chain.w_slot;
+  TEMP_ENT2 = self.w_slot;
+  while(TEMP_ENT2){
+    ctrl_unit_part_death(TEMP_ENT2);
+    TEMP_ENT2 = TEMP_ENT2.w_slot;
   }
   
   //ensures only new weapon data coming upstream is written.
@@ -317,7 +331,6 @@ void() ctrl_mech_die_player={
 
 
 void() ctrl_mech_critical_hits={
-  local entity item;
   local float legSoak;
 
   local vector minsAdj;
@@ -361,19 +374,19 @@ void() ctrl_mech_critical_hits={
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
 
-  item = self.w_slot;
-  while(item){
-    if( (self.critBuffer & item.partParentId) ){
-      item.deadflag = DEAD_DEAD;
+  TEMP_ENT3 = self.w_slot;
+  while(TEMP_ENT3){
+    if( (self.critBuffer & TEMP_ENT3.partParentId) ){
+      TEMP_ENT3.deadflag = DEAD_DEAD;
     }
-    else if( (self.critBuffer & M_LEGS) && item.data_idx == UID_ITEM_turbo_charger){
+    else if( (self.critBuffer & M_LEGS) && TEMP_ENT3.data_idx == UID_ITEM_turbo_charger){
       //turbo chargers can soak leg criticals!
       if( !legSoak ){
         legSoak = TRUE;
-        item.deadflag = DEAD_DEAD;
+        TEMP_ENT3.deadflag = DEAD_DEAD;
       }
     }
-    item = item.w_slot;
+    TEMP_ENT3 = TEMP_ENT3.w_slot;
   }
   
   if( legSoak ){
@@ -410,8 +423,6 @@ void() ctrl_mech_critical_hits={
 
 void() ctrl_player_mech_touch={
   local float dot;
-  local entity dead;
-  local vector vec;
   local float mid;
   local float rammage;
   
@@ -429,12 +440,12 @@ void() ctrl_player_mech_touch={
   }
   
   makevectors ( self.ramAngle );
-  vec = normalize (self.origin - other.origin);
-  dot = vec * v_forward;
+  TEMP_VEC3 = normalize (self.origin - other.origin);
+  dot = TEMP_VEC3 * v_forward;
   
 	if( dot < 0.6 ){
     mid = vlen(self.origin - other.origin) * 0.5;
-    vec = self.legs_org + (v_forward * mid);
+    TEMP_VEC3 = self.legs_org + (v_forward * mid);
     rammage = vlen(self.velocity) * 0.1;
     
     if((other.flags & FL_MONSTER)){
@@ -443,22 +454,22 @@ void() ctrl_player_mech_touch={
 
     if( other.shield <= 0 )
     {
-      t_damage(other, self, self, rammage , vec, self.velocity * 0.25);
+      t_damage(other, self, self, rammage , TEMP_VEC3, self.velocity * 0.25);
       if( self.shield <= 0 ){
-        t_damage(self, other, other, rammage , vec, self.velocity * -0.1);
+        t_damage(self, other, other, rammage , TEMP_VEC3, self.velocity * -0.1);
       }
     }
     else
     {
       if(self.shield > 0)
       {
-        t_damage_shield(self, other, other, other.shield, vec, TRUE);
-        t_damage_shield(other, self, self, self.shield, vec, TRUE);
+        t_damage_shield(self, other, other, other.shield, TEMP_VEC3, TRUE);
+        t_damage_shield(other, self, self, self.shield, TEMP_VEC3, TRUE);
       }
       else
       {
-        t_damage_shield(other, self, self, rammage, vec, TRUE);
-        t_damage(self, other, other, other.shield * 0.1, vec, self.velocity * -0.1);
+        t_damage_shield(other, self, self, rammage, TEMP_VEC3, TRUE);
+        t_damage(self, other, other, other.shield * 0.1, TEMP_VEC3, self.velocity * -0.1);
       }
     }
 

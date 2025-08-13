@@ -125,8 +125,8 @@ called after running player input frame
 ============
 */
 void() PlayerPostThink = {
-  local entity wep_chain;
   local float legDmg, centerTorsoDmg;
+  local entity wep_chain;
   
   if (self.deadflag != DEAD_NO){
     return;
@@ -372,7 +372,6 @@ void() PlayerPreThink_powerup={
 };
 
 void() PlayerPostThink_powerup={
-  local entity wep_chain;
   
   self.angles = self.wind;
   self.v_angle = self.wind;
@@ -386,11 +385,11 @@ void() PlayerPostThink_powerup={
 
   ctrl_mech_update();
   
-  for( wep_chain = self.w_slot; wep_chain != world; wep_chain = wep_chain.w_slot ){
-    if( wep_chain.owner != self ){
+  for( TEMP_ENT1 = self.w_slot; TEMP_ENT1 != world; TEMP_ENT1 = TEMP_ENT1.w_slot ){
+    if( TEMP_ENT1.owner != self ){
       continue;
     }
-    ctrl_weapon_think(wep_chain);
+    ctrl_weapon_think(TEMP_ENT1);
   }
   
   if (!(self.flags & FL_ONGROUND)){
@@ -488,10 +487,9 @@ void() PlayerDie4={
 };
 
 void() PlayerDie5={
-  local entity leg;
 
-  leg = ai_wreck_mech();
-  leg.ai_timer_breathe = time + 100;
+  TEMP_ENT3 = ai_wreck_mech();
+  TEMP_ENT3.ai_timer_breathe = time + 100;
 
   te_missile_explode( self.torC_org + (randomvec2() * 10), self.vec_size, '0.33 0.75 1.0', 0.001 );
   self.moveState = MOVE_STAND;
@@ -523,7 +521,6 @@ void() PlayerDie={
 
 
 void() PlayerDieEnd={
-  local entity infoDm;
 
   ctrl_weapon_remove_all();
   player_unmakeMech();
@@ -537,8 +534,8 @@ void() PlayerDieEnd={
 
   player_makeObserver();
 
-  infoDm = find(world, classname, "info_player_deathmatch");
-  setorigin(self, infoDm.origin);
+  TEMP_ENT3 = find(world, classname, "info_player_deathmatch");
+  setorigin(self, TEMP_ENT3.origin);
   
   if( self.playerState == PLAYER_INTERMSN ){
     //end of round happened during death.

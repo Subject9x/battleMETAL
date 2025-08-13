@@ -149,6 +149,7 @@ void( float isNew, float changeFlags ) sendent_handle_mech_ai={
       if(!self.unit_legs){
         self.unit_legs = spawn();
         self.unit_legs.skin = self.skin;
+        setmodel(self.unit_legs, self.legs_mdl);
       }
     }
     else{

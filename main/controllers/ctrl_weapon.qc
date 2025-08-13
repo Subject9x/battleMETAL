@@ -8,7 +8,6 @@ Overview: weapon controller header
 */
 
 void(entity wep) ctrl_weapon_think={
-  local entity weaponOwner;
   
   if(wep.deadflag >= DEAD_DYING){
     wep.deadflag = DEAD_DEAD;
@@ -17,13 +16,13 @@ void(entity wep) ctrl_weapon_think={
   if(wep.deadflag == DEAD_DEAD){
     return;
   } 
-  weaponOwner = self;
+  TEMP_ENT2 = self;
   self = wep; 
     if( self.think ){
       self.think();
       self.think = self.think;
     }
-  self = weaponOwner;
+  self = TEMP_ENT2;
 };
 
 /*
@@ -32,21 +31,20 @@ void(entity wep) ctrl_weapon_think={
 .float ai_nextFireTime; //last time this WEAPON was fired.
 */
 void(entity wep) ctrl_weapon_think_ai={
-  local entity weaponOwner;
   local float stackWeapon;
   local float energyCost;
   local float spreadRange;
   
-  weaponOwner = self;
+  TEMP_ENT2 = self;
   stackWeapon = TRUE;
   self = wep;
     if(self.deadflag >= DEAD_DYING){
       self.deadflag = DEAD_DEAD;
-      self = weaponOwner;
+      self = TEMP_ENT2;
       return;
     }
     if(self.deadflag == DEAD_DEAD){
-      self = weaponOwner;
+      self = TEMP_ENT2;
       return;
     }  
     if( self.think && self.think != SUB_Remove){
@@ -54,8 +52,8 @@ void(entity wep) ctrl_weapon_think_ai={
       self.think = self.think;
     }
     
-    if( weaponOwner.enemy ){
-      if( weaponOwner.stat_trg_dist > self.w_range ){
+    if( TEMP_ENT2.enemy ){
+      if( TEMP_ENT2.stat_trg_dist > self.w_range ){
         stackWeapon = FALSE;
       }
       else{
@@ -64,14 +62,14 @@ void(entity wep) ctrl_weapon_think_ai={
         }
         else{
           //Weapon REQUIRES a target lock to work, see if owner has a Target Lock
-          if( (self.damageType & EFF_LOK) && !(weaponOwner.targLockState & LOCK_TARG_HAS) ){
+          if( (self.damageType & EFF_LOK) && !(TEMP_ENT2.targLockState & LOCK_TARG_HAS) ){
             stackWeapon = FALSE;
           }
           
           if( stackWeapon ){
             //This is energy rationing to prevent the AI from trying to fire Weapons it doesn't have energy for.
-            energyCost = weaponOwner.ai_weaponEnergy + self.energyRate;
-            if( energyCost > weaponOwner.energy ){
+            energyCost = TEMP_ENT2.ai_weaponEnergy + self.energyRate;
+            if( energyCost > TEMP_ENT2.energy ){
               stackWeapon = FALSE;
             }
           }
@@ -79,19 +77,19 @@ void(entity wep) ctrl_weapon_think_ai={
           if( stackWeapon ){
             //If Weapon is a shield-breaked (eff-stx), only fire if the target has any amount of shielding worth breaking.
             if( (self.damageType & EFF_STX) ){
-              if( self.damageValue >= (weaponOwner.enemy.shield * 1.25) ){
+              if( self.damageValue >= (TEMP_ENT2.enemy.shield * 1.25) ){
                 stackWeapon = FALSE;
               }
             }
           }
           
           if( stackWeapon ){
-            if( weaponOwner.ai_rank > AI_RANK_REG ){
+            if( TEMP_ENT2.ai_rank > AI_RANK_REG ){
               if( !(self.damageType & EFF_PTR) ){
-                if( self.damageValue > 100 && !(weaponOwner.targLockState & LOCK_TARG_HAS)){
+                if( self.damageValue > 100 && !(TEMP_ENT2.targLockState & LOCK_TARG_HAS)){
                   //magic number describing high-damage attacks.
-                  spreadRange = weaponOwner.spreadDefault_x + (weaponOwner.spreadDefault_x * 0.33);
-                  if( weaponOwner.accuracy >= spreadRange ){
+                  spreadRange = TEMP_ENT2.spreadDefault_x + (TEMP_ENT2.spreadDefault_x * 0.33);
+                  if( TEMP_ENT2.accuracy >= spreadRange ){
                     stackWeapon = FALSE;
                   }
                 }
@@ -106,10 +104,10 @@ void(entity wep) ctrl_weapon_think_ai={
     }
   
     if( stackWeapon == TRUE ){
-      weaponOwner.currentWeaponGroup = weaponOwner.currentWeaponGroup | self.w_group;
-      weaponOwner.ai_weaponEnergy = energyCost;
+      TEMP_ENT2.currentWeaponGroup = TEMP_ENT2.currentWeaponGroup | self.w_group;
+      TEMP_ENT2.ai_weaponEnergy = energyCost;
     }
-  self = weaponOwner;
+  self = TEMP_ENT2;
 };
 
 /*
@@ -171,16 +169,16 @@ void( float burstFire ) ctrl_weapon_updateAmmo={
 };
 
 void( float updateDelay ) ctrl_weapon_make_projectile={
-  local entity theWeapon;
+
   if( self.data_ini_projectile ){
-    theWeapon = self;
+    TEMP_ENT3 = self;
     NEWSHOT = spawn();
     self = NEWSHOT;
       self.owner = FIRE_ENT;
-      theWeapon.data_ini_projectile();
-      self.damageType = theWeapon.damageType;
-      self.damageValue = theWeapon.damageValue;
-      self.data_idx = theWeapon.data_idx; //use weapon idx to sync to CSQC
+      TEMP_ENT3.data_ini_projectile();
+      self.damageType = TEMP_ENT3.damageType;
+      self.damageValue = TEMP_ENT3.damageValue;
+      self.data_idx = TEMP_ENT3.data_idx; //use weapon idx to sync to CSQC
       self.data_lifetime = time + self.data_lifetime;
       self.w_firetime = time + 0.5;
       self.velocity = normalize(FIRE_ENDPOINT - FIRE_ORIGIN);
@@ -209,7 +207,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       setorigin(self, FIRE_ORIGIN);
       self.SendEntity = te_send_missile;
       self.SendFlags = self.SendFlags | (SENDFLAG_MOVE | SENDFLAG_VELOCITY);
-    self = theWeapon;
+    self = TEMP_ENT3;
   }
   else{
     if( cvar("developer") ){
@@ -222,7 +220,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
   Cosmetic death function, weapon entity is still 'active' on the server.
 */
 void() ctrl_die_weapon={
-  local entity prev;
+
   if(self.deadflag == DEAD_NO){
     self.deadflag = DEAD_DEAD;
     
@@ -235,9 +233,9 @@ void() ctrl_die_weapon={
     //attempt to garbage collect AI
     if( (self.owner.flags & FL_MONSTER) ){
       if( self.w_slot ){
-        prev = self.partPrev;
-        prev.w_slot = self.w_slot; //take hard point out of rotation.
-        prev.w_slot.partPrev = prev;
+        TEMP_ENT1 = self.partPrev;
+        TEMP_ENT1.w_slot = self.w_slot; //take hard point out of rotation.
+        TEMP_ENT1.w_slot.partPrev = TEMP_ENT1;
       }
       self.think = SUB_Remove;
       self.nextthink = time + 0.01;
@@ -249,12 +247,11 @@ void() ctrl_die_weapon={
   called to remove all hardpoints from a Unit, carefully.
 */
 void() ctrl_weapon_remove_all={
-  local entity removeChain;
   //call remove() in list order, no going back from this.
   
-  for( removeChain = self.w_slot; removeChain != world; removeChain = removeChain.w_slot ){
-    removeChain.think = SUB_Remove;
-    removeChain.nextthink = time + 0.01;
+  for( TEMP_ENT1 = self.w_slot; TEMP_ENT1 != world; TEMP_ENT1 = TEMP_ENT1.w_slot ){
+    TEMP_ENT1.think = SUB_Remove;
+    TEMP_ENT1.nextthink = time + 0.01;
   }
 };
 
@@ -353,13 +350,11 @@ void() ctrl_missile_lastframe={
 
 
 void() ctrl_weapon_update={
-  local entity wep;
-  
-  wep = self.w_slot;
-  while(wep){
+  TEMP_ENT2 = self.w_slot;
+  while(TEMP_ENT2){
     
     self.SendFlags = self.SendFlags | SENDFLAG_MOVE;
-    wep = wep.w_slot;
+    TEMP_ENT2 = TEMP_ENT2.w_slot;
   }
 };
 

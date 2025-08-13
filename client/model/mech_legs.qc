@@ -83,7 +83,7 @@ void() predraw_legs={
           te_foot_stomp( self.rootOrigin, self.legs_angl, self.vec_size, self.mins, FALSE);
         }
       }
-        
+      
       self.unit_legs.lerpfrac = self.unit_legs.lerpfrac + 1; //go to the start of the frame
     }
   }

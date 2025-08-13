@@ -19,7 +19,6 @@ void() player_think_normal;
     
 */
 float( entity to, float changeFlags ) send_client={
-  local entity player;
   local float prevType;
   
   //Write Headers
@@ -184,8 +183,6 @@ void(string str) SV_ParseClientCommand={
   local float argc;
   local float cmdIdx;
   local string cmdCall;
-  local entity trigTarg;
-  local entity notTrig;
   local string response;
   
   cmdIdx = strstrofs(str, " ", 0);
@@ -236,12 +233,12 @@ void(string str) SV_ParseClientCommand={
     self.avelocity = '0 0 0';
     if( self.animId != world ){
       if( self.animId.target != "" ){
-        trigTarg = find(world, targetname, self.animId.target );
-        if( trigTarg && trigTarg.use){
-          notTrig = self;
-          self = trigTarg;
-            trigTarg.use();
-          self = notTrig;
+        TEMP_ENT1 = find(world, targetname, self.animId.target );
+        if( TEMP_ENT1 && TEMP_ENT1.use){
+          TEMP_ENT2 = self;
+          self = TEMP_ENT1;
+            TEMP_ENT1.use();
+          self = TEMP_ENT2;
         }
       }
     }
@@ -545,7 +542,6 @@ called when a player disconnects from a server
 ============
 */
 void() ClientDisconnect = {
-  local entity client;
   local float clnum;
   local string response;
   
@@ -586,13 +582,13 @@ void() ClientDisconnect = {
   }
   //update client numbers
   CLIENTS = CLIENTS - 1;
-  client = findchainflags(flags, FL_CLIENT);
-  while(client){
-    clnum = client.client_num;
+  TEMP_ENT_PLAYER = findchainflags(flags, FL_CLIENT);
+  while(TEMP_ENT_PLAYER){
+    clnum = TEMP_ENT_PLAYER.client_num;
     if(clnum > self.client_num){
-      client.client_num = client.client_num - 1;
+      TEMP_ENT_PLAYER.client_num = TEMP_ENT_PLAYER.client_num - 1;
     }
-    client = client.chain;
+    TEMP_ENT_PLAYER = TEMP_ENT_PLAYER.chain;
   }
 };
 
@@ -659,7 +655,6 @@ void() PutClientInServer_Campaign={
     GAMEMODE_COOP
 */
 void() PutClientInServer_Coop={
-  local entity client;
   local float itr;
   /*PutClientInServer Logic
     2) configure faction
@@ -682,10 +677,10 @@ void() PutClientInServer_Coop={
   }
   
   if( ENT_SERVER_INFO.gameType == GAMEMODE_COOP ){
-    client = findchainflags(flags, FL_CLIENT);
+    TEMP_ENT_PLAYER = findchainflags(flags, FL_CLIENT);
     for( itr = 0; itr < 4; itr = itr + 1){
-      client.SendFlags = client.SendFlags | SENDFLAG_EXDATA;
-      client = client.chain;
+      TEMP_ENT_PLAYER.SendFlags = TEMP_ENT_PLAYER.SendFlags | SENDFLAG_EXDATA;
+      TEMP_ENT_PLAYER = TEMP_ENT_PLAYER.chain;
     }
   }
   
@@ -798,47 +793,46 @@ void() sv_client_respawn={
 };
 
 void() sv_client_spawnpoint_select={
-  local entity spot;
 
   if( (serverflags & SVFLAG_SPAWNFAR) ){
-    spot = world_deathmatch_random_spawn();
-    self.goalentity = spot;
+    TEMP_ENT3 = world_deathmatch_random_spawn();
+    self.goalentity = TEMP_ENT3;
   }
 
   if(self.goalentity){
     if( coop ){
-      spot = spawnpoint_coop();
+      TEMP_ENT3 = spawnpoint_coop();
     }
     else{
-      spot = self.goalentity;
+      TEMP_ENT3 = self.goalentity;
     }
   }
   else{
-    spot = SelectSpawnPoint();
+    TEMP_ENT3 = SelectSpawnPoint();
   }
   
   //remote deploy point functionality
   self.last_origin = self.origin;
-  if( spot.classname == "map_deploy_point_remote" ){
-    self.origin = self.oldorigin = spot.view_ofs + '0 0 12';
+  if( TEMP_ENT3.classname == "map_deploy_point_remote" ){
+    self.origin = self.oldorigin = TEMP_ENT3.view_ofs + '0 0 12';
   }
   else{
-    self.origin = self.oldorigin = spot.origin + '0 0 12';
+    self.origin = self.oldorigin = TEMP_ENT3.origin + '0 0 12';
   }
   
-  self.angles = spot.angles;
+  self.angles = TEMP_ENT3.angles;
   
   //haha, cache angles for powerup sequence.
   self.wind_x = 0;
-  self.wind_y = spot.angles_y;
-  self.wind_z = spot.angles_z;
+  self.wind_y = TEMP_ENT3.angles_y;
+  self.wind_z = TEMP_ENT3.angles_z;
   
 	self.fixangle = TRUE;
   self.SendFlags = self.SendFlags | SENDFLAG_MOVE | SENDFLAG_VELOCITY;
-  self.trigOnSpawn = spot.trigOnSpawn;
-  self.trigOnDeath = spot.trigOnDeath;
-  self.trigOnAttack = spot.trigOnAttack;
-  self.trigOnDamage = spot.trigOnDamage;
-  self.trigOnPanic = spot.trigOnPanic;
-  self.trigOnTarget = spot.trigOnTarget;
+  self.trigOnSpawn = TEMP_ENT3.trigOnSpawn;
+  self.trigOnDeath = TEMP_ENT3.trigOnDeath;
+  self.trigOnAttack = TEMP_ENT3.trigOnAttack;
+  self.trigOnDamage = TEMP_ENT3.trigOnDamage;
+  self.trigOnPanic = TEMP_ENT3.trigOnPanic;
+  self.trigOnTarget = TEMP_ENT3.trigOnTarget;
 };

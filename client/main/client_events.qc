@@ -20,8 +20,10 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 // return TRUE if you wish to eat this sound, return FALSE to let engine handle it.
 float(entity ent, float channel, string soundname, float volume, float attenuation, vector pos, float speed100, float sflags) CSQC_Event_Sound =
 {
-  
-  if((sflags & SOUNDFLAG_INTERIOR)){
+  if( cvar("snd_cockpit_effect") == 0 ){
+    return FALSE;
+  }
+  if((sflags & SOUNDFLAG_DYNAMIC_INT)){
     if(CLIENT_server_ent.chaseActive){
       sound7(ent, channel, sprintf(soundname, ""), volume, attenuation, speed100, sflags);
     }

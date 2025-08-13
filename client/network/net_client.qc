@@ -241,6 +241,7 @@ void() client_predraw={
       setsize(self, self.cache_mins, self.cache_maxs);
       self.renderflags = 0;
       predraw_legs();
+      
       self.origin = self.rootOrigin;
       self.angles = self.rootAngle;
       
@@ -317,7 +318,7 @@ void() client_predraw={
           if((self.unitModFlags & MOD_MODEL_PITCH_ARM_R)){
             self.armR_angl_x = self.rootAngle_x * -1;
           }
-          self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / self.armR_hpMax)  * 2;
+          self.colormod = CLR_PLAYER_LIST[self.unitColorRA] * (self.armR_hp / 100)  * 2;
           setmodel(self, self.armR_mdl);
           self.angles = self.armR_angl;
           self.origin = self.armR_org;
@@ -502,6 +503,14 @@ void( float isNew, float changeFlags ) sendent_handle_client={
         cvar_set( "cl_movespeedkey", ftos(2) );
       }
     }
+    if( self.data_type == DATA_MECH && self.deadflag == DEAD_NO){
+      if( !self.unit_legs){
+        self.unit_legs = spawn();
+        self.unit_legs.drawmask = MASK_NORMAL;
+        self.unit_legs.skin = self.skin;
+        setmodel(self.unit_legs, self.legs_mdl);
+      }
+    }
     self.think = client_entity_think;
     self.nextthink = time + 0.001;
     self.frame1time = time;
@@ -655,9 +664,10 @@ void( float isNew, float changeFlags ) sendent_handle_client={
     }
   
     if( (self.deadflag == DEAD_DYING) && (self.prevDeadFlag != DEAD_DYING) ){
-      //sendevent_handle_player_death();
-      //TODO
       self.canTarget = FALSE;
+      if( self.unit_legs ){
+        remove( self.unit_legs );
+      }
     }
   
     if( self.prevMoveState != self.moveState ){
@@ -761,7 +771,6 @@ void( float isNew, float changeFlags ) sendent_handle_client={
 void( float unit_id ) client_event_mech_spawn={
   local vector minSave, maxSave;
   local entity item;
-  local entity this;
   local float wepItr;
   
   
@@ -780,15 +789,13 @@ void( float unit_id ) client_event_mech_spawn={
   
   setsize(self, self.cache_mins, self.cache_maxs);
   
-  this = self;
-  
   wepItr = 0;
   while( wepItr < self.hardpoint_cnt ){
-    item = sendent_get_weapon( bitshift(1, wepItr ) );
+    TEMP_ENT1 = sendent_get_weapon( bitshift(1, wepItr ) );
     
-    if( item.data_idx ){
-      item.reloadValue = 100;
-      item.wepFireOffsetCache = item.wepFireOffset;
+    if( TEMP_ENT1.data_idx ){
+      TEMP_ENT1.reloadValue = 100;
+      TEMP_ENT1.wepFireOffsetCache = TEMP_ENT1.wepFireOffset;
     }
     
     wepItr = wepItr + 1;
@@ -818,6 +825,9 @@ void( float unit_id ) client_event_mech_spawn={
 
   if( self.unit_legs == world){
     self.unit_legs = spawn();
+    self.unit_legs.drawmask = MASK_NORMAL;
+    self.unit_legs.skin = self.skin;
+    setmodel(self.unit_legs, self.legs_mdl);
   }
 
   self.unit_legs.skin = self.skin;

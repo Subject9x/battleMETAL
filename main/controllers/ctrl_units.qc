@@ -24,16 +24,15 @@ void() ctrl_unit_clean_wgroups={
   Call's unit sub-piece's th_die() function but does not remove!
 */
 void( entity comp ) ctrl_unit_part_death={
-  local entity parentSelf;
   if( comp.th_die && comp.deadflag >= DEAD_NO ){
-    parentSelf = self;
+    TEMP_ENT1 = self;
     self = comp;
       if( self.model ){
-        if( (self != world) && (self.owner == parentSelf) ){
+        if( (self != world) && (self.owner == TEMP_ENT1) ){
           self.th_die();
         }
       }
-    self = parentSelf;
+    self = TEMP_ENT1;
   }
 };
 

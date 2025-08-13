@@ -50,33 +50,33 @@ void() animatic_event_trigger={
 };
 
 void() animatic_event_execute={
-  local entity client;
-  local entity this;
+  local entity TEMP_ENT_PLAYER;
+  local entity TEMP_ENT2;
   
   if( self.isActive ){
-    this = self;
-    //client = findchainflags(flags, (FL_CLIENT));
-    for(client = findchainflags(flags, (FL_CLIENT)); client != world; client = client.chain){
+    TEMP_ENT2 = self;
+    //TEMP_ENT_PLAYER = findchainflags(flags, (FL_CLIENT));
+    for(TEMP_ENT_PLAYER = findchainflags(flags, (FL_CLIENT)); TEMP_ENT_PLAYER != world; TEMP_ENT_PLAYER = TEMP_ENT_PLAYER.chain){
       //FACTION_ONLY setting
       if( (self.spawnflags & FACTION_ONLY) ){
-        if(self.faction != client.faction){
+        if(self.faction != TEMP_ENT_PLAYER.faction){
           continue;
         }
       }
-      self = client;
+      self = TEMP_ENT_PLAYER;
         self.count1 = self.playerState;
-        if( (this.spawnflags & FREEZE_PLAYERS) ){
+        if( (TEMP_ENT2.spawnflags & FREEZE_PLAYERS) ){
           self.playerState = PLAYER_ANIM_STOP;
-          self.count2 = time + this.count1;
+          self.count2 = time + TEMP_ENT2.count1;
           self.count3 = self.movetype;
           self.movetype = MOVETYPE_NONE;
           self.velocity = '0 0 0';
           self.avelocity = '0 0 0';
         }
-        client_sendAnimaticFileName(this.missionFile, (this.spawnflags & HIDEWORLD) ? FALSE : TRUE);
-        self.animId = this;
-      self = this;
-      client = client.chain;
+        client_sendAnimaticFileName(TEMP_ENT2.missionFile, (TEMP_ENT2.spawnflags & HIDEWORLD) ? FALSE : TRUE);
+        self.animId = TEMP_ENT2;
+      self = TEMP_ENT2;
+      TEMP_ENT_PLAYER = TEMP_ENT_PLAYER.chain;
     }
     
     if( self.count2 > 0 ){
