@@ -1173,6 +1173,7 @@ float(float grp) calc_energy_draw={
 */
 void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
   local vector tSize, modelMins, modelMax, cOrg, mOffset;
+  local vector viewportOrg;
   local vector viewOrg;
   local float zBias, zTotal;
   local entity weaponEnt;
@@ -1192,7 +1193,9 @@ void(vector ofs, vector viewSize) menu_armor_MechModelDisplay={
     viewOrg = CLIENT_vis_org;
   }
   clearscene();
-    setproperty(VF_ORIGIN, viewOrg + [modelMax_x * -5, 0, modelMax_z * 0.1]);	//look towards it.
+    viewportOrg = viewOrg + [modelMax_x * -5, 0, modelMax_z * 0.1]; //some mechs, the camera x distance < -118 makes the model too damn big in the viewport.
+    viewportOrg_x = min(viewportOrg_x, -118);
+    setproperty(VF_ORIGIN, viewportOrg);	//look towards it.
     setproperty(VF_ANGLES, '0 0 0');
     
     setproperty(VF_MIN, vtodpp([ofs_x, ofs_y, 0]) );

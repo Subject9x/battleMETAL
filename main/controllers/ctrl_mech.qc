@@ -194,8 +194,6 @@ void() ai_ctrl_updateCenterTorso={
   makevectors(self.torC_angl);
   TEMP_VEC3 = self.origin + (v_right * self.cameraOffset_x) + (v_up * self.cameraOffset_y) + (v_forward * self.cameraOffset_z);
 
-  trailparticles( world , particleeffectnum("TE_REPAIR_RAIL"), self.origin + (v_up * 50), TEMP_VEC3); //debug
-
   traceline(TEMP_VEC3, TEMP_VEC3 + v_forward * 10000, FALSE, self);
   self.laser_sight_org = trace_endpos;
   self.laser_sight_timer = time + 0.05;
