@@ -6,10 +6,10 @@ Overview: implementation for objectives menu overlay
 */
 
 void(vector org) ui_objective_frame={
+  local float lst_idx, itr;
+  local vector torg;
+  local entity eObj;
   if(UI_OBJECTIVE_ACTIVE){
-    local float lst_idx, itr;
-    local vector torg;
-    local entity eObj;
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
@@ -21,7 +21,7 @@ void(vector org) ui_objective_frame={
     while( itr < 32 ){
       local float complete;
       local vector line, colr;
-      local string obj;
+      local string objText;
 
       complete = OBJECTIVES[itr];
       if( complete != OBJECTIVE_DISABLE ){
@@ -29,25 +29,27 @@ void(vector org) ui_objective_frame={
         eObj = data_objective_find( itr );
         line = torg;
         line_y = line_y + ( (lst_idx+1) * 16);
-        obj = strcat(ftos(lst_idx+1),") ",MSN_OBJ_DESC[itr]); 
+        objText = strcat(ftos(lst_idx+1),") ",MSN_OBJ_DESC[itr]); 
         colr = HUD_COLOR_DEF;
         if( eObj ){
           if( eObj.aState == 2 ){
             colr = CLR_UI_OBJT_SECOND;
+            objText = strcat("(OPTIONAL)", objText);
           }
           if(  eObj.aState == 3 ){
             colr = CLR_UI_OBJT_THIRD;
+            objText = strcat("(OPTIONAL)", objText);
           }
         }
         if( complete == OBJECTIVE_FAIL ){
           colr = CLR_DEF_RED;
-          obj = strcat(obj, " !FAILED!");
+          objText = strcat(objText, " !FAILED!");
         }
         if( complete == OBJECTIVE_WIN ){
           colr = CLR_DEF_GREEN_OK;
-          obj = strcat(obj, " [COMPLETE]");
+          objText = strcat(objText, " [COMPLETE]");
         }
-        drawstring(line, obj, '12 12 0', colr * 1.33, 1, 0);
+        drawstring(line, objText, '12 12 0', colr * 1.33, 1, 0);
         lst_idx = lst_idx + 1;
       }
       

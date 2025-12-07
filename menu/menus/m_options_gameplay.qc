@@ -49,7 +49,9 @@ entity gameplay_back;
 
 //gameplay constants
 string( float id ) gameplay_hudcolor_name={
-  switch( id ){
+  local float v;
+  v = fabs(rint(id));
+  switch( v ){
     case 1:
       return "GREEN";
     case 2:
@@ -65,7 +67,10 @@ string( float id ) gameplay_hudcolor_name={
 };
 
 vector( float id ) gameplay_hudcolor_color={
-  switch( id ){
+  local float v;
+  v = fabs(rint(id));
+
+  switch( v ){
     case 1:
       return CLR_HUD_GREEN;
     case 2:
@@ -80,7 +85,10 @@ vector( float id ) gameplay_hudcolor_color={
 };
 
 string( float id)gameplay_crosshair_img={
-  switch( id ){
+  local float v;
+  v = fabs(rint(id));
+
+  switch( v ){
     case 1:
       return "gfx/hud/ret/crosshair1.png";
     case 2:
@@ -92,6 +100,7 @@ string( float id)gameplay_crosshair_img={
     default:
       return "gfx/hud/ret/crosshair1.png";
   }
+  return "gfx/hud/ret/crosshair1.png";
 };
 
 /*string( float val ) gameplay_hud_sway_mode={
@@ -258,8 +267,9 @@ void() click_gameplay_hudcolor_nx={
     val = 4;
   }
   gameplay_hudcolor_lbl.len = val;
-  strunzone(gameplay_hudcolor_lbl.label);
-  gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
+  // strunzone(gameplay_hudcolor_lbl.label);
+  // gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
+  gameplay_hudcolor_lbl.label = gameplay_hudcolor_name( gameplay_hudcolor_lbl.len );
   gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( val );
   cvar_set("crosshair_color_red", ftos(gameplay_hudcolor_lbl.color_x) );
   cvar_set("crosshair_color_green", ftos(gameplay_hudcolor_lbl.color_y) );
@@ -278,8 +288,9 @@ void() click_gameplay_hudcolor_pr={
     val = 0;
   }
   gameplay_hudcolor_lbl.len = val;
-  strunzone(gameplay_hudcolor_lbl.label);
-  gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
+  // strunzone(gameplay_hudcolor_lbl.label);
+  // gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
+  gameplay_hudcolor_lbl.label = gameplay_hudcolor_name( gameplay_hudcolor_lbl.len );
   gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( val );
   cvar_set("crosshair_color_red", ftos(gameplay_hudcolor_lbl.color_x) );
   cvar_set("crosshair_color_green", ftos(gameplay_hudcolor_lbl.color_y) );
@@ -347,7 +358,6 @@ void() m_gameplay_i={
     }
   }
 
-
   row = row + 20;
   gameplay_datetime_lbl = lbl_text(MENU_ORG + [125, row], '14 14', "", CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, UI_FLAG_LBL_BOOL_ON);
   gameplay_datetime_lbl.len = cvar("showdate");
@@ -376,6 +386,8 @@ void() m_gameplay_i={
   
   row = row + 20;
   local float clean;
+  local vector colrVec;
+  colrVec = gameplay_hudcolor_color(cvar("cl_hud_color"));
   clean = cvar("crosshair");
   gameplay_crosshair_lbl = lbl_text(MENU_ORG + [125, row], '14 14', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_crosshair_lbl.len = cvar("crosshair");
@@ -400,12 +412,13 @@ void() m_gameplay_i={
   row = row + 20;
   local string colr;
   colr = gameplay_hudcolor_name( cvar("cl_hud_color") );
-  gameplay_hudcolor_lbl = lbl_text(MENU_ORG + [125, row], '14 14', strzone(colr), CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudcolor_lbl = lbl_text(MENU_ORG + [125, row], '14 14', colr, CLR_DEF_WHITE, VIEW_CTX, M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudcolor_lbl.len = cvar("cl_hud_color");
-  gameplay_hudcolor_lbl.color_x = cvar("crosshair_color_red");
-  gameplay_hudcolor_lbl.color_y = cvar("crosshair_color_green");
-  gameplay_hudcolor_lbl.color_z = cvar("crosshair_color_blue");
-  gameplay_hudcolor_nx = btn_img_callback(gameplay_hudcolor_lbl.origin + [stringwidth("PURPLE", 0, gameplay_crosshair_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  gameplay_hudcolor_lbl.color_x = colrVec_x;
+  gameplay_hudcolor_lbl.color_y = colrVec_y;
+  gameplay_hudcolor_lbl.color_z = colrVec_z;
+  gameplay_hudcolor_nx = btn_img_callback(gameplay_hudcolor_lbl.origin + [stringwidth("GREEN", 0, gameplay_crosshair_lbl.size), 0], '12 12', UI_IMG_ARW_RGT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_hudcolor_pr = btn_img_callback(gameplay_hudcolor_lbl.origin - '20 0', '12 12', UI_IMG_ARW_LFT, 0, M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   //gameplay_hud_sway_set = lbl_text('150 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
@@ -457,10 +470,8 @@ void() m_gameplay_d={
     //gui_renderString("HUD Sway Mode:", '74 263', CLR_DEF_WHITE, '14 14 0', 1, 0);
 
   drawfont = drawfont_prev;
-
-  crossColor_x = cvar("crosshair_color_red");
-  crossColor_y = cvar("crosshair_color_green");
-  crossColor_z = cvar("crosshair_color_blue");
+  
+  crossColor = gameplay_hudcolor_color(cvar("cl_hud_color"));
   
   drawpic(MENU_ORG + '200 125', gameplay_crosshair_lbl.image1 , '64 64', crossColor, gameplay_hudalpha_lbl.len, 0);
   

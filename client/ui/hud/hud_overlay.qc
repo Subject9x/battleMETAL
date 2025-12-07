@@ -228,16 +228,6 @@ void(float hitDirBit) hud_renderDirectionHit={
   else{
     hitColor = CLR_HUD_DMG_ARMOR;
   }
-  
-  // if( (hitDirBit & STAT_HIT_LF) ){
-  //   orgLeft_x = VIEW_ORG_x + 1;
-  //   gui_renderTintImage(TRUE, orgLeft, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
-  // }
-  
-  // if( (hitDirBit & STAT_HIT_RT) ){
-  //   orgRight_x = VIEW_MAX_x - 24;
-  //   gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
-  // }
 };
 
 void() hud_renderDirectionalHit={

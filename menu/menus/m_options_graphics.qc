@@ -752,9 +752,11 @@ void() click_graphics_accept={
   cvar_set("vid_userefreshrate", ftos(fabs(graphics_refresh_lbl.len)));
   if(graphics_refresh_rate_lbl.len != FALSE){
     cvar_set("vid_refreshrate", ftos(fabs(graphics_refresh_rate_lbl.len)));
+    cvar_set("cl_maxfps", ftos(fabs(graphics_refresh_rate_lbl.len)));
   }
   else{
-    cvar_set("vid_refreshrate", ftos(0));
+    cvar_set("vid_refreshrate", ftos(fabs(0)));
+    cvar_set("cl_maxfps", ftos(fabs(60.0)));
   }
   cvar_set("vid_fullscreen", ftos(graphics_fullscreen_lbl.len));
   cvar_set("vid_vsync", ftos(graphics_vsync_lbl.len));
