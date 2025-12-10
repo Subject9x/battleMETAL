@@ -9,6 +9,9 @@ Overview:
   set weapon groups.
 */
 
+#define FONT_SMALL '10 10'
+#define FONT_MED '12 12'
+
 //hook for inputs
 void() menu_armingListener_onClick={
   menu_navbBar_listener();
@@ -872,7 +875,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector weaponNameOrg;
   local float weaponNameLen;
   local vector icol;
-  local vector smallFont;
+  local vector icol2;
   local vector helpOrg;
   
   nofs = ofs;
@@ -902,60 +905,76 @@ void(vector ofs) menu_arming_WeaponInfo={
   
   //type
   icol = nofs + '8 42';
-  
-  smallFont = '10 10';
+  icol2 = nofs + '110 42';  
   
   if( ITEM1_DATA_DMG > -1 ){
     //damage
-    drawstring(icol, "Total Damage:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    gui_renderMeter(((ITEM1_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + '75 -2', '32 12', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(icol + '112 -2', sprintf("%0.2f", ITEM1_DATA_DMG * ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    drawstring(icol, "Total Damage:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    // gui_renderMeter(((ITEM1_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + '75 -2', '32 12', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(icol + '60 -2', sprintf("%0.2f", ITEM1_DATA_DMG * ITEM1_DATA_CLIP), FONT_MED, '1 1 1', 1, 0);
     icol = icol + '0 12';
   }
   
   if(ITEM1_DATA_EN > -1 ){
     //en cost
-    drawstring(icol, "Energy Cost:", smallFont, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol, "Energy Cost:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
     if( ITEM1_DATA_EN > 0 ){
-      gui_renderMeter((ITEM1_DATA_EN / 500)*100, icol + '75 0', '32 12', CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
-      drawstring(icol + '112 0', sprintf("%0.2f", ITEM1_DATA_EN), '14 14', '1 1 1', 1, 0);
+      // gui_renderMeter((ITEM1_DATA_EN / 500)*100, icol + '75 0', '32 12', CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+      drawstring(icol + '60 0', sprintf("%0.2f", ITEM1_DATA_EN), FONT_MED, '1 1 1', 1, 0);
     }
     else{
-      drawstring(icol + '112 0', "NONE", '14 14', CLR_DEF_ARM_OK, 1, 0);
+      drawstring(icol + '60 0', "NONE", FONT_MED, CLR_DEF_ARM_OK, 1, 0);
     }
     icol = icol + '0 12';
   }
   
   if(ITEM1_DATA_RANGE > -1 ){
     //range
-    drawstring(icol, "Max Range:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + '112 0', ftos(ITEM1_DATA_RANGE), '14 14', '1 1 1', 1, 0);
+    drawstring(icol, "Max Range:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + '60 0', ftos(ITEM1_DATA_RANGE), FONT_MED, '1 1 1', 1, 0);
     icol = icol + '0 12';
   }
   
   if(ITEM1_DATA_CLIP > -1 ){
     //clip
-    drawstring(icol, "Clip size:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + '112 0', ftos(ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
-    icol = icol + '0 12';
+    drawstring(icol, "Clip size:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + '60 0', ftos(ITEM1_DATA_CLIP), FONT_MED, '1 1 1', 1, 0);
+    // icol = icol + '0 12';
   }
-  
+
   if(ITEM1_DATA_SIZE > -1 ){
-    drawstring(icol,"Hardpoint Size:",smallFont, CLR_DEF_GRAY_H, 1, 0);
-    ui_renderHardpoint_class_pair( icol + '112 0', '14 14', ITEM1_DATA_SIZE, '1 1 1' );
-    icol = icol + '0 12';
+    drawstring(icol2,"Hardpoint Size:",FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    ui_renderHardpoint_class_pair( icol2 + '65 -3', FONT_MED, ITEM1_DATA_SIZE, '1 1 1' );
+    icol2 = icol2 + '0 12';
   }
 
   if(ITEM1_DATA_TECH > -1 ){
     //tech
-    drawstring(icol, "Tech Level:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + '112 0', ftos(ITEM1_DATA_TECH), '14 14', '1 1 1', 1, 0);
-    icol = icol + '0 12';
+    drawstring(icol2, "Tech Level:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol2 + '65 -2', ftos(ITEM1_DATA_TECH), FONT_MED, '1 1 1', 1, 0);
+    icol2 = icol2 + '0 12';
+  }
+  
+  if(ITEM1_DATA_ROF > -1 && ITEM1_DATA_CLIP > 1){
+    //rate of fire per shot
+    drawstring(icol2, "Rate of fire:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol2 + '60 0', strcat(sprintf("%0.2f", ITEM1_DATA_ROF), "s"), FONT_MED, '1 1 1', 1, 0);
+    icol2 = icol2 + '0 12';
+  }
+  else{
+    icol2 = icol2 + '0 12';
+  }
+
+  if(ITEM1_DATA_RELOAD > -1){
+    //rate of fire per shot
+    drawstring(icol2, "Reload time:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol2 + '60 0', strcat(sprintf("%0.2f", ITEM1_DATA_RELOAD), "s"), FONT_MED, '1 1 1', 1, 0);
+    icol2 = icol2 + '0 12';
   }
   
   if(ITEM1_DATA_DESC != "" ){
     //desc
-    drawstring(icol, "Info:", smallFont, CLR_DEF_GRAY_H, 1, 0); 
+    // drawstring(icol, "Info:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0); 
     gui_wrapText(icol, '187 130', ITEM1_DATA_DESC, '12 12 0', '1 1 1', 1);
   }
   
@@ -991,6 +1010,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector weaponNameOrg;
   local float weaponNameLen;
   local vector icol;
+  local vector icol2;
   local vector smallFont;
   local vector helpOrg;
   
@@ -1023,13 +1043,15 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   
   //type
   icol = nofs + '8 42';
+  icol2 = nofs + '120 42';
+
   smallFont = '10 10';
   
   if( ITEM2_DATA_DMG > -1 ){
     //damage
     drawstring(icol, "Total Damage:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    gui_renderMeter(((ITEM2_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + '75 -2', '32 12', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-    drawstring(icol + '112 -2', sprintf("%0.2f", ITEM2_DATA_DMG * ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    // gui_renderMeter(((ITEM2_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + '75 -2', '32 12', CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(icol + '60 -2', sprintf("%0.2f", ITEM2_DATA_DMG * ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
     icol = icol + '0 12';
   }
   
@@ -1037,11 +1059,11 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
     //en cost
     drawstring(icol, "Energy Cost:", smallFont, CLR_DEF_GRAY_H, 1, 0);
     if( ITEM1_DATA_EN > 0 ){
-      gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + '75 0', '32 12', CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM2_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
-      drawstring(icol + '112 0', sprintf("%0.2f", ITEM2_DATA_EN), '14 14', '1 1 1', 1, 0);
+      // gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + '75 0', '32 12', CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM2_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+      drawstring(icol + '60 0', sprintf("%0.2f", ITEM2_DATA_EN), '14 14', '1 1 1', 1, 0);
     }
     else{
-      drawstring(icol + '112 0', "NONE", '14 14', CLR_DEF_ARM_OK, 1, 0);
+      drawstring(icol + '60 -1', "NONE", '14 14', CLR_DEF_ARM_OK, 1, 0);
     }
     icol = icol + '0 12';
   }
@@ -1049,33 +1071,51 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   if(ITEM2_DATA_RANGE > -1 ){
     //range
     drawstring(icol, "Max Range:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + '112 0', ftos(ITEM2_DATA_RANGE), '14 14', '1 1 1', 1, 0);
+    drawstring(icol + '60 0', ftos(ITEM2_DATA_RANGE), '14 14', '1 1 1', 1, 0);
     icol = icol + '0 12';
   }
   
+  
+
   if(ITEM2_DATA_CLIP > -1 ){
     //clip
     drawstring(icol, "Clip size:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + '112 0', ftos(ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
-    icol = icol + '0 12';
+    drawstring(icol + '60 0', ftos(ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    // icol = icol + '0 12';
   }
   
   if(ITEM2_DATA_SIZE > -1 ){
-    drawstring(icol,"Hardpoint Size:",smallFont, CLR_DEF_GRAY_H, 1, 0);
-    ui_renderHardpoint_class_pair( icol + '112 0', '14 14', ITEM2_DATA_SIZE, '1 1 1' );
-    icol = icol + '0 12';
+    drawstring(icol2,"Hardpoint Size:",smallFont, CLR_DEF_GRAY_H, 1, 0);
+    ui_renderHardpoint_class_pair( icol2 + '60 -2', '14 14', ITEM2_DATA_SIZE, '1 1 1' );
+    icol2 = icol2 + '0 12';
   }
 
   if(ITEM2_DATA_TECH > -1 ){
     //tech
-    drawstring(icol, "Tech Level:", smallFont, CLR_DEF_GRAY_H, 1, 0);
-    drawstring(icol + '112 0', ftos(ITEM2_DATA_TECH), '14 14', '1 1 1', 1, 0);
-    icol = icol + '0 12';
+    drawstring(icol2, "Tech Level:", smallFont, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol2 + '60 -1', ftos(ITEM2_DATA_TECH), '14 14', '1 1 1', 1, 0);
+    icol2 = icol2 + '0 12';
   }
   
+  if(ITEM2_DATA_ROF > -1 && ITEM2_DATA_CLIP > 1){
+    //rate of fire per shot
+    drawstring(icol2, "Rate of fire:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol2 + '60 0', strcat(sprintf("%0.2f", ITEM2_DATA_ROF), "s"), FONT_MED, '1 1 1', 1, 0);
+    icol2 = icol2 + '0 12';
+  }
+  else{
+    icol2 = icol2 + '0 12';
+  }
+
+  if(ITEM2_DATA_RELOAD > -1){
+    //rate of fire per shot
+    drawstring(icol2, "Reload time:", FONT_SMALL, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol2 + '60 0', strcat(sprintf("%0.2f", ITEM2_DATA_RELOAD), "s"), FONT_MED, '1 1 1', 1, 0);
+    icol2 = icol2 + '0 12';
+  }
+
   if(ITEM2_DATA_DESC != "" ){
     //desc
-    drawstring(icol, "Info:", smallFont, CLR_DEF_GRAY_H, 1, 0); 
     gui_wrapText(icol, '187 130', ITEM2_DATA_DESC, '12 12 0', '1 1 1', 1);
   }
 
