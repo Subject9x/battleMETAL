@@ -56,11 +56,11 @@ void() data_ini_equip_energy_battery_={
 
 #ifdef SSQC
 void() energy_battery_upgrade_={
-  self.energyMax = self.owner.energyMax;
   self.owner.energyMax = self.owner.energyMax + (self.owner.energyMax * self.energyRate);
+  self.owner.energy = self.owner.energyMax;
 };
 
 void() energy_battery_remove_={
-  self.owner.energyMax = self.energyMax;
+  self.owner.energyMax = self.owner.energyMax - (self.owner.energyMax * self.energyRate);
 };
 #endif

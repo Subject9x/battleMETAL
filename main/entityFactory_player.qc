@@ -75,26 +75,26 @@ void() player_makeMech={
   self.last_color = FALSE;
   self.new_color = TRUE;
   self.enemy = world;
-  
-  client_push_player_info();
-  
-  //client_playTrack(self, world.sounds, TRUE);  //exiting hangar menu
  
   //player_setup_hudconsole();
+
   //configure player mech bits visibility
   hudWepStart = self;
   if( ENT_SERVER_INFO.gameType == GAMEMODE_CAMPAIGN ){
-    switch(cvar("skill")){
-      case 1:
+    switch(fabs(rint(cvar("skill")))){
+      case SKILL_REG:
         self.energyMax = self.energyMax * 1.25;
         self.energyRate = self.energyRate * 1.1;
         break;
-      case 2:
+      case SKILL_VET:
         self.energyMax = self.energyMax * 1.15;
         self.energyRate = self.energyRate * 1.0;
         break;
     }
   }
+  self.energy = self.energyMax; //make sure we start with a full energy pool after all upgrades and game rule mods.
+
+  client_push_player_info();
   
   self.view_ofs = '0 0 0';
   self.view_ofs_z = self.cameraOffset_y;  //set player view offset to where the cockpit ent is.
