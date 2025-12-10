@@ -81,7 +81,7 @@ void() data_ini_particle_cannon_={
   self.reload_sound = "sound/weapons/pac_reload.ogg";
   self.model = "models/weapons/w_pac.md3";
   self.abbrev = "PAC";
-  self.description = "+ Instant-impact weapon. + Bypasses a % of target shields. + Lower shields on target yields higher armor damage.";
+  self.description = "+ Instant-impact weapon. + Bypasses 25% of target shields.";
   self.icon = "gfx/ui/wep_icons/wi_pac.png";
   self.itemMuzzleFlash = te_muzzle_pac;
   self.effect_beam = te_pac_beam;
@@ -124,22 +124,24 @@ void() data_ini_attack_particle_cannon_={
       //strike a unit, not a building
       if( trace_ent.shield > 0 ){
         impactStyle = IMPACT_SHIELD;
-        if( trace_ent.shield <= (trace_ent.shieldMax * 0.33) ){
-          dmgShield = dmgArmor * 0.15;
-        }
-        else{
-          dmgShield = dmgArmor * 0.25;
-        }
+
+        //too fiddly
+        // if( trace_ent.shield <= (trace_ent.shieldMax * 0.33) ){
+        //   dmgShield = dmgArmor * 0.15;
+        // }
+        // else{
+        dmgShield = dmgArmor * 0.25;
+        // }
         dmgArmor = dmgArmor - dmgShield;
       }
-      if( (trace_ent.flags & FL_UNIT) ){
-        if( trace_ent.vec_size <= 1 ){
-          dmgArmor = dmgArmor * 0.7;
-        }
-        else if( trace_ent.vec_size == 2){
-          dmgArmor = dmgArmor * 0.85;
-        }
-      }
+      // if( (trace_ent.flags & FL_UNIT) ){
+        // if( trace_ent.vec_size <= 1 ){
+        //   dmgArmor = dmgArmor * 0.7;
+        // }
+        // else if( trace_ent.vec_size == 2){
+          // dmgArmor = dmgArmor * 0.85;
+        // }
+      // }
       
       if( dmgShield ){
         impactStyle = IMPACT_SHIELD;

@@ -57,7 +57,7 @@ void() data_ini_ion_={
   self.reload_sound = "sound/weapons/ion_reload.ogg";
   self.model = "models/weapons/w_ion.md3";
   self.abbrev = "ION";
-  self.description = "+ Anti-shield. + Armor damage greatly reduced. +3-rnd burst fire.";
+  self.description = "+ Full damage on <Shields>. + -85% Damage on <Armor>. + 3-rnd burst fire.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";
   self.itemMuzzleFlash = te_muzzle_ion;
 #endif

@@ -56,7 +56,7 @@ void() data_ini_emp_={
   self.reload_sound = "sound/weapons/emp_reload.ogg";
   self.model = "models/weapons/w_emp.md3";
   self.abbrev = "EMP";
-  self.description = "+ Anti-shield. + Small proximity detonation. + Armor damage greatly reduced.";
+  self.description = "+ Full damage on <Shields>. + -90% damage on <Armor>. + Small proximity detonation.";
   self.icon = "gfx/ui/wep_icons/wi_emp.png";
   self.itemMuzzleFlash = te_muzzle_emp;
 #endif
