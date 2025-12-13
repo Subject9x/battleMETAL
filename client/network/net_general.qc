@@ -353,8 +353,8 @@ void( float isNew, float changeFlags ) sendent_handle_item={
     
     self.data_idx = ReadByte();
     
-    self.w_group = rint(ReadLong());
-    self.partParentId = rint(ReadLong());
+    self.w_group = fabs(rint(ReadLong()));
+    self.partParentId = fabs(rint(ReadLong()));
     self.compOffset_x = ReadCoord();
     self.compOffset_y = ReadCoord();
     self.compOffset_z = ReadCoord();
@@ -370,6 +370,8 @@ void( float isNew, float changeFlags ) sendent_handle_item={
   if( (changeFlags & SENDFLAG_DEAD) ){}
   
   if(isNew){
+    self.owner = findfloat(world, entnum, ownerEntId);
+
     if(self.data_idx != 0){
       initialize_data_item_(self.data_idx);
       self.wepFireOffsetCache = self.wepFireOffset;
