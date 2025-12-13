@@ -153,7 +153,7 @@ void() data_ini_warden_={
     hardpnt.uiOffset = '-60 -45.0';//#4
     
     hardpnt = hardpnt.w_slot;
-    hardpnt.uiOffset = '110 -55.0'; //#5
+    hardpnt.uiOffset = '90 -45.0'; //#5
   //====================================
   }
 #endif

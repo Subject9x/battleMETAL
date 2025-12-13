@@ -856,13 +856,12 @@ void() client_event_handle_moveChange={
 */
 void() client_event_target_new={
   local entity oSelf;
-  
   local float notarg;
 
   notarg = FALSE;
 
   //check against world
-  if( self.targetEntId == num_for_edict(world)){
+  if( self.targetEntId == 0){
     notarg = TRUE;
   }
 

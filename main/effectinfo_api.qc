@@ -132,6 +132,7 @@ void( vector org, vector angl, vector vel, float total, float debrType ) te_debr
         setmodel (newmis, debrisMdl);
         setsize (newmis, '0 0 0', '0 0 0');
         setorigin(newmis, org);
+        newmis.classname = "te_debris";
         newmis.velocity_x = 100 * crandom();
         newmis.velocity_y = 100 * crandom();
         newmis.velocity_z = 75 + 100 * random();

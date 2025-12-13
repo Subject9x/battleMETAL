@@ -123,10 +123,13 @@ void() misc_build_die1={
   
   self.SendFlags = self.SendFlags | SENDFLAG_DEAD;
   self.deadflag = DEAD_DYING;
+  self.solid = SOLID_NOT;
   
   TEMP_VEC1 = randompos(self.absmin * 0.67, self.absmax * 0.67);
-  te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 5, 1 );
+  //te_debris( TEMP_VEC1, normalize(TEMP_VEC1 - self.origin) * 5, '0 0 0', 5, 1 );
   te_missile_explode( randompos(self.absmin, self.absmax), self.vec_size, '1 0.85 0.33', 0.01 );
+
+  
   sound7(self, CHAN_AUTO, "sound/fx_boom%s.ogg", (0.67 + random() * 0.33), ATTN_NORM, (0.4 + (random() * 0.5)) * 100, SOUNDFLAG_DYNAMIC_INT );
   
   self.think = misc_build_die2;
